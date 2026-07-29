@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
+        rel="stylesheet"
+    >
+    <link rel="stylesheet" href="css/estilos.css">
+    <title>TCdle</title>
+</head>
+<body>
+    <header class="encabezado-principal">
+        <img
+            src="img/tcdle-logo.png"
+            alt="TCdle"
+            class="logo-tcdle"
+        >
+    </header>
+
+    <main>
+        <section class="panel-busqueda" aria-labelledby="titulo-busqueda">
+            <div class="panel-busqueda__cabecera">
+                <span class="panel-busqueda__numero">01</span>
+                <div>
+                    <p>Modo clásico</p>
+                    <h2 id="titulo-busqueda">Elegí un piloto</h2>
+                </div>
+            </div>
+
+            <div class="panel-busqueda__contenido">
+                <div class="fila-busqueda">
+                    <div class="contenedor-autocompletado">
+                        <input
+                            type="text"
+                            id="nombre-piloto"
+                            name="nombre-piloto"
+                            placeholder="Adivina el piloto de hoy"
+                            autocomplete="off"
+                        >
+                        <div
+                            id="sugerencias-pilotos"
+                            class="sugerencias-pilotos"
+                            role="listbox"
+                            hidden
+                        ></div>
+                    </div>
+                    <button type="button" id="boton-intentar">Intentar</button>
+                </div>
+
+                <div class="estado-partida">
+                    <p id="intentos-restantes">8 intentos disponibles</p>
+                    <p id="mensaje-juego" aria-live="polite"></p>
+                </div>
+            </div>
+        </section>
+
+        <section
+            id="resultado-final"
+            class="resultado-final"
+            aria-labelledby="nombre-piloto-final"
+            hidden
+        >
+            <div class="resultado-final__media">
+                <img
+                    id="foto-piloto-final"
+                    class="resultado-final__foto"
+                    src=""
+                    alt=""
+                >
+            </div>
+            <div class="resultado-final__contenido">
+                <p
+                    id="etiqueta-resultado"
+                    class="resultado-final__etiqueta"
+                >Bandera a cuadros</p>
+                <p
+                    id="subtitulo-resultado"
+                    class="resultado-final__subtitulo"
+                >Piloto del día</p>
+                <h2 id="nombre-piloto-final"></h2>
+                <p id="detalle-resultado-final"></p>
+                <p
+                    id="regreso-resultado"
+                    class="resultado-final__regreso"
+                >
+                    <span>Nuevo piloto en:</span>
+                    <strong id="tiempo-nuevo-piloto">--:--:--</strong>
+                </p>
+            </div>
+        </section>
+
+        <section class="panel-intentos" aria-labelledby="titulo-intentos">
+            <h2 id="titulo-intentos">Intentos</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Marca</th>
+                        <th>Equipo</th>
+                        <th>Localidad</th>
+                        <th>Edad</th>
+                        <th>Campeón de TC</th>
+                        <th>Año de debut</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-intentos"></tbody>
+            </table>
+
+            <aside
+                id="guia-pistas"
+                class="guia-pistas"
+                aria-labelledby="titulo-guia"
+                hidden
+            >
+                <h3 id="titulo-guia">Guía de pistas</h3>
+                <div class="guia-pistas__grilla">
+                    <div class="guia-pista guia-pista--correcta">
+                        <strong>Coincide</strong>
+                        <span>El dato es correcto</span>
+                    </div>
+                    <div class="guia-pista guia-pista--cerca">
+                        <strong>Cerca</strong>
+                        <span>Misma provincia o valor numérico próximo</span>
+                    </div>
+                    <div class="guia-pista guia-pista--incorrecta">
+                        <strong>No coincide</strong>
+                        <span>El dato es diferente</span>
+                    </div>
+                    <div class="guia-pista guia-pista--mayor">
+                        <strong>↑ Mayor</strong>
+                        <span>El valor buscado es más alto</span>
+                    </div>
+                    <div class="guia-pista guia-pista--menor">
+                        <strong>↓ Menor</strong>
+                        <span>El valor buscado es más bajo</span>
+                    </div>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <script src="js/pilotos.js"></script>
+    <script src="js/juego.js"></script>
+</body>
+</html>
