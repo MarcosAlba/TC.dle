@@ -764,7 +764,7 @@ const pilotos = [
         fechaNacimiento: "1986-12-26",
         campeonTC: false,
         anioDebutTC: 2007,
-        imagen: "https://actc.org.ar/upload/autos/9662/imgs_v3/imgtorso/podio/juan_b._de_benedictis.png",
+        imagen: "img/pilotos/juan_b._de_benedictis.png",
     },
 
     {
