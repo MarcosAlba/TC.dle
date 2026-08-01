@@ -1,0 +1,44 @@
+.encabezado-principal,
+.encabezado-auto {
+    position: relative;
+}
+
+.boton-cambio-modo {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    display: inline-flex;
+    min-height: 34px;
+    padding: 0 14px;
+    border: 1px solid #f20d29;
+    border-radius: 3px;
+    color: #fff;
+    background: #16171b;
+    font-family: var(--fuente-titulos, "Saira Condensed", "Arial Narrow", sans-serif);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-50%);
+    transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.boton-cambio-modo:hover,
+.boton-cambio-modo:focus-visible {
+    border-color: #ff4057;
+    background: #24252b;
+    outline: none;
+}
+
+@media (max-width: 620px) {
+    .boton-cambio-modo {
+        right: 10px;
+        min-height: 30px;
+        padding: 0 9px;
+        font-size: 0.64rem;
+        letter-spacing: 0.05em;
+    }
+}

@@ -6,34 +6,44 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700;800&amp;family=Saira+Condensed:wght@400;500;600;700;800&amp;display=swap"
         rel="stylesheet"
     >
-    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="assets/css/estilos.css?v=6">
+    <link rel="stylesheet" href="assets/css/buscador-pilotos.css?v=3">
+    <link rel="stylesheet" href="assets/css/controles-temporales.css?v=4">
     <title>TCdle</title>
 </head>
 <body>
     <header class="encabezado-principal">
         <img
-            src="img/tcdle-logo.png"
+            src="assets/images/tcdle-logo.png"
             alt="TCdle"
             class="logo-tcdle"
         >
+        <a class="boton-cambio-modo" href="pages/adivinar-el-auto.html">
+            Modo auto
+        </a>
     </header>
 
     <main>
+        <section class="presentacion-clasico" aria-labelledby="titulo-clasico">
+            <p>Modo clásico</p>
+            <h1 id="titulo-clasico">Adiviná el piloto de hoy</h1>
+        </section>
+
         <section class="panel-busqueda" aria-labelledby="titulo-busqueda">
             <div class="panel-busqueda__cabecera">
                 <span class="panel-busqueda__numero">01</span>
                 <div>
-                    <p>Modo clásico</p>
+                    <p>Tu intento</p>
                     <h2 id="titulo-busqueda">Elegí un piloto</h2>
                 </div>
             </div>
 
             <div class="panel-busqueda__contenido">
                 <div class="fila-busqueda">
-                    <div class="contenedor-autocompletado">
+                    <div class="buscador-pilotos">
                         <input
                             type="text"
                             id="nombre-piloto"
@@ -43,7 +53,7 @@
                         >
                         <div
                             id="sugerencias-pilotos"
-                            class="sugerencias-pilotos"
+                            class="buscador-pilotos__sugerencias"
                             role="listbox"
                             hidden
                         ></div>
@@ -144,7 +154,8 @@
         </section>
     </main>
 
-    <script src="js/pilotos.js"></script>
-    <script src="js/juego.js"></script>
+    <script src="assets/js/pilotos.js"></script>
+    <script src="assets/js/buscador-pilotos.js?v=1"></script>
+    <script src="assets/js/juego.js?v=3"></script>
 </body>
 </html>

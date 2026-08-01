@@ -1,7 +1,6 @@
 const campoPiloto = document.getElementById("nombre-piloto");
 const botonIntentar = document.getElementById("boton-intentar");
 const tablaIntentos = document.getElementById("tabla-intentos");
-const sugerenciasPilotos = document.getElementById("sugerencias-pilotos");
 const textoIntentos = document.getElementById("intentos-restantes");
 const mensajeJuego = document.getElementById("mensaje-juego");
 const resultadoFinal = document.getElementById("resultado-final");
@@ -23,6 +22,14 @@ let cantidadIntentos = 0;
 let intervaloCuentaRegresiva;
 
 const pilotosIntentados = [];
+const buscadorPilotos = crearBuscadorPilotos({
+    campo: campoPiloto,
+    lista: document.getElementById("sugerencias-pilotos"),
+    pilotos: pilotos,
+    estaExcluido: function (piloto) {
+        return pilotosIntentados.includes(piloto.id);
+    }
+});
 
 async function mostrarPilotoIngresado() {
     const nombreIngresado = campoPiloto.value.trim();
@@ -52,7 +59,7 @@ async function mostrarPilotoIngresado() {
     pilotosIntentados.push(pilotoEncontrado.id);
 
     cambiarEstadoControles(false);
-    ocultarSugerencias();
+    buscadorPilotos.ocultar();
     resultadoFinal.hidden = true;
     mostrarMensaje("", "");
 
@@ -199,11 +206,33 @@ function crearCelda(valor, coincide, estaCerca = false) {
 }
 
 function crearCeldaNumerica(valor, valorBuscado) {
-    return crearCelda(
-        valor + " " + obtenerFlecha(valor, valorBuscado),
+    const celda = crearCelda(
+        "",
         valor === valorBuscado,
         Math.abs(valor - valorBuscado) <= 2
     );
+    const contenido = document.createElement("span");
+
+    contenido.className = "celda-numerica__valor";
+    contenido.textContent = valor;
+    celda.classList.add("celda-numerica");
+    celda.appendChild(contenido);
+
+    if (valorBuscado > valor) {
+        celda.classList.add("celda-numerica--mayor");
+        celda.setAttribute(
+            "aria-label",
+            valor + ". El valor buscado es mayor."
+        );
+    } else if (valorBuscado < valor) {
+        celda.classList.add("celda-numerica--menor");
+        celda.setAttribute(
+            "aria-label",
+            valor + ". El valor buscado es menor."
+        );
+    }
+
+    return celda;
 }
 
 function crearCeldaPiloto(piloto, coincide) {
@@ -243,18 +272,6 @@ function calcularEdad(fechaNacimiento) {
     return edad;
 }
 
-function obtenerFlecha(valorIngresado, valorBuscado) {
-    if (valorIngresado === valorBuscado) {
-        return "";
-    }
-
-    if (valorBuscado > valorIngresado) {
-        return "↑";
-    }
-
-    return "↓";
-}
-
 function terminarPartida(mensaje, tipo) {
     mostrarMensaje(mensaje, tipo);
     cambiarEstadoControles(false);
@@ -272,77 +289,9 @@ function normalizarTexto(texto) {
         .toLowerCase();
 }
 
-function ocultarSugerencias() {
-    sugerenciasPilotos.hidden = true;
-    sugerenciasPilotos.innerHTML = "";
-}
-
-function mostrarSugerencias() {
-    const busqueda = campoPiloto.value.trim();
-    sugerenciasPilotos.innerHTML = "";
-
-    if (busqueda.length < 2) {
-        ocultarSugerencias();
-        return;
-    }
-
-    const busquedaNormalizada = normalizarTexto(busqueda);
-    const pilotosFiltrados = pilotos.filter(function (piloto) {
-        return normalizarTexto(piloto.nombre).includes(busquedaNormalizada);
-    });
-
-    if (pilotosFiltrados.length === 0) {
-        const mensaje = document.createElement("p");
-        mensaje.classList.add("sugerencias-vacias");
-        mensaje.textContent = "No hay pilotos que coincidan.";
-        sugerenciasPilotos.appendChild(mensaje);
-    }
-
-    pilotosFiltrados.forEach(function (piloto) {
-        const opcion = document.createElement("button");
-        const imagen = document.createElement("img");
-        const nombre = document.createElement("span");
-
-        opcion.type = "button";
-        opcion.classList.add("sugerencia-piloto");
-        opcion.setAttribute("role", "option");
-
-        imagen.src = piloto.imagen;
-        imagen.alt = "";
-        imagen.classList.add("sugerencia-piloto__imagen");
-
-        nombre.textContent = piloto.nombre;
-
-        opcion.appendChild(imagen);
-        opcion.appendChild(nombre);
-
-        opcion.addEventListener("click", function () {
-            campoPiloto.value = piloto.nombre;
-            ocultarSugerencias();
-            campoPiloto.focus();
-        });
-
-        sugerenciasPilotos.appendChild(opcion);
-    });
-
-    sugerenciasPilotos.hidden = false;
-}
-
-campoPiloto.addEventListener("input", mostrarSugerencias);
-
 campoPiloto.addEventListener("keydown", function (evento) {
     if (evento.key === "Enter") {
         mostrarPilotoIngresado();
-    }
-
-    if (evento.key === "Escape") {
-        ocultarSugerencias();
-    }
-});
-
-document.addEventListener("click", function (evento) {
-    if (!evento.target.closest(".contenedor-autocompletado")) {
-        ocultarSugerencias();
     }
 });
 
@@ -409,7 +358,7 @@ function mostrarResultado(
         "resultado-final--nombre-muy-largo",
         piloto.nombre.length > 22
     );
-    fotoPilotoFinal.src = piloto.imagen;
+    fotoPilotoFinal.src = piloto.imagenResultado || piloto.imagen;
     fotoPilotoFinal.alt = "Foto de " + piloto.nombre;
     nombrePilotoFinal.textContent = piloto.nombre;
     etiquetaResultado.textContent = etiqueta;
@@ -476,7 +425,7 @@ function obtenerPilotoDelDia() {
     const fechaNormalizada = Date.UTC(
         hoy.getFullYear(),
         hoy.getMonth(),
-        hoy.getDate()
+        hoy.getDate() + 1
     );
 
     const milisegundosPorDia = 1000 * 60 * 60 * 24;

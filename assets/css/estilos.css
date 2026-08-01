@@ -8,8 +8,8 @@
     --color-correcto: #14864f;
     --color-cerca: #c68a05;
     --color-incorrecto: #a92735;
-    --fuente-titulos: "Oswald", "Arial Narrow", sans-serif;
-    --fuente-texto: "Oswald", Arial, Helvetica, sans-serif;
+    --fuente-titulos: "Saira Condensed", "Arial Narrow", sans-serif;
+    --fuente-texto: "Saira", Arial, Helvetica, sans-serif;
 }
 
 * {
@@ -28,6 +28,7 @@ body {
     font-family: var(--fuente-texto);
 }
 
+h1,
 h2,
 h3,
 button,
@@ -42,22 +43,51 @@ th,
 }
 
 .encabezado-principal {
-    padding: 1.75rem 1rem 1.25rem;
-    border-bottom: 3px solid var(--color-rojo);
-    background: #050506;
+    display: flex;
+    min-height: 76px;
+    padding: 14px 20px;
+    border-bottom: 2px solid var(--color-rojo);
+    background: #090a0c;
     text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .logo-tcdle {
     display: block;
-    width: min(440px, 86vw);
+    width: 112px;
     height: auto;
     margin: 0 auto;
 }
 
 main {
     width: min(1100px, calc(100% - 2rem));
-    margin: 1.5rem auto 3rem;
+    margin: 2rem auto 3rem;
+}
+
+.presentacion-clasico {
+    margin: 0 auto 1.5rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: center;
+}
+
+.presentacion-clasico p {
+    margin: 0 0 0.3rem;
+    color: var(--color-rojo);
+    font-family: var(--fuente-titulos);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.presentacion-clasico h1 {
+    margin: 0;
+    font-size: clamp(1.8rem, 5vw, 2.65rem);
+    line-height: 1.05;
+    text-transform: uppercase;
 }
 
 section {
@@ -78,7 +108,7 @@ h2 {
 }
 
 .panel-busqueda {
-    max-width: 900px;
+    max-width: 720px;
     margin-right: auto;
     margin-left: auto;
     padding: 0;
@@ -92,7 +122,7 @@ h2 {
 
 .panel-busqueda__cabecera {
     display: flex;
-    padding: 1rem 1.4rem;
+    padding: 18px 22px;
     border-bottom: 1px solid var(--color-borde);
     background: #0c0c0f;
     align-items: center;
@@ -101,7 +131,7 @@ h2 {
 
 .panel-busqueda__numero {
     color: var(--color-rojo);
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
     line-height: 1;
 }
@@ -120,11 +150,11 @@ h2 {
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 1.45rem;
+    font-size: 1.25rem;
 }
 
 .panel-busqueda__contenido {
-    padding: 1.4rem;
+    padding: 20px 22px;
 }
 
 .fila-busqueda {
@@ -186,84 +216,6 @@ input:focus {
     box-shadow: 0 0 0 3px rgb(227 38 54 / 20%);
 }
 
-.contenedor-autocompletado {
-    position: relative;
-    display: block;
-    width: 100%;
-}
-
-.contenedor-autocompletado input {
-    width: 100%;
-}
-
-.sugerencias-pilotos {
-    position: absolute;
-    z-index: 20;
-    top: calc(100% + 3px);
-    left: 0;
-    width: 100%;
-    max-height: 360px;
-    overflow-y: auto;
-    border: 2px solid var(--color-rojo);
-    border-radius: 2px;
-    background: #f5f5f5;
-    box-shadow: 0 12px 24px rgb(0 0 0 / 50%);
-}
-
-.sugerencias-pilotos[hidden] {
-    display: none;
-}
-
-.sugerencia-piloto {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    width: 100%;
-    min-height: 72px;
-    margin: 0;
-    padding: 0.4rem 0.65rem;
-    border: 0;
-    border-bottom: 1px solid #d5d5d5;
-    border-radius: 0;
-    color: #151515;
-    background: #f5f5f5;
-    font-family: var(--fuente-texto);
-    font-weight: 500;
-    letter-spacing: 0;
-    text-align: left;
-    text-transform: none;
-    cursor: pointer;
-    transition: background-color 120ms ease;
-}
-
-.sugerencia-piloto:last-child {
-    border-bottom: 0;
-}
-
-.sugerencia-piloto:hover,
-.sugerencia-piloto:focus-visible {
-    background: #dedede;
-    filter: none;
-    outline: 2px solid var(--color-rojo);
-    outline-offset: -2px;
-    transform: none;
-}
-
-.sugerencia-piloto__imagen {
-    flex: 0 0 60px;
-    width: 60px;
-    height: 60px;
-    background: #111;
-    object-fit: cover;
-    object-position: top center;
-}
-
-.sugerencias-vacias {
-    margin: 0;
-    padding: 1rem;
-    color: #444;
-}
-
 button {
     margin-left: 0.5rem;
     padding: 0.75rem 1.5rem;
@@ -288,13 +240,13 @@ table {
     border-collapse: separate;
     border-spacing: 3px;
     table-layout: fixed;
-    font-size: 0.9rem;
+    font-size: 0.84rem;
 }
 
 th,
 td {
     width: calc(100% / 7);
-    padding: 0.85rem 0.65rem;
+    padding: 0.72rem 0.55rem;
     text-align: center;
     white-space: normal;
     overflow-wrap: break-word;
@@ -311,6 +263,7 @@ th {
 
 td {
     background: #101013;
+    font-weight: 500;
 }
 
 section:has(table) {
@@ -333,6 +286,47 @@ td.no-coincide {
 
 td.cerca {
     background-color: var(--color-cerca);
+}
+
+td.celda-numerica {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.celda-numerica__valor {
+    position: relative;
+    z-index: 1;
+    font-size: inherit;
+    font-weight: inherit;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 1px 3px rgb(0 0 0 / 38%);
+}
+
+td.celda-numerica--mayor::before,
+td.celda-numerica--menor::before {
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    width: 58px;
+    height: 76px;
+    background: rgb(255 255 255 / 28%);
+    clip-path: polygon(
+        29% 0,
+        71% 0,
+        71% 38%,
+        100% 38%,
+        50% 100%,
+        0 38%,
+        29% 38%
+    );
+    content: "";
+    transform: translate(-50%, -50%);
+}
+
+td.celda-numerica--mayor::before {
+    transform: translate(-50%, -50%) rotate(180deg);
 }
 
 td.celda-pendiente {
@@ -365,7 +359,7 @@ td.celda-pendiente.celda-visible {
 }
 
 td.celda-piloto {
-    height: 130px;
+    height: 112px;
     padding: 0;
     overflow: hidden;
 }
@@ -389,12 +383,12 @@ td.celda-piloto {
 .resultado-final {
     position: relative;
     display: grid;
-    max-width: 900px;
+    max-width: 740px;
     margin-right: auto;
     margin-left: auto;
     padding: 0;
     overflow: hidden;
-    border-top: 0;
+    border: 0;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     animation: mostrar-resultado 350ms ease-out;
 }
@@ -416,6 +410,7 @@ td.celda-piloto {
 
 .resultado-final__media {
     min-height: 0;
+    overflow: hidden;
     aspect-ratio: 1;
     background:
         linear-gradient(135deg, rgb(20 134 79 / 18%), transparent 55%),
@@ -429,7 +424,7 @@ td.celda-piloto {
 }
 
 .resultado-final__etiqueta {
-    margin: 0 0 1.4rem;
+    margin: 0 0 1rem;
     color: #63d89c;
     font-size: 0.8rem;
     font-weight: 700;
@@ -444,14 +439,14 @@ td.celda-piloto {
     margin: 0;
     border: 0;
     background: transparent;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
 }
 
 .resultado-final__contenido {
     display: flex;
     min-width: 0;
-    padding: clamp(2rem, 4vw, 3rem);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
     border-left: 1px solid var(--color-borde);
     text-align: left;
     flex-direction: column;
@@ -468,11 +463,11 @@ td.celda-piloto {
 
 .resultado-final h2 {
     display: flex;
-    min-height: 8.5rem;
+    min-height: 6.2rem;
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: clamp(2.8rem, 6vw, 4.6rem);
+    font-size: clamp(2.35rem, 5vw, 3.7rem);
     line-height: 0.92;
     letter-spacing: 0;
     text-wrap: balance;
@@ -483,11 +478,11 @@ td.celda-piloto {
 }
 
 .resultado-final--nombre-largo h2 {
-    font-size: clamp(2.8rem, 5vw, 4rem);
+    font-size: clamp(2.2rem, 4.5vw, 3.3rem);
 }
 
 .resultado-final--nombre-muy-largo h2 {
-    font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+    font-size: clamp(2rem, 4vw, 2.9rem);
 }
 
 .resultado-final #detalle-resultado-final {
@@ -500,7 +495,7 @@ td.celda-piloto {
 .resultado-final__regreso {
     display: flex;
     min-width: 0;
-    margin: 2rem 0 0;
+    margin: 1.4rem 0 0;
     padding-top: 1rem;
     border-top: 1px solid var(--color-borde);
     color: var(--color-texto-suave);
@@ -612,7 +607,12 @@ td.celda-piloto {
     }
 
     .encabezado-principal {
-        padding-block: 1.2rem 1rem;
+        min-height: 68px;
+        padding: 12px 16px;
+    }
+
+    .logo-tcdle {
+        width: 96px;
     }
 
     .fila-busqueda {
@@ -655,15 +655,16 @@ td.celda-piloto {
     }
 
     .resultado-final h2 {
-        font-size: clamp(2.6rem, 14vw, 4.2rem);
+        min-height: 0;
+        font-size: clamp(2rem, 11vw, 3rem);
     }
 
     .resultado-final--nombre-largo h2 {
-        font-size: clamp(2.5rem, 11vw, 3.5rem);
+        font-size: clamp(1.9rem, 9.5vw, 2.7rem);
     }
 
     .resultado-final--nombre-muy-largo h2 {
-        font-size: clamp(2.2rem, 9.5vw, 3rem);
+        font-size: clamp(1.75rem, 8.5vw, 2.4rem);
     }
 
     .resultado-final__regreso {

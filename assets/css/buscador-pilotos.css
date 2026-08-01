@@ -1,0 +1,119 @@
+.buscador-pilotos {
+    position: relative;
+    display: block;
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+}
+
+.buscador-pilotos > input {
+    width: 100%;
+}
+
+.buscador-pilotos__sugerencias {
+    position: absolute;
+    z-index: 30;
+    top: calc(100% + 5px);
+    right: 0;
+    left: 0;
+    max-height: 324px;
+    overflow-y: auto;
+    background: #17181d;
+    border: 1px solid #3d3e46;
+    border-top: 2px solid var(--color-rojo, var(--rojo, #f20d29));
+    border-radius: 2px;
+    box-shadow: 0 16px 32px rgb(0 0 0 / 52%);
+}
+
+.buscador-pilotos__sugerencias[hidden] {
+    display: none;
+}
+
+.buscador-pilotos .buscador-pilotos__opcion {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    width: 100%;
+    min-height: 64px;
+    margin: 0;
+    padding: 6px 12px;
+    color: #f2f2f4;
+    background: #17181d;
+    border: 0;
+    border-bottom: 1px solid #303139;
+    border-radius: 0;
+    font-family: var(--fuente-titulos, "Saira Condensed", "Arial Narrow", sans-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-align: left;
+    text-transform: none;
+    transition: background-color 130ms ease, box-shadow 130ms ease;
+}
+
+.buscador-pilotos .buscador-pilotos__opcion:last-child {
+    border-bottom: 0;
+}
+
+.buscador-pilotos .buscador-pilotos__opcion:hover,
+.buscador-pilotos .buscador-pilotos__opcion:focus-visible {
+    background: #25262d;
+    box-shadow: inset 3px 0 0 var(--color-rojo, var(--rojo, #f20d29));
+    filter: none;
+    outline: none;
+    transform: none;
+}
+
+.buscador-pilotos__avatar {
+    position: relative;
+    display: grid;
+    flex: 0 0 50px;
+    width: 50px;
+    height: 52px;
+    overflow: hidden;
+    place-items: center;
+    color: #9a9ba3;
+    background: #090a0d;
+    border: 1px solid #303139;
+    border-radius: 2px;
+    font-size: 0.78rem;
+}
+
+.buscador-pilotos__avatar img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
+
+.buscador-pilotos__nombre {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.buscador-pilotos__vacio {
+    margin: 0;
+    padding: 16px;
+    color: #96979f;
+    font-family: var(--fuente-texto, "Saira", Arial, sans-serif);
+    font-size: 0.8rem;
+}
+
+@media (max-width: 620px) {
+    .buscador-pilotos__sugerencias {
+        max-height: 280px;
+    }
+
+    .buscador-pilotos .buscador-pilotos__opcion {
+        min-height: 58px;
+    }
+
+    .buscador-pilotos__avatar {
+        flex-basis: 44px;
+        width: 44px;
+        height: 46px;
+    }
+}
