@@ -120,6 +120,10 @@ h2 {
     display: none;
 }
 
+.panel-intentos[hidden] {
+    display: none;
+}
+
 .panel-busqueda__cabecera {
     display: flex;
     padding: 18px 22px;
