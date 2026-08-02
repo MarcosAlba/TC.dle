@@ -5,13 +5,20 @@ const mensajeAuto = document.getElementById("mensaje-auto");
 const intentosRestantesAuto = document.getElementById("intentos-restantes-auto");
 const numeroIntentoAuto = document.getElementById("numero-intento-auto");
 const listaIntentosAuto = document.getElementById("lista-intentos-auto");
-const historialVacioAuto = document.getElementById("historial-vacio-auto");
+const historialAuto = document.getElementById("historial-auto");
 const estadoFinal = document.getElementById("estado-final");
 const estadoFinalEtiqueta = document.getElementById("estado-final-etiqueta");
 const estadoFinalPiloto = document.getElementById("estado-final-piloto");
 const nivelesDesenfoque = document.getElementById("niveles-desenfoque");
 const regresoAuto = document.getElementById("regreso-auto");
 const tiempoNuevoAuto = document.getElementById("tiempo-nuevo-auto");
+const resultadoAutoModal = document.getElementById("resultado-auto-modal");
+const cerrarResultadoAutoModal = document.getElementById("cerrar-resultado-auto-modal");
+const tituloResultadoAutoModal = document.getElementById("titulo-resultado-auto-modal");
+const fotoResultadoAutoModal = document.getElementById("foto-resultado-auto-modal");
+const pilotoResultadoAutoModal = document.getElementById("piloto-resultado-auto-modal");
+const detalleResultadoAutoModal = document.getElementById("detalle-resultado-auto-modal");
+const tiempoNuevoAutoModal = document.getElementById("tiempo-nuevo-auto-modal");
 
 const MAXIMO_INTENTOS_AUTO = 8;
 const NIVELES_DESENFOQUE = [24, 20, 16, 12, 9, 6, 3, 1, 0];
@@ -34,6 +41,7 @@ const autosDelJuego = [
     { pilotoId: 13, imagen: RUTA_AUTOS + "elio_craparo.webp" },
     { pilotoId: 14, imagen: RUTA_AUTOS + "matias_canapino.webp" },
     { pilotoId: 15, imagen: RUTA_AUTOS + "norberto_fontana.webp" },
+    { pilotoId: 18, imagen: RUTA_AUTOS + "juan_tomas_catalan_magni.webp" },
     { pilotoId: 19, imagen: RUTA_AUTOS + "juan_pablo_gianini.webp" },
     { pilotoId: 21, imagen: RUTA_AUTOS + "jeronimo_teti.webp" },
     { pilotoId: 22, imagen: RUTA_AUTOS + "nicolas_bonelli.webp" },
@@ -110,14 +118,21 @@ function obtenerAutoDelDia() {
 }
 
 function configurarImagenAuto() {
-    fotoAuto.addEventListener("load", ajustarEncuadreAuto);
+    fotoAuto.addEventListener("load", finalizarCargaInicialAuto);
+    actualizarDesenfoque();
     fotoAuto.src = autoDelDia.imagen;
 
     if (fotoAuto.complete) {
-        ajustarEncuadreAuto();
+        finalizarCargaInicialAuto();
     }
+}
 
-    actualizarDesenfoque();
+function finalizarCargaInicialAuto() {
+    ajustarEncuadreAuto();
+
+    requestAnimationFrame(function () {
+        fotoAuto.classList.add("foto-auto--preparada");
+    });
 }
 
 function ajustarEncuadreAuto() {
@@ -213,10 +228,10 @@ function intentarPilotoAuto() {
     const seQuedoSinIntentos = idsIntentadosAuto.length >= MAXIMO_INTENTOS_AUTO;
 
     if (acerto) {
-        finalizarPartidaAuto(true);
+        finalizarPartidaAuto(true, true);
         mostrarMensajeAuto("¡Correcto! Reconociste el auto.", "exito");
     } else if (seQuedoSinIntentos) {
-        finalizarPartidaAuto(false);
+        finalizarPartidaAuto(false, true);
         mostrarMensajeAuto("Se terminaron los intentos.", "error");
     } else {
         mostrarMensajeAuto("No es ese piloto. La imagen ahora está un poco más nítida.", "info");
@@ -231,38 +246,61 @@ function intentarPilotoAuto() {
 }
 
 function agregarIntentoAlHistorial(piloto) {
-    historialVacioAuto.hidden = true;
+    historialAuto.hidden = false;
 
     const intento = document.createElement("article");
     const imagen = document.createElement("img");
     const nombre = document.createElement("strong");
-    const equipo = document.createElement("span");
-    const resultado = document.createElement("span");
     const acerto = piloto.id === pilotoSecretoAuto.id;
 
-    intento.className = "intento-auto" + (acerto ? " intento-auto--correcto" : "");
+    intento.className = "intento-auto " + (acerto ? "intento-auto--correcto" : "intento-auto--incorrecto");
+    intento.setAttribute("aria-label", piloto.nombre + ": " + (acerto ? "correcto" : "incorrecto"));
     imagen.src = piloto.imagen;
     imagen.alt = "";
     nombre.textContent = piloto.nombre;
-    equipo.textContent = piloto.marca + " · " + piloto.equipo;
-    equipo.className = "equipo-intento";
-    resultado.textContent = acerto ? "Correcto" : "Incorrecto";
-    resultado.className = "resultado-intento";
 
     intento.appendChild(imagen);
     intento.appendChild(nombre);
-    intento.appendChild(equipo);
-    intento.appendChild(resultado);
     listaIntentosAuto.prepend(intento);
 }
 
-function finalizarPartidaAuto(acerto) {
+function finalizarPartidaAuto(acerto, abrirModal) {
     partidaTerminadaAuto = true;
     estadoFinal.classList.toggle("estado-final--correcto", acerto);
     estadoFinalEtiqueta.textContent = acerto ? "¡Correcto!" : "El piloto era";
     estadoFinalPiloto.textContent = pilotoSecretoAuto.nombre;
     estadoFinal.hidden = false;
     iniciarCuentaRegresivaAuto();
+
+    if (abrirModal) {
+        mostrarResultadoAutoModal(acerto);
+    }
+}
+
+function mostrarResultadoAutoModal(acerto) {
+    const cantidadIntentos = idsIntentadosAuto.length;
+    const palabraIntentos = cantidadIntentos === 1 ? "intento" : "intentos";
+
+    resultadoAutoModal.classList.toggle("resultado-auto-modal--correcto", acerto);
+    tituloResultadoAutoModal.textContent = acerto ? "¡Adivinaste!" : "No lo adivinaste";
+    fotoResultadoAutoModal.src = pilotoSecretoAuto.imagenResultado || pilotoSecretoAuto.imagen;
+    fotoResultadoAutoModal.alt = "Foto de " + pilotoSecretoAuto.nombre;
+    pilotoResultadoAutoModal.textContent = pilotoSecretoAuto.nombre;
+    detalleResultadoAutoModal.textContent = acerto
+        ? "Lo resolviste en " + cantidadIntentos + " " + palabraIntentos + "."
+        : "No lo adivinaste en los " + MAXIMO_INTENTOS_AUTO + " intentos.";
+
+    if (!resultadoAutoModal.open) {
+        document.body.classList.add("resultado-auto-modal-abierto");
+        resultadoAutoModal.showModal();
+        cerrarResultadoAutoModal.focus();
+    }
+}
+
+function cerrarModalResultadoAuto() {
+    if (resultadoAutoModal.open) {
+        resultadoAutoModal.close();
+    }
 }
 
 function iniciarCuentaRegresivaAuto() {
@@ -289,11 +327,14 @@ function actualizarCuentaRegresivaAuto() {
     const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
     const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
 
-    tiempoNuevoAuto.textContent = [horas, minutos, segundos]
+    const tiempoRestante = [horas, minutos, segundos]
         .map(function (valor) {
             return String(valor).padStart(2, "0");
         })
         .join(":");
+
+    tiempoNuevoAuto.textContent = tiempoRestante;
+    tiempoNuevoAutoModal.textContent = tiempoRestante;
 }
 
 function guardarPartidaAuto() {
@@ -336,7 +377,7 @@ function cargarPartidaAuto() {
         });
 
         if (partidaTerminadaAuto) {
-            finalizarPartidaAuto(idsIntentadosAuto.includes(pilotoSecretoAuto.id));
+            finalizarPartidaAuto(idsIntentadosAuto.includes(pilotoSecretoAuto.id), false);
         }
     } catch (error) {
         localStorage.removeItem(CLAVE_PARTIDA_AUTO);
@@ -355,7 +396,26 @@ campoPilotoAuto.addEventListener("keydown", function (evento) {
 });
 
 botonIntentarAuto.addEventListener("click", intentarPilotoAuto);
+cerrarResultadoAutoModal.addEventListener("click", cerrarModalResultadoAuto);
 
-configurarImagenAuto();
+resultadoAutoModal.addEventListener("click", function (evento) {
+    if (evento.target === resultadoAutoModal) {
+        cerrarModalResultadoAuto();
+    }
+});
+
+resultadoAutoModal.addEventListener("close", function () {
+    document.body.classList.remove("resultado-auto-modal-abierto");
+    estadoFinal.focus({ preventScroll: true });
+});
+
+document.addEventListener("keydown", function (evento) {
+    if (evento.key === "Escape" && resultadoAutoModal.open) {
+        evento.preventDefault();
+        cerrarModalResultadoAuto();
+    }
+});
+
 cargarPartidaAuto();
 actualizarInterfazAuto();
+configurarImagenAuto();
