@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700;800&amp;family=Saira+Condensed:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/adivinar-el-auto.css?v=6">
+    <link rel="stylesheet" href="../assets/css/adivinar-el-auto.css?v=16">
     <link rel="stylesheet" href="../assets/css/buscador-pilotos.css?v=3">
     <link rel="stylesheet" href="../assets/css/controles-temporales.css?v=4">
 </head>
@@ -30,7 +30,7 @@
         <section class="tarjeta-auto" aria-label="Auto del día">
             <div class="marco-auto">
                 <img id="foto-auto" src="" alt="Auto de Turismo Carretera desenfocado">
-                <div id="estado-final" class="estado-final" hidden>
+                <div id="estado-final" class="estado-final" tabindex="-1" hidden>
                     <span id="estado-final-etiqueta"></span>
                     <strong id="estado-final-piloto"></strong>
                 </div>
@@ -67,19 +67,42 @@
             </div>
         </section>
 
-        <section class="historial-auto" aria-labelledby="titulo-historial-auto">
+        <section id="historial-auto" class="historial-auto" aria-labelledby="titulo-historial-auto" hidden>
             <div class="titulo-seccion-auto">
                 <span></span>
                 <h2 id="titulo-historial-auto">Intentos</h2>
             </div>
-            <div id="lista-intentos-auto" class="lista-intentos-auto">
-                <p id="historial-vacio-auto" class="historial-vacio-auto">Tus intentos aparecerán acá</p>
-            </div>
+            <div id="lista-intentos-auto" class="lista-intentos-auto"></div>
         </section>
     </main>
 
+    <dialog
+        id="resultado-auto-modal"
+        class="resultado-auto-modal"
+        aria-labelledby="titulo-resultado-auto-modal"
+        aria-describedby="detalle-resultado-auto-modal"
+    >
+        <div class="resultado-auto-modal__contenido">
+            <button
+                id="cerrar-resultado-auto-modal"
+                class="resultado-auto-modal__cerrar"
+                type="button"
+                aria-label="Cerrar resultado"
+            >×</button>
+            <p class="resultado-auto-modal__etiqueta">Bandera a cuadros</p>
+            <h2 id="titulo-resultado-auto-modal"></h2>
+            <img id="foto-resultado-auto-modal" class="resultado-auto-modal__foto" src="" alt="">
+            <strong id="piloto-resultado-auto-modal" class="resultado-auto-modal__piloto"></strong>
+            <p id="detalle-resultado-auto-modal" class="resultado-auto-modal__detalle"></p>
+            <p class="resultado-auto-modal__regreso">
+                <span>Nuevo auto en:</span>
+                <strong id="tiempo-nuevo-auto-modal">--:--:--</strong>
+            </p>
+        </div>
+    </dialog>
+
     <script src="../assets/js/pilotos.js"></script>
     <script src="../assets/js/buscador-pilotos.js?v=1"></script>
-    <script src="../assets/js/adivinar-el-auto.js?v=5"></script>
+    <script src="../assets/js/adivinar-el-auto.js?v=16"></script>
 </body>
 </html>

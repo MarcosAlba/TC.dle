@@ -1,6 +1,7 @@
 const campoPiloto = document.getElementById("nombre-piloto");
 const botonIntentar = document.getElementById("boton-intentar");
 const tablaIntentos = document.getElementById("tabla-intentos");
+const panelIntentos = document.getElementById("panel-intentos");
 const textoIntentos = document.getElementById("intentos-restantes");
 const mensajeJuego = document.getElementById("mensaje-juego");
 const resultadoFinal = document.getElementById("resultado-final");
@@ -102,6 +103,8 @@ async function mostrarPilotoIngresado() {
 }
 
 async function agregarFilaIntento(piloto, animar = true) {
+    panelIntentos.hidden = false;
+
     const fila = document.createElement("tr");
 
     const celdaNombre = crearCeldaPiloto(

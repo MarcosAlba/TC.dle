@@ -776,7 +776,7 @@ const pilotos = [
     {
         id: 60,
         nombre: "Santiago Álvarez",
-        marca: "Toyota",
+        marca: "Chevrolet",
         equipo: "UR Racing",
         localidad: "Ferré, Buenos Aires",
         provincia: "Buenos Aires",
