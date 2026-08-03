@@ -3,10 +3,16 @@
     position: relative;
 }
 
-.boton-cambio-modo {
+.navegacion-modos {
     position: absolute;
     top: 50%;
     right: 20px;
+    display: flex;
+    gap: 8px;
+    transform: translateY(-50%);
+}
+
+.boton-cambio-modo {
     display: inline-flex;
     min-height: 34px;
     padding: 0 14px;
@@ -22,7 +28,6 @@
     text-transform: uppercase;
     align-items: center;
     justify-content: center;
-    transform: translateY(-50%);
     transition: background-color 150ms ease, border-color 150ms ease;
 }
 
@@ -34,8 +39,12 @@
 }
 
 @media (max-width: 620px) {
-    .boton-cambio-modo {
+    .navegacion-modos {
         right: 10px;
+        gap: 5px;
+    }
+
+    .boton-cambio-modo {
         min-height: 30px;
         padding: 0 9px;
         font-size: 0.64rem;

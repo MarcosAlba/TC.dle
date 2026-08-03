@@ -1,0 +1,255 @@
+:root {
+    --fondo: #08090b;
+    --panel: #131418;
+    --panel-claro: #1a1b20;
+    --borde: #303139;
+    --texto: #f7f7f7;
+    --texto-suave: #a0a1a8;
+    --rojo: #f20d29;
+    --fuente: "Saira Condensed", "Arial Narrow", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    color-scheme: dark;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    color: var(--texto);
+    background-color: var(--fondo);
+    background-image:
+        radial-gradient(circle at 50% 7rem, rgba(242, 13, 41, 0.06), transparent 30rem),
+        linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+    background-size: auto, 32px 32px, 32px 32px;
+    font-family: var(--fuente);
+}
+
+.encabezado-inicio {
+    position: relative;
+    display: flex;
+    min-height: 76px;
+    padding: 14px 20px;
+    border-bottom: 2px solid var(--rojo);
+    background: #090a0c;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-inicio {
+    display: block;
+    width: 112px;
+    height: auto;
+}
+
+.redes-inicio {
+    position: absolute;
+    top: 50%;
+    right: 24px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    transform: translateY(-50%);
+}
+
+.red-social {
+    display: grid;
+    width: 24px;
+    height: 24px;
+    opacity: 0.9;
+    place-items: center;
+}
+
+.red-social img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.inicio {
+    width: min(900px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 20px 0 64px;
+}
+
+.aviso-redes {
+    width: min(650px, 100%);
+    margin: 0 auto 48px;
+    padding: 11px 20px;
+    border: 1px solid rgba(242, 13, 41, 0.75);
+    border-radius: 6px;
+    color: #dedee2;
+    background: rgba(242, 13, 41, 0.055);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    text-align: center;
+}
+
+.aviso-redes strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+.selector-juegos {
+    text-align: center;
+}
+
+.selector-juegos__eyebrow {
+    margin: 0 0 4px;
+    color: var(--rojo);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.selector-juegos h1 {
+    margin: 0 0 25px;
+    font-size: clamp(1.65rem, 4vw, 2.25rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+}
+
+.grilla-juegos {
+    display: grid;
+    width: min(720px, 100%);
+    margin: 0 auto;
+    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.tarjeta-juego {
+    display: flex;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--borde);
+    border-radius: 7px;
+    color: var(--texto);
+    background: var(--panel);
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.22);
+    text-decoration: none;
+    flex-direction: column;
+    transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.tarjeta-juego:hover {
+    border-color: var(--rojo);
+    box-shadow: 0 18px 44px rgba(242, 13, 41, 0.14);
+    transform: translateY(-5px);
+}
+
+.tarjeta-juego:focus-visible {
+    border-color: #fff;
+    outline: 3px solid var(--rojo);
+    outline-offset: 4px;
+}
+
+.tarjeta-juego__imagen {
+    display: flex;
+    height: 230px;
+    overflow: hidden;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        #0e0f12;
+    background-size: 24px 24px;
+    align-items: center;
+    justify-content: center;
+}
+
+.tarjeta-juego__imagen img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.tarjeta-juego--piloto .tarjeta-juego__imagen img {
+    padding: 14px 15px 0;
+    object-fit: contain;
+    object-position: center bottom;
+}
+
+.tarjeta-juego--auto .tarjeta-juego__imagen img {
+    object-fit: cover;
+    object-position: center;
+}
+
+.tarjeta-juego--circuito .tarjeta-juego__imagen img {
+    padding: 48px 24px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.tarjeta-juego__contenido {
+    display: flex;
+    min-height: 77px;
+    padding: 9px 12px 10px;
+    border-top: 1px solid #292a30;
+    background: var(--panel-claro);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.tarjeta-juego__contenido strong {
+    color: #fff;
+    font-size: 1.45rem;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.tarjeta-juego__contenido span {
+    margin-top: 4px;
+    color: #dedee2;
+    font-size: 0.98rem;
+    font-weight: 600;
+    line-height: 1.05;
+}
+
+@media (max-width: 700px) {
+    .encabezado-inicio {
+        min-height: 68px;
+        padding: 12px 16px;
+    }
+
+    .logo-inicio {
+        width: 96px;
+    }
+
+    .redes-inicio {
+        right: 14px;
+        gap: 11px;
+    }
+
+    .red-social {
+        width: 21px;
+        height: 21px;
+    }
+
+    .inicio {
+        width: min(100% - 22px, 900px);
+        padding-top: 14px;
+    }
+
+    .aviso-redes {
+        margin-bottom: 34px;
+        padding-inline: 12px;
+    }
+
+    .grilla-juegos {
+        width: min(310px, 100%);
+        gap: 15px;
+        grid-template-columns: 1fr;
+    }
+
+    .tarjeta-juego__imagen {
+        height: 220px;
+    }
+}
