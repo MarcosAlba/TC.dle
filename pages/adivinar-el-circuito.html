@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Adiviná el circuito del día en el que corrió el Turismo Carretera.">
+    <title>TCdle | Adiviná el circuito</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700;800&amp;family=Saira+Condensed:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/adivinar-el-circuito.css?v=3">
+</head>
+<body>
+    <header class="encabezado-circuito">
+        <a href="../index.html" aria-label="Volver al juego principal">
+            <img class="logo-circuito" src="../assets/images/tcdle-logo.png" alt="TCdle">
+        </a>
+    </header>
+
+    <main class="juego-circuito">
+        <section class="presentacion-circuito" aria-labelledby="titulo-circuito">
+            <p class="modo-circuito">Modo circuito</p>
+            <h1 id="titulo-circuito">¿Qué circuito es este?</h1>
+            <p>Reconocé el trazado por su silueta.</p>
+        </section>
+
+        <section class="tarjeta-circuito" aria-label="Circuito del día">
+            <div class="marco-circuito">
+                <div id="niveles-intentos-circuito" class="niveles-intentos-circuito" aria-hidden="true"></div>
+                <img id="foto-circuito" src="" alt="Silueta del circuito del día">
+                <div id="estado-final-circuito" class="estado-final-circuito" tabindex="-1" hidden>
+                    <span id="estado-final-etiqueta-circuito"></span>
+                    <strong id="estado-final-nombre-circuito"></strong>
+                </div>
+            </div>
+
+            <div class="estado-diario-circuito">
+                <p id="intentos-restantes-circuito" class="intentos-restantes-circuito">8 intentos disponibles</p>
+                <p id="regreso-circuito" class="cuenta-regresiva-circuito" hidden>
+                    <span>Nuevo circuito en:</span>
+                    <strong id="tiempo-nuevo-circuito">--:--:--</strong>
+                </p>
+            </div>
+        </section>
+
+        <section id="panel-intento-circuito" class="panel-intento-circuito" aria-labelledby="titulo-intento-circuito">
+            <div class="cabecera-intento-circuito">
+                <strong id="numero-intento-circuito">01</strong>
+                <div>
+                    <p>Adiviná el circuito</p>
+                    <h2 id="titulo-intento-circuito">Elegí un trazado</h2>
+                </div>
+            </div>
+
+            <div class="contenido-intento-circuito">
+                <div class="fila-busqueda-circuito">
+                    <div class="buscador-circuitos">
+                        <label class="solo-lectores" for="nombre-circuito">Nombre del circuito</label>
+                        <input id="nombre-circuito" type="text" placeholder="Escribí el nombre del circuito" autocomplete="off" aria-autocomplete="list" aria-controls="sugerencias-circuitos">
+                        <div id="sugerencias-circuitos" class="sugerencias-circuitos" role="listbox" hidden></div>
+                    </div>
+                    <button id="boton-intentar-circuito" type="button">Intentar</button>
+                </div>
+                <p id="mensaje-circuito" class="mensaje-circuito" aria-live="polite"></p>
+            </div>
+        </section>
+
+        <section id="historial-circuito" class="historial-circuito" aria-labelledby="titulo-historial-circuito" hidden>
+            <div class="titulo-seccion-circuito">
+                <span></span>
+                <h2 id="titulo-historial-circuito">Intentos</h2>
+            </div>
+            <div id="lista-intentos-circuito" class="lista-intentos-circuito"></div>
+        </section>
+    </main>
+
+    <dialog id="resultado-circuito-modal" class="resultado-circuito-modal" aria-labelledby="titulo-resultado-circuito-modal" aria-describedby="detalle-resultado-circuito-modal">
+        <div class="resultado-circuito-modal__contenido">
+            <button id="cerrar-resultado-circuito-modal" class="resultado-circuito-modal__cerrar" type="button" aria-label="Cerrar resultado">×</button>
+            <p class="resultado-circuito-modal__etiqueta">Bandera a cuadros</p>
+            <h2 id="titulo-resultado-circuito-modal"></h2>
+            <div class="resultado-circuito-modal__silueta">
+                <img id="foto-resultado-circuito-modal" src="" alt="">
+            </div>
+            <strong id="nombre-resultado-circuito-modal" class="resultado-circuito-modal__nombre"></strong>
+            <p id="detalle-resultado-circuito-modal" class="resultado-circuito-modal__detalle"></p>
+            <p class="resultado-circuito-modal__regreso">
+                <span>Nuevo circuito en:</span>
+                <strong id="tiempo-nuevo-circuito-modal">--:--:--</strong>
+            </p>
+        </div>
+    </dialog>
+
+    <script src="../assets/js/circuitos.js?v=1"></script>
+    <script src="../assets/js/adivinar-el-circuito.js?v=1"></script>
+</body>
+</html>
