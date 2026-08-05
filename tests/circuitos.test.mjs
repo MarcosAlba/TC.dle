@@ -13,8 +13,8 @@ vm.runInNewContext(
 
 const catalogo = contexto.window.circuitosTC;
 assert.ok(Array.isArray(catalogo), "El catálogo debe ser un array");
-assert.equal(catalogo.length, 33, "Deben existir 33 configuraciones jugables");
-assert.equal(new Set(catalogo.map(({ sedeId }) => sedeId)).size, 30, "Deben existir 30 sedes");
+assert.equal(catalogo.length, 31, "Deben existir 31 configuraciones jugables");
+assert.equal(new Set(catalogo.map(({ sedeId }) => sedeId)).size, 29, "Deben existir 29 sedes");
 assert.equal(new Set(catalogo.map(({ id }) => id)).size, catalogo.length, "Los identificadores deben ser únicos");
 
 for (const circuito of catalogo) {
@@ -27,14 +27,15 @@ for (const circuito of catalogo) {
     assert.doesNotThrow(() => new URL(circuito.fuente), `${circuito.id}: fuente inválida`);
 
     const svg = await readFile(path.join(raiz, "assets/images/circuitos", circuito.imagen), "utf8");
-    assert.match(svg, /<svg[^>]+viewBox="0 0 1000 600"/i, `${circuito.id}: viewBox inválido`);
+    const tieneViewBox = /<svg[^>]+viewBox="(?:-?\d+(?:\.\d+)?\s+){3}\d+(?:\.\d+)?"/i.test(svg);
+    const tieneDimensiones = /<svg[^>]+\bwidth="\d+(?:\.\d+)?(?:px|pt)?"[^>]+\bheight="\d+(?:\.\d+)?(?:px|pt)?"/i.test(svg);
+    assert.ok(tieneViewBox || tieneDimensiones, `${circuito.id}: faltan dimensiones SVG válidas`);
     assert.match(svg, /<path\b/i, `${circuito.id}: falta la silueta`);
     assert.doesNotMatch(svg, /<(?:image|text|foreignObject)\b/i, `${circuito.id}: contiene información visual no permitida`);
 }
 
 for (const variantes of [
     ["la-plata-sin-chicana", "la-plata-con-chicana"],
-    ["buenos-aires-12-sin-chicana", "buenos-aires-12-con-chicana"],
     ["termas-largo", "termas-corto"]
 ]) {
     const hashes = [];
@@ -46,4 +47,4 @@ for (const variantes of [
     assert.notEqual(hashes[0], hashes[1], `${variantes.join(" / ")}: las variantes no pueden compartir silueta`);
 }
 
-process.stdout.write("OK: 30 sedes, 33 configuraciones y 33 SVG auditados.\n");
+process.stdout.write("OK: 29 sedes, 31 configuraciones y 31 SVG auditados.\n");

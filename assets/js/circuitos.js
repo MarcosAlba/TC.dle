@@ -61,19 +61,6 @@ window.circuitosTC = [
         fuente: "https://www.actc.org.ar/tc/circuitos/chubut_38.html"
     },
     {
-        id: "mendoza-parque-general-san-martin",
-        sedeId: "mendoza-parque-general-san-martin",
-        nombre: "Autódromo Parque General San Martín",
-        variante: "Circuito principal",
-        aliases: ["Parque General San Martín", "Autódromo de Mendoza 1997", "Mendoza capital"],
-        ciudad: "Mendoza",
-        provincia: "Mendoza",
-        longitud: "4.200 m",
-        participacionTC: "1997",
-        imagen: "mendoza-parque-general-san-martin.svg",
-        fuente: "https://www.losandes.com.ar/un-dia-como-hoy-de-1997-el-turismo-carretera-retorna-a-mendoza"
-    },
-    {
         id: "mendoza-jorge-angel-pena",
         sedeId: "mendoza-jorge-angel-pena",
         nombre: "Autódromo Jorge Ángel Pena",
@@ -124,19 +111,6 @@ window.circuitosTC = [
         participacionTC: "1997–2025",
         imagen: "buenos-aires-12-sin-chicana.svg",
         fuente: "https://www.actc.org.ar/tc/ganadores/decada-10.html"
-    },
-    {
-        id: "buenos-aires-12-con-chicana",
-        sedeId: "buenos-aires",
-        nombre: "Autódromo Oscar y Juan Gálvez",
-        variante: "Circuito N.º 12 con chicana",
-        aliases: ["Buenos Aires circuito 12 con chicana", "Gálvez con chicana", "Circuito 12 con chicana"],
-        ciudad: "Ciudad de Buenos Aires",
-        provincia: "Ciudad Autónoma de Buenos Aires",
-        longitud: "5.651 m",
-        participacionTC: "1997–2009",
-        imagen: "buenos-aires-12-con-chicana.svg",
-        fuente: "https://www.actc.org.ar/tc/ganadores/decada-00.html"
     },
     {
         id: "rafaela",
