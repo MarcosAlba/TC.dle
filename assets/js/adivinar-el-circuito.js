@@ -54,7 +54,17 @@ function normalizarTextoCircuito(texto) {
 }
 
 function obtenerEtiquetaCircuito(circuito) {
-    return circuito.nombre + " — " + circuito.variante;
+    const etiquetaRepetida = circuitos.some(function (item) {
+        return item.id !== circuito.id &&
+            item.nombre === circuito.nombre &&
+            item.variante === circuito.variante;
+    });
+    const ubicacion = etiquetaRepetida ? " (" + circuito.ciudad + ")" : "";
+    const variante = circuito.variante === "Circuito principal"
+        ? ""
+        : " — " + circuito.variante;
+
+    return circuito.nombre + variante + ubicacion;
 }
 
 function obtenerTextoBusquedaCircuito(circuito) {
@@ -177,7 +187,9 @@ function renderizarSugerenciasCircuito() {
         opcion.setAttribute("role", "option");
         opcion.dataset.indice = String(indice);
         nombre.textContent = circuito.nombre;
-        detalle.textContent = circuito.variante + " · " + circuito.ciudad;
+        detalle.textContent = circuito.variante === "Circuito principal"
+            ? circuito.ciudad
+            : circuito.variante + " · " + circuito.ciudad;
         opcion.appendChild(nombre);
         opcion.appendChild(detalle);
         opcion.addEventListener("mousedown", function (evento) {
@@ -333,15 +345,22 @@ function agregarIntentoCircuito(circuito) {
 
     const intento = document.createElement("article");
     const nombre = document.createElement("strong");
-    const variante = document.createElement("span");
     const acerto = circuito.id === circuitoDelDia.id;
+    const tieneVariantes = circuitos.some(function (item) {
+        return item.id !== circuito.id && item.sedeId === circuito.sedeId;
+    });
 
     intento.className = "intento-circuito " + (acerto ? "intento-circuito--correcto" : "intento-circuito--incorrecto");
     intento.setAttribute("aria-label", obtenerEtiquetaCircuito(circuito) + ": " + (acerto ? "correcto" : "incorrecto"));
     nombre.textContent = circuito.nombre;
-    variante.textContent = circuito.variante;
     intento.appendChild(nombre);
-    intento.appendChild(variante);
+
+    if (tieneVariantes) {
+        const variante = document.createElement("span");
+        variante.textContent = circuito.variante;
+        intento.appendChild(variante);
+    }
+
     listaIntentosCircuito.prepend(intento);
 }
 
