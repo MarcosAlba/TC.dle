@@ -53,7 +53,8 @@ const pilotos = [
         fechaNacimiento: "1991-03-23",
         campeonTC: true,
         anioDebutTC: 2020,
-        imagen: "https://actc.org.ar/upload/autos/10710/imgs_v3/imgtorso/podio/marcelo_agrelo.png"
+        imagen: "https://actc.org.ar/upload/autos/10710/imgs_v3/imgtorso/podio/marcelo_agrelo.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/marcelo_agrelo.png"
     },
 
     {
@@ -66,7 +67,8 @@ const pilotos = [
         fechaNacimiento: "1987-1-22",
         campeonTC: false,
         anioDebutTC: 2011,
-        imagen: "https://www.actc.org.ar/upload/autos/10711/imgs_v3/imgtorso/podio/juan_martin_trucco.png"
+        imagen: "https://www.actc.org.ar/upload/autos/10711/imgs_v3/imgtorso/podio/juan_martin_trucco.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_martin_trucco.png"
     },
 
     {
@@ -79,7 +81,8 @@ const pilotos = [
         fechaNacimiento: "1989-05-29",
         campeonTC: false,
         anioDebutTC: 2014,
-        imagen: "https://www.actc.org.ar/upload/autos/10706/imgs_v3/imgtorso/podio/santiago_mangoni.png"
+        imagen: "https://www.actc.org.ar/upload/autos/10706/imgs_v3/imgtorso/podio/santiago_mangoni.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/santiago_mangoni.png"
     },
 
     {
@@ -92,7 +95,8 @@ const pilotos = [
         fechaNacimiento: "2002-08-23",
         campeonTC: false,
         anioDebutTC: 2025,
-        imagen: "https://www.actc.org.ar/upload/autos/10712/imgs_v3/imgtorso/podio/jeremias_olmedo.png"
+        imagen: "https://www.actc.org.ar/upload/autos/10712/imgs_v3/imgtorso/podio/jeremias_olmedo.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jeremias_olmedo.png"
     },
 
     {
@@ -105,7 +109,8 @@ const pilotos = [
         fechaNacimiento: "1988-12-30",
         campeonTC: true,
         anioDebutTC: 2010,
-        imagen: "https://www.actc.org.ar/upload/autos/10708/imgs_v3/imgtorso/podio/mariano_werner.png"
+        imagen: "https://www.actc.org.ar/upload/autos/10708/imgs_v3/imgtorso/podio/mariano_werner.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/mariano_werner.png"
     },
 
     {
@@ -118,7 +123,8 @@ const pilotos = [
         fechaNacimiento: "1976-02-04",
         campeonTC: true,
         anioDebutTC: 1998,
-        imagen: "https://www.actc.org.ar/upload/autos/10699/imgs_v3/imgtorso/podio/christian_ledesma.png"
+        imagen: "https://www.actc.org.ar/upload/autos/10699/imgs_v3/imgtorso/podio/christian_ledesma.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/christian_ledesma.png"
     },
 
     {
@@ -131,7 +137,8 @@ const pilotos = [
         fechaNacimiento: "1990-08-13",
         campeonTC: false,
         anioDebutTC: 2016,
-        imagen: "https://actc.org.ar/upload/autos/9601/imgs_v3/imgtorso/podio/juan_jose_ebarlin.png"
+        imagen: "https://actc.org.ar/upload/autos/9601/imgs_v3/imgtorso/podio/juan_jose_ebarlin.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_jose_ebarlin.png"
     },
 
     {
@@ -144,7 +151,8 @@ const pilotos = [
         fechaNacimiento: "1989-02-27",
         campeonTC: false,
         anioDebutTC: 2011,
-        imagen: "https://actc.org.ar/upload/autos/9647/imgs_v3/imgtorso/podio/luis_jose_di_palma.png"
+        imagen: "https://actc.org.ar/upload/autos/9647/imgs_v3/imgtorso/podio/luis_jose_di_palma.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/luis_jose_di_palma.png"
     },
 
     {
@@ -157,7 +165,8 @@ const pilotos = [
         fechaNacimiento: "1976-05-25",
         campeonTC: false,
         anioDebutTC: 2002,
-        imagen: "https://actc.org.ar/upload/autos/10695/imgs_v3/imgtorso/podio/emiliano_spataro.png"
+        imagen: "https://actc.org.ar/upload/autos/10695/imgs_v3/imgtorso/podio/emiliano_spataro.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/emiliano_spataro.png"
     },
 
     {
@@ -170,7 +179,8 @@ const pilotos = [
         fechaNacimiento: "1998-07-21",
         campeonTC: false,
         anioDebutTC: 2023,
-        imagen: "https://actc.org.ar/upload/autos/10697/imgs_v3/imgtorso/podio/elio_craparo.png"
+        imagen: "https://actc.org.ar/upload/autos/10697/imgs_v3/imgtorso/podio/elio_craparo.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/elio_craparo.png"
     },
 
     {
@@ -183,7 +193,8 @@ const pilotos = [
         fechaNacimiento: "2000-05-30",
         campeonTC: false,
         anioDebutTC: 2025,
-        imagen: "https://actc.org.ar/upload/autos/10690/imgs_v3/imgtorso/podio/matias_canapino.png"
+        imagen: "https://actc.org.ar/upload/autos/10690/imgs_v3/imgtorso/podio/matias_canapino.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/matias_canapino.png"
     },
 
     {
@@ -196,7 +207,8 @@ const pilotos = [
         fechaNacimiento: "1975-01-20",
         campeonTC: true,
         anioDebutTC: 2003,
-        imagen: "https://actc.org.ar/upload/autos/10696/imgs_v3/imgtorso/podio/norberto_fontana.png"
+        imagen: "https://actc.org.ar/upload/autos/10696/imgs_v3/imgtorso/podio/norberto_fontana.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/norberto_fontana.png"
     },
 
     {
@@ -209,7 +221,8 @@ const pilotos = [
         fechaNacimiento: "1975-05-08",
         campeonTC: false,
         anioDebutTC: 2009,
-        imagen: "https://actc.org.ar/upload/autos/9609/imgs_v3/imgtorso/podio/gaston_mazzacane.png"
+        imagen: "https://actc.org.ar/upload/autos/9609/imgs_v3/imgtorso/podio/gaston_mazzacane.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/gaston_mazzacane.png"
     },
 
     {
@@ -222,7 +235,8 @@ const pilotos = [
         fechaNacimiento: "1991-05-06",
         campeonTC: false,
         anioDebutTC: 2017,
-        imagen: "https://actc.org.ar/upload/autos/10715/imgs_v3/imgtorso/podio/nicolas_cotignola.png"
+        imagen: "https://actc.org.ar/upload/autos/10715/imgs_v3/imgtorso/podio/nicolas_cotignola.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_cotignola.png"
     },
 
     {
@@ -235,7 +249,8 @@ const pilotos = [
         fechaNacimiento: "1999-01-07",
         campeonTC: false,
         anioDebutTC: 2017,
-        imagen: "https://actc.org.ar/upload/autos/10716/imgs_v3/imgtorso/podio/juan_tomas_catalan_magni.png"
+        imagen: "https://actc.org.ar/upload/autos/10716/imgs_v3/imgtorso/podio/juan_tomas_catalan_magni.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_tomas_catalan_magni.png"
     },
 
     {
@@ -248,7 +263,8 @@ const pilotos = [
         fechaNacimiento: "1978-10-23",
         campeonTC: false,
         anioDebutTC: 2002,
-        imagen: "https://actc.org.ar/upload/autos/10718/imgs_v3/imgtorso/podio/juan_pablo_gianini.png"
+        imagen: "https://actc.org.ar/upload/autos/10718/imgs_v3/imgtorso/podio/juan_pablo_gianini.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_pablo_gianini.png"
     },
 
     {
@@ -261,7 +277,8 @@ const pilotos = [
         fechaNacimiento: "1970-05-28",
         campeonTC: false,
         anioDebutTC: 2002,
-        imagen: "https://actc.org.ar/upload/autos/7621/imgs_v3/imgtorso/podio/christian_dose.png"
+        imagen: "https://actc.org.ar/upload/autos/7621/imgs_v3/imgtorso/podio/christian_dose.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/christian_dose.png"
     },
 
     {
@@ -274,7 +291,8 @@ const pilotos = [
         fechaNacimiento: "1978-02-10",
         campeonTC: false,
         anioDebutTC: 2025,
-        imagen: "https://actc.org.ar/upload/autos/9628/imgs_v3/imgtorso/podio/jeronimo_teti.png"
+        imagen: "https://actc.org.ar/upload/autos/9628/imgs_v3/imgtorso/podio/jeronimo_teti.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jeronimo_teti.png"
     },
 
     {
@@ -287,7 +305,8 @@ const pilotos = [
         fechaNacimiento: "1983-10-25",
         campeonTC: false,
         anioDebutTC: 2013,
-        imagen: "https://actc.org.ar/upload/autos/10692/imgs_v3/imgtorso/podio/nicolas_bonelli.png"
+        imagen: "https://actc.org.ar/upload/autos/10692/imgs_v3/imgtorso/podio/nicolas_bonelli.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_bonelli.png"
     },
 
     {
@@ -300,7 +319,8 @@ const pilotos = [
         fechaNacimiento: "1993-10-21",
         campeonTC: true,
         anioDebutTC: 2017,
-        imagen: "https://actc.org.ar/upload/autos/10720/imgs_v3/imgtorso/podio/julian_santero.png"
+        imagen: "https://actc.org.ar/upload/autos/10720/imgs_v3/imgtorso/podio/julian_santero.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/julian_santero.png"
     },
 
     {
@@ -313,7 +333,8 @@ const pilotos = [
         fechaNacimiento: "1976-08-07",
         campeonTC: false,
         anioDebutTC: 2024,
-        imagen: "https://actc.org.ar/upload/autos/7628/imgs_v3/imgtorso/podio/sebastian_abella.png"
+        imagen: "https://actc.org.ar/upload/autos/7628/imgs_v3/imgtorso/podio/sebastian_abella.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/sebastian_abella.png"
     },
 
     {
@@ -326,7 +347,8 @@ const pilotos = [
         fechaNacimiento: "1988-06-25",
         campeonTC: false,
         anioDebutTC: 2013,
-        imagen: "https://actc.org.ar/upload/autos/10688/imgs_v3/imgtorso/podio/martin_serrano.png"
+        imagen: "https://actc.org.ar/upload/autos/10688/imgs_v3/imgtorso/podio/martin_serrano.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/martin_serrano.png"
     },
 
     {
@@ -339,7 +361,8 @@ const pilotos = [
         fechaNacimiento: "1976-11-22",
         campeonTC: false,
         anioDebutTC: 1997,
-        imagen: "https://actc.org.ar/upload/autos/9637/imgs_v3/imgtorso/podio/sergio_alaux.png"
+        imagen: "https://actc.org.ar/upload/autos/9637/imgs_v3/imgtorso/podio/sergio_alaux.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/sergio_alaux.png"
     },
 
     {
@@ -352,7 +375,8 @@ const pilotos = [
         fechaNacimiento: "1976-11-16",
         campeonTC: false,
         anioDebutTC: 2017,
-        imagen: "https://actc.org.ar/upload/autos/10721/imgs_v3/imgtorso/podio/augusto_carinelli.png"
+        imagen: "https://actc.org.ar/upload/autos/10721/imgs_v3/imgtorso/podio/augusto_carinelli.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/augusto_carinelli.png"
     },
 
     {
@@ -365,7 +389,8 @@ const pilotos = [
         fechaNacimiento: "1993-12-22",
         campeonTC: false,
         anioDebutTC: 2024,
-        imagen: "https://actc.org.ar/upload/autos/10722/imgs_v3/imgtorso/podio/facundo_chapur.png"
+        imagen: "https://actc.org.ar/upload/autos/10722/imgs_v3/imgtorso/podio/facundo_chapur.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/facundo_chapur.png"
     },
 
     {
@@ -378,7 +403,8 @@ const pilotos = [
         fechaNacimiento: "1987-01-24",
         campeonTC: false,
         anioDebutTC: 2026,
-        imagen: "https://actc.org.ar/upload/autos/10723/imgs_v3/imgtorso/podio/tomas_abdala.png"
+        imagen: "https://actc.org.ar/upload/autos/10723/imgs_v3/imgtorso/podio/tomas_abdala.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/tomas_abdala.png"
     },
 
     {
@@ -391,7 +417,8 @@ const pilotos = [
         fechaNacimiento: "1999-09-22",
         campeonTC: false,
         anioDebutTC: 2026,
-        imagen: "https://actc.org.ar/upload/autos/10724/imgs_v3/imgtorso/podio/lucas_carabajal.png"
+        imagen: "https://actc.org.ar/upload/autos/10724/imgs_v3/imgtorso/podio/lucas_carabajal.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/lucas_carabajal.png"
     },
 
     {
@@ -404,7 +431,8 @@ const pilotos = [
         fechaNacimiento: "1988-06-24",
         campeonTC: false,
         anioDebutTC: 2013,
-        imagen: "https://actc.org.ar/upload/autos/10725/imgs_v3/imgtorso/podio/facundo_ardusso.png"
+        imagen: "https://actc.org.ar/upload/autos/10725/imgs_v3/imgtorso/podio/facundo_ardusso.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/facundo_ardusso.png"
     },
 
     {
@@ -417,7 +445,8 @@ const pilotos = [
         fechaNacimiento: "1986-09-27",
         campeonTC: false,
         anioDebutTC: 2009,
-        imagen: "https://actc.org.ar/upload/autos/10717/imgs_v3/imgtorso/podio/ricardo_risatti.png"
+        imagen: "https://actc.org.ar/upload/autos/10717/imgs_v3/imgtorso/podio/ricardo_risatti.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/ricardo_risatti.png"
     },
 
     {
@@ -430,7 +459,8 @@ const pilotos = [
         fechaNacimiento: "2005-06-28",
         campeonTC: false,
         anioDebutTC: 2025,
-        imagen: "https://actc.org.ar/upload/autos/9664/imgs_v3/imgtorso/podio/ignacio_fain.png"
+        imagen: "https://actc.org.ar/upload/autos/9664/imgs_v3/imgtorso/podio/ignacio_fain.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/ignacio_fain.png"
     },
 
     {
@@ -443,7 +473,8 @@ const pilotos = [
         fechaNacimiento: "1994-11-08",
         campeonTC: false,
         anioDebutTC: 2025,
-        imagen: "https://actc.org.ar/upload/autos/10727/imgs_v3/imgtorso/podio/nicolas_impiombato.png"
+        imagen: "https://actc.org.ar/upload/autos/10727/imgs_v3/imgtorso/podio/nicolas_impiombato.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_impiombato.png"
     },
 
     {
@@ -456,7 +487,8 @@ const pilotos = [
         fechaNacimiento: "1992-01-08",
         campeonTC: false,
         anioDebutTC: 2014,
-        imagen: "https://actc.org.ar/upload/autos/10728/imgs_v3/imgtorso/podio/nicolas_trosset.png"
+        imagen: "https://actc.org.ar/upload/autos/10728/imgs_v3/imgtorso/podio/nicolas_trosset.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_trosset.png"
     },
 
     {
@@ -469,7 +501,8 @@ const pilotos = [
         fechaNacimiento: "2001-09-23",
         campeonTC: false,
         anioDebutTC: 2021,
-        imagen: "https://actc.org.ar/upload/autos/10705/imgs_v3/imgtorso/podio/marcos_landa.png"
+        imagen: "https://actc.org.ar/upload/autos/10705/imgs_v3/imgtorso/podio/marcos_landa.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/marcos_landa.png"
     },
 
     {
@@ -482,7 +515,8 @@ const pilotos = [
         fechaNacimiento: "1996-09-16",
         campeonTC: false,
         anioDebutTC: 2019,
-        imagen: "https://actc.org.ar/upload/autos/10729/imgs_v3/imgtorso/podio/juan_cruz_benvenuti.png"
+        imagen: "https://actc.org.ar/upload/autos/10729/imgs_v3/imgtorso/podio/juan_cruz_benvenuti.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_cruz_benvenuti.png"
     },
 
     {
@@ -496,6 +530,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2006,
         imagen: "https://actc.org.ar/upload/autos/9600/imgs_v3/imgtorso/podio/jonatan_castellano.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jonatan_castellano.png"
     },
 
     {
@@ -509,6 +544,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2024,
         imagen: "https://actc.org.ar/upload/autos/10702/imgs_v3/imgtorso/podio/tobias_martinez.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/tobias_martinez.png"
     },
 
     {
@@ -522,6 +558,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10730/imgs_v3/imgtorso/podio/nicolas_moscardini.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_moscardini.png"
     },
 
     {
@@ -535,6 +572,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2025,
         imagen: "https://actc.org.ar/upload/autos/10731/imgs_v3/imgtorso/podio/diego_azar.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/diego_azar.png"
     },
 
     {
@@ -548,6 +586,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10733/imgs_v3/imgtorso/podio/lucas_valle.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/lucas_valle.png"
     },
 
     {
@@ -561,6 +600,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10734/imgs_v3/imgtorso/podio/rodrigo_lugon.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/rodrigo_lugon.png"
     },
 
     {
@@ -574,6 +614,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2019,
         imagen: "https://actc.org.ar/upload/autos/10735/imgs_v3/imgtorso/podio/gaston_ferrante.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/gaston_ferrante.png"
     },
 
     {
@@ -587,6 +628,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2007,
         imagen: "https://actc.org.ar/upload/autos/9652/imgs_v3/imgtorso/podio/diego_de_carlo.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/diego_de_carlo.png"
     },
 
     {
@@ -600,6 +642,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2022,
         imagen: "https://actc.org.ar/upload/autos/10737/imgs_v3/imgtorso/podio/kevin_candela.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/kevin_candela.png"
     },
 
     {
@@ -613,6 +656,7 @@ const pilotos = [
         campeonTC: true,
         anioDebutTC: 2003,
         imagen: "https://actc.org.ar/upload/autos/10738/imgs_v3/imgtorso/podio/matias_rossi.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/matias_rossi.png"
     },
 
     {
@@ -626,6 +670,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2025,
         imagen: "https://actc.org.ar/upload/autos/10739/imgs_v3/imgtorso/podio/hernan_palazzo.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/hernan_palazzo.png"
     },
 
     {
@@ -639,6 +684,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2021,
         imagen: "https://actc.org.ar/upload/autos/9667/imgs_v3/imgtorso/podio/andres_jakos.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/andres_jakos.png"
     },
 
     {
@@ -652,6 +698,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2023,
         imagen: "https://actc.org.ar/upload/autos/10741/imgs_v3/imgtorso/podio/martin_vazquez.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/martin_vazquez.png"
     },
 
     {
@@ -665,6 +712,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10742/imgs_v3/imgtorso/podio/thomas_ricciardi.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/thomas_ricciardi.png"
     },
 
     {
@@ -672,12 +720,13 @@ const pilotos = [
         nombre: "Valentín Aguirre",
         marca: "Chevrolet",
         equipo: "Pradecon Racing",
-        localidad: "Areccifes, Buenos Aires",
+        localidad: "Arrecifes, Buenos Aires",
         provincia: "Buenos Aires",
         fechaNacimiento: "1996-11-25",
         campeonTC: false,
         anioDebutTC: 2018,
         imagen: "https://actc.org.ar/upload/autos/10707/imgs_v3/imgtorso/podio/valentin_aguirre.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/valentin_aguirre.png"
     },
 
     {
@@ -691,6 +740,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2005,
         imagen: "https://actc.org.ar/upload/autos/9614/imgs_v3/imgtorso/podio/matias_jalaf.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/matias_jalaf.png"
     },
 
     {
@@ -704,6 +754,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2025,
         imagen: "https://actc.org.ar/upload/autos/10744/imgs_v3/imgtorso/podio/jeremias_scialchi.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jeremias_scialchi.png"
     },
 
     {
@@ -717,6 +768,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10745/imgs_v3/imgtorso/podio/gaspar_chansard.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/gaspar_chansard.png"
     },
 
     {
@@ -730,6 +782,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10746/imgs_v3/imgtorso/podio/jorge_barrio.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jorge_barrio.png"
     },
 
     {
@@ -743,6 +796,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10747/imgs_v3/imgtorso/podio/marco_dianda.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/marco_dianda.png"
     },
 
     {
@@ -755,8 +809,8 @@ const pilotos = [
         fechaNacimiento: "2002-04-02",
         campeonTC: false,
         anioDebutTC: 2026,
-        // imagen: RUTA_IMAGENES + "pilotos/joaco_ochoa.png"
         imagen: "https://actc.org.ar/upload/autos/10748/imgs_v3/imgtorso/podio/joaquin_ochoa.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/joaquin_ochoa.png"
     },
 
     {
@@ -825,6 +879,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2023,
         imagen: "https://actc.org.ar/upload/autos/10753/imgs_v3/imgtorso/podio/marcos_quijada.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/marcos_quijada.png"
     },
 
     {
@@ -838,6 +893,7 @@ const pilotos = [
         campeonTC: true,
         anioDebutTC: 2015,
         imagen: "https://actc.org.ar/upload/autos/9669/imgs_v3/imgtorso/podio/jose_manuel_urcera.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jose_manuel_urcera.png"
     },
 
     {
@@ -851,5 +907,6 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2023,
         imagen: "https://actc.org.ar/upload/autos/10776/imgs_v3/imgtorso/podio/otto_fritzler.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/otto_fritzler.png"
     }
 ];
