@@ -25,32 +25,44 @@ const MAXIMO_INTENTOS_CIRCUITO = 8;
 const CLAVE_PARTIDA_CIRCUITO = "partidaTCdleCircuito";
 const RUTA_CIRCUITOS = new URL("../images/circuitos/", document.currentScript.src).href;
 const circuitos = Array.isArray(window.circuitosTC) ? window.circuitosTC : [];
-const fechaPartidaCircuitoActual = obtenerFechaLocalCircuito();
-
-let idsIntentadosCircuito = [];
-let partidaTerminadaCircuito = false;
-let indiceSugerenciaCircuito = -1;
-let sugerenciasVisiblesCircuito = [];
-let intervaloCuentaRegresivaCircuito;
+const fechaPartidaCircuitoActual = TCdle.obtenerFechaLocal();
 
 const circuitoDelDia = obtenerCircuitoDelDia();
+const juegoCircuito = TCdle.crearJuegoDiario({
+    clave: CLAVE_PARTIDA_CIRCUITO,
+    fecha: fechaPartidaCircuitoActual,
+    objetivoId: circuitoDelDia ? circuitoDelDia.id : null,
+    idsValidos: circuitos.map(function (circuito) { return circuito.id; }),
+    maximoIntentos: MAXIMO_INTENTOS_CIRCUITO,
+    migrar: function (datos) {
+        return TCdle.migrarPartida(datos, {
+            campoObjetivo: "circuitoId",
+            objetivoActual: circuitoDelDia ? circuitoDelDia.id : null,
+            maximoIntentos: MAXIMO_INTENTOS_CIRCUITO
+        });
+    }
+});
+let estadoCircuito = juegoCircuito.cargar();
+let idsIntentadosCircuito = estadoCircuito.idsIntentados.slice();
+let partidaTerminadaCircuito = estadoCircuito.terminada;
+const cuentaRegresivaCircuito = TCdle.crearCuentaRegresiva({
+    elementos: [tiempoNuevoCircuito, tiempoNuevoCircuitoModal],
+    fecha: fechaPartidaCircuitoActual
+});
+const modalResultadoCircuito = TCdle.crearModalResultado({
+    dialogo: resultadoCircuitoModal,
+    botonCerrar: cerrarResultadoCircuitoModal,
+    focoRetorno: estadoFinalCircuito
+});
 
-function obtenerFechaLocalCircuito(fecha = new Date()) {
-    const anio = fecha.getFullYear();
-    const mes = String(fecha.getMonth() + 1).padStart(2, "0");
-    const dia = String(fecha.getDate()).padStart(2, "0");
-
-    return anio + "-" + mes + "-" + dia;
+function sincronizarEstadoCircuito(nuevoEstado) {
+    estadoCircuito = nuevoEstado;
+    idsIntentadosCircuito = estadoCircuito.idsIntentados.slice();
+    partidaTerminadaCircuito = estadoCircuito.terminada;
 }
 
 function normalizarTextoCircuito(texto) {
-    return String(texto || "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[.º°]/g, "")
-        .replace(/[^a-zA-Z0-9]+/g, " ")
-        .trim()
-        .toLowerCase();
+    return TCdle.normalizarTexto(texto);
 }
 
 function obtenerEtiquetaCircuito(circuito) {
@@ -76,16 +88,50 @@ function obtenerTextoBusquedaCircuito(circuito) {
     ].concat(circuito.aliases || []).map(normalizarTextoCircuito).join(" ");
 }
 
+function renderizarOpcionCircuito(opcion, circuito) {
+    const miniatura = document.createElement("span");
+    const imagen = document.createElement("img");
+    const contenido = document.createElement("span");
+    const nombre = document.createElement("strong");
+    const detalle = document.createElement("span");
+
+    miniatura.className = "buscador__miniatura buscador__miniatura--circuito";
+    imagen.src = RUTA_CIRCUITOS + circuito.imagen;
+    imagen.alt = "";
+    imagen.loading = "lazy";
+    contenido.className = "buscador__contenido";
+    nombre.textContent = circuito.nombre;
+    detalle.textContent = circuito.variante === "Circuito principal"
+        ? circuito.ciudad
+        : circuito.variante + " · " + circuito.ciudad;
+    miniatura.appendChild(imagen);
+    contenido.appendChild(nombre);
+    contenido.appendChild(detalle);
+    opcion.appendChild(miniatura);
+    opcion.appendChild(contenido);
+}
+
+const buscadorCircuitos = TCdle.crearBuscador({
+    campo: campoCircuito,
+    lista: sugerenciasCircuitos,
+    elementos: circuitos,
+    obtenerId: function (circuito) { return circuito.id; },
+    obtenerEtiqueta: obtenerEtiquetaCircuito,
+    obtenerTextoBusqueda: obtenerTextoBusquedaCircuito,
+    obtenerValoresExactos: function (circuito) {
+        return [obtenerEtiquetaCircuito(circuito), circuito.nombre]
+            .concat(circuito.aliases || []);
+    },
+    renderizarOpcion: renderizarOpcionCircuito,
+    estaExcluido: function (circuito) {
+        return idsIntentadosCircuito.includes(circuito.id);
+    },
+    alEnviar: intentarCircuito,
+    alCambiar: function () { mostrarMensajeCircuito("", ""); }
+});
+
 function obtenerCircuitoDelDia() {
-    if (circuitos.length === 0) {
-        return null;
-    }
-
-    const hoy = new Date();
-    const fechaUtc = Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
-    const numeroDia = Math.floor(fechaUtc / 86400000);
-
-    return circuitos[numeroDia % circuitos.length];
+    return TCdle.seleccionDiaria.obtener(circuitos, "circuitos");
 }
 
 function configurarImagenCircuito() {
@@ -102,183 +148,29 @@ function configurarImagenCircuito() {
 }
 
 function crearIndicadoresCircuito() {
-    nivelesIntentosCircuito.innerHTML = "";
-
-    for (let indice = 0; indice < MAXIMO_INTENTOS_CIRCUITO; indice++) {
-        const indicador = document.createElement("span");
-        indicador.className = "nivel-intento-circuito";
-
-        if (indice < idsIntentadosCircuito.length) {
-            indicador.classList.add("nivel-intento-circuito--usado");
-        }
-
-        if (
-            partidaTerminadaCircuito &&
-            idsIntentadosCircuito[idsIntentadosCircuito.length - 1] === circuitoDelDia.id &&
-            indice === idsIntentadosCircuito.length - 1
-        ) {
-            indicador.classList.add("nivel-intento-circuito--acierto");
-        }
-
-        nivelesIntentosCircuito.appendChild(indicador);
-    }
+    TCdle.renderizarIndicadores({
+        contenedor: nivelesIntentosCircuito,
+        maximo: MAXIMO_INTENTOS_CIRCUITO,
+        usados: estadoCircuito.intentosUsados,
+        acerto: estadoCircuito.acerto
+    });
 }
 
 function actualizarInterfazCircuito() {
-    const usados = idsIntentadosCircuito.length;
-    const restantes = MAXIMO_INTENTOS_CIRCUITO - usados;
-    const palabra = restantes === 1 ? "intento disponible" : "intentos disponibles";
-    const numeroVisible = partidaTerminadaCircuito ? usados : usados + 1;
-
-    intentosRestantesCircuito.textContent = restantes + " " + palabra;
-    intentosRestantesCircuito.hidden = partidaTerminadaCircuito;
-    regresoCircuito.hidden = !partidaTerminadaCircuito;
-    numeroIntentoCircuito.textContent = String(Math.min(Math.max(numeroVisible, 1), MAXIMO_INTENTOS_CIRCUITO)).padStart(2, "0");
-    campoCircuito.disabled = partidaTerminadaCircuito || !circuitoDelDia;
-    botonIntentarCircuito.disabled = partidaTerminadaCircuito || !circuitoDelDia;
+    TCdle.actualizarEstadoIntentos({
+        partida: estadoCircuito,
+        contador: intentosRestantesCircuito,
+        regreso: regresoCircuito,
+        numero: numeroIntentoCircuito,
+        campo: campoCircuito,
+        boton: botonIntentarCircuito,
+        sinObjetivo: !circuitoDelDia
+    });
     crearIndicadoresCircuito();
 }
 
 function mostrarMensajeCircuito(texto, tipo) {
-    mensajeCircuito.textContent = texto;
-    mensajeCircuito.className = "mensaje-circuito" + (tipo ? " mensaje-circuito--" + tipo : "");
-}
-
-function buscarCircuitos(consulta) {
-    const consultaNormalizada = normalizarTextoCircuito(consulta);
-
-    if (!consultaNormalizada) {
-        return [];
-    }
-
-    return circuitos
-        .filter(function (circuito) {
-            return !idsIntentadosCircuito.includes(circuito.id) &&
-                obtenerTextoBusquedaCircuito(circuito).includes(consultaNormalizada);
-        })
-        .sort(function (a, b) {
-            const etiquetaA = normalizarTextoCircuito(obtenerEtiquetaCircuito(a));
-            const etiquetaB = normalizarTextoCircuito(obtenerEtiquetaCircuito(b));
-            const empiezaA = etiquetaA.startsWith(consultaNormalizada) ? 0 : 1;
-            const empiezaB = etiquetaB.startsWith(consultaNormalizada) ? 0 : 1;
-
-            return empiezaA - empiezaB || etiquetaA.localeCompare(etiquetaB, "es");
-        })
-        .slice(0, 8);
-}
-
-function renderizarSugerenciasCircuito() {
-    sugerenciasCircuitos.innerHTML = "";
-    sugerenciasVisiblesCircuito = buscarCircuitos(campoCircuito.value);
-    indiceSugerenciaCircuito = -1;
-
-    if (sugerenciasVisiblesCircuito.length === 0 || partidaTerminadaCircuito) {
-        ocultarSugerenciasCircuito();
-        return;
-    }
-
-    sugerenciasVisiblesCircuito.forEach(function (circuito, indice) {
-        const opcion = document.createElement("button");
-        const nombre = document.createElement("strong");
-        const detalle = document.createElement("span");
-
-        opcion.type = "button";
-        opcion.className = "sugerencia-circuito";
-        opcion.setAttribute("role", "option");
-        opcion.dataset.indice = String(indice);
-        nombre.textContent = circuito.nombre;
-        detalle.textContent = circuito.variante === "Circuito principal"
-            ? circuito.ciudad
-            : circuito.variante + " · " + circuito.ciudad;
-        opcion.appendChild(nombre);
-        opcion.appendChild(detalle);
-        opcion.addEventListener("mousedown", function (evento) {
-            evento.preventDefault();
-            seleccionarSugerenciaCircuito(indice);
-        });
-        sugerenciasCircuitos.appendChild(opcion);
-    });
-
-    sugerenciasCircuitos.hidden = false;
-    campoCircuito.setAttribute("aria-expanded", "true");
-}
-
-function ocultarSugerenciasCircuito() {
-    sugerenciasCircuitos.hidden = true;
-    campoCircuito.setAttribute("aria-expanded", "false");
-    campoCircuito.removeAttribute("aria-activedescendant");
-    indiceSugerenciaCircuito = -1;
-}
-
-function seleccionarSugerenciaCircuito(indice) {
-    const circuito = sugerenciasVisiblesCircuito[indice];
-
-    if (!circuito) {
-        return;
-    }
-
-    campoCircuito.value = obtenerEtiquetaCircuito(circuito);
-    campoCircuito.dataset.circuitoId = circuito.id;
-    ocultarSugerenciasCircuito();
-    mostrarMensajeCircuito("", "");
-    campoCircuito.focus();
-}
-
-function moverSugerenciaCircuito(direccion) {
-    if (sugerenciasCircuitos.hidden || sugerenciasVisiblesCircuito.length === 0) {
-        return;
-    }
-
-    indiceSugerenciaCircuito = (
-        indiceSugerenciaCircuito + direccion + sugerenciasVisiblesCircuito.length
-    ) % sugerenciasVisiblesCircuito.length;
-
-    Array.from(sugerenciasCircuitos.children).forEach(function (opcion, indice) {
-        const activa = indice === indiceSugerenciaCircuito;
-        opcion.classList.toggle("sugerencia-circuito--activa", activa);
-        opcion.setAttribute("aria-selected", String(activa));
-
-        if (activa) {
-            opcion.id = "sugerencia-circuito-activa";
-            campoCircuito.setAttribute("aria-activedescendant", opcion.id);
-            opcion.scrollIntoView({ block: "nearest" });
-        } else {
-            opcion.removeAttribute("id");
-        }
-    });
-}
-
-function coincideEntradaCircuito(circuito, entradaNormalizada) {
-    const opciones = [obtenerEtiquetaCircuito(circuito), circuito.nombre]
-        .concat(circuito.aliases || [])
-        .map(normalizarTextoCircuito);
-
-    return opciones.includes(entradaNormalizada);
-}
-
-function resolverCircuitoIngresado() {
-    const idSeleccionado = campoCircuito.dataset.circuitoId;
-
-    if (idSeleccionado) {
-        const seleccionado = circuitos.find(function (circuito) {
-            return circuito.id === idSeleccionado;
-        });
-
-        if (seleccionado && normalizarTextoCircuito(campoCircuito.value) === normalizarTextoCircuito(obtenerEtiquetaCircuito(seleccionado))) {
-            return { circuito: seleccionado };
-        }
-    }
-
-    const entradaNormalizada = normalizarTextoCircuito(campoCircuito.value);
-    const coincidencias = circuitos.filter(function (circuito) {
-        return coincideEntradaCircuito(circuito, entradaNormalizada);
-    });
-
-    if (coincidencias.length > 1) {
-        return { ambiguo: true };
-    }
-
-    return { circuito: coincidencias[0] || null };
+    TCdle.mostrarMensaje(mensajeCircuito, texto, tipo);
 }
 
 function intentarCircuito() {
@@ -293,15 +185,15 @@ function intentarCircuito() {
         return;
     }
 
-    const resultado = resolverCircuitoIngresado();
+    const resultado = buscadorCircuitos.resolver();
 
     if (resultado.ambiguo) {
         mostrarMensajeCircuito("Ese autódromo tiene más de un trazado. Elegí una variante de la lista.", "error");
-        renderizarSugerenciasCircuito();
+        buscadorCircuitos.buscar();
         return;
     }
 
-    const circuitoElegido = resultado.circuito;
+    const circuitoElegido = resultado.elemento;
 
     if (!circuitoElegido) {
         mostrarMensajeCircuito("Ese circuito no está en la lista.", "error");
@@ -313,26 +205,21 @@ function intentarCircuito() {
         return;
     }
 
-    idsIntentadosCircuito.push(circuitoElegido.id);
-    campoCircuito.value = "";
-    delete campoCircuito.dataset.circuitoId;
-    ocultarSugerenciasCircuito();
+    const intento = juegoCircuito.intentar(circuitoElegido.id);
+    sincronizarEstadoCircuito(intento.estado);
+    buscadorCircuitos.limpiar();
     agregarIntentoCircuito(circuitoElegido);
 
-    const acerto = circuitoElegido.id === circuitoDelDia.id;
-    const seQuedoSinIntentos = idsIntentadosCircuito.length >= MAXIMO_INTENTOS_CIRCUITO;
-
-    if (acerto) {
+    if (intento.resultado === "correcta") {
         finalizarPartidaCircuito(true, true);
         mostrarMensajeCircuito("¡Correcto! Reconociste el trazado.", "exito");
-    } else if (seQuedoSinIntentos) {
+    } else if (intento.resultado === "agotada") {
         finalizarPartidaCircuito(false, true);
         mostrarMensajeCircuito("Se terminaron los intentos.", "error");
     } else {
         mostrarMensajeCircuito("No es ese circuito. La silueta permanece igual de nítida.", "");
     }
 
-    guardarPartidaCircuito();
     actualizarInterfazCircuito();
 
     if (!partidaTerminadaCircuito) {
@@ -382,7 +269,7 @@ function mostrarResultadoCircuitoModal(acerto) {
     const cantidadIntentos = idsIntentadosCircuito.length;
     const palabraIntentos = cantidadIntentos === 1 ? "intento" : "intentos";
 
-    resultadoCircuitoModal.classList.toggle("resultado-circuito-modal--correcto", acerto);
+    resultadoCircuitoModal.classList.toggle("resultado-modal--correcto", acerto);
     tituloResultadoCircuitoModal.textContent = acerto ? "¡Adivinaste!" : "No lo adivinaste";
     fotoResultadoCircuitoModal.src = RUTA_CIRCUITOS + circuitoDelDia.imagen;
     fotoResultadoCircuitoModal.alt = "Silueta de " + obtenerEtiquetaCircuito(circuitoDelDia);
@@ -391,59 +278,11 @@ function mostrarResultadoCircuitoModal(acerto) {
         ? "Lo resolviste en " + cantidadIntentos + " " + palabraIntentos + "."
         : "No lo adivinaste en los " + MAXIMO_INTENTOS_CIRCUITO + " intentos.";
 
-    if (!resultadoCircuitoModal.open) {
-        document.body.classList.add("resultado-circuito-modal-abierto");
-        resultadoCircuitoModal.showModal();
-        cerrarResultadoCircuitoModal.focus();
-    }
-}
-
-function cerrarModalResultadoCircuito() {
-    if (resultadoCircuitoModal.open) {
-        resultadoCircuitoModal.close();
-    }
+    modalResultadoCircuito.abrir();
 }
 
 function iniciarCuentaRegresivaCircuito() {
-    clearInterval(intervaloCuentaRegresivaCircuito);
-    actualizarCuentaRegresivaCircuito();
-    intervaloCuentaRegresivaCircuito = setInterval(actualizarCuentaRegresivaCircuito, 1000);
-}
-
-function actualizarCuentaRegresivaCircuito() {
-    const ahora = new Date();
-
-    if (obtenerFechaLocalCircuito(ahora) !== fechaPartidaCircuitoActual) {
-        location.reload();
-        return;
-    }
-
-    const proximaMedianoche = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() + 1);
-    const diferencia = proximaMedianoche - ahora;
-    const horas = Math.floor(diferencia / 3600000);
-    const minutos = Math.floor((diferencia % 3600000) / 60000);
-    const segundos = Math.floor((diferencia % 60000) / 1000);
-    const tiempoRestante = [horas, minutos, segundos]
-        .map(function (valor) {
-            return String(valor).padStart(2, "0");
-        })
-        .join(":");
-
-    tiempoNuevoCircuito.textContent = tiempoRestante;
-    tiempoNuevoCircuitoModal.textContent = tiempoRestante;
-}
-
-function guardarPartidaCircuito() {
-    if (!circuitoDelDia) {
-        return;
-    }
-
-    localStorage.setItem(CLAVE_PARTIDA_CIRCUITO, JSON.stringify({
-        fecha: fechaPartidaCircuitoActual,
-        circuitoId: circuitoDelDia.id,
-        idsIntentados: idsIntentadosCircuito,
-        terminada: partidaTerminadaCircuito
-    }));
+    cuentaRegresivaCircuito.iniciar();
 }
 
 function cargarPartidaCircuito() {
@@ -451,96 +290,19 @@ function cargarPartidaCircuito() {
         return;
     }
 
-    const datosGuardados = localStorage.getItem(CLAVE_PARTIDA_CIRCUITO);
-
-    if (!datosGuardados) {
-        return;
-    }
-
-    try {
-        const partida = JSON.parse(datosGuardados);
-        const correspondeAHoy = partida.fecha === fechaPartidaCircuitoActual;
-        const correspondeAlCircuito = partida.circuitoId === circuitoDelDia.id;
-
-        if (!correspondeAHoy || !correspondeAlCircuito || !Array.isArray(partida.idsIntentados)) {
-            localStorage.removeItem(CLAVE_PARTIDA_CIRCUITO);
-            return;
+    idsIntentadosCircuito.forEach(function (idCircuito) {
+        const circuito = circuitos.find(function (item) { return item.id === idCircuito; });
+        if (circuito) {
+            agregarIntentoCircuito(circuito);
         }
+    });
 
-        idsIntentadosCircuito = partida.idsIntentados
-            .filter(function (id, indice, lista) {
-                return lista.indexOf(id) === indice && circuitos.some(function (circuito) {
-                    return circuito.id === id;
-                });
-            })
-            .slice(0, MAXIMO_INTENTOS_CIRCUITO);
-
-        partidaTerminadaCircuito = Boolean(partida.terminada) && (
-            idsIntentadosCircuito.includes(circuitoDelDia.id) ||
-            idsIntentadosCircuito.length === MAXIMO_INTENTOS_CIRCUITO
-        );
-
-        idsIntentadosCircuito.forEach(function (idCircuito) {
-            const circuito = circuitos.find(function (item) {
-                return item.id === idCircuito;
-            });
-
-            if (circuito) {
-                agregarIntentoCircuito(circuito);
-            }
-        });
-
-        if (partidaTerminadaCircuito) {
-            finalizarPartidaCircuito(idsIntentadosCircuito.includes(circuitoDelDia.id), false);
-        }
-    } catch (error) {
-        localStorage.removeItem(CLAVE_PARTIDA_CIRCUITO);
+    if (partidaTerminadaCircuito) {
+        finalizarPartidaCircuito(estadoCircuito.acerto, false);
     }
 }
 
-campoCircuito.addEventListener("input", function () {
-    delete campoCircuito.dataset.circuitoId;
-    mostrarMensajeCircuito("", "");
-    renderizarSugerenciasCircuito();
-});
-
-campoCircuito.addEventListener("keydown", function (evento) {
-    if (evento.key === "ArrowDown") {
-        evento.preventDefault();
-        moverSugerenciaCircuito(1);
-    } else if (evento.key === "ArrowUp") {
-        evento.preventDefault();
-        moverSugerenciaCircuito(-1);
-    } else if (evento.key === "Enter") {
-        evento.preventDefault();
-
-        if (indiceSugerenciaCircuito >= 0) {
-            seleccionarSugerenciaCircuito(indiceSugerenciaCircuito);
-        } else {
-            intentarCircuito();
-        }
-    } else if (evento.key === "Escape") {
-        ocultarSugerenciasCircuito();
-    }
-});
-
-campoCircuito.addEventListener("blur", function () {
-    setTimeout(ocultarSugerenciasCircuito, 120);
-});
-
 botonIntentarCircuito.addEventListener("click", intentarCircuito);
-cerrarResultadoCircuitoModal.addEventListener("click", cerrarModalResultadoCircuito);
-
-resultadoCircuitoModal.addEventListener("click", function (evento) {
-    if (evento.target === resultadoCircuitoModal) {
-        cerrarModalResultadoCircuito();
-    }
-});
-
-resultadoCircuitoModal.addEventListener("close", function () {
-    document.body.classList.remove("resultado-circuito-modal-abierto");
-    estadoFinalCircuito.focus({ preventScroll: true });
-});
 
 configurarImagenCircuito();
 cargarPartidaCircuito();

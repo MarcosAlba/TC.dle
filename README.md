@@ -1,60 +1,60 @@
 # TCdle
 
-Juego diario inspirado en Turismo Carretera. Incluye tres desafíos independientes:
+TCdle es un juego diario web inspirado en el TC. Tiene tres modos independientes:
 
-- Adiviná el piloto.
-- Adiviná el piloto por su auto.
-- Adiviná el circuito por su silueta.
+- Adivina el piloto.
+- Adivina el piloto por el auto.
+- Adivina el circuito por su silueta.
 
-Cada modo mantiene su propia partida en el navegador y cambia el desafío a la medianoche local.
+Es un proyecto estatico: no usa backend, build step ni base de datos. Cada juego corre en el navegador, guarda el progreso en `localStorage` y cambia el desafio a la medianoche local.
 
-## Estructura
+## Estado actual
 
-```text
-TCdle/
-├── index.html                         # Portada y selector de juegos
-├── pages/
-│   ├── adivinar-el-piloto.html
-│   ├── adivinar-el-auto.html
-│   └── adivinar-el-circuito.html
-├── scripts/
-│   └── generar-siluetas.mjs
-└── assets/
-    ├── css/
-    ├── js/
-    └── images/
-        ├── autos/
-        ├── circuitos/
-        └── pilotos/
-```
+- Portada: `index.html`.
+- Paginas de juego: `pages/adivinar-el-piloto.html`, `pages/adivinar-el-auto.html`, `pages/adivinar-el-circuito.html`.
+- Nucleo compartido: `assets/js/tcdle.js`.
+- Seleccion diaria: `assets/js/seleccion-diaria.js`.
+- Catalogos: `assets/js/pilotos.js`, `assets/js/autos.js`, `assets/js/circuitos.js`.
+- Estilos compartidos: `assets/css/juego-compartido.css`.
+- Estilos por modo: `assets/css/estilos.css`, `assets/css/adivinar-el-auto.css`, `assets/css/adivinar-el-circuito.css`.
 
-## Catálogo de circuitos
+## Como abrirlo
 
-`assets/js/circuitos.js` es la única fuente de verdad del modo Circuitos: alimenta la selección diaria, el buscador, las respuestas y el resultado final. En esta versión contiene **29 sedes de la era moderna (1997–2026)** y **31 configuraciones jugables**.
-
-El recorte parte de las 29 sedes contabilizadas por SoloTC hasta 2020 y suma El Calafate, estrenado por el TC en 2023. La Pedrera integra esas 29 sedes; el registro “Santiago del Estero” de mayo de 2008 no se cuenta como otra sede porque corresponde a la inauguración de Termas de Río Hondo.
-
-Una configuración se separa solo cuando cambia la silueta y hay evidencia de que fue utilizada por una categoría de la ACTC. El catálogo distingue:
-
-- La Plata, circuito largo con y sin chicana.
-- Buenos Aires, circuito N.º 12 sin chicana.
-- Termas de Río Hondo, trazado largo y perimetral corto.
-
-Cada entrada incluye identificador, sede, nombre oficial, variante, alias aceptados, ubicación, longitud, participación, fuente y SVG. Las siluetas se generan con orientación norte preservada a partir de datos de OpenStreetMap y se guardan como SVG transparentes, sin rótulos ni elementos que revelen la respuesta.
-
-Fuentes generales: [SoloTC](https://www.solotc.com.ar/tc-corre-solo-autodromos/), [archivo y circuitos de ACTC](https://www.actc.org.ar/tc/), [debut de El Calafate](https://elcalafate.gov.ar/elementor-3243/) y [OpenStreetMap](https://www.openstreetmap.org/copyright).
-
-## Regenerar las siluetas
-
-Requiere Node.js y conexión a Internet:
+Al ser estatico, se puede abrir `index.html` directamente en el navegador. Para probarlo con un servidor local simple:
 
 ```powershell
-node scripts/generar-siluetas.mjs
+node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=require('path');let p=path.join(process.cwd(),req.url==='/'?'index.html':decodeURIComponent(req.url.split('?')[0]));fs.readFile(p,(e,d)=>{if(e){res.writeHead(404);res.end('Not found');return}res.end(d)})}).listen(8080)"
 ```
 
-El script consulta las geometrías `highway=raceway`, descarta boxes, kartódromos y pistas de aceleración, encuadra el recorrido en un `viewBox` común y sobrescribe los SVG locales.
+Luego entrar a `http://127.0.0.1:8080/`.
 
-## Reiniciar partidas desde la consola
+## Pruebas
+
+No hay `package.json` con scripts. Las pruebas son archivos `.mjs` autocontenidos:
+
+```powershell
+Get-ChildItem tests\*.test.mjs | ForEach-Object { node $_.FullName }
+```
+
+Tambien conviene correr:
+
+```powershell
+node --check assets/js/tcdle.js
+node --check assets/js/seleccion-diaria.js
+node --check assets/js/juego.js
+node --check assets/js/adivinar-el-auto.js
+node --check assets/js/adivinar-el-circuito.js
+git diff --check
+```
+
+## Documentacion
+
+- [Arquitectura](docs/ARQUITECTURA.md)
+- [Modos de juego](docs/MODOS_DE_JUEGO.md)
+- [Datos, assets y seleccion diaria](docs/DATOS_Y_ASSETS.md)
+- [Guia para futuros agentes](docs/GUIA_PARA_AGENTES.md)
+
+## Reiniciar partidas desde consola
 
 Todos los modos:
 
@@ -63,7 +63,7 @@ localStorage.clear();
 location.reload();
 ```
 
-Solo un modo:
+Un modo puntual:
 
 ```js
 localStorage.removeItem("partidaTCdle"); // Piloto
@@ -71,3 +71,7 @@ localStorage.removeItem("partidaTCdleAuto"); // Auto
 localStorage.removeItem("partidaTCdleCircuito"); // Circuito
 location.reload();
 ```
+
+## Nota de mantenimiento
+
+La regla mas importante del proyecto es mantener separados los datos, el flujo diario compartido y el render especifico de cada modo. Si se agrega otro juego, deberia reutilizar `TCdle.crearBuscador`, `TCdle.crearJuegoDiario`, `TCdle.crearCuentaRegresiva` y `TCdle.seleccionDiaria.obtener`.

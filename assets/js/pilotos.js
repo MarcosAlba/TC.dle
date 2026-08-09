@@ -51,7 +51,7 @@ const pilotos = [
         localidad: "Rada Tilly, Chubut",
         provincia: "Chubut",
         fechaNacimiento: "1991-03-23",
-        campeonTC: true,
+        campeonTC: false,
         anioDebutTC: 2020,
         imagen: "https://actc.org.ar/upload/autos/10710/imgs_v3/imgtorso/podio/marcelo_agrelo.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/marcelo_agrelo.png"

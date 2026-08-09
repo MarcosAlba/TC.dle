@@ -8,23 +8,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700;800&amp;family=Saira+Condensed:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/adivinar-el-circuito.css?v=4">
+    <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=1">
+    <link rel="stylesheet" href="../assets/css/adivinar-el-circuito.css?v=5">
 </head>
 <body>
-    <header class="encabezado-circuito">
+    <header class="encabezado-juego">
         <a href="../index.html" aria-label="Volver al juego principal">
-            <img class="logo-circuito" src="../assets/images/tcdle-logo.png" alt="TCdle">
+            <img class="logo-juego" src="../assets/images/tcdle-logo.png" alt="TCdle">
         </a>
     </header>
 
-    <main class="juego-circuito">
-        <section class="presentacion-circuito" aria-labelledby="titulo-circuito">
-            <p class="modo-circuito">Modo circuito</p>
+    <main class="juego juego--circuito">
+        <section class="presentacion-juego" aria-labelledby="titulo-circuito">
+            <p class="modo-juego">Modo circuito</p>
             <h1 id="titulo-circuito">¿Qué circuito es este?</h1>
             <p>Reconocé el trazado por su silueta.</p>
         </section>
 
-        <section class="tarjeta-circuito" aria-label="Circuito del día">
+        <section class="tarjeta-desafio tarjeta-circuito" aria-label="Circuito del día">
             <div class="marco-circuito">
                 <div id="niveles-intentos-circuito" class="niveles-intentos-circuito" aria-hidden="true"></div>
                 <img id="foto-circuito" src="" alt="Silueta del circuito del día">
@@ -34,58 +35,58 @@
                 </div>
             </div>
 
-            <div class="estado-diario-circuito">
-                <p id="intentos-restantes-circuito" class="intentos-restantes-circuito">8 intentos disponibles</p>
-                <p id="regreso-circuito" class="cuenta-regresiva-circuito" hidden>
+            <div class="estado-diario">
+                <p id="intentos-restantes-circuito" class="contador-intentos">8 intentos disponibles</p>
+                <p id="regreso-circuito" class="cuenta-regresiva" hidden>
                     <span>Nuevo circuito en:</span>
                     <strong id="tiempo-nuevo-circuito">--:--:--</strong>
                 </p>
             </div>
         </section>
 
-        <section id="panel-intento-circuito" class="panel-intento-circuito" aria-labelledby="titulo-intento-circuito">
-            <div class="cabecera-intento-circuito">
-                <strong id="numero-intento-circuito">01</strong>
+        <section id="panel-intento-circuito" class="panel-intento" aria-labelledby="titulo-intento-circuito">
+            <div class="panel-intento__cabecera">
+                <strong id="numero-intento-circuito" class="panel-intento__numero">01</strong>
                 <div>
                     <p>Adiviná el circuito</p>
                     <h2 id="titulo-intento-circuito">Elegí un trazado</h2>
                 </div>
             </div>
 
-            <div class="contenido-intento-circuito">
-                <div class="fila-busqueda-circuito">
-                    <div class="buscador-circuitos">
+            <div class="panel-intento__contenido">
+                <div class="fila-busqueda">
+                    <div class="buscador">
                         <label class="solo-lectores" for="nombre-circuito">Nombre del circuito</label>
                         <input id="nombre-circuito" type="text" placeholder="Escribí el nombre del circuito" autocomplete="off" aria-autocomplete="list" aria-controls="sugerencias-circuitos">
-                        <div id="sugerencias-circuitos" class="sugerencias-circuitos" role="listbox" hidden></div>
+                        <div id="sugerencias-circuitos" class="buscador__sugerencias" role="listbox" hidden></div>
                     </div>
-                    <button id="boton-intentar-circuito" type="button">Intentar</button>
+                    <button id="boton-intentar-circuito" class="boton-intentar" type="button">Intentar</button>
                 </div>
-                <p id="mensaje-circuito" class="mensaje-circuito" aria-live="polite"></p>
+                <p id="mensaje-circuito" class="mensaje-juego" aria-live="polite"></p>
             </div>
         </section>
 
-        <section id="historial-circuito" class="historial-circuito" aria-labelledby="titulo-historial-circuito" hidden>
-            <div class="titulo-seccion-circuito">
+        <section id="historial-circuito" class="historial-intentos" aria-labelledby="titulo-historial-circuito" hidden>
+            <div class="titulo-seccion">
                 <span></span>
                 <h2 id="titulo-historial-circuito">Intentos</h2>
             </div>
-            <div id="lista-intentos-circuito" class="lista-intentos-circuito"></div>
+            <div id="lista-intentos-circuito" class="lista-intentos"></div>
         </section>
 
     </main>
 
-    <dialog id="resultado-circuito-modal" class="resultado-circuito-modal" aria-labelledby="titulo-resultado-circuito-modal" aria-describedby="detalle-resultado-circuito-modal">
-        <div class="resultado-circuito-modal__contenido">
-            <button id="cerrar-resultado-circuito-modal" class="resultado-circuito-modal__cerrar" type="button" aria-label="Cerrar resultado">×</button>
-            <p class="resultado-circuito-modal__etiqueta">Bandera a cuadros</p>
+    <dialog id="resultado-circuito-modal" class="resultado-modal resultado-circuito-modal" aria-labelledby="titulo-resultado-circuito-modal" aria-describedby="detalle-resultado-circuito-modal">
+        <div class="resultado-modal__contenido resultado-circuito-modal__contenido">
+            <button id="cerrar-resultado-circuito-modal" class="resultado-modal__cerrar" type="button" aria-label="Cerrar resultado">×</button>
+            <p class="resultado-modal__etiqueta">Bandera a cuadros</p>
             <h2 id="titulo-resultado-circuito-modal"></h2>
             <div class="resultado-circuito-modal__silueta">
                 <img id="foto-resultado-circuito-modal" src="" alt="">
             </div>
-            <strong id="nombre-resultado-circuito-modal" class="resultado-circuito-modal__nombre"></strong>
-            <p id="detalle-resultado-circuito-modal" class="resultado-circuito-modal__detalle"></p>
-            <p class="resultado-circuito-modal__regreso">
+            <strong id="nombre-resultado-circuito-modal" class="resultado-modal__nombre"></strong>
+            <p id="detalle-resultado-circuito-modal" class="resultado-modal__detalle"></p>
+            <p class="resultado-modal__regreso">
                 <span>Nuevo circuito en:</span>
                 <strong id="tiempo-nuevo-circuito-modal">--:--:--</strong>
             </p>
@@ -93,6 +94,8 @@
     </dialog>
 
     <script src="../assets/js/circuitos.js?v=1"></script>
-    <script src="../assets/js/adivinar-el-circuito.js?v=3"></script>
+    <script src="../assets/js/tcdle.js?v=1"></script>
+    <script src="../assets/js/seleccion-diaria.js?v=1"></script>
+    <script src="../assets/js/adivinar-el-circuito.js?v=5"></script>
 </body>
 </html>

@@ -8,92 +8,91 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700;800&amp;family=Saira+Condensed:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/adivinar-el-auto.css?v=16">
-    <link rel="stylesheet" href="../assets/css/buscador-pilotos.css?v=3">
-    <link rel="stylesheet" href="../assets/css/controles-temporales.css?v=4">
+    <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=1">
+    <link rel="stylesheet" href="../assets/css/adivinar-el-auto.css?v=18">
 </head>
 <body>
-    <header class="encabezado-auto">
+    <header class="encabezado-juego">
         <a href="../index.html" aria-label="Volver al juego principal">
-            <img class="logo-auto" src="../assets/images/tcdle-logo.png" alt="TCdle">
+            <img class="logo-juego" src="../assets/images/tcdle-logo.png" alt="TCdle">
         </a>
     </header>
 
-    <main class="juego-auto">
-        <section class="presentacion-auto" aria-labelledby="titulo-auto">
-            <p class="modo-auto">Modo auto</p>
+    <main class="juego juego--auto">
+        <section class="presentacion-juego" aria-labelledby="titulo-auto">
+            <p class="modo-juego">Modo auto</p>
             <h1 id="titulo-auto">¿Quién maneja este TC?</h1>
             <p>La imagen se vuelve más nítida después de cada intento.</p>
         </section>
 
-        <section class="tarjeta-auto" aria-label="Auto del día">
+        <section class="tarjeta-desafio tarjeta-auto" aria-label="Auto del día">
             <div class="marco-auto">
                 <img id="foto-auto" src="" alt="Auto de Turismo Carretera desenfocado">
+                <div id="niveles-desenfoque" class="niveles-desenfoque" aria-hidden="true"></div>
+            </div>
+            <div class="estado-diario">
+                <p id="intentos-restantes-auto" class="contador-intentos">8 intentos disponibles</p>
                 <div id="estado-final" class="estado-final" tabindex="-1" hidden>
                     <span id="estado-final-etiqueta"></span>
                     <strong id="estado-final-piloto"></strong>
                 </div>
-                <div id="niveles-desenfoque" class="niveles-desenfoque" aria-hidden="true"></div>
-            </div>
-            <div class="estado-diario-auto">
-                <p id="intentos-restantes-auto" class="intentos-restantes">8 intentos disponibles</p>
-                <p id="regreso-auto" class="cuenta-regresiva-auto" hidden>
-                    <span>Nuevo auto en:</span>
+                <p id="regreso-auto" class="cuenta-regresiva" hidden>
+                    <span>Próximo piloto en:</span>
                     <strong id="tiempo-nuevo-auto">--:--:--</strong>
                 </p>
             </div>
         </section>
 
-        <section id="panel-intento-auto" class="panel-intento-auto" aria-labelledby="titulo-intento-auto">
-            <div class="cabecera-intento-auto">
-                <strong id="numero-intento-auto">01</strong>
+        <section id="panel-intento-auto" class="panel-intento" aria-labelledby="titulo-intento-auto">
+            <div class="panel-intento__cabecera">
+                <strong id="numero-intento-auto" class="panel-intento__numero">01</strong>
                 <div>
                     <p>Reconocé el auto</p>
                     <h2 id="titulo-intento-auto">Elegí un piloto</h2>
                 </div>
             </div>
 
-            <div class="contenido-intento-auto">
-                <div class="fila-busqueda-auto">
-                    <div class="buscador-pilotos">
+            <div class="panel-intento__contenido">
+                <div class="fila-busqueda">
+                    <div class="buscador">
                         <label class="solo-lectores" for="nombre-piloto-auto">Nombre del piloto</label>
                         <input id="nombre-piloto-auto" type="text" placeholder="Adiviná el piloto del auto" autocomplete="off">
-                        <div id="sugerencias-auto" class="buscador-pilotos__sugerencias" role="listbox" hidden></div>
+                        <div id="sugerencias-auto" class="buscador__sugerencias" role="listbox" hidden></div>
                     </div>
-                    <button id="boton-intentar-auto" type="button">Intentar</button>
+                    <button id="boton-intentar-auto" class="boton-intentar" type="button">Intentar</button>
                 </div>
-                <p id="mensaje-auto" class="mensaje-auto" aria-live="polite"></p>
+                <p id="mensaje-auto" class="mensaje-juego" aria-live="polite"></p>
             </div>
         </section>
 
-        <section id="historial-auto" class="historial-auto" aria-labelledby="titulo-historial-auto" hidden>
-            <div class="titulo-seccion-auto">
+        <section id="historial-auto" class="historial-intentos" aria-labelledby="titulo-historial-auto" hidden>
+            <div class="titulo-seccion">
                 <span></span>
                 <h2 id="titulo-historial-auto">Intentos</h2>
             </div>
-            <div id="lista-intentos-auto" class="lista-intentos-auto"></div>
+            <div id="lista-intentos-auto" class="lista-intentos"></div>
         </section>
     </main>
 
     <dialog
         id="resultado-auto-modal"
-        class="resultado-auto-modal"
+        class="resultado-modal resultado-auto-modal"
         aria-labelledby="titulo-resultado-auto-modal"
         aria-describedby="detalle-resultado-auto-modal"
     >
-        <div class="resultado-auto-modal__contenido">
+        <div class="resultado-modal__contenido resultado-auto-modal__contenido">
             <button
                 id="cerrar-resultado-auto-modal"
-                class="resultado-auto-modal__cerrar"
+                class="resultado-modal__cerrar resultado-auto-modal__cerrar"
                 type="button"
                 aria-label="Cerrar resultado"
             >×</button>
-            <p class="resultado-auto-modal__etiqueta">Bandera a cuadros</p>
+            <p class="resultado-modal__etiqueta">Bandera a cuadros</p>
             <h2 id="titulo-resultado-auto-modal"></h2>
             <img id="foto-resultado-auto-modal" class="resultado-auto-modal__foto" src="" alt="">
-            <strong id="piloto-resultado-auto-modal" class="resultado-auto-modal__piloto"></strong>
-            <p id="detalle-resultado-auto-modal" class="resultado-auto-modal__detalle"></p>
-            <p class="resultado-auto-modal__regreso">
+            <strong id="piloto-resultado-auto-modal" class="resultado-modal__nombre"></strong>
+            <p id="detalle-resultado-auto-modal" class="resultado-modal__detalle"></p>
+            <p class="resultado-modal__regreso">
                 <span>Nuevo auto en:</span>
                 <strong id="tiempo-nuevo-auto-modal">--:--:--</strong>
             </p>
@@ -101,7 +100,9 @@
     </dialog>
 
     <script src="../assets/js/pilotos.js"></script>
-    <script src="../assets/js/buscador-pilotos.js?v=1"></script>
-    <script src="../assets/js/adivinar-el-auto.js?v=16"></script>
+    <script src="../assets/js/autos.js?v=1"></script>
+    <script src="../assets/js/tcdle.js?v=1"></script>
+    <script src="../assets/js/seleccion-diaria.js?v=1"></script>
+    <script src="../assets/js/adivinar-el-auto.js?v=20"></script>
 </body>
 </html>

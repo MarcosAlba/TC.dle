@@ -7,45 +7,44 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700;800&amp;family=Saira+Condensed:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/estilos.css?v=8">
-    <link rel="stylesheet" href="../assets/css/buscador-pilotos.css?v=3">
-    <link rel="stylesheet" href="../assets/css/controles-temporales.css?v=5">
+    <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=1">
+    <link rel="stylesheet" href="../assets/css/estilos.css?v=10">
     <title>TCdle | Adiviná el piloto</title>
 </head>
 <body>
-    <header class="encabezado-principal">
+    <header class="encabezado-juego">
         <a href="../index.html" aria-label="Volver al inicio">
-            <img src="../assets/images/tcdle-logo.png" alt="TCdle" class="logo-tcdle">
+            <img src="../assets/images/tcdle-logo.png" alt="TCdle" class="logo-juego">
         </a>
     </header>
 
-    <main>
-        <section class="presentacion-clasico" aria-labelledby="titulo-clasico">
-            <p>Modo clásico</p>
+    <main class="juego juego--piloto">
+        <section class="presentacion-juego" aria-labelledby="titulo-clasico">
+            <p class="modo-juego">Modo clásico</p>
             <h1 id="titulo-clasico">Adiviná el piloto de hoy</h1>
         </section>
 
-        <section class="panel-busqueda" aria-labelledby="titulo-busqueda">
-            <div class="panel-busqueda__cabecera">
-                <span class="panel-busqueda__numero">01</span>
+        <section class="panel-intento" aria-labelledby="titulo-busqueda">
+            <div class="panel-intento__cabecera">
+                <strong id="numero-intento-piloto" class="panel-intento__numero">01</strong>
                 <div>
                     <p>Tu intento</p>
                     <h2 id="titulo-busqueda">Elegí un piloto</h2>
                 </div>
             </div>
 
-            <div class="panel-busqueda__contenido">
+            <div class="panel-intento__contenido">
                 <div class="fila-busqueda">
-                    <div class="buscador-pilotos">
+                    <div class="buscador">
                         <input type="text" id="nombre-piloto" name="nombre-piloto" placeholder="Adiviná el piloto de hoy" autocomplete="off">
-                        <div id="sugerencias-pilotos" class="buscador-pilotos__sugerencias" role="listbox" hidden></div>
+                        <div id="sugerencias-pilotos" class="buscador__sugerencias" role="listbox" hidden></div>
                     </div>
-                    <button type="button" id="boton-intentar">Intentar</button>
+                    <button class="boton-intentar" type="button" id="boton-intentar">Intentar</button>
                 </div>
 
                 <div class="estado-partida">
                     <p id="intentos-restantes">8 intentos disponibles</p>
-                    <p id="mensaje-juego" aria-live="polite"></p>
+                    <p id="mensaje-juego" class="mensaje-juego" aria-live="polite"></p>
                 </div>
             </div>
         </section>
@@ -67,7 +66,10 @@
         </section>
 
         <section id="panel-intentos" class="panel-intentos" aria-labelledby="titulo-intentos" hidden>
-            <h2 id="titulo-intentos">Intentos</h2>
+            <div class="titulo-seccion">
+                <span></span>
+                <h2 id="titulo-intentos">Intentos</h2>
+            </div>
 
             <table>
                 <thead>
@@ -113,7 +115,8 @@
     </main>
 
     <script src="../assets/js/pilotos.js"></script>
-    <script src="../assets/js/buscador-pilotos.js?v=1"></script>
-    <script src="../assets/js/juego.js?v=4"></script>
+    <script src="../assets/js/tcdle.js?v=1"></script>
+    <script src="../assets/js/seleccion-diaria.js?v=1"></script>
+    <script src="../assets/js/juego.js?v=6"></script>
 </body>
 </html>

@@ -11,25 +11,49 @@ const detalleResultadoFinal = document.getElementById("detalle-resultado-final")
 const etiquetaResultado = document.getElementById("etiqueta-resultado");
 const subtituloResultado = document.getElementById("subtitulo-resultado");
 const guiaPistas = document.getElementById("guia-pistas");
-const panelBusqueda = document.querySelector(".panel-busqueda");
+const panelBusqueda = document.querySelector(".panel-intento");
+const numeroIntentoPiloto = document.getElementById("numero-intento-piloto");
 const tiempoNuevoPiloto = document.getElementById("tiempo-nuevo-piloto");
 
 const pilotoSecreto = obtenerPilotoDelDia();
-const fechaPartidaActual = new Date().toDateString();
+const fechaPartidaActual = TCdle.obtenerFechaLocal();
 
 const MAXIMO_INTENTOS = 8;
 const RETRASO_CELDAS = 350;
-let cantidadIntentos = 0;
-let intervaloCuentaRegresiva;
-
-const pilotosIntentados = [];
-const buscadorPilotos = crearBuscadorPilotos({
+const juegoPilotos = TCdle.crearJuegoDiario({
+    clave: "partidaTCdle",
+    fecha: fechaPartidaActual,
+    objetivoId: pilotoSecreto.id,
+    idsValidos: pilotos.map(function (piloto) { return piloto.id; }),
+    maximoIntentos: MAXIMO_INTENTOS,
+    migrar: function (datos) {
+        return TCdle.migrarPartida(datos, {
+            campoIntentos: "pilotosIntentados",
+            objetivoActual: pilotoSecreto.id,
+            maximoIntentos: MAXIMO_INTENTOS
+        });
+    }
+});
+let estadoPilotos = juegoPilotos.cargar();
+let cantidadIntentos = estadoPilotos.intentosUsados;
+const pilotosIntentados = estadoPilotos.idsIntentados.slice();
+const cuentaRegresivaPilotos = TCdle.crearCuentaRegresiva({
+    elementos: [tiempoNuevoPiloto],
+    fecha: fechaPartidaActual
+});
+const buscadorPilotos = TCdle.crearBuscador({
     campo: campoPiloto,
     lista: document.getElementById("sugerencias-pilotos"),
-    pilotos: pilotos,
+    elementos: pilotos,
+    obtenerId: function (piloto) { return piloto.id; },
+    obtenerEtiqueta: function (piloto) { return piloto.nombre; },
+    obtenerTextoBusqueda: function (piloto) { return piloto.nombre; },
+    renderizarOpcion: TCdle.renderizarOpcionPiloto,
     estaExcluido: function (piloto) {
         return pilotosIntentados.includes(piloto.id);
-    }
+    },
+    alEnviar: mostrarPilotoIngresado,
+    alCambiar: function () { mostrarMensaje("", ""); }
 });
 
 async function mostrarPilotoIngresado() {
@@ -43,9 +67,7 @@ async function mostrarPilotoIngresado() {
         return;
     }
 
-    const pilotoEncontrado = pilotos.find(function (piloto) {
-        return piloto.nombre.toLowerCase() === nombreIngresado.toLowerCase();
-    });
+    const pilotoEncontrado = buscadorPilotos.resolver().elemento;
 
     if (pilotoEncontrado === undefined) {
         mostrarMensaje("Piloto no encontrado.", "mensaje-error");
@@ -57,19 +79,18 @@ async function mostrarPilotoIngresado() {
         return;
     }
 
-    pilotosIntentados.push(pilotoEncontrado.id);
+    const intento = juegoPilotos.intentar(pilotoEncontrado.id);
+    estadoPilotos = intento.estado;
+    pilotosIntentados.splice(0, pilotosIntentados.length, ...estadoPilotos.idsIntentados);
+    cantidadIntentos = estadoPilotos.intentosUsados;
 
     cambiarEstadoControles(false);
     buscadorPilotos.ocultar();
     resultadoFinal.hidden = true;
     mostrarMensaje("", "");
 
-    cantidadIntentos++;
     actualizarContadorIntentos();
-
-    guardarPartida();
-
-    campoPiloto.value = "";
+    buscadorPilotos.limpiar();
 
     await agregarFilaIntento(pilotoEncontrado);
 
@@ -182,6 +203,7 @@ async function agregarFilaIntento(piloto, animar = true) {
 
     for (const celda of celdasConRetraso) {
         await esperar(RETRASO_CELDAS);
+        celda.classList.remove("celda-pendiente");
         celda.classList.add("celda-visible");
     }
 }
@@ -286,21 +308,15 @@ function cambiarEstadoControles(habilitados) {
 }
 
 function normalizarTexto(texto) {
-    return texto
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase();
+    return TCdle.normalizarTexto(texto);
 }
 
-campoPiloto.addEventListener("keydown", function (evento) {
-    if (evento.key === "Enter") {
-        mostrarPilotoIngresado();
-    }
-});
-
 function mostrarMensaje(texto, tipo) {
-    mensajeJuego.textContent = texto;
-    mensajeJuego.className = tipo;
+    TCdle.mostrarMensaje(
+        mensajeJuego,
+        texto,
+        tipo.replace("mensaje-", "")
+    );
 }
 
 function mostrarGuiaPistas() {
@@ -308,12 +324,11 @@ function mostrarGuiaPistas() {
 }
 
 function actualizarContadorIntentos() {
-    const intentosRestantes = MAXIMO_INTENTOS - cantidadIntentos;
-    const palabraIntento =
-        intentosRestantes === 1 ? "intento disponible" : "intentos disponibles";
-
-    textoIntentos.textContent =
-        intentosRestantes + " " + palabraIntento;
+    TCdle.actualizarEstadoIntentos({
+        partida: estadoPilotos,
+        contador: textoIntentos,
+        numero: numeroIntentoPiloto
+    });
 }
 
 function mostrarResultadoFinal(piloto, desplazar = true) {
@@ -379,96 +394,14 @@ function mostrarResultado(
 }
 
 function iniciarCuentaRegresiva() {
-    clearInterval(intervaloCuentaRegresiva);
-    actualizarCuentaRegresiva();
-
-    intervaloCuentaRegresiva = setInterval(
-        actualizarCuentaRegresiva,
-        1000
-    );
-}
-
-function actualizarCuentaRegresiva() {
-    const ahora = new Date();
-
-    if (ahora.toDateString() !== fechaPartidaActual) {
-        location.reload();
-        return;
-    }
-
-    const proximaMedianoche = new Date(
-        ahora.getFullYear(),
-        ahora.getMonth(),
-        ahora.getDate() + 1
-    );
-
-    const diferencia = proximaMedianoche - ahora;
-    const horas = Math.floor(diferencia / (1000 * 60 * 60));
-    const minutos = Math.floor(
-        (diferencia % (1000 * 60 * 60)) / (1000 * 60)
-    );
-    const segundos = Math.floor(
-        (diferencia % (1000 * 60)) / 1000
-    );
-
-    tiempoNuevoPiloto.textContent = [
-        horas,
-        minutos,
-        segundos
-    ]
-        .map(function (valor) {
-            return String(valor).padStart(2, "0");
-        })
-        .join(":");
+    cuentaRegresivaPilotos.iniciar();
 }
 
 function obtenerPilotoDelDia() {
-    const hoy = new Date();
-
-    const fechaNormalizada = Date.UTC(
-        hoy.getFullYear(),
-        hoy.getMonth(),
-        hoy.getDate() + 1
-    );
-
-    const milisegundosPorDia = 1000 * 60 * 60 * 24;
-    const numeroDeDia = Math.floor(fechaNormalizada / milisegundosPorDia);
-    const indicePiloto = numeroDeDia % pilotos.length;
-
-    return pilotos[indicePiloto];
-}
-
-function guardarPartida() {
-    const datosPartida = {
-        fecha: new Date().toDateString(),
-        cantidadIntentos: cantidadIntentos,
-        pilotosIntentados: pilotosIntentados
-    };
-
-    localStorage.setItem(
-        "partidaTCdle",
-        JSON.stringify(datosPartida)
-    );
+    return TCdle.seleccionDiaria.obtener(pilotos, "pilotos");
 }
 
 function cargarPartida() {
-    const partidaGuardada = localStorage.getItem("partidaTCdle");
-
-    if (partidaGuardada === null) {
-        return;
-    }
-
-    const datosPartida = JSON.parse(partidaGuardada);
-    const fechaActual = new Date().toDateString();
-
-    if (datosPartida.fecha !== fechaActual) {
-        localStorage.removeItem("partidaTCdle");
-        return;
-    }
-
-    cantidadIntentos = datosPartida.cantidadIntentos;
-    pilotosIntentados.push(...datosPartida.pilotosIntentados);
-
     pilotosIntentados.forEach(function (idPiloto) {
         const pilotoGuardado = pilotos.find(function (piloto) {
             return piloto.id === idPiloto;
@@ -481,7 +414,7 @@ function cargarPartida() {
 
     actualizarContadorIntentos();
 
-    const partidaGanada = pilotosIntentados.includes(pilotoSecreto.id);
+    const partidaGanada = estadoPilotos.acerto;
 
     if (partidaGanada) {
         mostrarResultadoFinal(pilotoSecreto, false);
@@ -496,7 +429,7 @@ function cargarPartida() {
         mostrarGuiaPistas();
     }
 
-    if (cantidadIntentos >= MAXIMO_INTENTOS) {
+    if (estadoPilotos.terminada) {
         mostrarResultadoPerdida(pilotoSecreto, false);
         terminarPartida(
             "Se terminaron los intentos. El piloto era: " + pilotoSecreto.nombre,
