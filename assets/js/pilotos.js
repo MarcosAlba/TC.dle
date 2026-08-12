@@ -550,8 +550,8 @@ const pilotos = [
     {
         id: 40,
         nombre: "Nicolás Moscardini",
-        marca: "Ford",
-        equipo: "Martínez Competición",
+        marca: "Dodge",
+        equipo: "SAP Team",
         localidad: "La Plata, Buenos Aires",
         provincia: "Buenos Aires",
         fechaNacimiento: "2000-07-06",
@@ -802,8 +802,8 @@ const pilotos = [
     {
         id: 58,
         nombre: "Joaquín Ochoa",
-        marca: "Dodge",
-        equipo: "SAP Team",
+        marca: "Toyota",
+        equipo: "Azar Motorsport",
         localidad: "Viedma, Río Negro",
         provincia: "Río Negro",
         fechaNacimiento: "2002-04-02",

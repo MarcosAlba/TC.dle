@@ -49,10 +49,10 @@ git diff --check
 
 ## Documentacion
 
-- [Arquitectura](docs/ARQUITECTURA.md)
-- [Modos de juego](docs/MODOS_DE_JUEGO.md)
-- [Datos, assets y seleccion diaria](docs/DATOS_Y_ASSETS.md)
-- [Guia para futuros agentes](docs/GUIA_PARA_AGENTES.md)
+- [Arquitectura](docs/arquitectura.md)
+- [Modos de juego](docs/modos_de_juego.md)
+- [Datos, assets y seleccion diaria](docs/datos_y_assets.md)
+- [Guia para futuros agentes](docs/guia_para_agentes.md)
 
 ## Reiniciar partidas desde consola
 
