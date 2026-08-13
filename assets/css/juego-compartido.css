@@ -11,7 +11,7 @@
     --color-cerca: #c68a05;
     --color-incorrecto: #a92735;
     --fuente-titulos: "Saira Condensed", "Arial Narrow", sans-serif;
-    --fuente-texto: "Saira", Arial, Helvetica, sans-serif;
+    --fuente-texto: "Commissioner", "Saira", Helvetica, sans-serif;
 }
 
 * {
@@ -116,7 +116,7 @@ button {
     text-transform: uppercase;
 }
 
-.presentacion-juego > p:last-child:not(.modo-juego) {
+.presentacion-juego>p:last-child:not(.modo-juego) {
     margin: 0.55rem 0 0;
     color: var(--color-texto-suave);
     font-size: 0.9rem;
@@ -226,7 +226,7 @@ button {
     min-width: 0;
 }
 
-.buscador > input {
+.buscador>input {
     width: 100%;
     min-height: 48px;
     padding: 0 14px;
@@ -238,12 +238,12 @@ button {
     transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 
-.buscador > input:focus {
+.buscador>input:focus {
     border-color: var(--color-rojo);
     box-shadow: 0 0 0 3px rgb(242 13 34 / 14%);
 }
 
-.buscador > input:disabled {
+.buscador>input:disabled {
     cursor: not-allowed;
     opacity: 0.55;
 }
@@ -579,6 +579,7 @@ body.resultado-modal-abierto {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
