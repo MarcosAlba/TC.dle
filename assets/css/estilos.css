@@ -2,7 +2,7 @@
     width: min(1100px, calc(100% - 2rem));
 }
 
-.juego--piloto > .panel-intento {
+.juego--piloto>.panel-intento {
     width: min(620px, 100%);
 }
 
@@ -35,7 +35,7 @@
     overflow-x: auto;
 }
 
-.panel-intentos > .titulo-seccion {
+.panel-intentos>.titulo-seccion {
     margin-bottom: 14px;
 }
 
@@ -93,7 +93,7 @@ td.no-coincide {
     border-color: #34353d !important;
 }
 
-.celda-pendiente > * {
+.celda-pendiente>* {
     visibility: hidden;
 }
 
@@ -101,7 +101,7 @@ td.no-coincide {
     animation: revelar-celda 340ms ease-out both;
 }
 
-.celda-visible > * {
+.celda-visible>* {
     visibility: visible;
 }
 
@@ -119,6 +119,15 @@ td.celda-piloto {
     background: #050506;
     object-fit: contain;
     object-position: center bottom;
+}
+
+.logo-marca {
+    display: inline-block;
+    width: 64px;
+    height: 44px;
+    padding: 6px;
+    object-fit: contain;
+    vertical-align: middle;
 }
 
 .celda-numerica {
@@ -142,15 +151,13 @@ td.celda-piloto {
     width: 40px;
     height: 54px;
     background: rgb(255 255 255 / 22%);
-    clip-path: polygon(
-        29% 0,
-        71% 0,
-        71% 38%,
-        100% 38%,
-        50% 100%,
-        0 38%,
-        29% 38%
-    );
+    clip-path: polygon(29% 0,
+            71% 0,
+            71% 38%,
+            100% 38%,
+            50% 100%,
+            0 38%,
+            29% 38%);
     content: "";
     transform: translate(-50%, -50%);
 }
@@ -161,6 +168,16 @@ td.celda-piloto {
 
 .celda-numerica--mayor::before {
     transform: translate(-50%, -50%) rotate(180deg);
+}
+
+td.celda-numerica--mayor {
+    border: 1px solid #4d6bdc;
+    background: #3155b8;
+}
+
+td.celda-numerica--menor {
+    border: 1px solid #9450c9;
+    background: #7230a8;
 }
 
 .guia-pistas {
@@ -212,14 +229,26 @@ td.celda-piloto {
     line-height: 1.25;
 }
 
-.guia-pista--correcta { background: var(--color-correcto); }
+.guia-pista--correcta {
+    background: var(--color-correcto);
+}
+
 .guia-pista--cerca {
     color: #171003;
     background: #e0a000;
 }
-.guia-pista--incorrecta { background: var(--color-incorrecto); }
-.guia-pista--mayor { background: #3155b8; }
-.guia-pista--menor { background: #7230a8; }
+
+.guia-pista--incorrecta {
+    background: var(--color-incorrecto);
+}
+
+.guia-pista--mayor {
+    background: #3155b8;
+}
+
+.guia-pista--menor {
+    background: #7230a8;
+}
 
 .resultado-final {
     position: relative;
@@ -320,13 +349,27 @@ td.celda-piloto {
 }
 
 @keyframes revelar-celda {
-    0% { opacity: 0; transform: translateY(-8px) rotateX(35deg); }
-    100% { opacity: 1; transform: translateY(0) rotateX(0); }
+    0% {
+        opacity: 0;
+        transform: translateY(-8px) rotateX(35deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
 }
 
 @keyframes mostrar-resultado {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @media (max-width: 760px) {

@@ -133,8 +133,8 @@ async function agregarFilaIntento(piloto, animar = true) {
         piloto.id === pilotoSecreto.id
     );
 
-    const celdaMarca = crearCelda(
-        piloto.marca,
+    const celdaMarca = crearCeldaMarca(
+        piloto,
         piloto.marca === pilotoSecreto.marca
     );
 
@@ -177,8 +177,8 @@ async function agregarFilaIntento(piloto, animar = true) {
         celdaMarca,
         celdaEquipo,
         celdaLocalidad,
-        celdaEdad,
         celdaCampeon,
+        celdaEdad,
         celdaDebut
     ];
 
@@ -192,8 +192,8 @@ async function agregarFilaIntento(piloto, animar = true) {
     fila.appendChild(celdaMarca);
     fila.appendChild(celdaEquipo);
     fila.appendChild(celdaLocalidad);
-    fila.appendChild(celdaEdad);
     fila.appendChild(celdaCampeon);
+    fila.appendChild(celdaEdad);
     fila.appendChild(celdaDebut);
     tablaIntentos.prepend(fila);
 
@@ -271,6 +271,31 @@ function crearCeldaPiloto(piloto, coincide) {
     celda.classList.add("celda-piloto");
 
     celda.appendChild(imagen);
+
+    return celda;
+}
+
+const LOGOS_MARCAS = {
+    "Chevrolet": "chevrolet-logo.jpg",
+    "Ford": "ford-logo.jpg",
+    "Torino": "torino-logo.jpg",
+    "Dodge": "dodge-logo.jpg",
+    "Toyota": "toyota-logo.jpg",
+    "BMW": "bmw-logo.jpg",
+    "Mercedez Benz": "mercedes-logo.jpg"
+};
+
+function crearCeldaMarca(piloto, coincide) {
+    const celda = crearCelda("", coincide);
+    const logo = document.createElement("img");
+
+    logo.src = RUTA_IMAGENES + "marcas/" + LOGOS_MARCAS[piloto.marca];
+    logo.alt = "Logo de " + piloto.marca;
+    logo.title = piloto.marca;
+    logo.classList.add("logo-marca");
+    celda.classList.add("celda-marca");
+
+    celda.appendChild(logo);
 
     return celda;
 }
