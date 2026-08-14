@@ -4,7 +4,7 @@ TCdle es una aplicacion web estatica. No hay servidor de aplicacion, bundler ni 
 
 ## Capas principales
 
-`index.html` es la portada. Las tres paginas dentro de `pages/` son los juegos.
+`index.html` es la portada. Las cuatro paginas dentro de `pages/` son los juegos.
 
 `assets/js/tcdle.js` crea el namespace global `window.TCdle`. Ese archivo concentra la infraestructura comun:
 
@@ -12,7 +12,7 @@ TCdle es una aplicacion web estatica. No hay servidor de aplicacion, bundler ni 
 - Fecha local en formato `YYYY-MM-DD`.
 - Cuenta regresiva hasta medianoche.
 - Buscador accesible con teclado, ARIA, sugerencias y exclusiones.
-- Controlador de partida diaria con ocho intentos, repetidos, victoria, derrota y bloqueo final.
+- Controlador de partida diaria con intentos configurables (ocho por defecto), repetidos, victoria, derrota y bloqueo final. Por defecto valida los intentos contra un catalogo cerrado (`idsValidos`), pero acepta una funcion `validarId(id)` alternativa para modos sin catalogo cerrado de intentos (asi lo usa Wordle).
 - Migracion de estructuras viejas de `localStorage`.
 - Render de indicadores y modales accesibles.
 
@@ -44,6 +44,15 @@ Ejemplo para Autos:
 <script src="../assets/js/adivinar-el-auto.js"></script>
 ```
 
+Ejemplo para Wordle:
+
+```html
+<script src="../assets/js/palabras-tc.js"></script>
+<script src="../assets/js/tcdle.js"></script>
+<script src="../assets/js/seleccion-diaria.js"></script>
+<script src="../assets/js/tcdle-wordle.js"></script>
+```
+
 ## Persistencia
 
 Cada modo guarda una partida por dia en `localStorage`:
@@ -51,6 +60,7 @@ Cada modo guarda una partida por dia en `localStorage`:
 - Pilotos: `partidaTCdle`.
 - Autos: `partidaTCdleAuto`.
 - Circuitos: `partidaTCdleCircuito`.
+- Wordle: `partidaTCdleWordle`.
 
 La estructura actual es versionada:
 
@@ -75,5 +85,6 @@ Los CSS por modo se limitan a diferencias reales:
 - `estilos.css`: tabla comparativa de Pilotos, guia de pistas y resultado integrado.
 - `adivinar-el-auto.css`: tarjeta 16:9 del auto, desenfoque progresivo e historial con fotos.
 - `adivinar-el-circuito.css`: silueta, modal de circuito e historial de trazados.
+- `tcdle-wordle.css`: tablero de letras, teclado virtual y sus animaciones.
 
 La portada usa `assets/css/inicio.css`.

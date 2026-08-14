@@ -52,6 +52,41 @@ assert.equal(juego.intentar(3).resultado, "correcta");
 assert.equal(juego.intentar(2).resultado, "bloqueada");
 assert.deepEqual(Array.from(juego.estado().idsIntentados), [1, 3]);
 
+// validarId permite aceptar intentos que no salen de un catálogo fijo
+// (por ejemplo, el Wordle acepta cualquier palabra del largo correcto).
+const juegoValidador = TCdle.crearJuegoDiario({
+    almacenamiento: crearAlmacenamiento(),
+    clave: "partidaLibre",
+    fecha: "2026-08-07",
+    objetivoId: "GATOX",
+    maximoIntentos: 3,
+    validarId: (id) => typeof id === "string" && id.length === 5
+});
+
+assert.equal(juegoValidador.intentar("MAL").resultado, "invalida");
+assert.equal(juegoValidador.intentar("PERRO").resultado, "incorrecta");
+assert.equal(juegoValidador.intentar("PERRO").resultado, "repetida");
+assert.equal(juegoValidador.intentar("GATOX").resultado, "correcta");
+
+// Al recargar, validarId también filtra qué intentos guardados son válidos.
+const almacenamientoValidador = crearAlmacenamiento();
+almacenamientoValidador.setItem("partidaRestaurada", JSON.stringify({
+    version: 2,
+    fecha: "2026-08-07",
+    objetivoId: "GATOX",
+    idsIntentados: ["PERRO", "MAL", "GATOX"],
+    terminada: true
+}));
+const juegoRestaurado = TCdle.crearJuegoDiario({
+    almacenamiento: almacenamientoValidador,
+    clave: "partidaRestaurada",
+    fecha: "2026-08-07",
+    objetivoId: "GATOX",
+    maximoIntentos: 3,
+    validarId: (id) => typeof id === "string" && id.length === 5
+});
+assert.deepEqual(Array.from(juegoRestaurado.cargar().idsIntentados), ["PERRO", "GATOX"]);
+
 const juegoAgotado = TCdle.crearJuegoDiario({
     almacenamiento: crearAlmacenamiento(),
     clave: "agotada",

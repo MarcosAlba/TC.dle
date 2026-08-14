@@ -300,6 +300,14 @@
         const fecha = configuracion.fecha || obtenerFechaLocal();
         const objetivoId = configuracion.objetivoId;
         const idsValidos = new Set(configuracion.idsValidos || []);
+        // Por defecto un intento es válido si está en idsValidos (comportamiento
+        // de siempre: Pilotos, Autos y Circuitos usan catálogos cerrados). Un
+        // modo puede pasar su propia función `validarId(id)` para aceptar
+        // intentos que no salen de un catálogo fijo (por ejemplo, Wordle
+        // acepta cualquier combinación de letras del largo correcto).
+        const validarId = typeof configuracion.validarId === "function"
+            ? configuracion.validarId
+            : function (id) { return idsValidos.has(id); };
         let idsIntentados = [];
         let terminada = false;
 
@@ -350,7 +358,7 @@
                 }
 
                 idsIntentados = partida.idsIntentados.filter(function (id, indice, lista) {
-                    return idsValidos.has(id) && lista.indexOf(id) === indice;
+                    return validarId(id) && lista.indexOf(id) === indice;
                 }).slice(0, maximoIntentos);
                 terminada = Boolean(partida.terminada) && (
                     idsIntentados.includes(objetivoId) || idsIntentados.length >= maximoIntentos
@@ -370,7 +378,7 @@
             if (terminada) {
                 return { resultado: "bloqueada", estado: estado() };
             }
-            if (!idsValidos.has(id)) {
+            if (!validarId(id)) {
                 return { resultado: "invalida", estado: estado() };
             }
             if (idsIntentados.includes(id)) {

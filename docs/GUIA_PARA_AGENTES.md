@@ -29,6 +29,10 @@ Cambio visual solo Circuitos:
 
 - `assets/css/adivinar-el-circuito.css`
 
+Cambio visual solo Wordle:
+
+- `assets/css/tcdle-wordle.css`
+
 Comportamiento comun:
 
 - `assets/js/tcdle.js`
@@ -44,6 +48,7 @@ Catalogos:
 - Pilotos: `assets/js/pilotos.js`
 - Autos: `assets/js/autos.js`
 - Circuitos: `assets/js/circuitos.js`
+- Wordle: `assets/js/palabras-tc.js`
 
 ## Verificacion recomendada
 
@@ -62,6 +67,8 @@ node --check assets/js/seleccion-diaria.js
 node --check assets/js/juego.js
 node --check assets/js/adivinar-el-auto.js
 node --check assets/js/adivinar-el-circuito.js
+node --check assets/js/palabras-tc.js
+node --check assets/js/tcdle-wordle.js
 ```
 
 Si tocaste UI, revisar manualmente desktop y mobile. Los puntos mas sensibles son:
