@@ -66,6 +66,7 @@
     const tituloResultadoWordleModal = document.getElementById("titulo-resultado-wordle-modal");
     const palabraResultadoWordleModal = document.getElementById("palabra-resultado-wordle-modal");
     const detalleResultadoWordleModal = document.getElementById("detalle-resultado-wordle-modal");
+    const resumenWordleModal = document.getElementById("resumen-wordle-modal");
     const tiempoNuevaPalabraModal = document.getElementById("tiempo-nueva-palabra-modal");
 
     const fechaPartidaWordleActual = TCdle.obtenerFechaLocal();
@@ -271,6 +272,48 @@
         }
     }
 
+    async function celebrarFilaGanadora(indiceFila) {
+        const celdas = celdasWordle[indiceFila];
+        if (!celdas) {
+            return;
+        }
+
+        const retardoEntreCeldas = 80;
+        celdas.forEach(function (celda, indice) {
+            setTimeout(function () {
+                celda.classList.add("celda-wordle--salto");
+            }, indice * retardoEntreCeldas);
+        });
+
+        await esperar(celdas.length * retardoEntreCeldas + 550);
+    }
+
+    function construirResumenWordleModal() {
+        if (!resumenWordleModal) {
+            return;
+        }
+
+        resumenWordleModal.innerHTML = "";
+        resumenWordleModal.style.setProperty("--largo-palabra", LARGO_PALABRA);
+
+        estadoWordle.idsIntentados.forEach(function (idIntentado) {
+            const estados = TCdleWordle.evaluarIntento(idIntentado, palabraDelDia.palabra);
+            const filaResumen = document.createElement("div");
+            filaResumen.className = "resumen-wordle-modal__fila";
+
+            estados.forEach(function (estado) {
+                const celdaResumen = document.createElement("span");
+                celdaResumen.className = "resumen-wordle-modal__celda";
+                if (estado === "correcta" || estado === "presente") {
+                    celdaResumen.classList.add("resumen-wordle-modal__celda--" + estado);
+                }
+                filaResumen.appendChild(celdaResumen);
+            });
+
+            resumenWordleModal.appendChild(filaResumen);
+        });
+    }
+
     function sincronizarEstadoWordle(nuevoEstado) {
         estadoWordle = nuevoEstado;
     }
@@ -323,6 +366,7 @@
         mostrarMensajeWordle("", "");
 
         if (intento.resultado === "correcta") {
+            await celebrarFilaGanadora(indiceFila);
             finalizarPartidaWordle(true, true);
         } else if (intento.resultado === "agotada") {
             finalizarPartidaWordle(false, true);
@@ -351,6 +395,7 @@
             ? "Lo resolviste en " + cantidadIntentos + " " + palabraIntentos + "."
             : "La palabra era \"" + palabraDelDia.palabra + "\".";
 
+        construirResumenWordleModal();
         modalResultadoWordle.abrir();
     }
 
