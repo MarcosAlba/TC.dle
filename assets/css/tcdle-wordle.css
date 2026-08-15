@@ -1,37 +1,12 @@
-.cambiar-version-wordle {
-    display: inline-flex;
-    margin-top: 0.9rem;
-    padding: 7px 16px;
-    border: 1px solid var(--color-rojo);
-    border-radius: 999px;
-    color: var(--color-texto);
-    background: rgb(242 13 34 / 10%);
-    font-family: var(--fuente-titulos);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
-}
-
-.cambiar-version-wordle:hover,
-.cambiar-version-wordle:focus-visible {
-    border-color: #ff4057;
-    background: rgb(242 13 34 / 20%);
-    outline: none;
-    transform: translateY(-1px);
-}
-
 .tarjeta-wordle {
     width: min(430px, 100%);
+    margin-top: 40px;
     padding-bottom: 6px;
 }
 
 .tarjeta-wordle .estado-diario {
     min-height: 0;
     padding: 10px 18px 16px;
-    border-top: 1px dashed var(--color-borde);
 }
 
 .tarjeta-wordle .cuenta-regresiva {
