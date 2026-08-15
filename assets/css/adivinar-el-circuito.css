@@ -3,14 +3,31 @@
     width: min(640px, 100%);
 }
 
+.tarjeta-circuito {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.tarjeta-circuito .estado-diario {
+    border-top: none;
+}
+
 .marco-circuito {
     position: relative;
     display: grid;
     min-height: 350px;
     padding: 34px 30px 52px;
+    border: 1px solid var(--color-borde);
+    border-radius: 12px;
     background:
-        radial-gradient(circle at center, rgb(255 255 255 / 8%), transparent 58%),
-        #f2f2f2;
+        radial-gradient(circle at center, rgb(255 255 255 / 6%), transparent 62%),
+        var(--color-superficie);
+    box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 5%),
+        0 24px 44px -26px rgb(0 0 0 / 75%);
     overflow: hidden;
     place-items: center;
 }
@@ -19,8 +36,9 @@
     display: block;
     width: min(100%, 470px);
     max-height: 270px;
-    filter: brightness(0);
+    filter: brightness(0) invert(1);
     object-fit: contain;
+    transition: filter 300ms ease;
 }
 
 .niveles-intentos-circuito {
@@ -33,16 +51,17 @@
 }
 
 .estado-final-circuito {
-    position: absolute;
-    inset: 0;
     display: flex;
-    padding: 22px;
+    min-width: 0;
+    padding: 0;
     color: #fff;
-    background: rgb(8 9 11 / 84%);
-    text-align: center;
-    flex-direction: column;
+    background: transparent;
+    text-align: left;
     align-items: center;
-    justify-content: center;
+}
+
+.estado-final-circuito:focus {
+    outline: none;
 }
 
 .estado-final-circuito span {
@@ -59,14 +78,29 @@
 }
 
 .estado-final-circuito strong {
-    max-width: 500px;
-    margin-top: 4px;
+    margin-left: 8px;
     font-family: var(--fuente-titulos);
-    font-size: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.1;
     text-transform: uppercase;
 }
 
+.tarjeta-circuito .estado-diario {
+    gap: 14px;
+    justify-content: space-between;
+}
+
+#intentos-restantes-circuito {
+    margin: 0 auto;
+}
+
+.tarjeta-circuito .cuenta-regresiva {
+    margin-left: auto;
+    flex: 0 0 auto;
+}
+
 .intento-circuito {
+    position: relative;
     display: grid;
     min-height: 58px;
     padding: 10px 14px;
@@ -74,7 +108,9 @@
     border-left: 4px solid var(--color-incorrecto);
     border-radius: 3px;
     background: var(--color-superficie-clara);
+    box-shadow: inset 0 -2px 0 rgb(0 0 0 / 22%);
     align-content: center;
+    animation: circuito-intento-entrada 300ms ease both;
 }
 
 .intento-circuito--correcto {
@@ -82,10 +118,42 @@
     border-left-color: var(--color-correcto);
 }
 
+.intento-circuito--correcto::after {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    display: grid;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: #fff;
+    background: var(--color-correcto);
+    font-family: var(--fuente-titulos);
+    font-size: 0.7rem;
+    font-weight: 800;
+    content: "✓";
+    transform: translateY(-50%);
+    place-items: center;
+}
+
 .intento-circuito strong {
     font-family: var(--fuente-titulos);
-    font-size: 0.95rem;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
+}
+
+@keyframes circuito-intento-entrada {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .intento-circuito span {
@@ -99,8 +167,9 @@
     height: 150px;
     margin: 18px auto 0;
     padding: 14px;
-    border-radius: 4px;
-    background: #f2f2f2;
+    border: 1px solid var(--color-borde);
+    border-radius: 6px;
+    background: var(--color-superficie-clara);
     overflow: hidden;
     place-items: center;
 }
@@ -113,8 +182,24 @@
     min-height: 0;
     max-width: 100%;
     max-height: 100%;
-    filter: brightness(0);
+    filter: brightness(0) invert(1);
     object-fit: contain;
+}
+
+.juego--circuito .boton-intentar {
+    box-shadow:
+        inset 0 -3px 0 rgb(0 0 0 / 22%),
+        0 10px 18px -12px rgb(242 13 34 / 45%);
+    transition: background-color 150ms ease, border-color 150ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+
+.juego--circuito .boton-intentar:active:not(:disabled) {
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 22%);
+    transform: translateY(2px) scale(0.97);
+}
+
+.juego--circuito .boton-intentar:disabled {
+    box-shadow: none;
 }
 
 @media (max-width: 620px) {
@@ -127,8 +212,27 @@
         max-height: 210px;
     }
 
+    .tarjeta-circuito .estado-diario {
+        min-height: 70px;
+        gap: 5px;
+        text-align: center;
+        flex-direction: column;
+    }
+
+    .estado-final-circuito,
+    .tarjeta-circuito .cuenta-regresiva {
+        margin: 0;
+        justify-content: center;
+    }
+
     .resultado-circuito-modal__silueta {
         width: 160px;
         height: 125px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .intento-circuito {
+        animation: none;
     }
 }

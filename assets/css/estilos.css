@@ -53,7 +53,7 @@
     border-radius: 3px;
     color: #f0f0f3;
     background: #08090b;
-    font-family: var(--fuente-titulos);
+    font-family: var(--fuente-titulos-clasica);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -66,6 +66,7 @@
     padding: 10px;
     border: 1px solid transparent;
     border-radius: 3px;
+    font-family: var(--fuente-texto-clasica);
     font-size: 0.82rem;
     font-weight: 600;
     text-align: center;
