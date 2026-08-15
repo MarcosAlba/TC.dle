@@ -1,12 +1,18 @@
 .tarjeta-wordle {
     width: min(430px, 100%);
-    margin-top: 40px;
+    margin: 40px auto 10px;
     padding-bottom: 6px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
 }
 
 .tarjeta-wordle .estado-diario {
     min-height: 0;
-    padding: 10px 18px 16px;
+    padding: 8px 18px 10px;
+    border-top: none;
 }
 
 .tarjeta-wordle .cuenta-regresiva {
@@ -93,15 +99,15 @@
 
 .mensaje-wordle {
     width: min(560px, 100%);
-    min-height: 22px;
-    margin: 8px auto 4px;
+    min-height: 18px;
+    margin: 4px auto 2px;
     text-align: center;
 }
 
 .teclado-virtual {
     display: grid;
     width: min(560px, calc(100% - 1rem));
-    margin: 12px auto 0;
+    margin: 4px auto 0;
     gap: 8px;
 }
 

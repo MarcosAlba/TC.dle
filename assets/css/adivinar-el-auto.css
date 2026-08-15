@@ -90,6 +90,10 @@
     justify-content: space-between;
 }
 
+#intentos-restantes-auto {
+    margin: 0 auto;
+}
+
 .tarjeta-auto .cuenta-regresiva {
     margin-left: auto;
     flex: 0 0 auto;
