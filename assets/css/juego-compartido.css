@@ -10,8 +10,10 @@
     --color-correcto: #14864f;
     --color-cerca: #c68a05;
     --color-incorrecto: #a92735;
-    --fuente-titulos: "Saira Condensed", "Arial Narrow", sans-serif;
-    --fuente-texto: "Commissioner", "Saira", Helvetica, sans-serif;
+    --fuente-titulos: "Barlow Condensed", "Arial Narrow", sans-serif;
+    --fuente-texto: "Work Sans", Helvetica, sans-serif;
+    --fuente-titulos-clasica: "Saira Condensed", "Arial Narrow", sans-serif;
+    --fuente-texto-clasica: "Commissioner", "Saira", Helvetica, sans-serif;
 }
 
 * {
