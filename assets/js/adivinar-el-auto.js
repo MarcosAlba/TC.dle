@@ -111,7 +111,11 @@ function finalizarCargaInicialAuto() {
 function ajustarEncuadreAuto() {
     const proporcion = fotoAuto.naturalWidth / fotoAuto.naturalHeight;
 
-    fotoAuto.classList.toggle("foto-auto--panoramica", proporcion > 2.15);
+    // El marco es 3:2 (1.5). Las fotos que se alejan mucho de esa
+    // proporción (casi cuadradas/verticales, o mucho más panorámicas)
+    // se ven mal recortadas con "cover", así que se muestran completas
+    // con "contain" en su lugar.
+    fotoAuto.classList.toggle("foto-auto--panoramica", proporcion < 1.15 || proporcion > 1.8);
 }
 
 function actualizarDesenfoque() {
