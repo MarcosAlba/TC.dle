@@ -1,11 +1,16 @@
 .tarjeta-auto {
-    width: min(760px, 100%);
+    width: min(640px, 100%);
     padding: 0;
     border: 0;
     border-radius: 0;
     background: transparent;
     box-shadow: none;
     overflow: visible;
+}
+
+.juego--auto .panel-intento,
+.juego--auto .historial-intentos {
+    width: min(640px, 100%);
 }
 
 .marco-auto {

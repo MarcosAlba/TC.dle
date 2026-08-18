@@ -8,8 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=2">
-    <link rel="stylesheet" href="../assets/css/tcdle-wordle.css?v=9">
+    <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=10">
+    <link rel="stylesheet" href="../assets/css/tcdle-wordle.css?v=16">
 </head>
 <body>
     <header class="encabezado-juego">
@@ -19,26 +19,70 @@
     </header>
 
     <main class="juego juego--wordle">
-        <section class="presentacion-juego" aria-labelledby="titulo-wordle">
-            <p class="modo-juego">Wordle del TC</p>
-            <h1 id="titulo-wordle">Adiviná la palabra de hoy</h1>
-            <p>Escribí con tu teclado o tocá el teclado de abajo.</p>
-        </section>
+        <div id="intro-wordle">
+            <section class="presentacion-juego" aria-labelledby="titulo-intro-wordle">
+                <h1 id="titulo-intro-wordle">Wordle TC</h1>
+            </section>
 
-        <section class="tarjeta-desafio tarjeta-wordle" aria-label="Tablero del día">
-            <div id="tablero-wordle" class="tablero-wordle" role="group" aria-label="Tablero de letras"></div>
-            <div class="estado-diario">
-                <p id="intentos-restantes-wordle" class="contador-intentos solo-lectores">Intentos disponibles</p>
-                <p id="regreso-wordle" class="cuenta-regresiva" hidden>
-                    <span>Nueva palabra en:</span>
-                    <strong id="tiempo-nueva-palabra">--:--:--</strong>
-                </p>
-            </div>
-        </section>
+            <section class="intro-juego" aria-label="Cómo se juega">
+                <img
+                    class="intro-juego__imagen"
+                    src="../assets/images/ejemplos/ejemplo-wordle.png"
+                    alt="Ejemplo de un tablero del Wordle del TC ya jugado, con celdas verdes, amarillas y grises"
+                >
 
-        <p id="mensaje-wordle" class="mensaje-juego mensaje-wordle" aria-live="polite"></p>
+                <div class="intro-juego__info">
+                    <p class="intro-juego__texto">
+                        En el Wordle TC tenés que encontrar la palabra relacionada al TC.
+                        Puede ser un piloto o un circuito. Tenés <strong>6 intentos</strong> para descubrirla.
+                    </p>
 
-        <section id="teclado-virtual" class="teclado-virtual" aria-label="Teclado virtual"></section>
+                    <ul class="intro-juego__leyenda">
+                        <li>
+                            <span class="intro-juego__chip intro-juego__chip--correcta" aria-hidden="true"></span>
+                            <span><strong>Verde:</strong> letra correcta en el lugar correcto.</span>
+                        </li>
+                        <li>
+                            <span class="intro-juego__chip intro-juego__chip--presente" aria-hidden="true"></span>
+                            <span><strong>Amarillo:</strong> letra correcta, pero en el lugar incorrecto.</span>
+                        </li>
+                        <li>
+                            <span class="intro-juego__chip intro-juego__chip--ausente" aria-hidden="true"></span>
+                            <span><strong>Gris:</strong> la letra no está en la palabra.</span>
+                        </li>
+                    </ul>
+
+                    <p class="intro-juego__texto">
+                        El teclado marcará las letras que ya utilizaste para ayudarte a descubrir la palabra.
+                    </p>
+
+                    <button id="boton-empezar-wordle" type="button" class="intro-juego__boton">Empezar</button>
+                </div>
+            </section>
+        </div>
+
+        <div id="contenido-wordle" hidden>
+            <section class="presentacion-juego" aria-labelledby="titulo-wordle">
+                <p class="modo-juego">Wordle del TC</p>
+                <h1 id="titulo-wordle">Adiviná la palabra de hoy</h1>
+                <p>Escribí con tu teclado o tocá el teclado de abajo.</p>
+            </section>
+
+            <section class="tarjeta-desafio tarjeta-wordle" aria-label="Tablero del día">
+                <div id="tablero-wordle" class="tablero-wordle" role="group" aria-label="Tablero de letras"></div>
+                <div class="estado-diario">
+                    <p id="intentos-restantes-wordle" class="contador-intentos solo-lectores">Intentos disponibles</p>
+                    <p id="regreso-wordle" class="cuenta-regresiva" hidden>
+                        <span>Nueva palabra en:</span>
+                        <strong id="tiempo-nueva-palabra">--:--:--</strong>
+                    </p>
+                </div>
+            </section>
+
+            <p id="mensaje-wordle" class="mensaje-juego mensaje-wordle" aria-live="polite"></p>
+
+            <section id="teclado-virtual" class="teclado-virtual" aria-label="Teclado virtual"></section>
+        </div>
     </main>
 
     <dialog
@@ -67,8 +111,8 @@
     </dialog>
 
     <script src="../assets/js/palabras-tc.js"></script>
-    <script src="../assets/js/tcdle.js?v=1"></script>
+    <script src="../assets/js/tcdle.js?v=2"></script>
     <script src="../assets/js/seleccion-diaria.js?v=1"></script>
-    <script src="../assets/js/tcdle-wordle.js?v=4"></script>
+    <script src="../assets/js/tcdle-wordle.js?v=5"></script>
 </body>
 </html>

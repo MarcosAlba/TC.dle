@@ -480,6 +480,52 @@
         elemento.className = "mensaje-juego" + (tipo ? " mensaje-juego--" + tipo : "");
     }
 
+    // Pantalla de introducción de un juego: se muestra la primera vez que se
+    // entra a la página y, al tocar "Empezar", queda marcada en localStorage
+    // para no volver a aparecer en visitas futuras.
+    function crearIntroJuego(configuracion) {
+        const clave = configuracion.clave;
+        const intro = configuracion.intro;
+        const contenido = configuracion.contenido;
+        const boton = configuracion.boton;
+        const almacenamiento = configuracion.almacenamiento || global.localStorage;
+
+        function marcarVista() {
+            try {
+                almacenamiento.setItem(clave, "1");
+            } catch (error) {
+                // Si localStorage no está disponible, simplemente no se recuerda.
+            }
+        }
+
+        function mostrarJuego() {
+            intro.hidden = true;
+            contenido.hidden = false;
+        }
+
+        function iniciar() {
+            let vista = false;
+            try {
+                vista = almacenamiento.getItem(clave) === "1";
+            } catch (error) {
+                vista = false;
+            }
+
+            if (vista) {
+                mostrarJuego();
+            }
+        }
+
+        boton.addEventListener("click", function () {
+            marcarVista();
+            mostrarJuego();
+        });
+
+        iniciar();
+
+        return { mostrarJuego: mostrarJuego };
+    }
+
     function crearModalResultado(configuracion) {
         const dialogo = configuracion.dialogo;
 
@@ -528,6 +574,7 @@
     TCdle.renderizarOpcionPiloto = renderizarOpcionPiloto;
     TCdle.crearJuegoDiario = crearJuegoDiario;
     TCdle.crearCuentaRegresiva = crearCuentaRegresiva;
+    TCdle.crearIntroJuego = crearIntroJuego;
     TCdle.renderizarIndicadores = renderizarIndicadores;
     TCdle.actualizarEstadoIntentos = actualizarEstadoIntentos;
     TCdle.mostrarMensaje = mostrarMensaje;

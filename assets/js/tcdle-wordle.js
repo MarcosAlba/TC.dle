@@ -55,6 +55,9 @@
         ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "BORRAR"]
     ];
 
+    const introWordle = document.getElementById("intro-wordle");
+    const contenidoWordle = document.getElementById("contenido-wordle");
+    const botonEmpezarWordle = document.getElementById("boton-empezar-wordle");
     const tableroWordle = document.getElementById("tablero-wordle");
     const tecladoVirtual = document.getElementById("teclado-virtual");
     const mensajeWordle = document.getElementById("mensaje-wordle");
@@ -433,4 +436,13 @@
     construirTeclado();
     cargarPartidaWordle();
     actualizarInterfazWordle();
+
+    if (introWordle && contenidoWordle && botonEmpezarWordle) {
+        TCdle.crearIntroJuego({
+            clave: "tcdleIntroWordleVista",
+            intro: introWordle,
+            contenido: contenidoWordle,
+            boton: botonEmpezarWordle
+        });
+    }
 })();

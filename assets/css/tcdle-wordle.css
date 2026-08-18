@@ -1,6 +1,27 @@
+.juego--wordle {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.juego--wordle .presentacion-juego {
+    margin-bottom: 0.75rem;
+}
+
+.juego--wordle .modo-juego {
+    padding-top: 20px;
+}
+
+.juego--wordle #titulo-wordle {
+    margin: 0;
+}
+
+.juego--wordle .presentacion-juego > p:last-child:not(.modo-juego) {
+    margin: 0.55rem 0 0;
+}
+
 .tarjeta-wordle {
     width: min(430px, 100%);
-    margin: 40px auto 10px;
+    margin: 12px auto 6px;
     padding-bottom: 6px;
     border: 0;
     border-radius: 0;
@@ -26,16 +47,16 @@
 
 .tablero-wordle {
     display: flex;
-    padding: 28px 16px 10px;
-    gap: 8px;
+    padding: 20px 16px 8px;
+    gap: 6px;
     align-items: center;
     flex-direction: column;
 }
 
 .fila-wordle {
     display: grid;
-    width: min(100%, calc(var(--largo-palabra, 5) * 60px));
-    gap: 7px;
+    width: min(100%, calc(var(--largo-palabra, 5) * 52px));
+    gap: 6px;
     grid-template-columns: repeat(var(--largo-palabra, 5), 1fr);
 }
 
@@ -51,7 +72,7 @@
     color: var(--color-texto);
     background: #0c0c10;
     font-family: var(--fuente-titulos);
-    font-size: clamp(1.1rem, 4vw, 1.6rem);
+    font-size: clamp(1rem, 3.6vw, 1.4rem);
     font-weight: 800;
     line-height: 1;
     text-transform: uppercase;
@@ -108,7 +129,7 @@
     display: grid;
     width: min(560px, calc(100% - 1rem));
     margin: 4px auto 0;
-    gap: 8px;
+    gap: 6px;
 }
 
 .teclado-virtual__fila {
@@ -118,7 +139,7 @@
 }
 
 .tecla {
-    height: 52px;
+    height: 44px;
     min-width: 32px;
     padding: 0 8px;
     border: 0;
@@ -279,25 +300,25 @@
     }
 
     .tablero-wordle {
-        padding: 18px 4px 8px;
-        gap: 6px;
+        padding: 8px 4px 6px;
+        gap: 5px;
     }
 
     .fila-wordle {
-        width: min(100%, calc(var(--largo-palabra, 5) * 46px));
+        width: min(100%, calc(var(--largo-palabra, 5) * 42px));
         gap: 5px;
     }
 
     .celda-wordle {
-        font-size: clamp(1rem, 6vw, 1.3rem);
+        font-size: clamp(0.95rem, 5.5vw, 1.2rem);
     }
 
     .teclado-virtual {
-        gap: 6px;
+        gap: 5px;
     }
 
     .tecla {
-        height: 46px;
+        height: 40px;
         min-width: 24px;
         font-size: 0.76rem;
     }

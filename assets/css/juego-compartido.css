@@ -382,6 +382,140 @@ button {
     text-align: center;
 }
 
+.intro-juego {
+    display: flex;
+    width: min(720px, 100%);
+    margin: 1.5rem auto 2rem;
+    padding: 24px;
+    border: 1px solid var(--color-borde);
+    border-radius: 10px;
+    background: var(--color-superficie);
+    box-shadow: 0 18px 45px rgb(0 0 0 / 26%);
+    text-align: left;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+}
+
+.intro-juego__imagen {
+    width: 260px;
+    max-width: 38%;
+    height: auto;
+    border-radius: 4px;
+    object-fit: contain;
+    flex: 0 0 auto;
+}
+
+.intro-juego__info {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.intro-juego__texto {
+    margin: 0 0 10px;
+    color: var(--color-texto-suave);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.intro-juego__texto:last-of-type {
+    margin-bottom: 0;
+}
+
+.intro-juego__texto strong {
+    color: var(--color-texto);
+}
+
+.intro-juego__leyenda {
+    display: grid;
+    margin: 0 0 10px;
+    padding: 0;
+    gap: 7px;
+    list-style: none;
+}
+
+.intro-juego__leyenda li {
+    display: flex;
+    color: var(--color-texto-suave);
+    font-size: 0.87rem;
+    line-height: 1.35;
+    gap: 9px;
+    align-items: flex-start;
+}
+
+.intro-juego__leyenda strong {
+    color: var(--color-texto);
+}
+
+.intro-juego__chip {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    border-radius: 3px;
+}
+
+.intro-juego__chip--correcta {
+    background: var(--color-correcto);
+}
+
+.intro-juego__chip--presente {
+    background: var(--color-cerca);
+}
+
+.intro-juego__chip--ausente {
+    border: 1px solid var(--color-borde);
+    background: var(--color-superficie-clara);
+}
+
+.intro-juego__boton {
+    align-self: flex-start;
+    min-width: 0;
+    min-height: 32px;
+    margin-top: 14px;
+    padding: 0 16px;
+    border: 1px solid var(--color-rojo);
+    border-radius: 6px;
+    color: #fff;
+    background: var(--color-rojo);
+    font-family: var(--fuente-titulos);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.intro-juego__boton:hover,
+.intro-juego__boton:focus-visible {
+    border-color: #ff4057;
+    background: #ff233e;
+    outline: none;
+}
+
+@media (max-width: 620px) {
+    .intro-juego {
+        flex-direction: column;
+        width: min(100% - 1rem, 720px);
+        padding: 18px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .intro-juego__imagen {
+        width: min(220px, 70%);
+        max-width: 70%;
+    }
+
+    .intro-juego__info {
+        width: 100%;
+        text-align: left;
+    }
+}
+
 .mensaje-juego {
     min-height: 20px;
     margin: 10px 0 0;
