@@ -8,11 +8,6 @@
     overflow: visible;
 }
 
-.juego--auto .panel-intento,
-.juego--auto .historial-intentos {
-    width: min(760px, 100%);
-}
-
 .marco-auto {
     --desenfoque-auto: 24px;
     --brillo-auto: 0.72;
@@ -22,7 +17,7 @@
     min-height: 0;
     padding: 0;
     border-radius: 12px;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 16 / 9;
     background:
         radial-gradient(circle at center, rgb(255 255 255 / 9%), transparent 58%),
         #0b0c0f;
@@ -55,7 +50,8 @@
 }
 
 #foto-auto.foto-auto--panoramica {
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
 }
 
 .niveles-desenfoque {
