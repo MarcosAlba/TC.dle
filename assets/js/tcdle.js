@@ -480,9 +480,29 @@
         elemento.className = "mensaje-juego" + (tipo ? " mensaje-juego--" + tipo : "");
     }
 
-    // Pantalla de introducción de un juego: se muestra la primera vez que se
-    // entra a la página y, al tocar "Empezar", queda marcada en localStorage
-    // para no volver a aparecer en visitas futuras.
+    // Pantalla de introducción de un juego: se muestra una vez por día (el
+    // mismo criterio de "día" que usa crearJuegoDiario) y, al tocar
+    // "Empezar", queda marcada en localStorage con la fecha de hoy para no
+    // volver a aparecer hasta el próximo reinicio diario.
+    function aplicarVisibilidadIntro(configuracion) {
+        const clave = configuracion.clave;
+        const intro = configuracion.intro;
+        const contenido = configuracion.contenido;
+        const almacenamiento = configuracion.almacenamiento || global.localStorage;
+
+        let vistaHoy = false;
+        try {
+            vistaHoy = almacenamiento.getItem(clave) === obtenerFechaLocal();
+        } catch (error) {
+            vistaHoy = false;
+        }
+
+        intro.hidden = vistaHoy;
+        contenido.hidden = !vistaHoy;
+
+        return vistaHoy;
+    }
+
     function crearIntroJuego(configuracion) {
         const clave = configuracion.clave;
         const intro = configuracion.intro;
@@ -492,7 +512,7 @@
 
         function marcarVista() {
             try {
-                almacenamiento.setItem(clave, "1");
+                almacenamiento.setItem(clave, obtenerFechaLocal());
             } catch (error) {
                 // Si localStorage no está disponible, simplemente no se recuerda.
             }
@@ -503,25 +523,15 @@
             contenido.hidden = false;
         }
 
-        function iniciar() {
-            let vista = false;
-            try {
-                vista = almacenamiento.getItem(clave) === "1";
-            } catch (error) {
-                vista = false;
-            }
-
-            if (vista) {
-                mostrarJuego();
-            }
-        }
-
         boton.addEventListener("click", function () {
             marcarVista();
             mostrarJuego();
         });
 
-        iniciar();
+        // Red de seguridad: si el script inline temprano de la página no
+        // llegó a correr por algún motivo, esto deja todo en el estado
+        // correcto igual.
+        aplicarVisibilidadIntro(configuracion);
 
         return { mostrarJuego: mostrarJuego };
     }
@@ -575,6 +585,7 @@
     TCdle.crearJuegoDiario = crearJuegoDiario;
     TCdle.crearCuentaRegresiva = crearCuentaRegresiva;
     TCdle.crearIntroJuego = crearIntroJuego;
+    TCdle.aplicarVisibilidadIntro = aplicarVisibilidadIntro;
     TCdle.renderizarIndicadores = renderizarIndicadores;
     TCdle.actualizarEstadoIntentos = actualizarEstadoIntentos;
     TCdle.mostrarMensaje = mostrarMensaje;

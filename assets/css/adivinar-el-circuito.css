@@ -41,6 +41,11 @@
     transition: filter 300ms ease;
 }
 
+.intro-juego__imagen--circuito {
+    filter: brightness(0) invert(1);
+    max-height: 200px;
+}
+
 .niveles-intentos-circuito {
     position: absolute;
     right: 18px;

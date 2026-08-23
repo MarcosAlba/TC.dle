@@ -20,6 +20,9 @@ const fotoResultadoAutoModal = document.getElementById("foto-resultado-auto-moda
 const pilotoResultadoAutoModal = document.getElementById("piloto-resultado-auto-modal");
 const detalleResultadoAutoModal = document.getElementById("detalle-resultado-auto-modal");
 const tiempoNuevoAutoModal = document.getElementById("tiempo-nuevo-auto-modal");
+const introAuto = document.getElementById("intro-auto");
+const contenidoAuto = document.getElementById("contenido-auto");
+const botonEmpezarAuto = document.getElementById("boton-empezar-auto");
 
 const MAXIMO_INTENTOS_AUTO = 8;
 const NIVELES_DESENFOQUE = [24, 20, 16, 12, 9, 6, 3, 1, 0];
@@ -265,3 +268,12 @@ botonIntentarAuto.addEventListener("click", intentarPilotoAuto);
 cargarPartidaAuto();
 actualizarInterfazAuto();
 configurarImagenAuto();
+
+if (introAuto && contenidoAuto && botonEmpezarAuto) {
+    TCdle.crearIntroJuego({
+        clave: "tcdleIntroAutoVista",
+        intro: introAuto,
+        contenido: contenidoAuto,
+        boton: botonEmpezarAuto
+    });
+}

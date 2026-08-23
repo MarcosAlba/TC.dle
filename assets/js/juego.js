@@ -14,6 +14,9 @@ const guiaPistas = document.getElementById("guia-pistas");
 const panelBusqueda = document.querySelector(".panel-intento");
 const numeroIntentoPiloto = document.getElementById("numero-intento-piloto");
 const tiempoNuevoPiloto = document.getElementById("tiempo-nuevo-piloto");
+const introPiloto = document.getElementById("intro-piloto");
+const contenidoPiloto = document.getElementById("contenido-piloto");
+const botonEmpezarPiloto = document.getElementById("boton-empezar-piloto");
 
 const pilotoSecreto = obtenerPilotoDelDia();
 const fechaPartidaActual = TCdle.obtenerFechaLocal();
@@ -465,3 +468,12 @@ function cargarPartida() {
 
 cargarPartida();
 botonIntentar.addEventListener("click", mostrarPilotoIngresado);
+
+if (introPiloto && contenidoPiloto && botonEmpezarPiloto) {
+    TCdle.crearIntroJuego({
+        clave: "tcdleIntroPilotoVista",
+        intro: introPiloto,
+        contenido: contenidoPiloto,
+        boton: botonEmpezarPiloto
+    });
+}

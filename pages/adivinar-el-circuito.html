@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Adiviná el circuito del día en el que corrió el Turismo Carretera.">
-    <title>TCdle | Adiviná el circuito</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=10">
-    <link rel="stylesheet" href="../assets/css/adivinar-el-circuito.css?v=9">
+    <link rel="stylesheet" href="../assets/css/adivinar-el-circuito.css?v=12">
+    <title>TCdle | Adiviná el circuito</title>
+    <link rel="icon" type="image/png" href="../assets/images/tc-dle.ico">
+    <script src="../assets/js/tcdle.js?v=3"></script>
 </head>
 <body>
     <header class="encabezado-juego">
@@ -19,6 +21,39 @@
     </header>
 
     <main class="juego juego--circuito">
+        <div id="intro-circuito">
+            <section class="presentacion-juego" aria-labelledby="titulo-intro-circuito">
+                <h1 id="titulo-intro-circuito">¿Qué circuito es este?</h1>
+            </section>
+
+            <section class="intro-juego" aria-label="Cómo se juega">
+                <img
+                    class="intro-juego__imagen intro-juego__imagen--circuito"
+                    src="../assets/images/circuitos/balcarce.svg"
+                    alt="Silueta de ejemplo de un circuito de Turismo Carretera"
+                >
+
+                <div class="intro-juego__info">
+                    <p class="intro-juego__texto">
+                        Tenés que reconocer el circuito por su silueta.
+                    </p>
+
+                    <p class="intro-juego__texto">
+                        Tenés <strong>8 intentos</strong> para descubrir de qué circuito de TC se trata. Escribí
+                        el nombre del circuito que creés que corresponde al trazado.
+                    </p>
+
+                    <p class="intro-juego__texto">
+                        <strong>Pista:</strong> están incluidos todos los circuitos utilizados por el TC desde
+                        1997 hasta la actualidad.
+                    </p>
+
+                    <button id="boton-empezar-circuito" type="button" class="intro-juego__boton">Empezar</button>
+                </div>
+            </section>
+        </div>
+
+        <div id="contenido-circuito" hidden>
         <section class="presentacion-juego" aria-labelledby="titulo-circuito">
             <p class="modo-juego">Modo circuito</p>
             <h1 id="titulo-circuito">¿Qué circuito es este?</h1>
@@ -74,6 +109,17 @@
             <div id="lista-intentos-circuito" class="lista-intentos"></div>
         </section>
 
+        </div>
+
+        <script>
+            if (window.TCdle && TCdle.aplicarVisibilidadIntro) {
+                TCdle.aplicarVisibilidadIntro({
+                    clave: "tcdleIntroCircuitoVista",
+                    intro: document.getElementById("intro-circuito"),
+                    contenido: document.getElementById("contenido-circuito")
+                });
+            }
+        </script>
     </main>
 
     <dialog id="resultado-circuito-modal" class="resultado-modal resultado-circuito-modal" aria-labelledby="titulo-resultado-circuito-modal" aria-describedby="detalle-resultado-circuito-modal">
@@ -94,8 +140,7 @@
     </dialog>
 
     <script src="../assets/js/circuitos.js?v=1"></script>
-    <script src="../assets/js/tcdle.js?v=2"></script>
     <script src="../assets/js/seleccion-diaria.js?v=1"></script>
-    <script src="../assets/js/adivinar-el-circuito.js?v=5"></script>
+    <script src="../assets/js/adivinar-el-circuito.js?v=6"></script>
 </body>
 </html>

@@ -20,6 +20,9 @@ const fotoResultadoCircuitoModal = document.getElementById("foto-resultado-circu
 const nombreResultadoCircuitoModal = document.getElementById("nombre-resultado-circuito-modal");
 const detalleResultadoCircuitoModal = document.getElementById("detalle-resultado-circuito-modal");
 const tiempoNuevoCircuitoModal = document.getElementById("tiempo-nuevo-circuito-modal");
+const introCircuito = document.getElementById("intro-circuito");
+const contenidoCircuito = document.getElementById("contenido-circuito");
+const botonEmpezarCircuito = document.getElementById("boton-empezar-circuito");
 
 const MAXIMO_INTENTOS_CIRCUITO = 8;
 const CLAVE_PARTIDA_CIRCUITO = "partidaTCdleCircuito";
@@ -307,3 +310,12 @@ botonIntentarCircuito.addEventListener("click", intentarCircuito);
 configurarImagenCircuito();
 cargarPartidaCircuito();
 actualizarInterfazCircuito();
+
+if (introCircuito && contenidoCircuito && botonEmpezarCircuito) {
+    TCdle.crearIntroJuego({
+        clave: "tcdleIntroCircuitoVista",
+        intro: introCircuito,
+        contenido: contenidoCircuito,
+        boton: botonEmpezarCircuito
+    });
+}

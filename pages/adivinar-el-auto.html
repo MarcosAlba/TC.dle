@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Adiviná qué piloto de Turismo Carretera conduce el auto del día.">
-    <title>TCdle | Adiviná el piloto por su auto</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=2">
     <link rel="stylesheet" href="../assets/css/adivinar-el-auto.css?v=21">
+    <title>TCdle | Adiviná el piloto por su auto</title>
+    <link rel="icon" type="image/png" href="../assets/images/tc-dle.ico">
+    <script src="../assets/js/tcdle.js?v=2"></script>
 </head>
 <body>
     <header class="encabezado-juego">
@@ -19,6 +21,36 @@
     </header>
 
     <main class="juego juego--auto">
+        <div id="intro-auto">
+            <section class="presentacion-juego" aria-labelledby="titulo-intro-auto">
+                <h1 id="titulo-intro-auto">¿Quién maneja este TC?</h1>
+            </section>
+
+            <section class="intro-juego" aria-label="Cómo se juega">
+                <img
+                    class="intro-juego__imagen intro-juego__imagen--auto"
+                    src="../assets/images/ejemplos/ejemplo-auto.png"
+                    alt="Auto de Turismo Carretera de ejemplo, mostrado con un desenfoque animado"
+                >
+
+                <div class="intro-juego__info">
+                    <p class="intro-juego__texto">
+                        Hay un auto de TC escondido detrás de una imagen totalmente borrosa. Tu misión es
+                        descubrir a qué piloto le pertenece antes de quedarte sin intentos.
+                    </p>
+
+                    <p class="intro-juego__texto">
+                        Tenés <strong>8 oportunidades</strong> para adivinar. En cada una, escribís el nombre
+                        del piloto que creés que es dueño de ese auto. Por cada error, la imagen se va volviendo
+                        un poco más nítida, dándote más pistas visuales para el próximo intento.
+                    </p>
+
+                    <button id="boton-empezar-auto" type="button" class="intro-juego__boton">Empezar</button>
+                </div>
+            </section>
+        </div>
+
+        <div id="contenido-auto" hidden>
         <section class="presentacion-juego" aria-labelledby="titulo-auto">
             <p class="modo-juego">Modo auto</p>
             <h1 id="titulo-auto">¿Quién maneja este TC?</h1>
@@ -72,6 +104,17 @@
             </div>
             <div id="lista-intentos-auto" class="lista-intentos"></div>
         </section>
+        </div>
+
+        <script>
+            if (window.TCdle && TCdle.aplicarVisibilidadIntro) {
+                TCdle.aplicarVisibilidadIntro({
+                    clave: "tcdleIntroAutoVista",
+                    intro: document.getElementById("intro-auto"),
+                    contenido: document.getElementById("contenido-auto")
+                });
+            }
+        </script>
     </main>
 
     <dialog
@@ -101,8 +144,7 @@
 
     <script src="../assets/js/pilotos.js"></script>
     <script src="../assets/js/autos.js?v=1"></script>
-    <script src="../assets/js/tcdle.js?v=1"></script>
     <script src="../assets/js/seleccion-diaria.js?v=1"></script>
-    <script src="../assets/js/adivinar-el-auto.js?v=20"></script>
+    <script src="../assets/js/adivinar-el-auto.js?v=21"></script>
 </body>
 </html>

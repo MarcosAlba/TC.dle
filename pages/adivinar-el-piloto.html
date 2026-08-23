@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=10">
     <link rel="stylesheet" href="../assets/css/estilos.css?v=11">
     <title>TCdle | Adiviná el piloto</title>
+    <link rel="icon" type="image/png" href="../assets/images/tc-dle.ico">
+    <script src="../assets/js/tcdle.js?v=3"></script>
 </head>
 <body>
     <header class="encabezado-juego">
@@ -20,6 +22,37 @@
     </header>
 
     <main class="juego juego--piloto">
+        <div id="intro-piloto">
+            <section class="presentacion-juego" aria-labelledby="titulo-intro-piloto">
+                <h1 id="titulo-intro-piloto">Adiviná el piloto</h1>
+            </section>
+
+            <section class="intro-juego" aria-label="Cómo se juega">
+                <img
+                    class="intro-juego__imagen"
+                    src="../assets/images/ejemplos/ejemplo-piloto.png"
+                    alt="Ejemplo de una tabla de intentos del piloto secreto, con celdas de colores que indican qué tan cerca estuvo cada dato"
+                >
+
+                <div class="intro-juego__info">
+                    <p class="intro-juego__texto">
+                        Tenés que adivinar quién es el piloto secreto de TC. Vas a tener una cantidad de
+                        <strong>8 intentos</strong>, y en cada uno vas a elegir un piloto para comparar sus datos
+                        con los del piloto correcto.
+                    </p>
+
+                    <p class="intro-juego__texto">
+                        Después de cada intento, vas a recibir pistas de color que te dicen qué tan cerca estuviste
+                        en cada categoría. Usá esa información para ir descartando opciones y acercarte cada vez más
+                        a la respuesta correcta.
+                    </p>
+
+                    <button id="boton-empezar-piloto" type="button" class="intro-juego__boton">Empezar</button>
+                </div>
+            </section>
+        </div>
+
+        <div id="contenido-piloto" hidden>
         <section class="presentacion-juego" aria-labelledby="titulo-clasico">
             <p class="modo-juego">Modo clásico</p>
             <h1 id="titulo-clasico">Adiviná el piloto de hoy</h1>
@@ -113,11 +146,21 @@
                 </div>
             </aside>
         </section>
+        </div>
+
+        <script>
+            if (window.TCdle && TCdle.aplicarVisibilidadIntro) {
+                TCdle.aplicarVisibilidadIntro({
+                    clave: "tcdleIntroPilotoVista",
+                    intro: document.getElementById("intro-piloto"),
+                    contenido: document.getElementById("contenido-piloto")
+                });
+            }
+        </script>
     </main>
 
     <script src="../assets/js/pilotos.js"></script>
-    <script src="../assets/js/tcdle.js?v=2"></script>
     <script src="../assets/js/seleccion-diaria.js?v=1"></script>
-    <script src="../assets/js/juego.js?v=6"></script>
+    <script src="../assets/js/juego.js?v=7"></script>
 </body>
 </html>
