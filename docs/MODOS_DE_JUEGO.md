@@ -41,6 +41,14 @@ El auto empieza muy difuminado. El desenfoque baja despues de cada intento usand
 
 Al terminar, el resultado visible queda en el pie de la tarjeta: correcto/incorrecto, piloto y cuenta regresiva. Tambien se abre un modal con la foto del piloto.
 
+### Ronda bonus: el anio del diseno
+
+Cada entrada de `assets/js/autos.js` es `{ pilotoId, archivo, anio }`, con `anio` opcional. Cuando el auto del dia tiene `anio`, despues de acertar el piloto el panel de busqueda se reemplaza por la ronda bonus: un solo intento para escribir el anio del diseno. Si acierta, el anio sale en verde; si falla, se muestra el anio correcto arriba y el ingresado abajo. Recien ahi se abre el modal, con una linea extra sobre el anio.
+
+La ronda es un bonus: no cambia si la partida esta ganada o perdida, solo aparece al acertar el piloto, y los autos sin `anio` funcionan como siempre. La respuesta se guarda con `TCdle.crearDatoDiario` bajo `partidaTCdleAutoAnio` y se descarta al cambiar de dia.
+
+Para sumar un auto de otra temporada se agrega una entrada nueva con el mismo `pilotoId`, otro `archivo` y su `anio`: la seleccion diaria sortea por entrada, asi que el mismo piloto puede tocar en dias distintos con autos distintos.
+
 ## Adivina el circuito
 
 Archivos principales:

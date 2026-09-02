@@ -1,3 +1,13 @@
+// Cada entrada es un auto sorteable del modo Auto:
+//   pilotoId: piloto de assets/js/pilotos.js que hay que adivinar.
+//   archivo:  imagen dentro de assets/images/autos/.
+//   anio:     opcional. Año del diseño de ESE auto. Cuando esta cargado,
+//             despues de acertar el piloto se abre la ronda bonus del año.
+//             Sin anio, el modo funciona como siempre y no aparece la ronda.
+//
+// Para sumar un auto de otra temporada se agrega una entrada nueva con el
+// mismo pilotoId, otro archivo y su anio. Ejemplo:
+//   { pilotoId: 1, archivo: "agustin_canapino_2015.webp", anio: 2015 },
 window.autosTC = [
     { pilotoId: 1, archivo: "agustin_canapino.webp" },
     { pilotoId: 2, archivo: "mauricio_lambiris.webp" },

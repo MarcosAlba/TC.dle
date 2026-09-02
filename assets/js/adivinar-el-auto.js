@@ -20,6 +20,17 @@ const fotoResultadoAutoModal = document.getElementById("foto-resultado-auto-moda
 const pilotoResultadoAutoModal = document.getElementById("piloto-resultado-auto-modal");
 const detalleResultadoAutoModal = document.getElementById("detalle-resultado-auto-modal");
 const tiempoNuevoAutoModal = document.getElementById("tiempo-nuevo-auto-modal");
+const panelIntentoAuto = document.getElementById("panel-intento-auto");
+const panelAnioAuto = document.getElementById("panel-anio-auto");
+const filaAnioAuto = document.getElementById("fila-anio-auto");
+const campoAnioAuto = document.getElementById("anio-auto");
+const botonAnioAuto = document.getElementById("boton-anio-auto");
+const mensajeAnioAuto = document.getElementById("mensaje-anio-auto");
+const resultadoAnioAuto = document.getElementById("resultado-anio-auto");
+const anioCorrectoAuto = document.getElementById("anio-correcto-auto");
+const filaAnioError = document.getElementById("fila-anio-error");
+const anioElegidoAuto = document.getElementById("anio-elegido-auto");
+const bonusAnioModal = document.getElementById("bonus-anio-modal");
 const introAuto = document.getElementById("intro-auto");
 const contenidoAuto = document.getElementById("contenido-auto");
 const botonEmpezarAuto = document.getElementById("boton-empezar-auto");
@@ -27,13 +38,16 @@ const botonEmpezarAuto = document.getElementById("boton-empezar-auto");
 const MAXIMO_INTENTOS_AUTO = 8;
 const NIVELES_DESENFOQUE = [24, 20, 16, 12, 9, 6, 3, 1, 0];
 const CLAVE_PARTIDA_AUTO = "partidaTCdleAuto";
+const CLAVE_ANIO_AUTO = "partidaTCdleAutoAnio";
+const PRIMER_ANIO_TC = 1937;
 const RUTA_AUTOS = new URL("../images/autos/", document.currentScript.src).href;
 const fechaPartidaAutoActual = TCdle.obtenerFechaLocal();
 
 const autosDelJuego = window.autosTC.map(function (auto) {
     return {
         pilotoId: auto.pilotoId,
-        imagen: RUTA_AUTOS + auto.archivo
+        imagen: RUTA_AUTOS + auto.archivo,
+        anio: auto.anio
     };
 });
 
@@ -41,6 +55,18 @@ const autoDelDia = obtenerAutoDelDia();
 const pilotoSecretoAuto = pilotos.find(function (piloto) {
     return piloto.id === autoDelDia.pilotoId;
 });
+
+const anioDelAuto = Number.isFinite(Number(autoDelDia.anio)) && autoDelDia.anio !== null
+    ? Number(autoDelDia.anio)
+    : null;
+const datoAnioAuto = TCdle.crearDatoDiario({
+    clave: CLAVE_ANIO_AUTO,
+    fecha: fechaPartidaAutoActual
+});
+const anioGuardado = datoAnioAuto.leer();
+let respuestaAnio = Number.isFinite(Number(anioGuardado)) && anioGuardado !== null
+    ? Number(anioGuardado)
+    : null;
 
 const juegoAuto = TCdle.crearJuegoDiario({
     clave: CLAVE_PARTIDA_AUTO,
@@ -219,6 +245,74 @@ function agregarIntentoAlHistorial(piloto) {
     listaIntentosAuto.prepend(intento);
 }
 
+function hayRondaAnio() {
+    return Number.isFinite(anioDelAuto);
+}
+
+function rondaAnioPendiente() {
+    return hayRondaAnio() && respuestaAnio === null;
+}
+
+function mostrarMensajeAnio(texto, tipo) {
+    TCdle.mostrarMensaje(mensajeAnioAuto, texto, tipo);
+}
+
+// La ronda bonus reemplaza al buscador de pilotos una vez adivinado el auto.
+function mostrarRondaAnio() {
+    panelIntentoAuto.hidden = true;
+    panelAnioAuto.hidden = false;
+
+    if (rondaAnioPendiente()) {
+        filaAnioAuto.hidden = false;
+        resultadoAnioAuto.hidden = true;
+        campoAnioAuto.focus();
+        return;
+    }
+
+    renderizarResultadoAnio();
+}
+
+function renderizarResultadoAnio() {
+    const acerto = respuestaAnio === anioDelAuto;
+
+    filaAnioAuto.hidden = true;
+    resultadoAnioAuto.hidden = false;
+    resultadoAnioAuto.classList.toggle("resultado-anio--correcto", acerto);
+    anioCorrectoAuto.textContent = anioDelAuto;
+    filaAnioError.hidden = acerto;
+    anioElegidoAuto.textContent = respuestaAnio;
+    mostrarMensajeAnio(
+        acerto ? "¡Le acertaste al año del diseño!" : "No era ese año.",
+        acerto ? "exito" : "error"
+    );
+}
+
+function confirmarAnio() {
+    if (!rondaAnioPendiente()) {
+        return;
+    }
+
+    const ingresado = campoAnioAuto.value.trim();
+
+    if (!/^\d{4}$/.test(ingresado)) {
+        mostrarMensajeAnio("Escribí un año de 4 números.", "error");
+        return;
+    }
+
+    const anio = Number(ingresado);
+    const anioTope = new Date().getFullYear();
+
+    if (anio < PRIMER_ANIO_TC || anio > anioTope) {
+        mostrarMensajeAnio("Elegí un año entre " + PRIMER_ANIO_TC + " y " + anioTope + ".", "error");
+        return;
+    }
+
+    respuestaAnio = anio;
+    datoAnioAuto.guardar(anio);
+    renderizarResultadoAnio();
+    mostrarResultadoAutoModal(true);
+}
+
 function finalizarPartidaAuto(acerto, abrirModal) {
     partidaTerminadaAuto = true;
     estadoFinal.classList.toggle("estado-final--correcto", acerto);
@@ -227,7 +321,15 @@ function finalizarPartidaAuto(acerto, abrirModal) {
     estadoFinal.hidden = false;
     iniciarCuentaRegresivaAuto();
 
-    if (abrirModal) {
+    // La ronda del año solo se abre al acertar el piloto; cuando queda
+    // pendiente, el modal espera a que se responda.
+    const esperaRondaAnio = acerto && rondaAnioPendiente();
+
+    if (acerto && hayRondaAnio()) {
+        mostrarRondaAnio();
+    }
+
+    if (abrirModal && !esperaRondaAnio) {
         mostrarResultadoAutoModal(acerto);
     }
 }
@@ -244,8 +346,24 @@ function mostrarResultadoAutoModal(acerto) {
     detalleResultadoAutoModal.textContent = acerto
         ? "Lo resolviste en " + cantidadIntentos + " " + palabraIntentos + "."
         : "No lo adivinaste en los " + MAXIMO_INTENTOS_AUTO + " intentos.";
+    actualizarBonusModal();
 
     modalResultadoAuto.abrir();
+}
+
+function actualizarBonusModal() {
+    if (respuestaAnio === null) {
+        bonusAnioModal.hidden = true;
+        return;
+    }
+
+    const acertoAnio = respuestaAnio === anioDelAuto;
+
+    bonusAnioModal.hidden = false;
+    bonusAnioModal.classList.toggle("resultado-modal__bonus--correcto", acertoAnio);
+    bonusAnioModal.textContent = acertoAnio
+        ? "Y le acertaste al año: " + anioDelAuto + "."
+        : "El diseño era de " + anioDelAuto + ", vos dijiste " + respuestaAnio + ".";
 }
 
 function iniciarCuentaRegresivaAuto() {
@@ -266,6 +384,24 @@ function cargarPartidaAuto() {
 }
 
 botonIntentarAuto.addEventListener("click", intentarPilotoAuto);
+botonAnioAuto.addEventListener("click", confirmarAnio);
+
+campoAnioAuto.addEventListener("input", function () {
+    const soloNumeros = campoAnioAuto.value.replace(/\D+/g, "");
+
+    if (campoAnioAuto.value !== soloNumeros) {
+        campoAnioAuto.value = soloNumeros;
+    }
+
+    mostrarMensajeAnio("", "");
+});
+
+campoAnioAuto.addEventListener("keydown", function (evento) {
+    if (evento.key === "Enter") {
+        evento.preventDefault();
+        confirmarAnio();
+    }
+});
 
 cargarPartidaAuto();
 actualizarInterfazAuto();

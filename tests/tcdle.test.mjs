@@ -61,6 +61,27 @@ assert.deepEqual(
 );
 assert.deepEqual(TCdle.buscarElementos(configPilotos, "agustin lambiris"), []);
 
+// Dato diario: sobrevive dentro del mismo dia y se descarta al cambiar de fecha.
+const almacenamientoDato = crearAlmacenamiento();
+const datoHoy = TCdle.crearDatoDiario({
+    almacenamiento: almacenamientoDato,
+    clave: "anioAuto",
+    fecha: "2026-08-07"
+});
+assert.equal(datoHoy.leer(), null);
+datoHoy.guardar(2015);
+assert.equal(datoHoy.leer(), 2015);
+assert.equal(
+    TCdle.crearDatoDiario({
+        almacenamiento: almacenamientoDato,
+        clave: "anioAuto",
+        fecha: "2026-08-08"
+    }).leer(),
+    null
+);
+datoHoy.limpiar();
+assert.equal(datoHoy.leer(), null);
+
 function crearAlmacenamiento() {
     const datos = new Map();
     return {

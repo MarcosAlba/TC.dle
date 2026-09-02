@@ -8,10 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=2">
-    <link rel="stylesheet" href="../assets/css/adivinar-el-auto.css?v=21">
+    <link rel="stylesheet" href="../assets/css/adivinar-el-auto.css?v=22">
     <title>TCdle | Adiviná el piloto por su auto</title>
     <link rel="icon" type="image/png" href="../assets/images/tc-dle.ico">
-    <script src="../assets/js/tcdle.js?v=2"></script>
+    <script src="../assets/js/tcdle.js?v=3"></script>
 </head>
 <body>
     <header class="encabezado-juego">
@@ -97,6 +97,45 @@
             </div>
         </section>
 
+        <section id="panel-anio-auto" class="panel-intento panel-anio" aria-labelledby="titulo-anio-auto" hidden>
+            <div class="panel-intento__cabecera">
+                <strong class="panel-intento__numero">02</strong>
+                <div>
+                    <p>Ronda bonus</p>
+                    <h2 id="titulo-anio-auto">¿De qué año es este diseño?</h2>
+                </div>
+            </div>
+
+            <div class="panel-intento__contenido">
+                <div id="fila-anio-auto" class="fila-busqueda">
+                    <label class="solo-lectores" for="anio-auto">Año del diseño</label>
+                    <input
+                        id="anio-auto"
+                        class="campo-anio"
+                        type="text"
+                        inputmode="numeric"
+                        maxlength="4"
+                        placeholder="Escribí el año"
+                        autocomplete="off"
+                    >
+                    <button id="boton-anio-auto" class="boton-intentar" type="button">Confirmar</button>
+                </div>
+
+                <div id="resultado-anio-auto" class="resultado-anio" hidden>
+                    <p class="resultado-anio__fila resultado-anio__fila--correcta">
+                        <span>Año del diseño</span>
+                        <strong id="anio-correcto-auto"></strong>
+                    </p>
+                    <p id="fila-anio-error" class="resultado-anio__fila resultado-anio__fila--error" hidden>
+                        <span>Tu respuesta</span>
+                        <strong id="anio-elegido-auto"></strong>
+                    </p>
+                </div>
+
+                <p id="mensaje-anio-auto" class="mensaje-juego" aria-live="polite"></p>
+            </div>
+        </section>
+
         <section id="historial-auto" class="historial-intentos" aria-labelledby="titulo-historial-auto" hidden>
             <div class="titulo-seccion">
                 <span></span>
@@ -135,6 +174,7 @@
             <img id="foto-resultado-auto-modal" class="resultado-auto-modal__foto" src="" alt="">
             <strong id="piloto-resultado-auto-modal" class="resultado-modal__nombre"></strong>
             <p id="detalle-resultado-auto-modal" class="resultado-modal__detalle"></p>
+            <p id="bonus-anio-modal" class="resultado-modal__detalle resultado-modal__bonus" hidden></p>
             <p class="resultado-modal__regreso">
                 <span>Nuevo auto en:</span>
                 <strong id="tiempo-nuevo-auto-modal">--:--:--</strong>
@@ -143,8 +183,8 @@
     </dialog>
 
     <script src="../assets/js/pilotos.js"></script>
-    <script src="../assets/js/autos.js?v=1"></script>
+    <script src="../assets/js/autos.js?v=2"></script>
     <script src="../assets/js/seleccion-diaria.js?v=1"></script>
-    <script src="../assets/js/adivinar-el-auto.js?v=21"></script>
+    <script src="../assets/js/adivinar-el-auto.js?v=22"></script>
 </body>
 </html>

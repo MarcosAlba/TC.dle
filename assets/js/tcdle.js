@@ -343,6 +343,50 @@
         opcion.appendChild(nombre);
     }
 
+    // Guarda un dato suelto del dia (por ejemplo la respuesta de una ronda
+    // bonus) sin que cada modo repita el manejo del almacenamiento. El valor
+    // se descarta solo cuando cambia la fecha.
+    function crearDatoDiario(configuracion) {
+        const almacenamiento = configuracion.almacenamiento || global.localStorage;
+        const fecha = configuracion.fecha || obtenerFechaLocal();
+
+        function leer() {
+            try {
+                const contenido = almacenamiento.getItem(configuracion.clave);
+                const guardado = contenido ? JSON.parse(contenido) : null;
+
+                return guardado && guardado.fecha === fecha ? guardado.valor : null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function guardar(valor) {
+            try {
+                almacenamiento.setItem(configuracion.clave, JSON.stringify({
+                    fecha: fecha,
+                    valor: valor
+                }));
+            } catch (error) {
+                // Sin almacenamiento el dato vive solo hasta recargar la pagina.
+            }
+        }
+
+        function limpiar() {
+            try {
+                almacenamiento.removeItem(configuracion.clave);
+            } catch (error) {
+                // Nada que limpiar si el almacenamiento no esta disponible.
+            }
+        }
+
+        return {
+            leer: leer,
+            guardar: guardar,
+            limpiar: limpiar
+        };
+    }
+
     function crearJuegoDiario(configuracion) {
         const almacenamiento = configuracion.almacenamiento || global.localStorage;
         const maximoIntentos = configuracion.maximoIntentos || 8;
@@ -633,6 +677,7 @@
     TCdle.renderizarOpcionPiloto = renderizarOpcionPiloto;
     TCdle.obtenerApellidoPiloto = obtenerApellidoPiloto;
     TCdle.crearJuegoDiario = crearJuegoDiario;
+    TCdle.crearDatoDiario = crearDatoDiario;
     TCdle.crearCuentaRegresiva = crearCuentaRegresiva;
     TCdle.crearIntroJuego = crearIntroJuego;
     TCdle.aplicarVisibilidadIntro = aplicarVisibilidadIntro;
