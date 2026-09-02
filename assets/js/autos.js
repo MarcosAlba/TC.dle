@@ -9,7 +9,9 @@
 // mismo pilotoId, otro archivo y su anio. Ejemplo:
 //   { pilotoId: 1, archivo: "agustin_canapino_2015.webp", anio: 2015 },
 window.autosTC = [
-    { pilotoId: 1, archivo: "agustin_canapino.webp", anio: 2026 },
+    { pilotoId: 1, archivo: "agustin_canapino_2010.webp", anio: 2010 },
+    { pilotoId: 1, archivo: "agustin_canapino_2017.webp", anio: 2017 },
+    { pilotoId: 1, archivo: "agustin_canapino_2026.webp", anio: 2026 },
     { pilotoId: 2, archivo: "mauricio_lambiris.webp", anio: 2026 },
     { pilotoId: 3, archivo: "german_todino.webp", anio: 2026 },
     { pilotoId: 4, archivo: "marcelo_agrelo.webp", anio: 2026 },
