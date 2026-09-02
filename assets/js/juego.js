@@ -51,6 +51,8 @@ const buscadorPilotos = TCdle.crearBuscador({
     obtenerId: function (piloto) { return piloto.id; },
     obtenerEtiqueta: function (piloto) { return piloto.nombre; },
     obtenerTextoBusqueda: function (piloto) { return piloto.nombre; },
+    obtenerTextoCorto: TCdle.obtenerApellidoPiloto,
+    minimoCaracteres: 1,
     renderizarOpcion: TCdle.renderizarOpcionPiloto,
     estaExcluido: function (piloto) {
         return pilotosIntentados.includes(piloto.id);
@@ -72,7 +74,7 @@ async function mostrarPilotoIngresado() {
 
     const pilotoEncontrado = buscadorPilotos.resolver().elemento;
 
-    if (pilotoEncontrado === undefined) {
+    if (!pilotoEncontrado) {
         mostrarMensaje("Piloto no encontrado.", "mensaje-error");
         return;
     }

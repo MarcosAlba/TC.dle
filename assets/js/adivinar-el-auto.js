@@ -75,6 +75,8 @@ const buscadorPilotosAuto = TCdle.crearBuscador({
     obtenerId: function (piloto) { return piloto.id; },
     obtenerEtiqueta: function (piloto) { return piloto.nombre; },
     obtenerTextoBusqueda: function (piloto) { return piloto.nombre; },
+    obtenerTextoCorto: TCdle.obtenerApellidoPiloto,
+    minimoCaracteres: 1,
     renderizarOpcion: TCdle.renderizarOpcionPiloto,
     estaExcluido: function (piloto) {
         return idsIntentadosAuto.includes(piloto.id);

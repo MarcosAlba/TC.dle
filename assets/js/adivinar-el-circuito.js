@@ -91,26 +91,19 @@ function obtenerTextoBusquedaCircuito(circuito) {
     ].concat(circuito.aliases || []).map(normalizarTextoCircuito).join(" ");
 }
 
+// Sin silueta: la miniatura regalaba la respuesta del dia.
 function renderizarOpcionCircuito(opcion, circuito) {
-    const miniatura = document.createElement("span");
-    const imagen = document.createElement("img");
     const contenido = document.createElement("span");
     const nombre = document.createElement("strong");
     const detalle = document.createElement("span");
 
-    miniatura.className = "buscador__miniatura buscador__miniatura--circuito";
-    imagen.src = RUTA_CIRCUITOS + circuito.imagen;
-    imagen.alt = "";
-    imagen.loading = "lazy";
     contenido.className = "buscador__contenido";
     nombre.textContent = circuito.nombre;
     detalle.textContent = circuito.variante === "Circuito principal"
         ? circuito.ciudad
         : circuito.variante + " · " + circuito.ciudad;
-    miniatura.appendChild(imagen);
     contenido.appendChild(nombre);
     contenido.appendChild(detalle);
-    opcion.appendChild(miniatura);
     opcion.appendChild(contenido);
 }
 

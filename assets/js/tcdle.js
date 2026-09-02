@@ -69,11 +69,28 @@
         };
     }
 
-    function buscarElementos(configuracion, consulta) {
-        const consultaNormalizada = normalizarTexto(consulta);
-        const minimo = configuracion.minimoCaracteres === undefined
+    function obtenerMinimoCaracteres(configuracion) {
+        return configuracion.minimoCaracteres === undefined
             ? 2
             : configuracion.minimoCaracteres;
+    }
+
+    // Coincide cuando cada palabra de la consulta arranca alguna palabra del texto:
+    // "al" encuentra "Alvarez" pero no "Gonzalez", y "roberto mou" sigue encontrando
+    // "Autodromo Roberto Mouras".
+    function coincidePorPrefijo(texto, consultaNormalizada) {
+        const palabras = normalizarTexto(texto).split(" ");
+
+        return consultaNormalizada.split(" ").every(function (termino) {
+            return palabras.some(function (palabra) {
+                return palabra.startsWith(termino);
+            });
+        });
+    }
+
+    function buscarElementos(configuracion, consulta) {
+        const consultaNormalizada = normalizarTexto(consulta);
+        const minimo = obtenerMinimoCaracteres(configuracion);
 
         if (consultaNormalizada.length < minimo) {
             return [];
@@ -81,20 +98,38 @@
 
         const obtenerEtiqueta = configuracion.obtenerEtiqueta;
         const obtenerTextoBusqueda = configuracion.obtenerTextoBusqueda || obtenerEtiqueta;
+        const obtenerTextoCorto = configuracion.obtenerTextoCorto;
         const estaExcluido = configuracion.estaExcluido || function () { return false; };
         const limite = configuracion.limite || 8;
+        // Con una sola letra solo miramos el texto corto (el apellido del piloto),
+        // para que "a" traiga a Alvarez y no a Agustin Canapino.
+        const soloTextoCorto = Boolean(obtenerTextoCorto) && consultaNormalizada.length === 1;
+
+        function coincideTextoCorto(elemento) {
+            return Boolean(obtenerTextoCorto) &&
+                coincidePorPrefijo(obtenerTextoCorto(elemento), consultaNormalizada);
+        }
 
         return configuracion.elementos
             .filter(function (elemento) {
-                return !estaExcluido(elemento) &&
-                    normalizarTexto(obtenerTextoBusqueda(elemento)).includes(consultaNormalizada);
+                if (estaExcluido(elemento)) {
+                    return false;
+                }
+
+                return soloTextoCorto
+                    ? coincideTextoCorto(elemento)
+                    : coincidePorPrefijo(obtenerTextoBusqueda(elemento), consultaNormalizada);
             })
             .sort(function (a, b) {
                 const etiquetaA = normalizarTexto(obtenerEtiqueta(a));
                 const etiquetaB = normalizarTexto(obtenerEtiqueta(b));
+                const cortoA = coincideTextoCorto(a) ? 0 : 1;
+                const cortoB = coincideTextoCorto(b) ? 0 : 1;
                 const empiezaA = etiquetaA.startsWith(consultaNormalizada) ? 0 : 1;
                 const empiezaB = etiquetaB.startsWith(consultaNormalizada) ? 0 : 1;
-                return empiezaA - empiezaB || etiquetaA.localeCompare(etiquetaB, "es");
+                return cortoA - cortoB ||
+                    empiezaA - empiezaB ||
+                    etiquetaA.localeCompare(etiquetaB, "es");
             })
             .slice(0, limite);
     }
@@ -162,9 +197,7 @@
             sugerencias = buscarElementos(configuracion, campo.value);
             indiceActivo = -1;
             const consulta = normalizarTexto(campo.value);
-            const minimo = configuracion.minimoCaracteres === undefined
-                ? 2
-                : configuracion.minimoCaracteres;
+            const minimo = obtenerMinimoCaracteres(configuracion);
 
             if (campo.disabled || consulta.length < minimo) {
                 ocultar();
@@ -212,10 +245,16 @@
                     .includes(entrada);
             });
 
-            return {
-                elemento: coincidencias.length === 1 ? coincidencias[0] : null,
-                ambiguo: coincidencias.length > 1
-            };
+            if (coincidencias.length > 0) {
+                return {
+                    elemento: coincidencias.length === 1 ? coincidencias[0] : null,
+                    ambiguo: coincidencias.length > 1
+                };
+            }
+
+            // Sin coincidencia exacta vale la primera sugerencia a la vista:
+            // asi Enter y el boton Intentar mandan lo que se esta viendo.
+            return { elemento: sugerencias[0] || null, ambiguo: false };
         }
 
         function limpiar() {
@@ -241,9 +280,13 @@
                 mover(-1);
             } else if (evento.key === "Enter") {
                 evento.preventDefault();
+                // Enter manda el intento en un solo toque: con la opcion resaltada
+                // si hay una, o con la primera de la lista via resolver().
                 if (indiceActivo >= 0) {
                     seleccionar(sugerencias[indiceActivo]);
-                } else if (configuracion.alEnviar) {
+                }
+
+                if (configuracion.alEnviar) {
                     configuracion.alEnviar();
                 }
             } else if (evento.key === "Escape") {
@@ -268,6 +311,12 @@
             resolver: resolver,
             seleccionar: seleccionar
         };
+    }
+
+    // Los pilotos tienen un unico campo "nombre": el apellido es la ultima palabra.
+    function obtenerApellidoPiloto(piloto) {
+        const partes = String(piloto.nombre || "").trim().split(/\s+/);
+        return partes[partes.length - 1] || "";
     }
 
     function renderizarOpcionPiloto(opcion, piloto) {
@@ -582,6 +631,7 @@
     TCdle.buscarElementos = buscarElementos;
     TCdle.crearBuscador = crearBuscador;
     TCdle.renderizarOpcionPiloto = renderizarOpcionPiloto;
+    TCdle.obtenerApellidoPiloto = obtenerApellidoPiloto;
     TCdle.crearJuegoDiario = crearJuegoDiario;
     TCdle.crearCuentaRegresiva = crearCuentaRegresiva;
     TCdle.crearIntroJuego = crearIntroJuego;

@@ -15,7 +15,9 @@ assert.equal(TCdle.obtenerTiempoHastaMedianoche(new Date(2026, 7, 7, 23, 59, 50)
 const elementos = [
     { id: 1, nombre: "Agustín Canapino" },
     { id: 2, nombre: "Mauricio Lambiris" },
-    { id: 3, nombre: "Matías Canapino" }
+    { id: 3, nombre: "Matías Canapino" },
+    { id: 4, nombre: "Santiago Alvarez" },
+    { id: 5, nombre: "Agustín Martínez" }
 ];
 const encontrados = TCdle.buscarElementos({
     elementos,
@@ -24,6 +26,40 @@ const encontrados = TCdle.buscarElementos({
     estaExcluido: (item) => item.id === 3
 }, "cana");
 assert.deepEqual(Array.from(encontrados, (item) => item.id), [1]);
+
+// Busqueda de pilotos: una letra mira solo el apellido, y de dos en adelante
+// coincide por prefijo de palabra (nombre o apellido), nunca en medio de una.
+const configPilotos = {
+    elementos,
+    minimoCaracteres: 1,
+    obtenerEtiqueta: (item) => item.nombre,
+    obtenerTextoBusqueda: (item) => item.nombre,
+    obtenerTextoCorto: TCdle.obtenerApellidoPiloto
+};
+assert.deepEqual(
+    Array.from(TCdle.buscarElementos(configPilotos, "a"), (item) => item.id),
+    [4]
+);
+assert.deepEqual(
+    Array.from(TCdle.buscarElementos(configPilotos, "al"), (item) => item.id),
+    [4]
+);
+assert.deepEqual(
+    Array.from(TCdle.buscarElementos(configPilotos, "agustin"), (item) => item.id),
+    [1, 5]
+);
+// El apellido ordena primero aunque el nombre de pila tambien coincida.
+assert.deepEqual(
+    Array.from(TCdle.buscarElementos(configPilotos, "ma"), (item) => item.id),
+    [5, 3, 2]
+);
+assert.deepEqual(TCdle.buscarElementos(configPilotos, "usti"), []);
+// Consultas de varias palabras: cada termino arranca alguna palabra del texto.
+assert.deepEqual(
+    Array.from(TCdle.buscarElementos(configPilotos, "agustin cana"), (item) => item.id),
+    [1]
+);
+assert.deepEqual(TCdle.buscarElementos(configPilotos, "agustin lambiris"), []);
 
 function crearAlmacenamiento() {
     const datos = new Map();

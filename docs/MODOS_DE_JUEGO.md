@@ -89,5 +89,11 @@ Todos los buscadores usan `TCdle.crearBuscador`. Esta utilidad se configura con:
 - Renderizado de sugerencia.
 - Exclusion de elementos ya intentados.
 - Callback para enviar con Enter.
+- Minimo de caracteres (`minimoCaracteres`, 2 por defecto).
+- Texto corto opcional (`obtenerTextoCorto`), usado cuando la consulta tiene una sola letra.
 
-Pilotos y Autos usan `TCdle.renderizarOpcionPiloto`, que muestra miniatura y nombre. Circuitos tiene un render propio con silueta, nombre, variante y ciudad.
+La coincidencia es por prefijo de palabra: `al` encuentra `Alvarez` pero no `Gonzalez`. Pilotos y Autos pasan `minimoCaracteres: 1` y `obtenerTextoCorto: TCdle.obtenerApellidoPiloto`, asi que con una sola letra solo aparecen los apellidos que empiezan con esa letra, y los que coinciden por apellido se ordenan primero.
+
+Enter y el boton Intentar mandan el intento en un solo toque: `resolver` usa la opcion resaltada o la coincidencia exacta y, si no hay ninguna, la primera sugerencia a la vista. Si el texto coincide exacto con mas de un elemento (un autodromo con varios trazados) sigue avisando que hay que elegir una variante.
+
+Pilotos y Autos usan `TCdle.renderizarOpcionPiloto`, que muestra miniatura y nombre. Circuitos tiene un render propio con nombre, variante y ciudad, sin silueta: la miniatura regalaba la respuesta del dia.

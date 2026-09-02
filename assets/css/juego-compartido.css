@@ -315,8 +315,7 @@ button {
     outline: none;
 }
 
-.buscador__avatar,
-.buscador__miniatura {
+.buscador__avatar {
     position: relative;
     display: grid;
     flex: 0 0 42px;
@@ -329,8 +328,7 @@ button {
     place-items: center;
 }
 
-.buscador__avatar img,
-.buscador__miniatura img {
+.buscador__avatar img {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -342,16 +340,6 @@ button {
     font-family: var(--fuente-titulos);
     font-size: 0.78rem;
     font-weight: 700;
-}
-
-.buscador__miniatura--circuito {
-    border-radius: 4px;
-    background: #f4f4f4;
-}
-
-.buscador__miniatura--circuito img {
-    padding: 5px;
-    filter: brightness(0);
 }
 
 .buscador__nombre,
