@@ -166,7 +166,7 @@ async function agregarFilaIntento(piloto, animar = true) {
     const edadSecreta = calcularEdad(pilotoSecreto.fechaNacimiento);
     const celdaEdad = crearCeldaNumerica(edadPiloto, edadSecreta);
 
-    const celdaCampeon = crearCeldaCampeon(
+    const celdaCampeon = crearCeldaNumerica(
         piloto.titulosTC,
         pilotoSecreto.titulosTC
     );
@@ -258,24 +258,6 @@ function crearCeldaNumerica(valor, valorBuscado) {
             "aria-label",
             valor + ". El valor buscado es menor."
         );
-    }
-
-    return celda;
-}
-
-// Igual que crearCeldaNumerica (misma logica de mayor/menor), pero
-// ademas suma el trofeo dorado cuando el piloto salio campeon al
-// menos una vez, para que la cantidad de titulos se lea de un vistazo.
-function crearCeldaCampeon(titulos, titulosBuscados) {
-    const celda = crearCeldaNumerica(titulos, titulosBuscados);
-    celda.classList.add("celda-campeon");
-
-    if (titulos > 0) {
-        const trofeo = document.createElement("img");
-        trofeo.src = RUTA_IMAGENES + "iconos/trofeo-tc.webp";
-        trofeo.alt = "";
-        trofeo.className = "celda-campeon__trofeo";
-        celda.insertBefore(trofeo, celda.firstChild);
     }
 
     return celda;
