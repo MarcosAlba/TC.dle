@@ -74,7 +74,6 @@ const palabrasTC = [
     { id: "DIPALMA", palabra: "DIPALMA" },
     { id: "PALAZZO", palabra: "PALAZZO" },
     { id: "EBARLIN", palabra: "EBARLIN" },
-    { id: "FRITLER", palabra: "FRITLER" },
     { id: "ORTELLI", palabra: "ORTELLI" },
     { id: "RAFAELA", palabra: "RAFAELA" },
     { id: "ARDUSSO", palabra: "ARDUSSO" },
@@ -100,6 +99,7 @@ const palabrasTC = [
     { id: "FALASCHI", palabra: "FALASCHI" },
     { id: "LAMBIRIS", palabra: "LAMBIRIS" },
     { id: "GIROLAMI", palabra: "GIROLAMI" },
+    { id: "FRITZLER", palabra: "FRITZLER" },
 ];
 
 window.palabrasTC = palabrasTC;
