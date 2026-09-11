@@ -181,6 +181,21 @@ td.celda-numerica--menor {
     background: #7230a8;
 }
 
+td.celda-campeon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.celda-campeon__trofeo {
+    position: relative;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    flex: none;
+}
+
 .guia-pistas {
     margin-top: 18px;
     padding-top: 18px;
