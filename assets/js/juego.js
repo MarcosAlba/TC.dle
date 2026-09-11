@@ -272,7 +272,7 @@ function crearCeldaCampeon(titulos, titulosBuscados) {
 
     if (titulos > 0) {
         const trofeo = document.createElement("img");
-        trofeo.src = RUTA_IMAGENES + "iconos/trofeo-tc.svg";
+        trofeo.src = RUTA_IMAGENES + "iconos/trofeo-tc.webp";
         trofeo.alt = "";
         trofeo.className = "celda-campeon__trofeo";
         celda.insertBefore(trofeo, celda.firstChild);
