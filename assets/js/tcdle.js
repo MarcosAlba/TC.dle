@@ -330,7 +330,10 @@
         iniciales.textContent = piloto.nombre.split(" ").slice(0, 2).map(function (parte) {
             return parte.charAt(0);
         }).join("");
-        imagen.src = piloto.imagen;
+        // piloto.imagen apunta a actc.org.ar, que ya no sirve esas rutas
+        // (devuelve 404 para todos los pilotos): usamos la foto local que
+        // ya tenemos en assets/images/pilotos como fuente confiable.
+        imagen.src = piloto.imagenResultado || piloto.imagen;
         imagen.alt = "";
         imagen.loading = "lazy";
         imagen.addEventListener("load", function () { iniciales.hidden = true; });
