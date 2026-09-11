@@ -236,7 +236,9 @@ function agregarIntentoAlHistorial(piloto) {
 
     intento.className = "intento-auto " + (acerto ? "intento-auto--correcto" : "intento-auto--incorrecto");
     intento.setAttribute("aria-label", piloto.nombre + ": " + (acerto ? "correcto" : "incorrecto"));
-    imagen.src = piloto.imagen;
+    // piloto.imagen (actc.org.ar) esta caida para todos los pilotos:
+    // usamos la foto local como fuente confiable.
+    imagen.src = piloto.imagenResultado || piloto.imagen;
     imagen.alt = "";
     nombre.textContent = piloto.nombre;
 
