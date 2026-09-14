@@ -3,6 +3,7 @@ const botonIntentar = document.getElementById("boton-intentar");
 const tablaIntentos = document.getElementById("tabla-intentos");
 const panelIntentos = document.getElementById("panel-intentos");
 const textoIntentos = document.getElementById("intentos-restantes");
+const puntosIntentos = document.getElementById("puntos-intentos");
 const mensajeJuego = document.getElementById("mensaje-juego");
 const resultadoFinal = document.getElementById("resultado-final");
 const fotoPilotoFinal = document.getElementById("foto-piloto-final");
@@ -11,6 +12,8 @@ const detalleResultadoFinal = document.getElementById("detalle-resultado-final")
 const etiquetaResultado = document.getElementById("etiqueta-resultado");
 const subtituloResultado = document.getElementById("subtitulo-resultado");
 const guiaPistas = document.getElementById("guia-pistas");
+const panelPistas = document.getElementById("pistas");
+const pistaTexto = document.getElementById("pista-texto");
 const panelBusqueda = document.querySelector(".panel-intento");
 const numeroIntentoPiloto = document.getElementById("numero-intento-piloto");
 const tiempoNuevoPiloto = document.getElementById("tiempo-nuevo-piloto");
@@ -23,6 +26,52 @@ const fechaPartidaActual = TCdle.obtenerFechaLocal();
 
 const MAXIMO_INTENTOS = 8;
 const RETRASO_CELDAS = 350;
+const ETIQUETAS_ESTADISTICA = {
+    carrerasGanadas: "Carreras ganadas",
+    series: "Series ganadas",
+    clasificaciones: "Clasificaciones",
+    carrerasCorridas: "Carreras corridas"
+};
+
+// Fichas de pistas que se muestran arriba del buscador. Cada una se habilita
+// al llegar a su cantidad de intentos fallidos y, al tocarla, escribe su texto
+// debajo de las fichas. Una pista cuyo dato todavia no esta cargado en
+// pilotos.js no aparece.
+const PISTAS = [
+    {
+        boton: document.getElementById("pista-numero"),
+        intentos: 3,
+        obtenerTexto: function () {
+            if (pilotoSecreto.numeroAuto === null || pilotoSecreto.numeroAuto === undefined) {
+                return null;
+            }
+
+            return "Corre con el número " + pilotoSecreto.numeroAuto + ".";
+        }
+    },
+    {
+        boton: document.getElementById("pista-dato"),
+        intentos: 5,
+        obtenerTexto: function () {
+            return pilotoSecreto.datoPeculiar || null;
+        }
+    },
+    {
+        boton: document.getElementById("pista-estadistica"),
+        intentos: 7,
+        obtenerTexto: function () {
+            const estadistica = pilotoSecreto.estadisticaDestacada;
+
+            if (!estadistica) {
+                return null;
+            }
+
+            const etiqueta = ETIQUETAS_ESTADISTICA[estadistica.tipo] || "Estadística";
+
+            return etiqueta + ": " + estadistica.valor + ".";
+        }
+    }
+];
 const juegoPilotos = TCdle.crearJuegoDiario({
     clave: "partidaTCdle",
     fecha: fechaPartidaActual,
@@ -109,6 +158,7 @@ async function mostrarPilotoIngresado() {
     }
 
     mostrarGuiaPistas();
+    actualizarPistasExtra();
 
     if (cantidadIntentos >= MAXIMO_INTENTOS) {
         mostrarResultadoPerdida(pilotoSecreto);
@@ -118,11 +168,6 @@ async function mostrarPilotoIngresado() {
         );
         return;
     }
-
-    mostrarMensaje(
-        "Piloto incorrecto. Intentá nuevamente.",
-        "mensaje-info"
-    );
 
     cambiarEstadoControles(true);
     campoPiloto.focus();
@@ -355,11 +400,93 @@ function mostrarGuiaPistas() {
     guiaPistas.hidden = false;
 }
 
+function prepararPistas() {
+    let hayPistas = false;
+
+    PISTAS.forEach(function (pista) {
+        const sinDato = pista.obtenerTexto() === null;
+
+        pista.boton.hidden = sinDato;
+
+        if (sinDato) {
+            return;
+        }
+
+        hayPistas = true;
+        actualizarDetallePista(pista);
+        pista.boton.addEventListener("click", function () {
+            mostrarPista(pista);
+        });
+    });
+
+    panelPistas.hidden = !hayPistas;
+}
+
+// Cuenta regresiva de la ficha: cuantos intentos fallidos faltan para
+// desbloquearla. Al llegar a 0 queda "Disponible".
+function actualizarDetallePista(pista) {
+    const restantes = pista.intentos - cantidadIntentos;
+    const detalle = pista.boton.querySelector(".pista__detalle");
+
+    if (restantes <= 0) {
+        detalle.textContent = "Disponible";
+        return;
+    }
+
+    const palabra = restantes === 1 ? "intento" : "intentos";
+    detalle.textContent = "En " + restantes + " " + palabra;
+}
+
+// Habilita las fichas que ya alcanzaron su cantidad de intentos y abre sola la
+// que se acaba de desbloquear, para que el jugador no tenga que buscarla.
+function actualizarPistasExtra() {
+    let recienDesbloqueada = null;
+
+    PISTAS.forEach(function (pista) {
+        if (pista.boton.hidden) {
+            return;
+        }
+
+        const desbloqueada = cantidadIntentos >= pista.intentos;
+
+        if (desbloqueada && !pista.desbloqueada) {
+            recienDesbloqueada = pista;
+        }
+
+        pista.desbloqueada = desbloqueada;
+        pista.boton.disabled = !desbloqueada;
+        pista.boton.classList.toggle("pista--disponible", desbloqueada);
+        actualizarDetallePista(pista);
+    });
+
+    if (recienDesbloqueada !== null) {
+        mostrarPista(recienDesbloqueada);
+    }
+}
+
+function mostrarPista(pistaElegida) {
+    PISTAS.forEach(function (pista) {
+        const esElegida = pista === pistaElegida;
+
+        pista.boton.classList.toggle("pista--activa", esElegida);
+        pista.boton.setAttribute("aria-expanded", String(esElegida));
+    });
+
+    pistaTexto.textContent = pistaElegida.obtenerTexto();
+    pistaTexto.hidden = false;
+}
+
 function actualizarContadorIntentos() {
     TCdle.actualizarEstadoIntentos({
         partida: estadoPilotos,
         contador: textoIntentos,
         numero: numeroIntentoPiloto
+    });
+    TCdle.renderizarIndicadores({
+        contenedor: puntosIntentos,
+        maximo: MAXIMO_INTENTOS,
+        usados: estadoPilotos.intentosUsados,
+        acerto: estadoPilotos.acerto
     });
 }
 
@@ -398,6 +525,7 @@ function mostrarResultado(
     desplazar
 ) {
     panelBusqueda.hidden = true;
+    panelPistas.hidden = true;
     resultadoFinal.classList.toggle("resultado-final--correcto", esCorrecto);
     resultadoFinal.classList.toggle("resultado-final--incorrecto", !esCorrecto);
     resultadoFinal.classList.toggle(
@@ -459,6 +587,7 @@ function cargarPartida() {
 
     if (cantidadIntentos > 0) {
         mostrarGuiaPistas();
+        actualizarPistasExtra();
     }
 
     if (estadoPilotos.terminada) {
@@ -470,6 +599,7 @@ function cargarPartida() {
     }
 }
 
+prepararPistas();
 cargarPartida();
 botonIntentar.addEventListener("click", mostrarPilotoIngresado);
 

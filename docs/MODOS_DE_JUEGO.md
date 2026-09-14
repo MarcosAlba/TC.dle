@@ -25,6 +25,12 @@ Pistas actuales:
 
 Pilotos mantiene un resultado integrado en la pagina, no modal.
 
+### Pistas extra de texto
+
+Arriba del buscador hay una fila de fichas (`#pistas` en el HTML) con las 3 pistas de texto: numero de auto, dato peculiar y estadistica destacada. Cada ficha muestra su nombre y en cuantos intentos se desbloquea (3, 5 y 7 fallos). Mientras esta bloqueada se ve atenuada y no se puede tocar; al desbloquearse queda resaltada y su texto aparece debajo de la fila. Las pistas no cuestan intentos: la que se acaba de desbloquear se abre sola, y despues se puede tocar cualquiera ya desbloqueada para volver a verla.
+
+La logica vive en `juego.js`: el array `PISTAS` define ficha, umbral de intentos y como se arma el texto; `prepararPistas()` decide que fichas existen hoy; `actualizarPistasExtra()` las habilita; `mostrarPista()` escribe el texto. Cada pista depende de un campo opcional en `pilotos.js` (`numeroAuto`, `datoPeculiar`, `estadisticaDestacada`; ver `docs/DATOS_Y_ASSETS.md`); si el piloto secreto todavia no tiene ese campo cargado, esa ficha no aparece, y si no tiene ninguno la fila entera queda oculta.
+
 ## Adivina el auto
 
 Archivos principales:

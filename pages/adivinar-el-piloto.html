@@ -58,14 +58,27 @@
             <h1 id="titulo-clasico">Adiviná el piloto de hoy</h1>
         </section>
 
-        <section class="panel-intento" aria-labelledby="titulo-busqueda">
-            <div class="panel-intento__cabecera">
-                <strong id="numero-intento-piloto" class="panel-intento__numero">01</strong>
-                <div>
-                    <p>Tu intento</p>
-                    <h2 id="titulo-busqueda">Elegí un piloto</h2>
-                </div>
+        <section id="pistas" class="pistas" aria-labelledby="titulo-pistas" hidden>
+            <h2 id="titulo-pistas" class="solo-lectores">Pistas</h2>
+            <div class="pistas__lista">
+                <button id="pista-numero" class="pista" type="button" aria-controls="pista-texto" aria-expanded="false" disabled>
+                    <span class="pista__nombre">Número de auto</span>
+                    <span class="pista__detalle"></span>
+                </button>
+                <button id="pista-dato" class="pista" type="button" aria-controls="pista-texto" aria-expanded="false" disabled>
+                    <span class="pista__nombre">Dato peculiar</span>
+                    <span class="pista__detalle"></span>
+                </button>
+                <button id="pista-estadistica" class="pista" type="button" aria-controls="pista-texto" aria-expanded="false" disabled>
+                    <span class="pista__nombre">Estadística</span>
+                    <span class="pista__detalle"></span>
+                </button>
             </div>
+            <p id="pista-texto" class="pistas__texto" aria-live="polite" hidden></p>
+        </section>
+
+        <section class="panel-intento" aria-labelledby="titulo-busqueda">
+            <h2 id="titulo-busqueda" class="solo-lectores">Elegí un piloto</h2>
 
             <div class="panel-intento__contenido">
                 <div class="fila-busqueda">
@@ -77,7 +90,8 @@
                 </div>
 
                 <div class="estado-partida">
-                    <p id="intentos-restantes">8 intentos disponibles</p>
+                    <div id="puntos-intentos" class="puntos-intentos" aria-hidden="true"></div>
+                    <span id="intentos-restantes" class="solo-lectores" aria-live="polite">8 intentos disponibles</span>
                     <p id="mensaje-juego" class="mensaje-juego" aria-live="polite"></p>
                 </div>
             </div>

@@ -4,6 +4,14 @@
 
 `assets/js/pilotos.js` define `pilotos`, un array global con datos del modo Pilotos y tambien base para Autos. Cada piloto tiene ID numerico, nombre, marca, equipo, ubicacion, nacimiento, campeonatos y rutas de imagen.
 
+Ademas tiene 3 campos opcionales para las pistas de texto del modo Pilotos (arrancan en `null` y se completan piloto por piloto a mano):
+
+- `numeroAuto`: numero de auto del piloto.
+- `datoPeculiar`: texto corto con un dato curioso del piloto.
+- `estadisticaDestacada`: `{ tipo, valor }`, donde `tipo` es uno de `"carrerasGanadas"`, `"series"`, `"clasificaciones"` o `"carrerasCorridas"` (cascada que decide quien carga el dato, no el codigo).
+
+Mientras un campo siga en `null`, esa pista no se muestra para ese piloto.
+
 `assets/js/autos.js` define `window.autosTC`. Cada entrada conecta un `pilotoId` con un archivo `.webp` dentro de `assets/images/autos/`.
 
 `assets/js/circuitos.js` define `window.circuitosTC`. Contiene 31 configuraciones jugables y 29 sedes. Cada circuito incluye ID, sede, nombre, variante, aliases, ciudad, provincia, longitud, participacion, imagen y fuente.
