@@ -31,8 +31,8 @@ const pilotos = [
         anioDebutTC: 2009,
         imagen: "https://www.actc.org.ar/upload/autos/10691/imgs_v3/imgtorso/podio/agustin_canapino.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/agustin_canapino.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 1,
+        datoPeculiar: "Es el piloto argentino con más títulos nacionales: 18 campeonatos.",
         estadisticaDestacada: null
     },
 
@@ -48,8 +48,8 @@ const pilotos = [
         anioDebutTC: 2015,
         imagen: "https://www.actc.org.ar/upload/autos/10709/imgs_v3/imgtorso/podio/mauricio_lambiris.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/mauricio_lambiris.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 3,
+        datoPeculiar: "Fue el piloto que más puntos sumó en la Copa de Oro del 2021, pero no pudo coronarse campeón.",
         estadisticaDestacada: null
     },
 
@@ -65,8 +65,8 @@ const pilotos = [
         anioDebutTC: 2021,
         imagen: "https://www.actc.org.ar/upload/autos/10694/imgs_v3/imgtorso/podio/german_todino.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/german_todino.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 4,
+        datoPeculiar: "Se coronó campeón del TC Mouras en su año de debut en la categoría.",
         estadisticaDestacada: null
     },
 
@@ -82,8 +82,8 @@ const pilotos = [
         anioDebutTC: 2020,
         imagen: "https://actc.org.ar/upload/autos/10710/imgs_v3/imgtorso/podio/marcelo_agrelo.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/marcelo_agrelo.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 5,
+        datoPeculiar: "Ganó la Etapa Regular del TC en 2025",
         estadisticaDestacada: null
     },
 
@@ -99,8 +99,8 @@ const pilotos = [
         anioDebutTC: 2011,
         imagen: "https://www.actc.org.ar/upload/autos/10711/imgs_v3/imgtorso/podio/juan_martin_trucco.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/juan_martin_trucco.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 6,
+        datoPeculiar: "Es el primer piloto en ganar una carrera de TC con un Challenger",
         estadisticaDestacada: null
     },
 
@@ -116,8 +116,8 @@ const pilotos = [
         anioDebutTC: 2014,
         imagen: "https://www.actc.org.ar/upload/autos/10706/imgs_v3/imgtorso/podio/santiago_mangoni.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/santiago_mangoni.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 7,
+        datoPeculiar: "Tiene la particularidad de ser el 7mo de la historia de Balcarce en ganar dentro del TC.",
         estadisticaDestacada: null
     },
 
@@ -133,8 +133,8 @@ const pilotos = [
         anioDebutTC: 2025,
         imagen: "https://www.actc.org.ar/upload/autos/10712/imgs_v3/imgtorso/podio/jeremias_olmedo.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/jeremias_olmedo.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 9,
+        datoPeculiar: "Se metio en la Copa de Oro en su temporada debut.",
         estadisticaDestacada: null
     },
 
@@ -150,8 +150,8 @@ const pilotos = [
         anioDebutTC: 2010,
         imagen: "https://www.actc.org.ar/upload/autos/10708/imgs_v3/imgtorso/podio/mariano_werner.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/mariano_werner.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 11,
+        datoPeculiar: "Es el piloto con mas victorias dentro de la Copa de Oro.",
         estadisticaDestacada: null
     },
 
@@ -167,8 +167,8 @@ const pilotos = [
         anioDebutTC: 1998,
         imagen: "https://www.actc.org.ar/upload/autos/10699/imgs_v3/imgtorso/podio/christian_ledesma.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/christian_ledesma.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 14,
+        datoPeculiar: "Se consagró campeón del TC sacándole más de 100 puntos de ventaja al escolta.",
         estadisticaDestacada: null
     },
 
@@ -184,8 +184,8 @@ const pilotos = [
         anioDebutTC: 2016,
         imagen: "https://actc.org.ar/upload/autos/9601/imgs_v3/imgtorso/podio/juan_jose_ebarlin.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/juan_jose_ebarlin.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 15,
+        datoPeculiar: "Desde que debuto en el TC siempre corrio con Chevrolet.",
         estadisticaDestacada: null
     },
 
@@ -201,8 +201,8 @@ const pilotos = [
         anioDebutTC: 2011,
         imagen: "https://actc.org.ar/upload/autos/9647/imgs_v3/imgtorso/podio/luis_jose_di_palma.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/luis_jose_di_palma.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 24,
+        datoPeculiar: "Corrio con 5 marcas distintas dentro del TC.",
         estadisticaDestacada: null
     },
 
@@ -218,8 +218,8 @@ const pilotos = [
         anioDebutTC: 2002,
         imagen: "https://actc.org.ar/upload/autos/10695/imgs_v3/imgtorso/podio/emiliano_spataro.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/emiliano_spataro.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 27,
+        datoPeculiar: "Supero la barrera de las 300 carreras disputadas dentro del TC.",
         estadisticaDestacada: null
     },
 
@@ -235,8 +235,8 @@ const pilotos = [
         anioDebutTC: 2023,
         imagen: "https://actc.org.ar/upload/autos/10697/imgs_v3/imgtorso/podio/elio_craparo.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/elio_craparo.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 29,
+        datoPeculiar: "Fue el primer campeón de la historia de las TC Pista Pick Up.",
         estadisticaDestacada: null
     },
 
@@ -252,8 +252,8 @@ const pilotos = [
         anioDebutTC: 2025,
         imagen: "https://actc.org.ar/upload/autos/10690/imgs_v3/imgtorso/podio/matias_canapino.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/matias_canapino.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 32,
+        datoPeculiar: "Debuto en el TC en el 2025 con un Camaro del RUS MED Team.",
         estadisticaDestacada: null
     },
 
@@ -269,8 +269,8 @@ const pilotos = [
         anioDebutTC: 2003,
         imagen: "https://actc.org.ar/upload/autos/10696/imgs_v3/imgtorso/podio/norberto_fontana.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/norberto_fontana.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 37,
+        datoPeculiar: "Corrió 4 Grandes Premios de Formula 1.",
         estadisticaDestacada: null
     },
 
@@ -286,8 +286,8 @@ const pilotos = [
         anioDebutTC: 2009,
         imagen: "https://actc.org.ar/upload/autos/9609/imgs_v3/imgtorso/podio/gaston_mazzacane.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/gaston_mazzacane.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 29,
+        datoPeculiar: "Fue el último piloto argentino en la Fórmula 1 antes de la llegada de Franco Colapinto.",
         estadisticaDestacada: null
     },
 
@@ -303,8 +303,8 @@ const pilotos = [
         anioDebutTC: 2017,
         imagen: "https://actc.org.ar/upload/autos/10715/imgs_v3/imgtorso/podio/nicolas_cotignola.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_cotignola.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 51,
+        datoPeculiar: "Se consagro campeón del TC Pista en el 2016.",
         estadisticaDestacada: null
     },
 
@@ -320,8 +320,8 @@ const pilotos = [
         anioDebutTC: 2017,
         imagen: "https://actc.org.ar/upload/autos/10716/imgs_v3/imgtorso/podio/juan_tomas_catalan_magni.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/juan_tomas_catalan_magni.png",
-        numeroAuto: null,
-        datoPeculiar: null,
+        numeroAuto: 53,
+        datoPeculiar: "Es el ganador mas joven en la historia del Turismo Carretera.",
         estadisticaDestacada: null
     },
 
@@ -371,7 +371,7 @@ const pilotos = [
         anioDebutTC: 2025,
         imagen: "https://actc.org.ar/upload/autos/9628/imgs_v3/imgtorso/podio/jeronimo_teti.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/jeronimo_teti.png",
-        numeroAuto: null,
+        numeroAuto: 60,
         datoPeculiar: null,
         estadisticaDestacada: null
     },
@@ -405,7 +405,7 @@ const pilotos = [
         anioDebutTC: 2017,
         imagen: "https://actc.org.ar/upload/autos/10720/imgs_v3/imgtorso/podio/julian_santero.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/julian_santero.png",
-        numeroAuto: null,
+        numeroAuto: 68,
         datoPeculiar: null,
         estadisticaDestacada: null
     },
@@ -490,7 +490,7 @@ const pilotos = [
         anioDebutTC: 2024,
         imagen: "https://actc.org.ar/upload/autos/10722/imgs_v3/imgtorso/podio/facundo_chapur.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/facundo_chapur.png",
-        numeroAuto: null,
+        numeroAuto: 79,
         datoPeculiar: null,
         estadisticaDestacada: null
     },
@@ -541,7 +541,7 @@ const pilotos = [
         anioDebutTC: 2013,
         imagen: "https://actc.org.ar/upload/autos/10725/imgs_v3/imgtorso/podio/facundo_ardusso.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/facundo_ardusso.png",
-        numeroAuto: null,
+        numeroAuto: 83,
         datoPeculiar: null,
         estadisticaDestacada: null
     },
@@ -966,7 +966,7 @@ const pilotos = [
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10746/imgs_v3/imgtorso/podio/jorge_barrio.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/jorge_barrio.png",
-        numeroAuto: null,
+        numeroAuto: 141,
         datoPeculiar: null,
         estadisticaDestacada: null
     },
@@ -983,7 +983,7 @@ const pilotos = [
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10747/imgs_v3/imgtorso/podio/marco_dianda.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/marco_dianda.png",
-        numeroAuto: null,
+        numeroAuto: 147,
         datoPeculiar: null,
         estadisticaDestacada: null
     },
@@ -1017,7 +1017,7 @@ const pilotos = [
         anioDebutTC: 2007,
         imagen: "https://actc.org.ar/upload/autos/9662/imgs_v3/imgtorso/podio/juan_b._de_benedictis.png",
         imagenResultado: RUTA_IMAGENES + "pilotos/juan_b._de_benedictis.png",
-        numeroAuto: null,
+        numeroAuto: 157,
         datoPeculiar: null,
         estadisticaDestacada: null
     },
