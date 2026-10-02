@@ -16,7 +16,6 @@ for (const pagina of paginas) {
         "logo-juego",
         "presentacion-juego",
         "panel-intento",
-        "panel-intento__cabecera",
         "panel-intento__contenido",
         "fila-busqueda",
         "buscador",
