@@ -415,7 +415,7 @@ function prepararPistas() {
         hayPistas = true;
         actualizarDetallePista(pista);
         pista.boton.addEventListener("click", function () {
-            mostrarPista(pista);
+            alternarPista(pista);
         });
     });
 
@@ -437,11 +437,9 @@ function actualizarDetallePista(pista) {
     detalle.textContent = "En " + restantes + " " + palabra;
 }
 
-// Habilita las fichas que ya alcanzaron su cantidad de intentos y abre sola la
-// que se acaba de desbloquear, para que el jugador no tenga que buscarla.
+// Habilita las fichas que ya alcanzaron su cantidad de intentos. No abre
+// ninguna sola: la pista se ve solo si el jugador toca la ficha.
 function actualizarPistasExtra() {
-    let recienDesbloqueada = null;
-
     PISTAS.forEach(function (pista) {
         if (pista.boton.hidden) {
             return;
@@ -449,31 +447,25 @@ function actualizarPistasExtra() {
 
         const desbloqueada = cantidadIntentos >= pista.intentos;
 
-        if (desbloqueada && !pista.desbloqueada) {
-            recienDesbloqueada = pista;
-        }
-
-        pista.desbloqueada = desbloqueada;
         pista.boton.disabled = !desbloqueada;
         pista.boton.classList.toggle("pista--disponible", desbloqueada);
         actualizarDetallePista(pista);
     });
-
-    if (recienDesbloqueada !== null) {
-        mostrarPista(recienDesbloqueada);
-    }
 }
 
-function mostrarPista(pistaElegida) {
+// Tocar una ficha muestra su texto; tocar la que ya esta abierta la cierra.
+function alternarPista(pistaElegida) {
+    const yaAbierta = pistaElegida.boton.classList.contains("pista--activa");
+
     PISTAS.forEach(function (pista) {
-        const esElegida = pista === pistaElegida;
+        const esElegida = !yaAbierta && pista === pistaElegida;
 
         pista.boton.classList.toggle("pista--activa", esElegida);
         pista.boton.setAttribute("aria-expanded", String(esElegida));
     });
 
-    pistaTexto.textContent = pistaElegida.obtenerTexto();
-    pistaTexto.hidden = false;
+    pistaTexto.textContent = yaAbierta ? "" : pistaElegida.obtenerTexto();
+    pistaTexto.hidden = yaAbierta;
 }
 
 function actualizarContadorIntentos() {
