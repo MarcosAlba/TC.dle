@@ -554,7 +554,15 @@
             ),
             partida.maximoIntentos
         );
-        configuracion.contador.textContent = numeroActual + "/" + partida.maximoIntentos;
+        // El contador solo se muestra cuando queda el último intento; el resto
+        // del tiempo lo lee solo el lector de pantalla.
+        const esUltimo = !partida.terminada &&
+            partida.maximoIntentos > 1 &&
+            numeroActual === partida.maximoIntentos;
+        configuracion.contador.textContent = esUltimo
+            ? "Último intento"
+            : "Intento " + numeroActual + " de " + partida.maximoIntentos;
+        configuracion.contador.classList.toggle("contador-intentos--ultimo", esUltimo);
         configuracion.contador.hidden = partida.terminada;
         if (configuracion.regreso) {
             configuracion.regreso.hidden = !partida.terminada;
