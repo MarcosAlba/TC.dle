@@ -303,7 +303,15 @@ button {
     margin-top: 10px;
 }
 
+/*
+ * El filter crea un contexto de apilamiento: el z-index de las sugerencias
+ * queda encerrado en esta fila. Con z-index acá, la fila entera pasa por
+ * encima de los controles posicionados que vienen después (por ejemplo, los
+ * botones de la vista previa de autos).
+ */
 .fila-busqueda {
+    position: relative;
+    z-index: 10;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     filter: drop-shadow(0 14px 20px rgb(0 0 0 / 35%));
