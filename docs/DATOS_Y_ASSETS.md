@@ -30,6 +30,10 @@ La clave separa la mezcla de cada modo. La posicion depende del numero de dia en
 
 La propiedad importante es que no repite hasta recorrer el catalogo completo de ese modo.
 
+## Calendario de carreras
+
+`assets/js/calendario.js` lista las carreras de TC para la cuenta regresiva de la portada (`assets/js/inicio.js`). Se carga a mano: `fecha` (numero de fecha del campeonato), `lugar` y `largada` con la hora de la final en hora argentina (`-03:00`), que es siempre el domingo a las 14 (`YYYY-MM-DDT14:00:00-03:00`). `circuito` (opcional) es el nombre del SVG en `assets/images/circuitos/`. La portada muestra la primera carrera que todavia no largo y oculta el bloque si no queda ninguna.
+
 ## Imagenes
 
 Rutas principales:

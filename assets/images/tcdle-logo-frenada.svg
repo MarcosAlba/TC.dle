@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1570 384" class="tcdle tcdle-frenada" role="img" aria-label="TCDle">
+  <title>TCDle</title>
+  <style>
+    .tcdle-frenada { --tcdle-t0: -0.27s; }
+    .tcdle-frenada[data-sangrado] { --tcdle-t0: 0s; overflow: visible; }
+    .tcdle-frenada[data-sangrado] .tcdle-pista { mask: none; }
+    .tcdle-frenada .tcdle-barrido { opacity: 0; }
+    .tcdle-frenada .tcdle-pista { visibility: hidden; animation: tcdle-fr-pista 1.4s step-end; animation-delay: var(--tcdle-t0); }
+    .tcdle-frenada .tcdle-reposo { animation: tcdle-fr-reposo 1.4s step-end backwards; animation-delay: var(--tcdle-t0); }
+    .tcdle-frenada .tcdle-auto { animation: tcdle-fr-llegada 1.15s backwards; animation-delay: var(--tcdle-t0); }
+    .tcdle-frenada .tcdle-chasis { transform-origin: 0 349px; animation: tcdle-fr-cabeceo 1.15s ease-in-out backwards; animation-delay: var(--tcdle-t0); }
+    .tcdle-frenada .tcdle-barrido-2 { animation: tcdle-fr-barrido-2 1.15s linear backwards; animation-delay: var(--tcdle-t0); }
+    .tcdle-frenada .tcdle-barrido-1 { animation: tcdle-fr-barrido-1 1.15s linear backwards; animation-delay: var(--tcdle-t0); }
+    .tcdle-frenada .tcdle-nitido { animation: tcdle-fr-nitido 1.15s linear backwards; animation-delay: var(--tcdle-t0); }
+    .tcdle-frenada .tcdle-cuadro { animation: tcdle-fr-cuadro .5s cubic-bezier(.3,1.5,.5,1) backwards; }
+    .tcdle-frenada .tcdle-cuadro-1 { --l: -26px; animation-delay: calc(var(--tcdle-t0) + .78s); }
+    .tcdle-frenada .tcdle-cuadro-2 { --l: -46px; animation-delay: calc(var(--tcdle-t0) + .84s); }
+    .tcdle-frenada .tcdle-cuadro-3 { --l: -34px; animation-delay: calc(var(--tcdle-t0) + .81s); }
+    .tcdle-frenada .tcdle-cuadro-4 { --l: -62px; animation-delay: calc(var(--tcdle-t0) + .9s); }
+    @keyframes tcdle-fr-llegada {
+      0% { transform: translateX(-1300px); animation-timing-function: linear; }
+      52% { transform: translateX(-170px); animation-timing-function: cubic-bezier(.15,.85,.3,1); }
+      100% { transform: none; }
+    }
+    @keyframes tcdle-fr-cabeceo {
+      0%, 50% { transform: skewX(0deg); }
+      66% { transform: skewX(-6deg); }
+      84% { transform: skewX(1.5deg); }
+      100% { transform: none; }
+    }
+    @keyframes tcdle-fr-barrido-2 { 0%, 48% { opacity: 1; } 64%, 100% { opacity: 0; } }
+    @keyframes tcdle-fr-barrido-1 { 0%, 44% { opacity: 0; } 56%, 70% { opacity: 1; } 86%, 100% { opacity: 0; } }
+    @keyframes tcdle-fr-nitido { 0%, 60% { opacity: 0; } 78%, 100% { opacity: 1; } }
+    @keyframes tcdle-fr-pista { 0% { visibility: visible; } 100% { visibility: hidden; } }
+    @keyframes tcdle-fr-reposo { 0% { visibility: hidden; } 100% { visibility: visible; } }
+    @keyframes tcdle-fr-cuadro { from { transform: translateX(var(--l)); } to { transform: none; } }
+    .tcdle-frenada .tcdle-letra { transform-origin: 0 247px; animation: tcdle-fr-letra .62s cubic-bezier(.16,.9,.24,1) backwards; }
+    .tcdle-frenada .tcdle-d { animation-delay: calc(var(--tcdle-t0) + .93s); }
+    .tcdle-frenada .tcdle-l { animation-delay: calc(var(--tcdle-t0) + 1.05s); }
+    .tcdle-frenada .tcdle-e { animation-delay: calc(var(--tcdle-t0) + 1.17s); }
+    @keyframes tcdle-fr-letra {
+      0% { opacity: 0; transform: translateX(-140px) skewX(-16deg); }
+      18% { opacity: 1; }
+      100% { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tcdle-frenada, .tcdle-frenada * { animation: none !important; }
+    }
+  </style>
+  <defs>
+    <path id="tcdle-fr-q1" d="M117.3 174.3H164.8C169.7 174.3 179.3 172.7 180.9 166.8L187.7 141.1H136.1C131.9 141.1 125 143.2 123.8 147.9L117.3 174.3Z"/>
+    <path id="tcdle-fr-q2" d="M117.8 173.2H67.5C63.8 173.2 55.7 175.2 54.5 179.2L46 207.1H96.3C102 207.1 110.6 202.6 112 196.8L117.8 173.2Z"/>
+    <path id="tcdle-fr-q3" d="M101.1 239.1H150.7C155.3 239.1 163.1 235.9 164.4 231.2L171.4 206H120.5C116.1 206 108.6 208.4 107.4 213.2L101.1 239.1Z"/>
+    <path id="tcdle-fr-q4" d="M24.2 274.8H78C83.3 274.8 92.9 270.8 94.3 265.4L100.9 239.1H44.5C37.1 239.1 34.7 241 32.5 248L24.2 274.8Z"/>
+    <path id="tcdle-fr-t" d="M83.3 118.1H220.2L167.9 349H270L329.5 118.1H413.9C439.1 118.1 459.4 101.9 465.9 77.7L479.5 27.3H158.5C132.2 27.3 106.6 39.7 98.6 66.4L83.3 118.1Z"/>
+    <path id="tcdle-fr-c" d="M365 141.1L352.6 175.8C345 197.1 343.6 227.2 348.8 249.1C358 287.6 380.4 315.6 414.3 335.4C497.9 384.2 600.1 353.4 670.3 295.1C676.4 290.1 682 284.5 687.9 279.3L617.5 232.7C588.1 255.9 550.4 274 512.1 265.3C469.3 255.7 456.4 215.6 471.6 177.6C487.1 138.6 526.6 110.9 568.6 109C587.1 108.2 608.8 114 622.5 126.9C629.9 133.9 631.1 136.9 634.8 146.1L727.7 100.4C716.4 78.7 706.2 63.4 686 48.9C648.3 21.8 598.1 20.4 554.5 31.1C550.9 32 544.3 33.3 541.2 34.5L497.6 51.3L486.3 93.7C481.5 111.5 468.3 127.1 451.5 134.5C443.3 138.2 429.7 141.1 420.7 141.1H365Z"/>
+    <path id="tcdle-fr-d" d="M712.7 247H904.7C909.7 247 914.6 246.4 919.6 245.9C984.3 239.8 1037.4 209 1061.2 146.3C1069.9 123.7 1076 94.4 1055.2 76.3C1040.8 63.7 1013.3 58.2 994.6 58.2H834.5C808.2 58.2 792.4 71.5 783.7 95.7L740.2 217.4C735.5 230.6 730 238.1 717.4 244.6L712.7 247ZM848 197L879.1 114.6H895.4C927.5 114.5 975.9 107.1 953 157.7C943 179.8 921.2 197 896.1 197H848Z"/>
+    <path id="tcdle-fr-l" d="M1094.4 58.2C1101.5 79.9 1101.3 95.1 1093.4 116.6L1045.5 247H1244.2L1263.1 193.1H1158.5L1188.6 114.3H1216.4L1237.2 58.2H1094.4Z"/>
+    <path id="tcdle-fr-e" d="M1480.5 247L1500.6 193.1H1399.1C1383.2 193.1 1383.4 188.1 1386.5 174.3H1454.3L1470.3 133.2H1402C1406.9 118.4 1411.8 114.3 1428 114.3H1524.4L1545.7 58.2H1375.5C1345.6 58.2 1328 74.1 1318.3 101L1284.6 194.4C1282 201.7 1279 209.1 1276.4 216.4C1269.6 235.9 1279.3 247 1299.2 247H1480.5Z"/>
+    <g id="tcdle-fr-tc">
+      <use href="#tcdle-fr-q1"/><use href="#tcdle-fr-q2"/><use href="#tcdle-fr-q3"/><use href="#tcdle-fr-q4"/>
+      <use href="#tcdle-fr-t"/><use href="#tcdle-fr-c"/>
+    </g>
+    <filter id="tcdle-fr-b1" filterUnits="userSpaceOnUse" x="-120" y="0" width="1000" height="384">
+      <feGaussianBlur stdDeviation="14 0"/>
+    </filter>
+    <filter id="tcdle-fr-b2" filterUnits="userSpaceOnUse" x="-300" y="0" width="1360" height="384">
+      <feGaussianBlur stdDeviation="44 0"/>
+    </filter>
+    <linearGradient id="tcdle-fr-borde" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="16" y2="0">
+      <stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="tcdle-fr-niebla" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="260" y2="0">
+      <stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <mask id="tcdle-fr-entrada" maskUnits="userSpaceOnUse" x="0" y="-100" width="3000" height="600">
+      <rect x="0" y="-100" width="3000" height="600" fill="url(#tcdle-fr-borde)"/>
+    </mask>
+    <mask id="tcdle-fr-entrada-barrido" maskUnits="userSpaceOnUse" x="0" y="-100" width="3000" height="600">
+      <rect x="0" y="-100" width="3000" height="600" fill="url(#tcdle-fr-niebla)"/>
+    </mask>
+  </defs>
+  <g fill="#E30613">
+    <g class="tcdle-pista" mask="url(#tcdle-fr-entrada-barrido)">
+      <g class="tcdle-auto">
+        <g class="tcdle-chasis">
+          <use class="tcdle-barrido tcdle-barrido-2" href="#tcdle-fr-tc" filter="url(#tcdle-fr-b2)"/>
+          <use class="tcdle-barrido tcdle-barrido-1" href="#tcdle-fr-tc" filter="url(#tcdle-fr-b1)"/>
+        </g>
+      </g>
+    </g>
+    <g class="tcdle-pista" mask="url(#tcdle-fr-entrada)">
+      <g class="tcdle-auto">
+        <g class="tcdle-chasis">
+          <g class="tcdle-nitido">
+            <g class="tcdle-estela">
+              <use class="tcdle-cuadro tcdle-cuadro-1" href="#tcdle-fr-q1"/>
+              <use class="tcdle-cuadro tcdle-cuadro-2" href="#tcdle-fr-q2"/>
+              <use class="tcdle-cuadro tcdle-cuadro-3" href="#tcdle-fr-q3"/>
+              <use class="tcdle-cuadro tcdle-cuadro-4" href="#tcdle-fr-q4"/>
+            </g>
+            <use class="tcdle-t" href="#tcdle-fr-t"/>
+            <use class="tcdle-c" href="#tcdle-fr-c"/>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g class="tcdle-reposo">
+      <use href="#tcdle-fr-q1"/><use href="#tcdle-fr-q2"/><use href="#tcdle-fr-q3"/><use href="#tcdle-fr-q4"/>
+      <use href="#tcdle-fr-t"/><use href="#tcdle-fr-c"/>
+    </g>
+    <use class="tcdle-letra tcdle-d" href="#tcdle-fr-d"/>
+    <use class="tcdle-letra tcdle-l" href="#tcdle-fr-l"/>
+    <use class="tcdle-letra tcdle-e" href="#tcdle-fr-e"/>
+  </g>
+</svg>
