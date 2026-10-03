@@ -547,21 +547,28 @@
 
     function actualizarEstadoIntentos(configuracion) {
         const partida = configuracion.partida;
-        const palabra = partida.intentosRestantes === 1
-            ? "intento disponible"
-            : "intentos disponibles";
-        configuracion.contador.textContent = partida.intentosRestantes + " " + palabra;
+        const numeroActual = Math.min(
+            Math.max(
+                partida.terminada ? partida.intentosUsados : partida.intentosUsados + 1,
+                1
+            ),
+            partida.maximoIntentos
+        );
+        // El contador solo se muestra cuando queda el último intento; el resto
+        // del tiempo lo lee solo el lector de pantalla.
+        const esUltimo = !partida.terminada &&
+            partida.maximoIntentos > 1 &&
+            numeroActual === partida.maximoIntentos;
+        configuracion.contador.textContent = esUltimo
+            ? "Último intento"
+            : "Intento " + numeroActual + " de " + partida.maximoIntentos;
+        configuracion.contador.classList.toggle("contador-intentos--ultimo", esUltimo);
         configuracion.contador.hidden = partida.terminada;
         if (configuracion.regreso) {
             configuracion.regreso.hidden = !partida.terminada;
         }
         if (configuracion.numero) {
-            const numero = partida.terminada
-                ? partida.intentosUsados
-                : partida.intentosUsados + 1;
-            configuracion.numero.textContent = String(
-                Math.min(Math.max(numero, 1), partida.maximoIntentos)
-            ).padStart(2, "0");
+            configuracion.numero.textContent = String(numeroActual).padStart(2, "0");
         }
         if (configuracion.campo) {
             configuracion.campo.disabled = partida.terminada || configuracion.sinObjetivo;

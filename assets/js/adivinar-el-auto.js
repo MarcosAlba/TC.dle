@@ -22,14 +22,8 @@ const detalleResultadoAutoModal = document.getElementById("detalle-resultado-aut
 const tiempoNuevoAutoModal = document.getElementById("tiempo-nuevo-auto-modal");
 const panelIntentoAuto = document.getElementById("panel-intento-auto");
 const panelAnioAuto = document.getElementById("panel-anio-auto");
-const filaAnioAuto = document.getElementById("fila-anio-auto");
-const campoAnioAuto = document.getElementById("anio-auto");
-const botonAnioAuto = document.getElementById("boton-anio-auto");
+const opcionesAnioAuto = document.getElementById("opciones-anio-auto");
 const mensajeAnioAuto = document.getElementById("mensaje-anio-auto");
-const resultadoAnioAuto = document.getElementById("resultado-anio-auto");
-const anioCorrectoAuto = document.getElementById("anio-correcto-auto");
-const filaAnioError = document.getElementById("fila-anio-error");
-const anioElegidoAuto = document.getElementById("anio-elegido-auto");
 const bonusAnioModal = document.getElementById("bonus-anio-modal");
 const introAuto = document.getElementById("intro-auto");
 const contenidoAuto = document.getElementById("contenido-auto");
@@ -40,6 +34,7 @@ const NIVELES_DESENFOQUE = [24, 20, 16, 12, 9, 6, 3, 1, 0];
 const CLAVE_PARTIDA_AUTO = "partidaTCdleAuto";
 const CLAVE_ANIO_AUTO = "partidaTCdleAutoAnio";
 const PRIMER_ANIO_TC = 1937;
+const CANTIDAD_OPCIONES_ANIO = 5;
 const RUTA_AUTOS = new URL("../images/autos/", document.currentScript.src).href;
 const fechaPartidaAutoActual = TCdle.obtenerFechaLocal();
 
@@ -255,57 +250,117 @@ function rondaAnioPendiente() {
     return hayRondaAnio() && respuestaAnio === null;
 }
 
-function mostrarMensajeAnio(texto, tipo) {
-    TCdle.mostrarMensaje(mensajeAnioAuto, texto, tipo);
+// Generador con semilla para que los años señuelo sean los mismos durante
+// todo el día, incluso al recargar la página.
+function crearGeneradorAnios(texto) {
+    let semilla = 2166136261;
+
+    for (let indice = 0; indice < texto.length; indice++) {
+        semilla ^= texto.charCodeAt(indice);
+        semilla = Math.imul(semilla, 16777619);
+    }
+
+    return function () {
+        semilla += 0x6D2B79F5;
+        let resultado = semilla;
+        resultado = Math.imul(resultado ^ (resultado >>> 15), resultado | 1);
+        resultado ^= resultado + Math.imul(resultado ^ (resultado >>> 7), resultado | 61);
+        return ((resultado ^ (resultado >>> 14)) >>> 0) / 4294967296;
+    };
+}
+
+// Cinco años ordenados: el real y cuatro señuelos a menos de 8 años de
+// distancia, nunca más nuevos que el año actual.
+function generarOpcionesAnio() {
+    const aleatorio = crearGeneradorAnios(
+        "anio:" + fechaPartidaAutoActual + ":" + autoDelDia.pilotoId + ":" + anioDelAuto
+    );
+    const anioTope = new Date().getFullYear();
+    const opciones = [anioDelAuto];
+
+    while (opciones.length < CANTIDAD_OPCIONES_ANIO) {
+        const desplazamiento = Math.floor(aleatorio() * 16) - 8;
+        const candidato = anioDelAuto + desplazamiento;
+
+        if (
+            desplazamiento !== 0 &&
+            candidato >= PRIMER_ANIO_TC &&
+            candidato <= anioTope &&
+            !opciones.includes(candidato)
+        ) {
+            opciones.push(candidato);
+        }
+    }
+
+    return opciones.sort(function (a, b) { return a - b; });
+}
+
+function renderizarOpcionesAnio() {
+    const opciones = generarOpcionesAnio();
+
+    // Una respuesta guardada con la versión anterior (año escrito a mano)
+    // puede no estar entre las opciones: se suma para poder marcarla.
+    if (respuestaAnio !== null && !opciones.includes(respuestaAnio)) {
+        opciones.push(respuestaAnio);
+        opciones.sort(function (a, b) { return a - b; });
+    }
+
+    opcionesAnioAuto.innerHTML = "";
+
+    opciones.forEach(function (anio) {
+        const opcion = document.createElement("button");
+
+        opcion.type = "button";
+        opcion.className = "ronda-anio__opcion";
+        opcion.dataset.anio = anio;
+        opcion.textContent = anio;
+        opcion.addEventListener("click", function () {
+            elegirAnio(anio);
+        });
+        opcionesAnioAuto.appendChild(opcion);
+    });
 }
 
 // La ronda bonus reemplaza al buscador de pilotos una vez adivinado el auto.
 function mostrarRondaAnio() {
     panelIntentoAuto.hidden = true;
     panelAnioAuto.hidden = false;
+    renderizarOpcionesAnio();
 
     if (rondaAnioPendiente()) {
-        filaAnioAuto.hidden = false;
-        resultadoAnioAuto.hidden = true;
-        campoAnioAuto.focus();
+        opcionesAnioAuto.querySelector("button").focus();
         return;
     }
 
     renderizarResultadoAnio();
 }
 
+// El resultado se muestra sobre las mismas opciones: la correcta en verde,
+// la elegida (si no era) tachada en rojo y el resto apagado.
 function renderizarResultadoAnio() {
-    const acerto = respuestaAnio === anioDelAuto;
+    opcionesAnioAuto.classList.add("ronda-anio__opciones--respondida");
+    opcionesAnioAuto.querySelectorAll(".ronda-anio__opcion").forEach(function (opcion) {
+        const anio = Number(opcion.dataset.anio);
+        const esCorrecta = anio === anioDelAuto;
+        const esElegida = anio === respuestaAnio;
 
-    filaAnioAuto.hidden = true;
-    resultadoAnioAuto.hidden = false;
-    resultadoAnioAuto.classList.toggle("resultado-anio--correcto", acerto);
-    anioCorrectoAuto.textContent = anioDelAuto;
-    filaAnioError.hidden = acerto;
-    anioElegidoAuto.textContent = respuestaAnio;
-    mostrarMensajeAnio(
-        acerto ? "¡Le acertaste al año del diseño!" : "No era ese año.",
-        acerto ? "exito" : "error"
-    );
+        opcion.disabled = true;
+        opcion.classList.toggle("ronda-anio__opcion--correcta", esCorrecta);
+        opcion.classList.toggle("ronda-anio__opcion--error", esElegida && !esCorrecta);
+
+        if (esCorrecta) {
+            opcion.setAttribute("aria-label", anio + ", año correcto");
+        } else if (esElegida) {
+            opcion.setAttribute("aria-label", anio + ", tu respuesta");
+        }
+    });
+
+    // Los tiles ya muestran el resultado; la ayuda deja de hacer falta.
+    mensajeAnioAuto.hidden = true;
 }
 
-function confirmarAnio() {
+function elegirAnio(anio) {
     if (!rondaAnioPendiente()) {
-        return;
-    }
-
-    const ingresado = campoAnioAuto.value.trim();
-
-    if (!/^\d{4}$/.test(ingresado)) {
-        mostrarMensajeAnio("Escribí un año de 4 números.", "error");
-        return;
-    }
-
-    const anio = Number(ingresado);
-    const anioTope = new Date().getFullYear();
-
-    if (anio < PRIMER_ANIO_TC || anio > anioTope) {
-        mostrarMensajeAnio("Elegí un año entre " + PRIMER_ANIO_TC + " y " + anioTope + ".", "error");
         return;
     }
 
@@ -386,25 +441,6 @@ function cargarPartidaAuto() {
 }
 
 botonIntentarAuto.addEventListener("click", intentarPilotoAuto);
-botonAnioAuto.addEventListener("click", confirmarAnio);
-
-campoAnioAuto.addEventListener("input", function () {
-    const soloNumeros = campoAnioAuto.value.replace(/\D+/g, "");
-
-    if (campoAnioAuto.value !== soloNumeros) {
-        campoAnioAuto.value = soloNumeros;
-    }
-
-    mostrarMensajeAnio("", "");
-});
-
-campoAnioAuto.addEventListener("keydown", function (evento) {
-    if (evento.key === "Enter") {
-        evento.preventDefault();
-        confirmarAnio();
-    }
-});
-
 cargarPartidaAuto();
 actualizarInterfazAuto();
 configurarImagenAuto();

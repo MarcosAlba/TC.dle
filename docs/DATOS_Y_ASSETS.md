@@ -4,6 +4,14 @@
 
 `assets/js/pilotos.js` define `pilotos`, un array global con datos del modo Pilotos y tambien base para Autos. Cada piloto tiene ID numerico, nombre, marca, equipo, ubicacion, nacimiento, campeonatos y rutas de imagen.
 
+Ademas tiene 3 campos opcionales para las pistas de texto del modo Pilotos (arrancan en `null` y se completan piloto por piloto a mano):
+
+- `numeroAuto`: numero de auto del piloto.
+- `datoPeculiar`: texto corto con un dato curioso del piloto.
+- `estadisticaDestacada`: `{ tipo, valor }`, donde `tipo` es uno de `"carrerasGanadas"`, `"series"`, `"clasificaciones"` o `"carrerasCorridas"` (cascada que decide quien carga el dato, no el codigo).
+
+Mientras un campo siga en `null`, esa pista no se muestra para ese piloto.
+
 `assets/js/autos.js` define `window.autosTC`. Cada entrada conecta un `pilotoId` con un archivo `.webp` dentro de `assets/images/autos/`.
 
 `assets/js/circuitos.js` define `window.circuitosTC`. Contiene 31 configuraciones jugables y 29 sedes. Cada circuito incluye ID, sede, nombre, variante, aliases, ciudad, provincia, longitud, participacion, imagen y fuente.
@@ -21,6 +29,10 @@ TCdle.seleccionDiaria.obtener(circuitos, "circuitos");
 La clave separa la mezcla de cada modo. La posicion depende del numero de dia en UTC, pero la partida y el cambio de dia se manejan con fecha local para el navegador.
 
 La propiedad importante es que no repite hasta recorrer el catalogo completo de ese modo.
+
+## Calendario de carreras
+
+`assets/js/calendario.js` lista las carreras de TC para la cuenta regresiva de la portada (`assets/js/inicio.js`). Se carga a mano: `fecha` (numero de fecha del campeonato), `lugar` y `largada` con la hora de la final en hora argentina (`-03:00`), que es siempre el domingo a las 14 (`YYYY-MM-DDT14:00:00-03:00`). `circuito` (opcional) es el nombre del SVG en `assets/images/circuitos/`. La portada muestra la primera carrera que todavia no largo y oculta el bloque si no queda ninguna.
 
 ## Imagenes
 

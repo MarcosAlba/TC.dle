@@ -6,12 +6,12 @@
     <meta name="description" content="Adiviná qué piloto de Turismo Carretera conduce el auto del día.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=2">
-    <link rel="stylesheet" href="../assets/css/adivinar-el-auto.css?v=22">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=12">
+    <link rel="stylesheet" href="../assets/css/adivinar-el-auto.css?v=27">
     <title>TCdle | Adiviná el piloto por su auto</title>
     <link rel="icon" type="image/png" href="../assets/images/tc-dle.ico">
-    <script src="../assets/js/tcdle.js?v=3"></script>
+    <script src="../assets/js/tcdle.js?v=4"></script>
 </head>
 <body>
     <header class="encabezado-juego">
@@ -76,13 +76,7 @@
         </section>
 
         <section id="panel-intento-auto" class="panel-intento" aria-labelledby="titulo-intento-auto">
-            <div class="panel-intento__cabecera">
-                <strong id="numero-intento-auto" class="panel-intento__numero">01</strong>
-                <div>
-                    <p>Reconocé el auto</p>
-                    <h2 id="titulo-intento-auto">Elegí un piloto</h2>
-                </div>
-            </div>
+            <h2 id="titulo-intento-auto" class="solo-lectores">Elegí un piloto</h2>
 
             <div class="panel-intento__contenido">
                 <div class="fila-busqueda">
@@ -97,43 +91,16 @@
             </div>
         </section>
 
-        <section id="panel-anio-auto" class="panel-intento panel-anio" aria-labelledby="titulo-anio-auto" hidden>
-            <div class="panel-intento__cabecera">
-                <strong class="panel-intento__numero">02</strong>
-                <div>
-                    <p>Ronda bonus</p>
-                    <h2 id="titulo-anio-auto">¿De qué año es este diseño?</h2>
-                </div>
+        <section id="panel-anio-auto" class="ronda-anio" aria-labelledby="titulo-anio-auto" hidden>
+            <div class="ronda-anio__cabecera">
+                <span class="ronda-anio__etiqueta">Ronda extra</span>
+                <h2 id="titulo-anio-auto">¿De qué año es este auto?</h2>
             </div>
 
-            <div class="panel-intento__contenido">
-                <div id="fila-anio-auto" class="fila-busqueda">
-                    <label class="solo-lectores" for="anio-auto">Año del diseño</label>
-                    <input
-                        id="anio-auto"
-                        class="campo-anio"
-                        type="text"
-                        inputmode="numeric"
-                        maxlength="4"
-                        placeholder="Escribí el año"
-                        autocomplete="off"
-                    >
-                    <button id="boton-anio-auto" class="boton-intentar" type="button">Confirmar</button>
-                </div>
+            <div id="opciones-anio-auto" class="ronda-anio__opciones" role="group" aria-label="Elegí el año"></div>
 
-                <div id="resultado-anio-auto" class="resultado-anio" hidden>
-                    <p class="resultado-anio__fila resultado-anio__fila--correcta">
-                        <span>Año del diseño</span>
-                        <strong id="anio-correcto-auto"></strong>
-                    </p>
-                    <p id="fila-anio-error" class="resultado-anio__fila resultado-anio__fila--error" hidden>
-                        <span>Tu respuesta</span>
-                        <strong id="anio-elegido-auto"></strong>
-                    </p>
-                </div>
 
-                <p id="mensaje-anio-auto" class="mensaje-juego" aria-live="polite"></p>
-            </div>
+            <p id="mensaje-anio-auto" class="ronda-anio__ayuda">Una sola chance. No cambia el resultado del día, suma como bonus.</p>
         </section>
 
         <section id="historial-auto" class="historial-intentos" aria-labelledby="titulo-historial-auto" hidden>
@@ -185,6 +152,6 @@
     <script src="../assets/js/pilotos.js"></script>
     <script src="../assets/js/autos.js?v=2"></script>
     <script src="../assets/js/seleccion-diaria.js?v=1"></script>
-    <script src="../assets/js/adivinar-el-auto.js?v=22"></script>
+    <script src="../assets/js/adivinar-el-auto.js?v=25"></script>
 </body>
 </html>

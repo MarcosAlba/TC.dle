@@ -6,33 +6,19 @@
     <meta name="description" content="Elegí uno de los tres desafíos diarios de TCdle.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/inicio.css?v=3">
-    <title>TCdle | Juegos diarios de Turismo Carretera</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/inicio.css?v=9">
+    <title>TCdle</title>
     <link rel="icon" type="image/x-icon" href="assets/images/tc-dle.ico">
 </head>
 <body>
     <header class="encabezado-inicio">
-        <img class="logo-inicio" src="assets/images/tcdle-logo.png" alt="TCdle">
-
-        <div class="redes-inicio" aria-label="Próximamente en redes sociales">
-            <span class="red-social" role="img" aria-label="Instagram, próximamente">
-                <img src="assets/images/iconos/instagram.svg" alt="">
-            </span>
-            <span class="red-social" role="img" aria-label="X, próximamente">
-                <img src="assets/images/iconos/x.svg" alt="">
-            </span>
-        </div>
+        <img class="logo-inicio" src="assets/images/tcdle-logo-frenada.svg" alt="TCdle" width="1570" height="384">
     </header>
 
     <main class="inicio">
-        <p class="aviso-redes">
-            Próximamente encontranos en <strong>Instagram</strong> y <strong>X</strong>.
-        </p>
-
         <section class="selector-juegos" aria-labelledby="titulo-selector">
-            <p class="selector-juegos__eyebrow">Cuatro desafíos diarios</p>
-            <h1 id="titulo-selector">Selecciona un juego:</h1>
+            <h1 id="titulo-selector">Elegí un juego</h1>
 
             <div class="grilla-juegos">
                 <a class="tarjeta-juego tarjeta-juego--piloto" href="pages/adivinar-el-piloto.html">
@@ -40,8 +26,8 @@
                         <img src="assets/images/pilotos/julian_santero.png" alt="Julián Santero">
                     </span>
                     <span class="tarjeta-juego__contenido">
-                        <strong>Jugar</strong>
-                        <span>Adiviná el piloto</span>
+                        <strong class="tarjeta-juego__nombre">Adiviná el piloto</strong>
+                        <span class="tarjeta-juego__jugar" aria-hidden="true">Jugar</span>
                     </span>
                 </a>
 
@@ -50,8 +36,8 @@
                         <img src="assets/images/autos/agustin_canapino_2026.webp" alt="Auto de Agustín Canapino">
                     </span>
                     <span class="tarjeta-juego__contenido">
-                        <strong>Jugar</strong>
-                        <span>Adiviná el auto</span>
+                        <strong class="tarjeta-juego__nombre">Adiviná el auto</strong>
+                        <span class="tarjeta-juego__jugar" aria-hidden="true">Jugar</span>
                     </span>
                 </a>
 
@@ -60,8 +46,8 @@
                         <img src="assets/images/circuitos/buenos-aires-12-sin-chicana.svg" alt="Silueta del Autódromo Oscar Cabalén">
                     </span>
                     <span class="tarjeta-juego__contenido">
-                        <strong>Jugar</strong>
-                        <span>Adiviná el circuito</span>
+                        <strong class="tarjeta-juego__nombre">Adiviná el circuito</strong>
+                        <span class="tarjeta-juego__jugar" aria-hidden="true">Jugar</span>
                     </span>
                 </a>
 
@@ -72,12 +58,29 @@
                         </span>
                     </span>
                     <span class="tarjeta-juego__contenido">
-                        <strong>Jugar</strong>
-                        <span>Wordle del TC</span>
+                        <strong class="tarjeta-juego__nombre">Wordle del TC</strong>
+                        <span class="tarjeta-juego__jugar" aria-hidden="true">Jugar</span>
                     </span>
                 </a>
             </div>
         </section>
+
+        <section id="proxima-carrera" class="proxima-carrera" hidden>
+            <img id="proxima-carrera-trazado" class="proxima-carrera__trazado" src="" alt="">
+            <p class="proxima-carrera__titulo" aria-hidden="true">
+                <span id="proxima-carrera-fecha" class="proxima-carrera__fecha"></span>
+                <span id="proxima-carrera-lugar" class="proxima-carrera__lugar"></span>
+            </p>
+            <div class="proxima-carrera__reloj" aria-hidden="true">
+                <span class="proxima-carrera__tile"><b id="proxima-carrera-dias">00</b><small>días</small></span>
+                <span class="proxima-carrera__tile"><b id="proxima-carrera-horas">00</b><small>horas</small></span>
+                <span class="proxima-carrera__tile"><b id="proxima-carrera-minutos">00</b><small>min</small></span>
+                <span class="proxima-carrera__tile proxima-carrera__tile--segundos"><b id="proxima-carrera-segundos">00</b><small>seg</small></span>
+            </div>
+        </section>
     </main>
+
+    <script src="assets/js/calendario.js?v=1"></script>
+    <script src="assets/js/inicio.js?v=2"></script>
 </body>
 </html>
