@@ -10,5 +10,23 @@ const calendarioTC = [
         lugar: "San Nicolás",
         circuito: "san-nicolas",
         largada: "2026-10-04T14:00:00-03:00"
-    }
+    },
+    {
+        fecha: 13,
+        lugar: "Rosario",
+        circuito: "rosario",
+        largada: "2026-10-25T14:00:00-03:00"
+    },
+    {
+        fecha: 14,
+        lugar: "Río Cuarto",
+        circuito: "rio-cuarto",
+        largada: "2026-11-15T14:00:00-03:00"
+    },
+    {
+        fecha: 15,
+        lugar: "La Plata",
+        circuito: "la-plata-sin-chicana",
+        largada: "2026-12-06T14:00:00-03:00"
+    },
 ];
