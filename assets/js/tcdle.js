@@ -463,6 +463,10 @@
                 if (original.version !== 2) {
                     guardar();
                 }
+                // Partidas terminadas antes de que existieran las rachas.
+                if (terminada) {
+                    registrarResultadoRacha(configuracion.clave, fecha, idsIntentados.includes(objetivoId));
+                }
             } catch (error) {
                 limpiarGuardado();
             }
@@ -491,6 +495,12 @@
                 terminada = true;
             }
             guardar();
+            if (terminada) {
+                registrarResultadoRacha(configuracion.clave, fecha, resultado === "correcta");
+                if (typeof global.dispatchEvent === "function") {
+                    global.dispatchEvent(new CustomEvent(EVENTO_PARTIDA_TERMINADA));
+                }
+            }
 
             return { resultado: resultado, estado: estado() };
         }
@@ -678,6 +688,155 @@
         return { abrir: abrir, cerrar: cerrar };
     }
 
+    // Los cuatro juegos del dia, en el orden en que se sugieren. La clave de
+    // partida es la misma que cada modo le pasa a crearJuegoDiario, asi se
+    // puede saber desde cualquier pagina que juegos ya se terminaron hoy.
+    const JUEGOS = [
+        { id: "piloto", nombre: "Adiviná el piloto", corto: "Piloto", archivo: "adivinar-el-piloto.html", clavePartida: "partidaTCdle" },
+        { id: "auto", nombre: "Adiviná el auto", corto: "Auto", archivo: "adivinar-el-auto.html", clavePartida: "partidaTCdleAuto" },
+        { id: "circuito", nombre: "Adiviná el circuito", corto: "Circuito", archivo: "adivinar-el-circuito.html", clavePartida: "partidaTCdleCircuito" },
+        { id: "wordle", nombre: "Wordle del TC", corto: "Wordle", archivo: "tcdle-wordle.html", clavePartida: "partidaTCdleWordle" }
+    ];
+    const CLAVE_RACHAS = "rachasTCdle";
+    const EVENTO_PARTIDA_TERMINADA = "tcdle:partida-terminada";
+
+    function obtenerFechaAnterior(fecha) {
+        const partes = fecha.split("-").map(Number);
+        return obtenerFechaLocal(new Date(partes[0], partes[1] - 1, partes[2] - 1));
+    }
+
+    function leerJson(clave) {
+        try {
+            const contenido = global.localStorage.getItem(clave);
+            return contenido ? JSON.parse(contenido) : null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    // La racha sube uno por cada dia seguido acertado y vuelve a cero al
+    // perder. Se registra una sola vez por dia, aunque la partida se cargue
+    // varias veces.
+    function registrarResultadoRacha(clavePartida, fecha, acerto) {
+        const juego = JUEGOS.find(function (item) { return item.clavePartida === clavePartida; });
+        if (!juego) {
+            return;
+        }
+
+        const rachas = leerJson(CLAVE_RACHAS) || {};
+        const anterior = rachas[juego.id];
+        if (anterior && anterior.fecha === fecha) {
+            return;
+        }
+
+        const continua = anterior && anterior.fecha === obtenerFechaAnterior(fecha);
+        rachas[juego.id] = {
+            fecha: fecha,
+            racha: acerto ? (continua ? anterior.racha : 0) + 1 : 0
+        };
+
+        try {
+            global.localStorage.setItem(CLAVE_RACHAS, JSON.stringify(rachas));
+        } catch (error) {
+            // Sin almacenamiento no hay racha que recordar.
+        }
+    }
+
+    // Devuelve la racha vigente: si el ultimo resultado no es de hoy ni de
+    // ayer, el jugador salteo un dia y la racha ya se corto.
+    function obtenerRacha(juegoId, fecha = obtenerFechaLocal()) {
+        const registro = (leerJson(CLAVE_RACHAS) || {})[juegoId];
+        if (!registro || (registro.fecha !== fecha && registro.fecha !== obtenerFechaAnterior(fecha))) {
+            return 0;
+        }
+        return registro.racha || 0;
+    }
+
+    // "acertado", "fallado" o "pendiente" segun la partida guardada de hoy.
+    function obtenerEstadoJuego(juego, fecha = obtenerFechaLocal()) {
+        const partida = leerJson(juego.clavePartida);
+        if (!partida || partida.fecha !== fecha || !partida.terminada || !Array.isArray(partida.idsIntentados)) {
+            return "pendiente";
+        }
+        return partida.idsIntentados.includes(partida.objetivoId) ? "acertado" : "fallado";
+    }
+
+    function obtenerEstadoJuegos() {
+        const fecha = obtenerFechaLocal();
+        return JUEGOS.map(function (juego) {
+            return Object.assign({}, juego, {
+                estado: obtenerEstadoJuego(juego, fecha),
+                racha: obtenerRacha(juego.id, fecha)
+            });
+        });
+    }
+
+    // Primer juego pendiente despues del actual, dando la vuelta a la lista.
+    function obtenerSiguienteJuego(juegoActualId, juegos) {
+        const indice = juegos.findIndex(function (juego) { return juego.id === juegoActualId; });
+        for (let paso = 1; paso <= juegos.length; paso++) {
+            const juego = juegos[(indice + paso) % juegos.length];
+            if (juego.id !== juegoActualId && juego.estado === "pendiente") {
+                return juego;
+            }
+        }
+        return null;
+    }
+
+    function renderizarSiguienteJuego(contenedor, juegoActualId, juegos) {
+        const siguiente = obtenerSiguienteJuego(juegoActualId, juegos);
+        const pendientes = juegos.filter(function (juego) {
+            return juego.id !== juegoActualId && juego.estado === "pendiente";
+        }).length;
+        const enlace = document.createElement("a");
+        const titulo = document.createElement("strong");
+        const detalle = document.createElement("small");
+
+        enlace.className = "siguiente-juego";
+        if (siguiente) {
+            enlace.href = siguiente.archivo;
+            titulo.textContent = "Siguiente: " + siguiente.nombre + " →";
+            detalle.textContent = pendientes === 1 ? "Te queda 1 juego hoy" : "Te quedan " + pendientes + " juegos hoy";
+        } else {
+            enlace.href = "../index.html";
+            enlace.classList.add("siguiente-juego--completo");
+            titulo.textContent = "¡Completaste los " + juegos.length + " de hoy!";
+            detalle.textContent = "Volver al inicio";
+        }
+        enlace.appendChild(titulo);
+        enlace.appendChild(detalle);
+        contenedor.replaceChildren(enlace);
+    }
+
+    // Las paginas de juego marcan <body data-juego="..."> y un contenedor
+    // [data-siguiente-juego] en el resultado, que se completa con el proximo
+    // juego pendiente y se actualiza cuando termina la partida.
+    function montarConexionJuegos() {
+        const juegoActualId = document.body.dataset.juego;
+        if (!juegoActualId) {
+            return;
+        }
+
+        function actualizar() {
+            const juegos = obtenerEstadoJuegos();
+            document.querySelectorAll("[data-siguiente-juego]").forEach(function (contenedor) {
+                renderizarSiguienteJuego(contenedor, juegoActualId, juegos);
+            });
+        }
+
+        actualizar();
+        global.addEventListener(EVENTO_PARTIDA_TERMINADA, actualizar);
+    }
+
+    if (global.document && global.document.readyState === "loading") {
+        global.document.addEventListener("DOMContentLoaded", montarConexionJuegos);
+    } else if (global.document) {
+        montarConexionJuegos();
+    }
+
+    TCdle.JUEGOS = JUEGOS;
+    TCdle.obtenerEstadoJuegos = obtenerEstadoJuegos;
+    TCdle.obtenerRacha = obtenerRacha;
     TCdle.normalizarTexto = normalizarTexto;
     TCdle.obtenerFechaLocal = obtenerFechaLocal;
     TCdle.obtenerTiempoHastaMedianoche = obtenerTiempoHastaMedianoche;

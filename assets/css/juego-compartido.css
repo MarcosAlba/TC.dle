@@ -39,12 +39,38 @@
     box-sizing: border-box;
 }
 
+/* Monitores grandes: se agranda toda la página de forma pareja para que se
+   vea como en 1920x1080. Se mira ancho y alto, así un ultrawide no queda
+   gigante. Las medidas con vh se dividen por la escala para compensar. */
+:root {
+    --escala: 1;
+}
+
+@media (min-width: 2400px) and (min-height: 1300px) {
+    :root {
+        --escala: 1.33;
+    }
+}
+
+@media (min-width: 3200px) and (min-height: 1750px) {
+    :root {
+        --escala: 1.66;
+    }
+}
+
+@media (min-width: 3800px) and (min-height: 2050px) {
+    :root {
+        --escala: 2;
+    }
+}
+
 html {
     color-scheme: dark;
+    zoom: var(--escala);
 }
 
 body {
-    min-height: 100vh;
+    min-height: calc(100vh / var(--escala));
     margin: 0;
     color: var(--color-texto);
     background-color: var(--asfalto);
@@ -732,7 +758,7 @@ body.resultado-modal-abierto {
 
 .resultado-modal {
     width: min(500px, calc(100% - 28px));
-    max-height: calc(100vh - 28px);
+    max-height: calc(100vh / var(--escala) - 28px);
     padding: 0;
     border: 0;
     color: var(--color-texto);
@@ -903,5 +929,55 @@ body.resultado-modal-abierto {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+}
+
+/* Conexión entre juegos: botón "Siguiente" al terminar la partida. */
+.siguiente-juego-contenedor:empty {
+    display: none;
+}
+
+.siguiente-juego {
+    display: block;
+    width: 100%;
+    margin-top: 18px;
+    padding: 13px 22px;
+    background: var(--color-rojo);
+    color: var(--blanco);
+    font-family: var(--fuente-titulos);
+    text-align: center;
+    text-decoration: none;
+    clip-path: var(--corte);
+    transition: background-color 160ms ease;
+}
+
+.siguiente-juego:hover,
+.siguiente-juego:focus-visible {
+    background: var(--color-rojo-oscuro);
+}
+
+.siguiente-juego strong {
+    display: block;
+    font-size: 1.05rem;
+    font-style: italic;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.siguiente-juego small {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+.siguiente-juego--completo {
+    background: var(--color-correcto);
+}
+
+@media (max-width: 620px) {
+    .siguiente-juego strong {
+        font-size: 0.92rem;
     }
 }
