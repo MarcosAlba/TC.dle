@@ -82,3 +82,44 @@
         intervalo = setInterval(actualizar, 1000);
     }
 })();
+
+// Racha de cada juego sobre su tarjeta: suma un día por cada acierto seguido
+// y desaparece al perder o al saltear un día.
+(function () {
+    if (typeof TCdle === "undefined") {
+        return;
+    }
+
+    // Dos banderas a cuadros cruzadas. Los cuadros siguen una onda para que
+    // flameen; los blancos toman el color del texto y los negros van por CSS.
+    const BANDERA_IZQUIERDA =
+        '<g transform="rotate(-28 12 15)">' +
+        '<rect x="11.2" y="4" width="1.6" height="19.5" rx=".8"/><circle cx="12" cy="4" r="1.5"/>' +
+        '<path d="M11.2 5L9.32 5.9L9.32 7.9L11.2 7ZM11.2 9L9.32 9.9L9.32 11.9L11.2 11ZM9.32 7.9L7.45 7L7.45 9L9.32 9.9Z' +
+        'M7.45 5L5.57 4.1L5.57 6.1L7.45 7ZM7.45 9L5.57 8.1L5.57 10.1L7.45 11ZM5.57 6.1L3.7 7L3.7 9L5.57 8.1Z"/>' +
+        '<path class="tarjeta-juego__racha-negros" d="M11.2 7L9.32 7.9L9.32 9.9L11.2 9ZM9.32 5.9L7.45 5L7.45 7L9.32 7.9Z' +
+        'M9.32 9.9L7.45 9L7.45 11L9.32 11.9ZM7.45 7L5.57 6.1L5.57 8.1L7.45 9ZM5.57 4.1L3.7 5L3.7 7L5.57 6.1Z' +
+        'M5.57 8.1L3.7 9L3.7 11L5.57 10.1Z"/>' +
+        '</g>';
+    const BANDERAS_CRUZADAS =
+        '<svg class="tarjeta-juego__racha-icono" viewBox="0 0 24 24" aria-hidden="true">' +
+        BANDERA_IZQUIERDA +
+        '<g transform="translate(24 0) scale(-1 1)">' + BANDERA_IZQUIERDA + '</g>' +
+        '</svg>';
+
+    TCdle.JUEGOS.forEach(function (juego) {
+        const tarjeta = document.querySelector(".tarjeta-juego--" + juego.id);
+        const racha = TCdle.obtenerRacha(juego.id);
+
+        if (!tarjeta || racha < 1) {
+            return;
+        }
+
+        const insignia = document.createElement("span");
+        insignia.className = "tarjeta-juego__racha";
+        insignia.innerHTML = BANDERAS_CRUZADAS;
+        insignia.append(String(racha));
+        insignia.setAttribute("aria-label", "Racha de " + racha + (racha === 1 ? " día" : " días"));
+        tarjeta.appendChild(insignia);
+    });
+})();

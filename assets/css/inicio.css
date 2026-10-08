@@ -19,12 +19,38 @@
     box-sizing: border-box;
 }
 
+/* Monitores grandes: se agranda toda la página de forma pareja para que se
+   vea como en 1920x1080. Se mira ancho y alto, así un ultrawide no queda
+   gigante. Las medidas con vh se dividen por la escala para compensar. */
+:root {
+    --escala: 1;
+}
+
+@media (min-width: 2400px) and (min-height: 1300px) {
+    :root {
+        --escala: 1.33;
+    }
+}
+
+@media (min-width: 3200px) and (min-height: 1750px) {
+    :root {
+        --escala: 1.66;
+    }
+}
+
+@media (min-width: 3800px) and (min-height: 2050px) {
+    :root {
+        --escala: 2;
+    }
+}
+
 html {
     color-scheme: dark;
+    zoom: var(--escala);
 }
 
 body {
-    min-height: 100vh;
+    min-height: calc(100vh / var(--escala));
     margin: 0;
     color: var(--blanco);
     background-color: var(--asfalto);
@@ -404,4 +430,40 @@ body {
     .tarjeta-juego__jugar {
         transition: none;
     }
+}
+
+.tarjeta-juego {
+    position: relative;
+}
+
+/* Racha: pestaña pegada a la esquina con bandera a cuadros. */
+.tarjeta-juego__racha {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    display: flex;
+    padding: 6px 12px 7px 18px;
+    background: var(--rojo);
+    color: var(--blanco);
+    clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%);
+    font-family: var(--fuente);
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: 900;
+    line-height: 1;
+    align-items: center;
+    gap: 6px;
+}
+
+.tarjeta-juego__racha-icono {
+    width: 22px;
+    height: 22px;
+    margin: -3px 0;
+    flex: none;
+    fill: currentColor;
+}
+
+.tarjeta-juego__racha-negros {
+    fill: var(--tinta);
 }

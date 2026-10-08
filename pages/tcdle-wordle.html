@@ -7,13 +7,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=13">
+    <link rel="stylesheet" href="../assets/css/juego-compartido.css?v=15">
     <link rel="stylesheet" href="../assets/css/tcdle-wordle.css?v=18">
     <title>TCdle | Wordle del TC</title>
     <link rel="icon" type="image/png" href="../assets/images/tc-dle.ico">
-    <script src="../assets/js/tcdle.js?v=4"></script>
+    <script src="../assets/js/tcdle.js?v=5"></script>
 </head>
-<body>
+<body data-juego="wordle">
     <header class="encabezado-juego">
         <a href="../index.html" aria-label="Volver al inicio">
             <img class="logo-juego" src="../assets/images/tcdle-logo.png" alt="TCdle">
@@ -119,6 +119,7 @@
                 <span>Nueva palabra en:</span>
                 <strong id="tiempo-nueva-palabra-modal">--:--:--</strong>
             </p>
+            <div class="siguiente-juego-contenedor" data-siguiente-juego></div>
         </div>
     </dialog>
 

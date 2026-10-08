@@ -216,4 +216,31 @@ for (const contenido of ["{", JSON.stringify({ fecha: "2026-08-06" })]) {
     assert.equal(corrupto.getItem("partida"), null);
 }
 
+// Rachas: suman con aciertos en dias seguidos y se cortan al perder o saltear.
+contexto.window.localStorage = crearAlmacenamiento();
+function jugarCircuito(fecha, acertar) {
+    const juego = TCdle.crearJuegoDiario({
+        almacenamiento: crearAlmacenamiento(),
+        clave: "partidaTCdleCircuito",
+        fecha,
+        objetivoId: 1,
+        idsValidos: [1, 2],
+        maximoIntentos: 1
+    });
+    juego.intentar(acertar ? 1 : 2);
+}
+
+jugarCircuito("2026-08-06", true);
+jugarCircuito("2026-08-07", true);
+assert.equal(TCdle.obtenerRacha("circuito", "2026-08-07"), 2);
+assert.equal(TCdle.obtenerRacha("circuito", "2026-08-08"), 2, "La racha sigue viva el dia siguiente hasta jugar");
+assert.equal(TCdle.obtenerRacha("circuito", "2026-08-09"), 0, "Saltear un dia corta la racha");
+jugarCircuito("2026-08-08", false);
+assert.equal(TCdle.obtenerRacha("circuito", "2026-08-08"), 0, "Perder reinicia la racha");
+jugarCircuito("2026-08-09", true);
+assert.equal(TCdle.obtenerRacha("circuito", "2026-08-09"), 1);
+jugarCircuito("2026-08-31", true);
+jugarCircuito("2026-09-01", true);
+assert.equal(TCdle.obtenerRacha("circuito", "2026-09-01"), 2, "La racha cruza el cambio de mes");
+
 process.stdout.write("OK: núcleo compartido, búsqueda, partidas y migraciones.\n");
