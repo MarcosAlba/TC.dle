@@ -18,11 +18,23 @@ const RUTA_IMAGENES = new URL("../images/", document.currentScript.src).href;
 //       4. "carrerasCorridas"  - si no tiene nada de lo anterior, total de
 //                                carreras corridas.
 //     Ejemplo: { tipo: "carrerasGanadas", valor: 12 }.
+//
+// marca: los pilotos actuales llevan "(NG)" (Nueva Generacion), ej "Ford (NG)".
+//   Las leyendas van sin "(NG)" y se muestran con el logo clasico de la marca,
+//   salvo que su ultimo auto haya sido de la Nueva Generacion.
+//
+// Campos de las leyendas (pilotos que ya no corren el TC):
+//   retirado: true            - la pista del número dice "Corría con...".
+//   equipo / marca            - el último equipo y la marca del último auto con
+//                               que corrieron TC (aunque haya sido como invitados).
+//                               Sin equipo formal: "Estructura propia".
+//   apodo: "Pechito"          - también se busca en el buscador. Opcional.
+//   fechaFallecimiento: "AAAA-MM-DD" - si falleció, la edad se muestra al morir (con †).
 const pilotos = [
     {
         id: 1,
         nombre: "Agustín Canapino",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Canning Motorsport",
         localidad: "Arrecifes, Buenos Aires",
         provincia: "Buenos Aires",
@@ -39,8 +51,8 @@ const pilotos = [
     {
         id: 2,
         nombre: "Mauricio Lambiris",
-        marca: "Ford",
-        equipo: "Martínez Competición",
+        marca: "Ford (NG)",
+        equipo: "Scuderia JT",
         localidad: "Montevideo, Uruguay",
         provincia: "Montevideo",
         fechaNacimiento: "1987-03-03",
@@ -56,7 +68,7 @@ const pilotos = [
     {
         id: 3,
         nombre: "Germán Todino",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "FPA Racing",
         localidad: "Rivera, Buenos Aires",
         provincia: "Buenos Aires",
@@ -73,7 +85,7 @@ const pilotos = [
     {
         id: 4,
         nombre: "Marcelo Agrelo",
-        marca: "Torino",
+        marca: "Torino (NG)",
         equipo: "Trotta Competición",
         localidad: "Rada Tilly, Chubut",
         provincia: "Chubut",
@@ -90,7 +102,7 @@ const pilotos = [
     {
         id: 5,
         nombre: "Juan Martín Trucco",
-        marca: "Dodge",
+        marca: "Dodge (NG)",
         equipo: "DBG Motor Sport",
         localidad: "Tres Algarrobos, Buenos Aires",
         provincia: "Buenos Aires",
@@ -107,7 +119,7 @@ const pilotos = [
     {
         id: 6,
         nombre: "Santiago Mangoni",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Canning Motorsport",
         localidad: "Balcarce, Buenos Aires",
         provincia: "Buenos Aires",
@@ -124,7 +136,7 @@ const pilotos = [
     {
         id: 7,
         nombre: "Jeremías Olmedo",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Canning Motorsport",
         localidad: "Salta, Salta",
         provincia: "Salta",
@@ -141,7 +153,7 @@ const pilotos = [
     {
         id: 8,
         nombre: "Mariano Werner",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "Fadel Werner Competición",
         localidad: "Paraná, Entre Ríos",
         provincia: "Entre Ríos",
@@ -158,7 +170,7 @@ const pilotos = [
     {
         id: 9,
         nombre: "Christian Ledesma",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Pradecon Racing",
         localidad: "Mar del Plata, Buenos Aires",
         provincia: "Buenos Aires",
@@ -175,7 +187,7 @@ const pilotos = [
     {
         id: 10,
         nombre: "Juan Jose Ebarlín",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "LRD Racing Team",
         localidad: "Benito Juárez, Buenos Aires",
         provincia: "Buenos Aires",
@@ -192,7 +204,7 @@ const pilotos = [
     {
         id: 11,
         nombre: "Luis José Di Palma",
-        marca: "Toyota",
+        marca: "Toyota (NG)",
         equipo: "RUS MED Team",
         localidad: "Arrecifes, Buenos Aires",
         provincia: "Buenos Aires",
@@ -209,7 +221,7 @@ const pilotos = [
     {
         id: 12,
         nombre: "Emiliano Spataro",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "Spataro Racing",
         localidad: "Lanús, Buenos Aires",
         provincia: "Buenos Aires",
@@ -226,7 +238,7 @@ const pilotos = [
     {
         id: 13,
         nombre: "Elio Craparo",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "Moriatis Competición",
         localidad: "Chacabuco, Buenos Aires",
         provincia: "Buenos Aires",
@@ -243,7 +255,7 @@ const pilotos = [
     {
         id: 14,
         nombre: "Matías Canapino",
-        marca: "Torino",
+        marca: "Torino (NG)",
         equipo: "Catalan Magni Motorsport",
         localidad: "Arrecifes, Buenos Aires",
         provincia: "Buenos Aires",
@@ -254,13 +266,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/matias_canapino.png",
         numeroAuto: 32,
         datoPeculiar: "Debuto en el TC en el 2025 con un Camaro del RUS MED Team.",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 26 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 27 }
     },
 
     {
         id: 15,
         nombre: "Norberto Fontana",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Azar Motorsport",
         localidad: "Arrecifes, Buenos Aires",
         provincia: "Buenos Aires",
@@ -277,7 +289,7 @@ const pilotos = [
     {
         id: 16,
         nombre: "Gastón Mazzacane",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Coiro Competición",
         localidad: "La Plata, Buenos Aires",
         provincia: "Buenos Aires",
@@ -294,7 +306,7 @@ const pilotos = [
     {
         id: 17,
         nombre: "Nicolas Cotignola",
-        marca: "Toyota",
+        marca: "Toyota (NG)",
         equipo: "Sprint Racing",
         localidad: "Ituzaingó, Buenos Aires",
         provincia: "Buenos Aires",
@@ -311,7 +323,7 @@ const pilotos = [
     {
         id: 18,
         nombre: "Juan Tomás Catalán Magni",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Catalan Magni Motorsport",
         localidad: "Arrecifes, Buenos Aires",
         provincia: "Buenos Aires",
@@ -328,7 +340,7 @@ const pilotos = [
     {
         id: 19,
         nombre: "Juan Pablo Gianini",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "JPG Racing",
         localidad: "Salto, Buenos Aires",
         provincia: "Buenos Aires",
@@ -345,7 +357,7 @@ const pilotos = [
     {
         id: 20,
         nombre: "Christian Dose",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Dose Competición",
         localidad: "CABA, Buenos Aires",
         provincia: "Buenos Aires",
@@ -362,7 +374,7 @@ const pilotos = [
     {
         id: 21,
         nombre: "Jerónimo Teti",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "Laboritto Jrs",
         localidad: "Lobería, Buenos Aires",
         provincia: "Buenos Aires",
@@ -379,7 +391,7 @@ const pilotos = [
     {
         id: 22,
         nombre: "Nicolas Bonelli",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "Hermanos Alvarez",
         localidad: "Concepción del Uruguay, Entre Ríos",
         provincia: "Entre Ríos",
@@ -396,7 +408,7 @@ const pilotos = [
     {
         id: 23,
         nombre: "Julian Santero",
-        marca: "BMW",
+        marca: "BMW (NG)",
         equipo: "BMW Motorsport",
         localidad: "Mendoza, Mendoza",
         provincia: "Mendoza",
@@ -413,7 +425,7 @@ const pilotos = [
     {
         id: 24,
         nombre: "Sebastián Abella",
-        marca: "Ford",
+        marca: "Toyota (NG)",
         equipo: "Alifraco Sport",
         localidad: "Campana, Buenos Aires",
         provincia: "Buenos Aires",
@@ -424,13 +436,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/sebastian_abella.png",
         numeroAuto: 71,
         datoPeculiar: "El GOAT",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 21 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 22 }
     },
 
     {
         id: 25,
         nombre: "Martín Serrano",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Giavedoni Sport",
         localidad: "Pablo Nogués, Buenos Aires",
         provincia: "Buenos Aires",
@@ -447,7 +459,7 @@ const pilotos = [
     {
         id: 26,
         nombre: "Sergio Alaux",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Giavedoni Sport",
         localidad: "Pigüé, Buenos Aires",
         provincia: "Buenos Aires",
@@ -464,7 +476,7 @@ const pilotos = [
     {
         id: 27,
         nombre: "Augusto Carinelli",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "Martínez Competición",
         localidad: "Corzuela, Chaco",
         provincia: "Chaco",
@@ -475,13 +487,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/augusto_carinelli.png",
         numeroAuto: 77,
         datoPeculiar: "Fue campeón de TC Pista Mouras en 2012",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 70 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 71 }
     },
 
     {
         id: 28,
         nombre: "Facundo Chapur",
-        marca: "Torino",
+        marca: "Torino (NG)",
         equipo: "Trotta Competición",
         localidad: "Córdoba, Córdoba",
         provincia: "Córdoba",
@@ -498,7 +510,7 @@ const pilotos = [
     {
         id: 29,
         nombre: "Tomás Abdala",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "Tomas Abdala Racing",
         localidad: "Lobos, Buenos Aires",
         provincia: "Buenos Aires",
@@ -515,7 +527,7 @@ const pilotos = [
     {
         id: 30,
         nombre: "Lucas Carabajal",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "DTA Racing",
         localidad: "Resistencia, Chaco",
         provincia: "Chaco",
@@ -532,7 +544,7 @@ const pilotos = [
     {
         id: 31,
         nombre: "Facundo Ardusso",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "Martínez Competición",
         localidad: "Las Parejas, Santa Fe",
         provincia: "Santa Fe",
@@ -549,7 +561,7 @@ const pilotos = [
     {
         id: 32,
         nombre: "Ricardo Risatti",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "TCM Racing Team",
         localidad: "Laboulaye, Córdoba",
         provincia: "Córdoba",
@@ -566,7 +578,7 @@ const pilotos = [
     {
         id: 33,
         nombre: "Ignacio Faín",
-        marca: "Torino",
+        marca: "Torino (NG)",
         equipo: "Trotta Competición",
         localidad: "Villa Minetti, Santa Fe",
         provincia: "Santa Fe",
@@ -577,13 +589,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/ignacio_fain.png",
         numeroAuto: 86,
         datoPeculiar: "En su segundo año en TC, clasificó a la Copa de Oro.",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 26 }
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 1 }
     },
 
     {
         id: 34,
         nombre: "Nicolás Impiombato",
-        marca: "Torino",
+        marca: "Torino (NG)",
         equipo: "Impiombato Motorsport",
         localidad: "General Rodríguez, Buenos Aires",
         provincia: "Buenos Aires",
@@ -600,7 +612,7 @@ const pilotos = [
     {
         id: 35,
         nombre: "Nicolás Trosset",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "Savino Sport",
         localidad: "Arrecifes, Buenos Aires",
         provincia: "Buenos Aires",
@@ -617,7 +629,7 @@ const pilotos = [
     {
         id: 36,
         nombre: "Marcos Landa",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Pradecon Racing",
         localidad: "San Carlos, Maldonado, Uruguay",
         provincia: "Maldonado",
@@ -628,13 +640,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/marcos_landa.png",
         numeroAuto: 95,
         datoPeculiar: "En 2023 fue el mejor piloto de Torino en el campeonato.",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 86 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 87 }
     },
 
     {
         id: 37,
         nombre: "Juan Cruz Benvenuti",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Canning Motorsport",
         localidad: "Villa La Angostura, Neuquén",
         provincia: "Neuquén",
@@ -651,7 +663,7 @@ const pilotos = [
     {
         id: 38,
         nombre: "Jonatan Castellano",
-        marca: "Dodge",
+        marca: "Dodge (NG)",
         equipo: "Galarza Racing",
         localidad: "Lobería, Buenos Aires",
         provincia: "Buenos Aires",
@@ -668,7 +680,7 @@ const pilotos = [
     {
         id: 39,
         nombre: "Tobías Martínez",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "RUS MED Team",
         localidad: "San Juan, San Juan",
         provincia: "San Juan",
@@ -685,7 +697,7 @@ const pilotos = [
     {
         id: 40,
         nombre: "Nicolás Moscardini",
-        marca: "Dodge",
+        marca: "Dodge (NG)",
         equipo: "SAP Team",
         localidad: "La Plata, Buenos Aires",
         provincia: "Buenos Aires",
@@ -702,7 +714,7 @@ const pilotos = [
     {
         id: 41,
         nombre: "Diego Azar",
-        marca: "Mercedez Benz",
+        marca: "Mercedez Benz (NG)",
         equipo: "Maquin Parts Racing - Prestige Auto Racing Team",
         localidad: "Del Viso, Buenos Aires",
         provincia: "Buenos Aires",
@@ -713,13 +725,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/diego_azar.png",
         numeroAuto: 110,
         datoPeculiar: "Consiguió la primera victoria de Fiat en TC Pick Up.",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 26 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 27 }
     },
 
     {
         id: 42,
         nombre: "Lucas Valle",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "RV Racing",
         localidad: "Rawson, Chubut",
         provincia: "Chubut",
@@ -730,13 +742,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/lucas_valle.png",
         numeroAuto: 112,
         datoPeculiar: "Su mejor resultado fue 4.º en el Desafío de las Estrellas",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 11 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 12 }
     },
 
     {
         id: 43,
         nombre: "Rodrigo Lugón",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "A&P Competición",
         localidad: "Villa Allende, Córdoba",
         provincia: "Córdoba",
@@ -747,13 +759,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/rodrigo_lugon.png",
         numeroAuto: 113,
         datoPeculiar: "Consiguió su ascenso al TC por acumulación de carreras.",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 11 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 12 }
     },
 
     {
         id: 44,
         nombre: "Gastón Ferrante",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "Di Megio Motorsport",
         localidad: "Castelar, Buenos Aires",
         provincia: "Buenos Aires",
@@ -764,13 +776,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/gaston_ferrante.png",
         numeroAuto: 114,
         datoPeculiar: "Participo en las 2 ediciones de los 1000km de Buenos Aires.",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 104 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 105 }
     },
 
     {
         id: 45,
         nombre: "Diego De Carlo",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "LRD Racing Team",
         localidad: "Lanús, Buenos Aires",
         provincia: "Buenos Aires",
@@ -781,13 +793,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/diego_de_carlo.png",
         numeroAuto: 115,
         datoPeculiar: "Debutó en Turismo Carretera en 2007 integrando el HAZ Racing Team.",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 256 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 257 }
     },
 
     {
         id: 46,
         nombre: "Kevin Candela",
-        marca: "BMW",
+        marca: "BMW (NG)",
         equipo: "Enrique Candela Competicion",
         localidad: "Bragado, Buenos Aires",
         provincia: "Buenos Aires",
@@ -798,13 +810,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/kevin_candela.png",
         numeroAuto: 116,
         datoPeculiar: "Fue campeón de TC Pista en 2021.",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 65 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 66 }
     },
 
     {
         id: 47,
         nombre: "Matias Rossi",
-        marca: "Toyota",
+        marca: "Toyota (NG)",
         equipo: "Pradecon Racing",
         localidad: "Del Viso, Buenos Aires",
         provincia: "Buenos Aires",
@@ -821,7 +833,7 @@ const pilotos = [
     {
         id: 48,
         nombre: "Hernán Palazzo",
-        marca: "Toyota",
+        marca: "Toyota (NG)",
         equipo: "Pradecon Racing",
         localidad: "Pinamar, Buenos Aires",
         provincia: "Buenos Aires",
@@ -838,7 +850,7 @@ const pilotos = [
     {
         id: 49,
         nombre: "Andrés Jakos",
-        marca: "Toyota",
+        marca: "Toyota (NG)",
         equipo: "Coiro Competición",
         localidad: "Ramos Mejía, Buenos Aires",
         provincia: "Buenos Aires",
@@ -855,7 +867,7 @@ const pilotos = [
     {
         id: 50,
         nombre: "Martín Vázquez",
-        marca: "Dodge",
+        marca: "Dodge (NG)",
         equipo: "MV Racing",
         localidad: "Pilar, Buenos Aires",
         provincia: "Buenos Aires",
@@ -872,7 +884,7 @@ const pilotos = [
     {
         id: 51,
         nombre: "Thomas Ricciardi",
-        marca: "Dodge",
+        marca: "Dodge (NG)",
         equipo: "SAP Team",
         localidad: "Rosario, Santa Fe",
         provincia: "Santa Fe",
@@ -883,13 +895,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/thomas_ricciardi.png",
         numeroAuto: 126,
         datoPeculiar: "Debutó en el TC con un Camry, pero durante la misma temporada cambió a Challenger",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 7 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 8 }
     },
 
     {
         id: 52,
         nombre: "Valentín Aguirre",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Pradecon Racing",
         localidad: "Arrecifes, Buenos Aires",
         provincia: "Buenos Aires",
@@ -906,7 +918,7 @@ const pilotos = [
     {
         id: 53,
         nombre: "Matías Jalaf",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "Jalaf Competicion",
         localidad: "Mendoza, Mendoza",
         provincia: "Mendoza",
@@ -923,7 +935,7 @@ const pilotos = [
     {
         id: 54,
         nombre: "Jeremías Scialchi",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "Moriatis Competición",
         localidad: "San Antonio de Areco, Buenos Aires",
         provincia: "Buenos Aires",
@@ -934,13 +946,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/jeremias_scialchi.png",
         numeroAuto: 137,
         datoPeculiar: "En 2024 debutó en TC Pista ganando en El Calafate",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 24 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 25 }
     },
 
     {
         id: 55,
         nombre: "Gaspar Chansard",
-        marca: "Toyota",
+        marca: "Toyota (NG)",
         equipo: "Giavedoni SPORT",
         localidad: "Reconquista, Santa Fe",
         provincia: "Santa Fe",
@@ -951,13 +963,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/gaspar_chansard.png",
         numeroAuto: 140,
         datoPeculiar: "Fue campeón de TC Pista Mouras en 2021.",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 10 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 11 }
     },
 
     {
         id: 56,
         nombre: "Jorge Barrio",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "Canning Motorsport",
         localidad: "Pinamar, Buenos Aires",
         provincia: "Buenos Aires",
@@ -968,13 +980,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/jorge_barrio.png",
         numeroAuto: 141,
         datoPeculiar: "Llegó al TC en 2026 después de ser subcampeón del TN Clase 3.",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 10 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 11 }
     },
 
     {
         id: 57,
         nombre: "Marco Dianda",
-        marca: "Dodge",
+        marca: "Dodge (NG)",
         equipo: "Galarza Racing",
         localidad: "Guatimozín, Córdoba",
         provincia: "Córdoba",
@@ -991,7 +1003,7 @@ const pilotos = [
     {
         id: 58,
         nombre: "Joaquín Ochoa",
-        marca: "Toyota",
+        marca: "Toyota (NG)",
         equipo: "Azar Motorsport",
         localidad: "Viedma, Río Negro",
         provincia: "Río Negro",
@@ -1002,13 +1014,13 @@ const pilotos = [
         imagenResultado: RUTA_IMAGENES + "pilotos/joaquin_ochoa.png",
         numeroAuto: 154,
         datoPeculiar: "Su primera victoria en TC Pista fue en Toay 2024.",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 10 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 11 }
     },
 
     {
         id: 59,
         nombre: "Juan B. De Benedictis",
-        marca: "Ford",
+        marca: "Ford (NG)",
         equipo: "RUS MED Team",
         localidad: "Necochea, Buenos Aires",
         provincia: "Buenos Aires",
@@ -1025,8 +1037,8 @@ const pilotos = [
     {
         id: 60,
         nombre: "Santiago Álvarez",
-        marca: "Chevrolet",
-        equipo: "UR Racing",
+        marca: "Chevrolet (NG)",
+        equipo: "TCM Racing Team",
         localidad: "Ferré, Buenos Aires",
         provincia: "Buenos Aires",
         fechaNacimiento: "1999-06-24",
@@ -1042,7 +1054,7 @@ const pilotos = [
     {
         id: 61,
         nombre: "Juan Manuel Tomasello",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "DBG Motor Sport",
         localidad: "Don Torcuato, Buenos Aires",
         provincia: "Buenos Aires",
@@ -1059,7 +1071,7 @@ const pilotos = [
     {
         id: 62,
         nombre: "Marcos Castro",
-        marca: "Torino",
+        marca: "Torino (NG)",
         equipo: "DGB Motor Sport",
         localidad: "Necochea, Buenos Aires",
         provincia: "Buenos Aires",
@@ -1069,13 +1081,13 @@ const pilotos = [
         imagen: RUTA_IMAGENES + "pilotos/marcos_castro.png",
         numeroAuto: 193,
         datoPeculiar: "En 2024 corrió en TC Pista con el Ford Falcon que Mariano Werner había utilizado para conseguir su tricampeonato.",
-        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 10 }
+        estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 11 }
     },
 
     {
         id: 63,
         nombre: "Marcos Quijada",
-        marca: "Chevrolet",
+        marca: "Chevrolet (NG)",
         equipo: "RUS MED Team",
         localidad: "Belén de Escobar, Buenos Aires",
         provincia: "Buenos Aires",
@@ -1092,7 +1104,7 @@ const pilotos = [
     {
         id: 64,
         nombre: "José Manuel Urcera",
-        marca: "Mercedez Benz",
+        marca: "Mercedez Benz (NG)",
         equipo: "Maquin Parts Racing - Prestige Auto Racing Team",
         localidad: "San Antonio Oeste, Río Negro",
         provincia: "Río Negro",
@@ -1109,7 +1121,7 @@ const pilotos = [
     {
         id: 65,
         nombre: "Otto Fritzler",
-        marca: "Mercedez Benz",
+        marca: "Mercedez Benz (NG)",
         equipo: "Maquin Parts Racing - Prestige Auto Racing Team",
         localidad: "San Miguel, Buenos Aires",
         provincia: "Buenos Aires",
@@ -1121,5 +1133,687 @@ const pilotos = [
         numeroAuto: 256,
         datoPeculiar: "En 2021 consiguió tres poles consecutivas en su primera temporada de TC Pista.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 3 }
+    },
+
+    // Leyendas: pilotos históricos que ya no corren el TC (retirado: true).
+
+    {
+        id: 66,
+        nombre: "Juan Manuel Fangio",
+        apodo: "Chueco",
+        marca: "Chevrolet",
+        equipo: "Estructura propia",
+        localidad: "Balcarce, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1911-06-24",
+        fechaFallecimiento: "1995-07-17",
+        campeonTC: true,
+        anioDebutTC: 1938,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_manuel_fangio.png",
+        numeroAuto: null,
+        datoPeculiar: "Antes de ser cinco veces campeón mundial de Fórmula 1, le dio a Chevrolet su primer título en el TC.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 6 }
+    },
+
+    {
+        id: 67,
+        nombre: "Oscar Alfredo Gálvez",
+        apodo: "Aguilucho",
+        marca: "Ford",
+        equipo: "Alfredo Bascou",
+        localidad: "CABA, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1913-08-17",
+        fechaFallecimiento: "1989-12-16",
+        campeonTC: true,
+        anioDebutTC: 1937,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/oscar_alfredo_galvez.png",
+        numeroAuto: null,
+        datoPeculiar: "Un periodista le puso un apodo de ave porque decía que en la ruta 'volaba', y el autódromo porteño lleva su apellido junto al de su hermano.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 43 }
+    },
+
+    {
+        id: 68,
+        nombre: "Juan Gálvez",
+        apodo: null,
+        marca: "Ford",
+        equipo: "Estructura propia",
+        localidad: "CABA, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1916-02-14",
+        fechaFallecimiento: "1963-03-03",
+        campeonTC: true,
+        anioDebutTC: 1941,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_galvez.png",
+        numeroAuto: null,
+        datoPeculiar: "Es el máximo campeón de la historia del TC, con nueve coronas.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 56 }
+    },
+
+    {
+        id: 69,
+        nombre: "Eduardo Copello",
+        apodo: "Maestro",
+        marca: "Torino",
+        equipo: "Equipo Oficial IKA-Renault",
+        localidad: "San Juan, San Juan",
+        provincia: "San Juan",
+        fechaNacimiento: "1926-02-13",
+        fechaFallecimiento: "2000-02-27",
+        campeonTC: true,
+        anioDebutTC: 1948,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/eduardo_copello.png",
+        numeroAuto: null,
+        datoPeculiar: "Fue el primer campeón del TC con una marca que no era Ford ni Chevrolet, y el autódromo sanjuanino lleva su nombre.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 21 }
+    },
+
+    {
+        id: 70,
+        nombre: "Carlos Pairetti",
+        apodo: "Il Matto",
+        marca: "Dodge",
+        equipo: "Estructura propia",
+        localidad: "Arrecifes, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1935-10-17",
+        fechaFallecimiento: "2022-09-26",
+        campeonTC: true,
+        anioDebutTC: 1962,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/carlos_pairetti.png",
+        numeroAuto: null,
+        datoPeculiar: "Salió campeón en 1968 con un prototipo apodado 'Trueno Naranja' y también actuó en películas.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 22 }
+    },
+
+    {
+        id: 71,
+        nombre: "Rubén Luis Di Palma",
+        apodo: "Loco",
+        marca: "Ford",
+        equipo: "Pejerrey Zárate Compite",
+        localidad: "Arrecifes, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1944-10-27",
+        fechaFallecimiento: "2000-09-30",
+        campeonTC: true,
+        anioDebutTC: 1963,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/ruben_luis_di_palma.png",
+        numeroAuto: null,
+        datoPeculiar: "Es el ganador más veterano de la historia del TC: se impuso en una carrera con 53 años, en 1998.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 20 }
+    },
+
+    {
+        id: 72,
+        nombre: "Roberto Mouras",
+        apodo: "Toro",
+        marca: "Chevrolet",
+        equipo: "Pedersoli Competición",
+        localidad: "Carlos Casares, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1948-02-16",
+        fechaFallecimiento: "1992-11-22",
+        campeonTC: true,
+        anioDebutTC: 1970,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/roberto_mouras.png",
+        numeroAuto: 7,
+        datoPeculiar: "Su cupé dorada con el número 7 es una leyenda, y hoy dos categorías de la ACTC llevan su apellido.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 50 }
+    },
+
+    {
+        id: 73,
+        nombre: "Juan Antonio De Benedictis",
+        apodo: "Johnny",
+        marca: "Ford",
+        equipo: "Ressia Competición",
+        localidad: "Necochea, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1954-12-28",
+        fechaFallecimiento: null,
+        campeonTC: false,
+        anioDebutTC: 1980,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_antonio_de_benedictis.png",
+        numeroAuto: null,
+        datoPeculiar: "Fue tres veces subcampeón sin ganar nunca el título, y por el color de sus autos lo apodaron 'El Pampero Verde'.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 16 }
+    },
+
+    {
+        id: 74,
+        nombre: "Juan María Traverso",
+        apodo: "Flaco",
+        marca: "Torino",
+        equipo: "Urtubey Competición",
+        localidad: "Ramallo, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1950-12-28",
+        fechaFallecimiento: "2024-05-11",
+        campeonTC: true,
+        anioDebutTC: 1971,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_maria_traverso.png",
+        numeroAuto: null,
+        datoPeculiar: "Le puso la voz a Doc Hudson en el doblaje argentino de la película Cars.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 46 }
+    },
+
+    {
+        id: 75,
+        nombre: "Omar Martínez",
+        apodo: "Gurí",
+        marca: "Ford",
+        equipo: "Gurí Martínez Competición",
+        localidad: "Rosario del Tala, Entre Ríos",
+        provincia: "Entre Ríos",
+        fechaNacimiento: "1966-01-01",
+        fechaFallecimiento: null,
+        campeonTC: true,
+        anioDebutTC: 1994,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/omar_martinez.png",
+        numeroAuto: null,
+        datoPeculiar: "Fue el primer campeón de la historia del Top Race, en 1997, y ganó su segundo título de TC con casi 50 años.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 33 }
+    },
+
+    {
+        id: 76,
+        nombre: "Juan Manuel Silva",
+        apodo: "Pato",
+        marca: "Ford",
+        equipo: "MG Racing",
+        localidad: "Resistencia, Chaco",
+        provincia: "Chaco",
+        fechaNacimiento: "1972-10-12",
+        fechaFallecimiento: null,
+        campeonTC: true,
+        anioDebutTC: 1998,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_manuel_silva.png",
+        numeroAuto: null,
+        datoPeculiar: "Ganó la carrera número 1000 de la historia del TC, en Paraná en 2003, y además ganó el mismo día de su debut.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 15 }
+    },
+
+    {
+        id: 77,
+        nombre: "Roberto Urretavizcaya",
+        apodo: "Tito",
+        marca: "Ford",
+        equipo: "Savino Sport",
+        localidad: "Chacabuco, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1957-09-09",
+        fechaFallecimiento: "2023-04-25",
+        campeonTC: false,
+        anioDebutTC: 1986,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/roberto_urretavizcaya.png",
+        numeroAuto: null,
+        datoPeculiar: "Su primera victoria en TC se definió porque un tren de pasajeros cruzó la pista y la carrera se tuvo que parar con bandera roja.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 10 }
+    },
+
+    {
+        id: 78,
+        nombre: "Patricio Di Palma",
+        apodo: "Pato",
+        marca: "Torino",
+        equipo: "Tango Competición",
+        localidad: "Arrecifes, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1971-06-20",
+        fechaFallecimiento: null,
+        campeonTC: false,
+        anioDebutTC: 1995,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/patricio_di_palma.png",
+        numeroAuto: null,
+        datoPeculiar: "Le devolvió a Torino una victoria en el TC en 2003, después de 28 años de sequía de la marca.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 5 }
+    },
+
+    {
+        id: 79,
+        nombre: "Marcos Di Palma",
+        apodo: "Loco",
+        marca: "Chevrolet",
+        equipo: "MDP Racing Team",
+        localidad: "Arrecifes, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1972-12-10",
+        fechaFallecimiento: null,
+        campeonTC: false,
+        anioDebutTC: 1995,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/marcos_di_palma.png",
+        numeroAuto: null,
+        datoPeculiar: "Después de colgar el casco fue diputado bonaerense entre 2017 y 2021.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 11 }
+    },
+
+    {
+        id: 80,
+        nombre: "Oscar Castellano",
+        apodo: "Pincho",
+        marca: "Ford",
+        equipo: "Estructura propia",
+        localidad: "Lobería, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1948-09-15",
+        fechaFallecimiento: null,
+        campeonTC: true,
+        anioDebutTC: 1981,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/oscar_castellano.png",
+        numeroAuto: null,
+        datoPeculiar: "Sus autos naranjas se hicieron famosos como 'La Naranja Mecánica' y él mismo los preparaba.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 27 }
+    },
+
+    {
+        id: 81,
+        nombre: "Oscar Aventín",
+        apodo: "Puma",
+        marca: "Ford",
+        equipo: "Hermanos Aventín",
+        localidad: "Morón, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1946-12-26",
+        fechaFallecimiento: null,
+        campeonTC: true,
+        anioDebutTC: 1977,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/oscar_aventin.png",
+        numeroAuto: null,
+        datoPeculiar: "En 1991 llevó a Maradona de acompañante en su Falcon en el Autódromo porteño y ese mismo día ganó la final.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 24 }
+    },
+
+    {
+        id: 82,
+        nombre: "Diego Aventín",
+        apodo: "Pumita",
+        marca: "Ford",
+        equipo: "MVD Competición",
+        localidad: "Morón, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1980-09-21",
+        fechaFallecimiento: null,
+        campeonTC: true,
+        anioDebutTC: 1999,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/diego_aventin.png",
+        numeroAuto: null,
+        datoPeculiar: "Al año siguiente de salir campeón se bajó del auto después de seis fechas para dedicarse a la dirigencia; su papá y su tío también fueron campeones de TC.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 16 }
+    },
+
+    {
+        id: 83,
+        nombre: "Jorge Oyhanart",
+        apodo: "Vasco",
+        marca: "Ford",
+        equipo: "Oyhanart Competición",
+        localidad: "Parada Robles, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1948-05-19",
+        fechaFallecimiento: null,
+        campeonTC: false,
+        anioDebutTC: 1983,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/jorge_oyhanart.png",
+        numeroAuto: null,
+        datoPeculiar: "En 1993 corrió las 24 Horas de Daytona con un Oldsmobile, en una tripulación de pilotos de TC.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 6 }
+    },
+
+    {
+        id: 84,
+        nombre: "Guillermo Ortelli",
+        apodo: "Guille",
+        marca: "Chevrolet",
+        equipo: "JP Carrera",
+        localidad: "Salto, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1973-04-25",
+        fechaFallecimiento: null,
+        campeonTC: true,
+        anioDebutTC: 1994,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/guillermo_ortelli.png",
+        numeroAuto: null,
+        datoPeculiar: "Ganó la primera carrera de TC que corrió, como invitado en las 2 Horas de Buenos Aires de 1994, y terminó siendo heptacampeón: solo Juan Gálvez tiene más títulos.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 32 }
+    },
+
+    {
+        id: 85,
+        nombre: "José María López",
+        apodo: "Pechito",
+        marca: "Dodge",
+        equipo: "Oil Competición",
+        localidad: "Río Tercero, Córdoba",
+        provincia: "Córdoba",
+        fechaNacimiento: "1983-04-26",
+        fechaFallecimiento: null,
+        campeonTC: false,
+        anioDebutTC: 2008,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/jose_maria_lopez.png",
+        numeroAuto: null,
+        datoPeculiar: "Es tricampeón mundial de turismos (WTCC) y ganó las 24 Horas de Le Mans, el segundo argentino en lograrlo después de Froilán González.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 4 }
+    },
+
+    {
+        id: 86,
+        nombre: "Leonel Pernía",
+        apodo: "Tanito",
+        marca: "Chevrolet",
+        equipo: "Las Toscas Racing",
+        localidad: "Tandil, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1975-09-27",
+        fechaFallecimiento: null,
+        campeonTC: false,
+        anioDebutTC: 2008,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/leonel_pernia.png",
+        numeroAuto: null,
+        datoPeculiar: "Es hijo de un ex defensor de Boca que también corrió y ganó en TC, y es cuatro veces campeón de TC2000.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 8 }
+    },
+
+    {
+        id: 87,
+        nombre: "Juan Marcos Angelini",
+        apodo: "Tati",
+        marca: "Dodge",
+        equipo: "UR Racing",
+        localidad: "Carreras, Santa Fe",
+        provincia: "Santa Fe",
+        fechaNacimiento: "1986-10-21",
+        fechaFallecimiento: "2018-09-23",
+        campeonTC: false,
+        anioDebutTC: 2008,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_marcos_angelini.png",
+        numeroAuto: null,
+        datoPeculiar: "Referente de Dodge, en 2011 ganó en Rafaela encabezando un 1-2-3 de la marca que no se daba desde 1988.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 3 }
+    },
+
+    {
+        id: 88,
+        nombre: "Guido Falaschi",
+        apodo: "Príncipe",
+        marca: "Ford",
+        equipo: "HAZ Racing Team",
+        localidad: "Las Parejas, Santa Fe",
+        provincia: "Santa Fe",
+        fechaNacimiento: "1989-10-01",
+        fechaFallecimiento: "2011-11-13",
+        campeonTC: false,
+        anioDebutTC: 2009,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/guido_falaschi.png",
+        numeroAuto: 16,
+        datoPeculiar: "Campeón de Fórmula Renault 2008, ganó en TC por única vez en Junín 2011.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 1 }
+    },
+
+    {
+        id: 89,
+        nombre: "Mauro Giallombardo",
+        apodo: "Rana",
+        marca: "Ford",
+        equipo: "Werner Competición",
+        localidad: "Quilmes, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1989-12-29",
+        fechaFallecimiento: null,
+        campeonTC: true,
+        anioDebutTC: 2011,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/mauro_giallombardo.png",
+        numeroAuto: null,
+        datoPeculiar: "Fue el primer piloto en ser campeón en tres divisionales de la ACTC: TC Mouras, TC Pista y TC.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 3 }
+    },
+
+    {
+        id: 90,
+        nombre: "José Ciantini",
+        apodo: "Bocha",
+        marca: "Dodge",
+        equipo: "WCC Squadra",
+        localidad: "Balcarce, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1970-08-26",
+        fechaFallecimiento: null,
+        campeonTC: false,
+        anioDebutTC: 1993,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/jose_ciantini.png",
+        numeroAuto: null,
+        datoPeculiar: "Tuvo que esperar 154 carreras para ganar su primera final de TC, un récord de paciencia en ese momento.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 3 }
+    },
+
+    {
+        id: 91,
+        nombre: "Diego Ciantini",
+        apodo: "Chino",
+        marca: "Chevrolet (NG)",
+        equipo: "Salvita Racing by Canning",
+        localidad: "Balcarce, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1998-07-21",
+        fechaFallecimiento: null,
+        campeonTC: false,
+        anioDebutTC: 2020,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/diego_ciantini.png",
+        numeroAuto: null,
+        datoPeculiar: "Antes de llegar al TC corrió Fórmula 4 en Italia y Alemania, y ganó la última fecha del TC 2024 en La Plata.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 3 }
+    },
+
+    {
+        id: 92,
+        nombre: "Mariano Altuna",
+        apodo: "Monito",
+        marca: "Chevrolet",
+        equipo: "Alifraco Sport",
+        localidad: "Lobería, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1982-03-04",
+        fechaFallecimiento: null,
+        campeonTC: false,
+        anioDebutTC: 2000,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/mariano_altuna.png",
+        numeroAuto: null,
+        datoPeculiar: "Con apenas 17 años ganó en TC 2000 en Trelew 1999 y fue el ganador más joven de esa categoría.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 8 }
+    },
+
+    {
+        id: 93,
+        nombre: "Emanuel Moriatis",
+        apodo: "Mago",
+        marca: "Ford",
+        equipo: "Moriatis Competición",
+        localidad: "Lanús, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1980-01-19",
+        fechaFallecimiento: null,
+        campeonTC: true,
+        anioDebutTC: 2002,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/emanuel_moriatis.png",
+        numeroAuto: null,
+        datoPeculiar: "Además de su título de TC con Falcon, ganó dos campeonatos de Turismo Nacional Clase 3 con Ford Focus.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 11 }
+    },
+
+    {
+        id: 94,
+        nombre: "Luis Minervino",
+        apodo: "Patita",
+        marca: "Chevrolet",
+        equipo: "Minervino Competición",
+        localidad: "Chacabuco, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1959-11-13",
+        fechaFallecimiento: null,
+        campeonTC: false,
+        anioDebutTC: 1988,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/luis_minervino.png",
+        numeroAuto: null,
+        datoPeculiar: "Corrió sus 253 carreras de TC siempre con Chevrolet y después se hizo motorista campeón en TC Pista y TC Mouras.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 9 }
+    },
+
+    {
+        id: 95,
+        nombre: "Fabián Acuña",
+        apodo: "Zorrito",
+        marca: "Ford",
+        equipo: "FA Racing Team",
+        localidad: "Tandil, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1964-10-02",
+        fechaFallecimiento: null,
+        campeonTC: false,
+        anioDebutTC: 1988,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/fabian_acuna.png",
+        numeroAuto: null,
+        datoPeculiar: "En la especial de dos pilotos de 1994 llevó como invitado a Guillermo Ortelli, que así logró su primera victoria en TC.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 18 }
+    },
+
+    {
+        id: 96,
+        nombre: "Ernesto Bessone",
+        apodo: "Tito",
+        marca: "Dodge",
+        equipo: "Bessone Motorsport",
+        localidad: "CABA, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1958-04-03",
+        fechaFallecimiento: null,
+        campeonTC: true,
+        anioDebutTC: 1985,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/ernesto_bessone.png",
+        numeroAuto: null,
+        datoPeculiar: "Ganó la primera carrera de TC que corrió, en 1985, con un Falcon que estaba preparado para Traverso.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 9 }
+    },
+
+    {
+        id: 97,
+        nombre: "Eduardo Ramos",
+        apodo: "Lalo",
+        marca: "Ford",
+        equipo: "Lincoln Sport Group",
+        localidad: "Mechongué, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1966-05-28",
+        fechaFallecimiento: null,
+        campeonTC: true,
+        anioDebutTC: 1987,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/eduardo_ramos.png",
+        numeroAuto: null,
+        datoPeculiar: "Ganó con un Falcon la última carrera del TC disputada en ruta, en Santa Teresita en 1997.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 15 }
+    },
+
+    {
+        id: 98,
+        nombre: "Emilio Satriano",
+        apodo: "Obispo",
+        marca: "Chevrolet",
+        equipo: "Obispo Chivilcoy",
+        localidad: "Chivilcoy, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1952-06-28",
+        fechaFallecimiento: null,
+        campeonTC: true,
+        anioDebutTC: 1980,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/emilio_satriano.png",
+        numeroAuto: null,
+        datoPeculiar: "Antes de llegar al TC ganó cinco títulos seguidos en una monomarca manejando un Citroën 2CV.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 27 }
+    },
+
+    {
+        id: 99,
+        nombre: "Osvaldo Morresi",
+        apodo: "Pato",
+        marca: "Chevrolet",
+        equipo: "Pedersoli Competición",
+        localidad: "San Pedro, Buenos Aires",
+        provincia: "Buenos Aires",
+        fechaNacimiento: "1952-08-15",
+        fechaFallecimiento: "1994-03-27",
+        campeonTC: false,
+        anioDebutTC: 1984,
+        retirado: true,
+        imagen: null,
+        imagenResultado: RUTA_IMAGENES + "pilotos/osvaldo_morresi.avif",
+        numeroAuto: null,
+        datoPeculiar: "Lo declararon ganador de la carrera de La Plata 1994 en la que perdió la vida mientras iba puntero.",
+        estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 8 }
     }
 ];

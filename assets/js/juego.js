@@ -46,7 +46,9 @@ const PISTAS = [
                 return null;
             }
 
-            return "Corre con el número " + pilotoSecreto.numeroAuto + ".";
+            const verbo = pilotoSecreto.retirado ? "Corría" : "Corre";
+
+            return verbo + " con el número " + pilotoSecreto.numeroAuto + ".";
         }
     },
     {
@@ -99,7 +101,10 @@ const buscadorPilotos = TCdle.crearBuscador({
     elementos: pilotos,
     obtenerId: function (piloto) { return piloto.id; },
     obtenerEtiqueta: function (piloto) { return piloto.nombre; },
-    obtenerTextoBusqueda: function (piloto) { return piloto.nombre; },
+    // El apodo tambien se busca: "pechito" encuentra a José María López.
+    obtenerTextoBusqueda: function (piloto) {
+        return piloto.apodo ? piloto.nombre + " " + piloto.apodo : piloto.nombre;
+    },
     obtenerTextoCorto: TCdle.obtenerApellidoPiloto,
     minimoCaracteres: 1,
     renderizarOpcion: TCdle.renderizarOpcionPiloto,
@@ -207,9 +212,13 @@ async function agregarFilaIntento(piloto, animar = true) {
         provinciaCoincide
     );
 
-    const edadPiloto = calcularEdad(piloto.fechaNacimiento);
-    const edadSecreta = calcularEdad(pilotoSecreto.fechaNacimiento);
-    const celdaEdad = crearCeldaNumerica(edadPiloto, edadSecreta);
+    const edadPiloto = calcularEdad(piloto);
+    const edadSecreta = calcularEdad(pilotoSecreto);
+    const celdaEdad = crearCeldaNumerica(
+        edadPiloto,
+        edadSecreta,
+        piloto.fechaFallecimiento ? edadPiloto + " †" : edadPiloto
+    );
 
     const textoCampeon = piloto.campeonTC ? "Sí" : "No";
 
@@ -280,7 +289,7 @@ function crearCelda(valor, coincide, estaCerca = false) {
     return celda;
 }
 
-function crearCeldaNumerica(valor, valorBuscado) {
+function crearCeldaNumerica(valor, valorBuscado, texto = valor) {
     const celda = crearCelda(
         "",
         valor === valorBuscado,
@@ -289,7 +298,7 @@ function crearCeldaNumerica(valor, valorBuscado) {
     const contenido = document.createElement("span");
 
     contenido.className = "celda-numerica__valor";
-    contenido.textContent = valor;
+    contenido.textContent = texto;
     celda.classList.add("celda-numerica");
     celda.appendChild(contenido);
 
@@ -297,13 +306,13 @@ function crearCeldaNumerica(valor, valorBuscado) {
         celda.classList.add("celda-numerica--mayor");
         celda.setAttribute(
             "aria-label",
-            valor + ". El valor buscado es mayor."
+            texto + ". El valor buscado es mayor."
         );
     } else if (valorBuscado < valor) {
         celda.classList.add("celda-numerica--menor");
         celda.setAttribute(
             "aria-label",
-            valor + ". El valor buscado es menor."
+            texto + ". El valor buscado es menor."
         );
     }
 
@@ -327,14 +336,21 @@ function crearCeldaPiloto(piloto, coincide) {
     return celda;
 }
 
+// Los pilotos actuales corren con autos Nueva Generacion: su marca lleva
+// "(NG)" y usa el logo actual. Las leyendas usan el logo clasico, asi una
+// leyenda de Ford no coincide con un Ford (NG).
 const LOGOS_MARCAS = {
-    "Chevrolet": "chevrolet-logo.jpg",
-    "Ford": "ford-logo.jpg",
-    "Torino": "torino-logo.jpg",
-    "Dodge": "dodge-logo.jpg",
-    "Toyota": "toyota-logo.jpg",
-    "BMW": "bmw-logo.jpg",
-    "Mercedez Benz": "mercedes-logo.jpg"
+    "Chevrolet (NG)": "chevrolet-logo.jpg",
+    "Ford (NG)": "ford-logo.jpg",
+    "Torino (NG)": "torino-logo.jpg",
+    "Dodge (NG)": "dodge-logo.jpg",
+    "Toyota (NG)": "toyota-logo.jpg",
+    "BMW (NG)": "bmw-logo.jpg",
+    "Mercedez Benz (NG)": "mercedes-logo.jpg",
+    "Chevrolet": "chevrolet-clasico.png",
+    "Ford": "ford-clasico.png",
+    "Torino": "torino-clasico.png",
+    "Dodge": "dodge-clasico.png"
 };
 
 function crearCeldaMarca(piloto, coincide) {
@@ -352,13 +368,16 @@ function crearCeldaMarca(piloto, coincide) {
     return celda;
 }
 
-function calcularEdad(fechaNacimiento) {
-    const partesFecha = fechaNacimiento.split("-");
+// Las leyendas que ya fallecieron muestran la edad que tenian al morir.
+function calcularEdad(piloto) {
+    const partesFecha = piloto.fechaNacimiento.split("-");
     const anioNacimiento = Number(partesFecha[0]);
     const mesNacimiento = Number(partesFecha[1]);
     const diaNacimiento = Number(partesFecha[2]);
 
-    const hoy = new Date();
+    const hoy = piloto.fechaFallecimiento
+        ? new Date(piloto.fechaFallecimiento + "T00:00:00")
+        : new Date();
     let edad = hoy.getFullYear() - anioNacimiento;
 
     const cumpleaniosEsteAnio = new Date(
