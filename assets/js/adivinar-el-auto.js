@@ -325,6 +325,8 @@ function renderizarOpcionesAnio() {
 function mostrarRondaAnio() {
     panelIntentoAuto.hidden = true;
     panelAnioAuto.hidden = false;
+    // El contador sube a la fila de la ronda extra y libera el espacio de abajo de la foto.
+    panelAnioAuto.querySelector(".ronda-anio__cabecera").appendChild(regresoAuto);
     renderizarOpcionesAnio();
 
     if (rondaAnioPendiente()) {
