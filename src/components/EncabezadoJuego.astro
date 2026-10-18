@@ -1,0 +1,17 @@
+---
+import { urlImagen, urlInicio } from "../lib/rutas";
+---
+
+<header class="encabezado-juego">
+    <a href={urlInicio()} aria-label="Volver al inicio">
+        <img
+            class="logo-juego"
+            src={urlImagen("tcdle-logo-336.webp")}
+            srcset={`${urlImagen("tcdle-logo-336.webp")} 336w, ${urlImagen("tcdle-logo.webp")} 800w`}
+            sizes="112px"
+            alt="TCdle"
+            width="800"
+            height="196"
+        />
+    </a>
+</header>

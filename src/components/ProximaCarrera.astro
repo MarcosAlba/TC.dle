@@ -1,0 +1,18 @@
+---
+// Cuenta regresiva a la próxima carrera. Queda oculta hasta que
+// src/scripts/portada.ts sabe qué carrera sigue (depende de la hora del jugador).
+---
+
+<section id="proxima-carrera" class="proxima-carrera" hidden>
+    <img id="proxima-carrera-trazado" class="proxima-carrera__trazado" src="" alt="" />
+    <p class="proxima-carrera__titulo" aria-hidden="true">
+        <span id="proxima-carrera-fecha" class="proxima-carrera__fecha"></span>
+        <span id="proxima-carrera-lugar" class="proxima-carrera__lugar"></span>
+    </p>
+    <div class="proxima-carrera__reloj" aria-hidden="true">
+        <span class="proxima-carrera__tile"><b id="proxima-carrera-dias">00</b><small>días</small></span>
+        <span class="proxima-carrera__tile"><b id="proxima-carrera-horas">00</b><small>horas</small></span>
+        <span class="proxima-carrera__tile"><b id="proxima-carrera-minutos">00</b><small>min</small></span>
+        <span class="proxima-carrera__tile proxima-carrera__tile--segundos"><b id="proxima-carrera-segundos">00</b><small>seg</small></span>
+    </div>
+</section>

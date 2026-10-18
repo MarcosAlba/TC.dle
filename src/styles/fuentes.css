@@ -1,0 +1,23 @@
+/*
+ * Archivo variable, autoalojada: subset latino (alcanza para el español),
+ * ejes de peso 400-900 y ancho 62-100 (el diseño usa 68 % y 100 %).
+ * La licencia (SIL OFL) está en src/assets/fonts. El Layout precarga los dos
+ * archivos porque los títulos usan la cursiva y el resto el normal.
+ */
+@font-face {
+    font-family: "Archivo";
+    font-style: normal;
+    font-weight: 400 900;
+    font-stretch: 62% 100%;
+    font-display: swap;
+    src: url("../assets/fonts/archivo-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Archivo";
+    font-style: italic;
+    font-weight: 400 900;
+    font-stretch: 62% 100%;
+    font-display: swap;
+    src: url("../assets/fonts/archivo-italic.woff2") format("woff2");
+}

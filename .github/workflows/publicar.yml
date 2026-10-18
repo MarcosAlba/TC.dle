@@ -1,0 +1,52 @@
+# Construye el sitio con Astro y lo publica en GitHub Pages.
+# Requiere que en Settings > Pages la fuente sea "GitHub Actions".
+# El sitio queda en https://marcosalba.github.io/TC.dle/ (la base se configura en astro.config.mjs).
+name: Publicar
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+      - run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  publicar:
+    # Solo se publica desde main; en los pull requests alcanza con que construya.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: construir
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - id: despliegue
+        uses: actions/deploy-pages@v4

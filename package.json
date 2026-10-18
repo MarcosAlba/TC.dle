@@ -1,0 +1,26 @@
+{
+  "name": "tcdle",
+  "private": true,
+  "description": "TCdle: juego diario de Turismo Carretera",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "vitest run",
+    "check": "astro check && svelte-check --tsconfig ./tsconfig.json",
+    "imagenes": "node scripts/optimizar-imagenes.mjs"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/svelte": "^9.1.0",
+    "@types/node": "^22.20.5",
+    "astro": "^7.3.8",
+    "esbuild": "^0.28.2",
+    "sharp": "^0.35.5",
+    "svelte": "^5.57.2",
+    "svelte-check": "^4.7.7",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  },
+  "type": "module"
+}

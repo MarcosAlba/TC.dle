@@ -1,0 +1,18 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "Volver al inicio" [ref=e3] [cursor=pointer]:
+      - /url: /TC.dle/
+      - img "TCdle" [ref=e4]
+  - main [ref=e5]:
+    - generic [ref=e6]:
+      - region [ref=e7]:
+        - heading "Adiviná el piloto" [level=1] [ref=e8]
+      - region "Cómo se juega" [ref=e9]:
+        - img "Ejemplo de una tabla de intentos del piloto secreto, con celdas de colores que indican qué tan cerca estuvo cada dato" [ref=e10]
+        - generic [ref=e11]:
+          - paragraph [ref=e12]:
+            - text: Tenés que adivinar quién es el piloto secreto de TC. Vas a tener una cantidad de
+            - strong [ref=e13]: 8 intentos
+            - text: ", y en cada uno vas a elegir un piloto para comparar sus datos con los del piloto correcto."
+          - paragraph [ref=e14]: Después de cada intento, vas a recibir pistas de color que te dicen qué tan cerca estuviste en cada categoría. Usá esa información para ir descartando opciones y acercarte cada vez más a la respuesta correcta.
+          - button "Empezar" [ref=e15] [cursor=pointer]

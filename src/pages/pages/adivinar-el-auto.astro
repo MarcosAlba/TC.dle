@@ -1,0 +1,44 @@
+---
+import Auto from "../../games/Auto.svelte";
+import PaginaJuego from "../../layouts/PaginaJuego.astro";
+import { urlImagen } from "../../lib/rutas";
+import "../../styles/desafio.css";
+import "../../styles/auto.css";
+---
+
+<PaginaJuego
+    juego="auto"
+    titulo="TCdle | Adiviná el piloto por su auto"
+    descripcion="Adiviná qué piloto de Turismo Carretera conduce el auto del día."
+    tituloIntro="¿Quién maneja este TC?"
+>
+    <img
+        slot="intro-imagen"
+        class="intro-juego__imagen intro-juego__imagen--auto"
+        src={urlImagen("ejemplos/ejemplo-auto.webp")}
+        alt="Auto de Turismo Carretera de ejemplo, mostrado con un desenfoque animado"
+        width="1200"
+        height="802"
+        loading="lazy"
+    />
+
+    <Fragment slot="intro">
+        <p class="intro-juego__texto">
+            Hay un auto de TC escondido detrás de una imagen totalmente borrosa. Tu misión es descubrir a qué piloto le pertenece antes
+            de quedarte sin intentos.
+        </p>
+
+        <p class="intro-juego__texto">
+            Tenés <strong>8 oportunidades</strong> para adivinar. En cada una, escribís el nombre del piloto que creés que es dueño de ese
+            auto. Por cada error, la imagen se va volviendo un poco más nítida, dándote más pistas visuales para el próximo intento.
+        </p>
+    </Fragment>
+
+    <section slot="presentacion" class="presentacion-juego" aria-labelledby="titulo-auto">
+        <p class="modo-juego">Modo auto</p>
+        <h1 id="titulo-auto">¿Quién maneja este TC?</h1>
+        <p>La imagen se vuelve más nítida después de cada intento.</p>
+    </section>
+
+    <Auto client:only="svelte" />
+</PaginaJuego>

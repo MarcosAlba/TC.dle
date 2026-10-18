@@ -1,0 +1,78 @@
+/* Herramienta interna de vista previa de autos. El resto (tarjeta, marco, buscador,
+   botón) viene de juego.css, desafio.css y auto.css, reutilizados tal cual. */
+
+@layer base, juego, desafio, pagina;
+
+@layer pagina {
+    .foto-vista-previa {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        filter: blur(var(--desenfoque-auto)) brightness(var(--brillo-auto));
+        transform: scale(var(--escala-auto));
+        transition: filter 400ms ease, transform 400ms ease;
+    }
+
+    .vacio-vista-previa {
+        margin: 0;
+        padding: 0 1.5rem;
+        color: var(--color-texto-suave);
+        font-family: var(--fuente-texto);
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    .estado-vista-previa {
+        margin: 0.75rem 0 0;
+        color: var(--color-texto-suave);
+        font-size: 0.95rem;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .marco-auto--arrastrando {
+        outline: 0.1875rem dashed var(--color-rojo);
+        outline-offset: -0.5rem;
+    }
+
+    .controles-vista-previa {
+        display: flex;
+        gap: 0.625rem;
+        margin-top: 0.875rem;
+    }
+
+    .boton-vista-previa-secundario {
+        padding: 0 1.375rem;
+        border: 0.0625rem solid var(--color-borde);
+        border-radius: 0.1875rem;
+        color: var(--color-texto);
+        background: transparent;
+        font-family: var(--fuente-titulos);
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: border-color 150ms ease, opacity 150ms ease;
+    }
+
+    .boton-vista-previa-secundario:hover:not(:disabled),
+    .boton-vista-previa-secundario:focus-visible:not(:disabled) {
+        border-color: var(--color-rojo);
+        outline: none;
+    }
+
+    .boton-vista-previa-secundario:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+    @media (max-width: 620px) {
+        .controles-vista-previa {
+            flex-direction: column;
+        }
+    }
+}

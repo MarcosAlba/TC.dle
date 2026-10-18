@@ -1,0 +1,57 @@
+---
+// Página de un juego: encabezado, introducción (una vez por día) y el
+// contenido del juego. La introducción y el juego se alternan con la clase
+// html.intro-vista, que pone el script del <head> antes del primer pintado.
+import EncabezadoJuego from "../components/EncabezadoJuego.astro";
+import { obtenerJuego, type JuegoId } from "../lib/juegos";
+import "../styles/juego.css";
+import Pagina from "./Pagina.astro";
+
+interface Props {
+    juego: JuegoId;
+    titulo: string;
+    descripcion: string;
+    /** Título de la introducción. */
+    tituloIntro: string;
+}
+
+const { juego: id, titulo, descripcion, tituloIntro } = Astro.props;
+const juego = obtenerJuego(id);
+---
+
+<Pagina titulo={titulo} descripcion={descripcion} claveIntro={juego.claveIntro}>
+    <EncabezadoJuego />
+
+    <main class={`juego juego--${id}`}>
+        <div class="intro-bloque">
+            <section class="presentacion-juego" aria-labelledby="titulo-intro">
+                <h1 id="titulo-intro">{tituloIntro}</h1>
+            </section>
+
+            <section class="intro-juego" aria-label="Cómo se juega">
+                <slot name="intro-imagen" />
+
+                <div class="intro-juego__info">
+                    <slot name="intro" />
+                    <button type="button" class="intro-juego__boton" data-intro-clave={juego.claveIntro}>Empezar</button>
+                </div>
+            </section>
+        </div>
+
+        <div class="contenido-juego">
+            <slot name="presentacion" />
+            <slot />
+        </div>
+    </main>
+
+    <script>
+        import { obtenerAlmacenamiento } from "../lib/almacenamiento";
+        import { marcarIntroVista } from "../lib/intro";
+
+        // "Empezar" recuerda que hoy ya se vio la introducción y muestra el juego.
+        document.querySelector<HTMLButtonElement>("[data-intro-clave]")?.addEventListener("click", (evento) => {
+            marcarIntroVista(obtenerAlmacenamiento(), (evento.currentTarget as HTMLElement).dataset.introClave!);
+            document.documentElement.classList.add("intro-vista");
+        });
+    </script>
+</Pagina>

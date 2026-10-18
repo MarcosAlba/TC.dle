@@ -1,0 +1,101 @@
+/*
+ * Tokens del sistema visual: graphics de transmisión de TV. Base oscura,
+ * zócalos blancos con corte diagonal y acento rojo. El corte sale siempre de
+ * --sesgo para que todas las piezas encastren.
+ *
+ * Es la única fuente de colores del sitio. Los temas se escriben como
+ * variables al final de este archivo: el de Halloween no toca ningún selector
+ * de componente, solo pisa estos valores.
+ */
+:root {
+    --asfalto: #09090b;
+    --asfalto-profundo: #090a0c;
+    --asfalto-tarjeta: #0e0f12;
+    --asfalto-claro: #121216;
+    --linea: #303038;
+    --blanco: #f5f5f5;
+    --tinta: #111216;
+    --rojo: #f20d22;
+    --rojo-oscuro: #b7071c;
+    --slime: #8cff3a;
+    --sesgo: 0.875rem;
+
+    --color-fondo: var(--asfalto);
+    --color-superficie: var(--asfalto-claro);
+    --color-superficie-clara: #19191f;
+    --color-rojo: var(--rojo);
+    --color-rojo-oscuro: var(--rojo-oscuro);
+    --color-texto: var(--blanco);
+    --color-texto-suave: #aaaab2;
+    --color-borde: var(--linea);
+    --color-correcto: #17905a;
+    --color-cerca: #d49b0b;
+    --color-incorrecto: #b42335;
+
+    --fuente-titulos: "Archivo", "Arial Narrow", sans-serif;
+    --fuente-texto: "Archivo", Helvetica, sans-serif;
+
+    --corte: polygon(var(--sesgo) 0, 100% 0, calc(100% - var(--sesgo)) 100%, 0 100%);
+    --franja: var(--rojo);
+
+    /* Fondo de la página: rejilla y un resplandor opcional arriba. */
+    --rejilla: 2%;
+    --resplandor: transparent;
+
+    /* Pistas de color de la tabla del piloto y del tablero del Wordle. */
+    --celda-correcta-borde: #2fcf80;
+    --celda-correcta-fondo: rgb(23 144 90 / 85%);
+    --celda-correcta-brillo: none;
+    --celda-cerca-borde: #f0b52a;
+    --celda-cerca-fondo: rgb(212 155 11 / 82%);
+    --wordle-correcta-borde: var(--color-correcto);
+    --wordle-correcta-sombra: inset 0 -0.1875rem 0 rgb(0 0 0 / 18%);
+
+    /* Letras de muestra del Wordle en la portada. */
+    --letra-correcta: #14864f;
+    --letra-cerca: #c68a05;
+
+    /* Adorno de la pantalla de resultado (el tema lo completa). */
+    --mascota-display: none;
+    --mascota-ganada: none;
+    --mascota-perdida: none;
+    --mascota-brillo: none;
+    --mascota-animacion-ganada: none;
+}
+
+@media (max-width: 620px) {
+    :root {
+        --sesgo: 0.6875rem;
+    }
+}
+
+/* ---------- Tema de Halloween (<html data-tema="halloween">) ---------- */
+
+:root[data-tema="halloween"] {
+    --rojo: #e85400;
+    --rojo-oscuro: #b33f00;
+    --color-correcto: #2f8a12;
+    --color-cerca: #e5b400;
+    --rejilla: 1.8%;
+
+    --celda-correcta-borde: var(--slime);
+    --celda-correcta-fondo: rgb(47 138 18 / 90%);
+    --celda-correcta-brillo: 0 0 0.625rem rgb(140 255 58 / 35%);
+    --celda-cerca-borde: #ffd84a;
+    --celda-cerca-fondo: rgb(229 180 0 / 90%);
+    --wordle-correcta-borde: var(--slime);
+    --wordle-correcta-sombra: inset 0 -0.1875rem 0 rgb(0 0 0 / 18%), 0 0 0.625rem rgb(140 255 58 / 35%);
+
+    --letra-correcta: var(--color-correcto);
+    --letra-cerca: var(--color-cerca);
+
+    --mascota-display: block;
+    --mascota-ganada: url("../assets/halloween/calabaza.svg");
+    --mascota-perdida: url("../assets/halloween/fantasma.svg");
+    --mascota-brillo: drop-shadow(0 0 0.625rem rgb(255 160 40 / 60%));
+    --mascota-animacion-ganada: calabaza-salta 700ms cubic-bezier(0.3, 1.6, 0.5, 1) 300ms both;
+}
+
+:root[data-tema="halloween"] body {
+    --resplandor: rgb(232 84 0 / 9%);
+}
