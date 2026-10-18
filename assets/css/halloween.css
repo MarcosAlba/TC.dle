@@ -9,8 +9,7 @@ html.halloween {
     --slime: #8cff3a;
 
     --color-correcto: #2f8a12;
-    --color-cerca: #e0a10c;
-    --color-incorrecto: #3a3142;
+    --color-cerca: #e5b400;
 }
 
 .halloween body {
@@ -30,13 +29,8 @@ html.halloween {
 }
 
 .halloween td.cerca {
-    border-color: #ffc94a;
-    background: rgb(224 161 12 / 86%);
-}
-
-.halloween td.no-coincide {
-    border-color: #5a4f66;
-    background: var(--color-incorrecto);
+    border-color: #ffd84a;
+    background: rgb(229 180 0 / 90%);
 }
 
 .halloween .celda-wordle--correcta {
@@ -52,10 +46,6 @@ html.halloween {
 .halloween .tarjeta-juego__letras span:nth-child(2),
 .halloween .tarjeta-juego__letras span:nth-child(5) {
     background: var(--color-cerca);
-}
-
-.halloween .tarjeta-juego__letras span:nth-child(3) {
-    background: var(--color-incorrecto);
 }
 
 /* ---------- Calabaza al ganar, fantasma al perder ---------- */
