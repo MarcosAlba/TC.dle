@@ -1,0 +1,12 @@
+{
+  "name": "tcdle",
+  "private": true,
+  "description": "TCdle: juego diario de Turismo Carretera",
+  "scripts": {
+    "test": "node --test \"tests/*.test.mjs\"",
+    "imagenes": "node scripts/optimizar-imagenes.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.5"
+  }
+}

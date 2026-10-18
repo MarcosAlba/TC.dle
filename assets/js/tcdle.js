@@ -319,6 +319,15 @@
         return partes[partes.length - 1] || "";
     }
 
+    // Miniatura de la foto (pilotos/mini/*.webp) para donde la foto se ve chica:
+    // el buscador y la tabla de intentos. Sin foto local, devuelve la que haya.
+    function obtenerImagenMiniPiloto(piloto) {
+        const foto = piloto.imagenResultado || piloto.imagen;
+        return foto
+            ? foto.replace(/\/pilotos\/([^/]+?)\.[a-z0-9]+$/i, "/pilotos/mini/$1.webp")
+            : foto;
+    }
+
     function renderizarOpcionPiloto(opcion, piloto) {
         const avatar = document.createElement("span");
         const iniciales = document.createElement("span");
@@ -333,7 +342,7 @@
         // piloto.imagen apunta a actc.org.ar, que ya no sirve esas rutas
         // (devuelve 404 para todos los pilotos): usamos la foto local que
         // ya tenemos en assets/images/pilotos como fuente confiable.
-        imagen.src = piloto.imagenResultado || piloto.imagen;
+        imagen.src = obtenerImagenMiniPiloto(piloto);
         imagen.alt = "";
         imagen.loading = "lazy";
         imagen.addEventListener("load", function () { iniciales.hidden = true; });
@@ -844,6 +853,7 @@
     TCdle.buscarElementos = buscarElementos;
     TCdle.crearBuscador = crearBuscador;
     TCdle.renderizarOpcionPiloto = renderizarOpcionPiloto;
+    TCdle.obtenerImagenMiniPiloto = obtenerImagenMiniPiloto;
     TCdle.obtenerApellidoPiloto = obtenerApellidoPiloto;
     TCdle.crearJuegoDiario = crearJuegoDiario;
     TCdle.crearDatoDiario = crearDatoDiario;

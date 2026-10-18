@@ -243,4 +243,19 @@ jugarCircuito("2026-08-31", true);
 jugarCircuito("2026-09-01", true);
 assert.equal(TCdle.obtenerRacha("circuito", "2026-09-01"), 2, "La racha cruza el cambio de mes");
 
+// Miniaturas de pilotos: el buscador y la tabla usan pilotos/mini/*.webp.
+assert.equal(
+    TCdle.obtenerImagenMiniPiloto({ imagenResultado: "http://localhost/assets/images/pilotos/agustin_canapino.webp", imagen: "https://actc.org.ar/x.png" }),
+    "http://localhost/assets/images/pilotos/mini/agustin_canapino.webp"
+);
+assert.equal(
+    TCdle.obtenerImagenMiniPiloto({ imagenResultado: "http://localhost/assets/images/pilotos/osvaldo_morresi.avif" }),
+    "http://localhost/assets/images/pilotos/mini/osvaldo_morresi.webp"
+);
+assert.equal(
+    TCdle.obtenerImagenMiniPiloto({ imagen: "https://actc.org.ar/x.png" }),
+    "https://actc.org.ar/x.png",
+    "Sin foto local usa la que haya"
+);
+
 process.stdout.write("OK: núcleo compartido, búsqueda, partidas y migraciones.\n");

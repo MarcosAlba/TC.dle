@@ -42,7 +42,7 @@ const pilotos = [
         campeonTC: true,
         anioDebutTC: 2009,
         imagen: "https://www.actc.org.ar/upload/autos/10691/imgs_v3/imgtorso/podio/agustin_canapino.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/agustin_canapino.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/agustin_canapino.webp",
         numeroAuto: 1,
         datoPeculiar: "Es el piloto argentino con más títulos nacionales: 18 campeonatos.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 22 }
@@ -59,7 +59,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2015,
         imagen: "https://www.actc.org.ar/upload/autos/10709/imgs_v3/imgtorso/podio/mauricio_lambiris.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/mauricio_lambiris.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/mauricio_lambiris.webp",
         numeroAuto: 3,
         datoPeculiar: "Fue el piloto que más puntos sumó en la Copa de Oro del 2021, pero no pudo coronarse campeón.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 3 }
@@ -76,7 +76,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2021,
         imagen: "https://www.actc.org.ar/upload/autos/10694/imgs_v3/imgtorso/podio/german_todino.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/german_todino.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/german_todino.webp",
         numeroAuto: 4,
         datoPeculiar: "Se coronó campeón del TC Mouras en su año de debut en la categoría.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 7 }
@@ -93,7 +93,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2020,
         imagen: "https://actc.org.ar/upload/autos/10710/imgs_v3/imgtorso/podio/marcelo_agrelo.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/marcelo_agrelo.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/marcelo_agrelo.webp",
         numeroAuto: 5,
         datoPeculiar: "Ganó la Etapa Regular del TC en 2025",
         estadisticaDestacada: { "tipo": "series", "valor": 2 }
@@ -110,7 +110,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2011,
         imagen: "https://www.actc.org.ar/upload/autos/10711/imgs_v3/imgtorso/podio/juan_martin_trucco.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/juan_martin_trucco.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_martin_trucco.webp",
         numeroAuto: 6,
         datoPeculiar: "Es el primer piloto en ganar una carrera de TC con un Challenger",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 2 }
@@ -127,7 +127,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2014,
         imagen: "https://www.actc.org.ar/upload/autos/10706/imgs_v3/imgtorso/podio/santiago_mangoni.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/santiago_mangoni.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/santiago_mangoni.webp",
         numeroAuto: 7,
         datoPeculiar: "Tiene la particularidad de ser el 7mo de la historia de Balcarce en ganar dentro del TC.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 4 }
@@ -144,7 +144,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2025,
         imagen: "https://www.actc.org.ar/upload/autos/10712/imgs_v3/imgtorso/podio/jeremias_olmedo.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/jeremias_olmedo.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jeremias_olmedo.webp",
         numeroAuto: 9,
         datoPeculiar: "Se metio en la Copa de Oro en su temporada debut.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 26 }
@@ -161,7 +161,7 @@ const pilotos = [
         campeonTC: true,
         anioDebutTC: 2010,
         imagen: "https://www.actc.org.ar/upload/autos/10708/imgs_v3/imgtorso/podio/mariano_werner.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/mariano_werner.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/mariano_werner.webp",
         numeroAuto: 11,
         datoPeculiar: "Es el piloto con mas victorias dentro de la Copa de Oro.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 30 }
@@ -178,7 +178,7 @@ const pilotos = [
         campeonTC: true,
         anioDebutTC: 1998,
         imagen: "https://www.actc.org.ar/upload/autos/10699/imgs_v3/imgtorso/podio/christian_ledesma.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/christian_ledesma.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/christian_ledesma.webp",
         numeroAuto: 14,
         datoPeculiar: "Se consagró campeón del TC sacándole más de 100 puntos de ventaja al escolta.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 27 }
@@ -195,7 +195,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2016,
         imagen: "https://actc.org.ar/upload/autos/9601/imgs_v3/imgtorso/podio/juan_jose_ebarlin.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/juan_jose_ebarlin.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_jose_ebarlin.webp",
         numeroAuto: 15,
         datoPeculiar: "Desde que debuto en el TC siempre corrio con Chevrolet.",
         estadisticaDestacada: { "tipo": "series", "valor": 2 }
@@ -212,7 +212,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2011,
         imagen: "https://actc.org.ar/upload/autos/9647/imgs_v3/imgtorso/podio/luis_jose_di_palma.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/luis_jose_di_palma.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/luis_jose_di_palma.webp",
         numeroAuto: 24,
         datoPeculiar: "Corrio con 5 marcas distintas dentro del TC.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 8 }
@@ -229,7 +229,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2002,
         imagen: "https://actc.org.ar/upload/autos/10695/imgs_v3/imgtorso/podio/emiliano_spataro.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/emiliano_spataro.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/emiliano_spataro.webp",
         numeroAuto: 27,
         datoPeculiar: "Supero la barrera de las 300 carreras disputadas dentro del TC.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 4 }
@@ -246,7 +246,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2023,
         imagen: "https://actc.org.ar/upload/autos/10697/imgs_v3/imgtorso/podio/elio_craparo.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/elio_craparo.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/elio_craparo.webp",
         numeroAuto: 29,
         datoPeculiar: "Fue el primer campeón de la historia de las TC Pista Pick Up.",
         estadisticaDestacada: { "tipo": "series", "valor": 3 }
@@ -263,7 +263,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2025,
         imagen: "https://actc.org.ar/upload/autos/10690/imgs_v3/imgtorso/podio/matias_canapino.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/matias_canapino.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/matias_canapino.webp",
         numeroAuto: 32,
         datoPeculiar: "Debuto en el TC en el 2025 con un Camaro del RUS MED Team.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 27 }
@@ -280,7 +280,7 @@ const pilotos = [
         campeonTC: true,
         anioDebutTC: 2003,
         imagen: "https://actc.org.ar/upload/autos/10696/imgs_v3/imgtorso/podio/norberto_fontana.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/norberto_fontana.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/norberto_fontana.webp",
         numeroAuto: 37,
         datoPeculiar: "Corrió 4 Grandes Premios de Formula 1.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 10 }
@@ -297,7 +297,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2009,
         imagen: "https://actc.org.ar/upload/autos/9609/imgs_v3/imgtorso/podio/gaston_mazzacane.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/gaston_mazzacane.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/gaston_mazzacane.webp",
         numeroAuto: 29,
         datoPeculiar: "Fue el último piloto argentino en la Fórmula 1 antes de la llegada de Franco Colapinto.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 2 }
@@ -314,7 +314,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2017,
         imagen: "https://actc.org.ar/upload/autos/10715/imgs_v3/imgtorso/podio/nicolas_cotignola.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_cotignola.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_cotignola.webp",
         numeroAuto: 51,
         datoPeculiar: "Se consagro campeón del TC Pista en el 2016.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 86 }
@@ -331,7 +331,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2017,
         imagen: "https://actc.org.ar/upload/autos/10716/imgs_v3/imgtorso/podio/juan_tomas_catalan_magni.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/juan_tomas_catalan_magni.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_tomas_catalan_magni.webp",
         numeroAuto: 53,
         datoPeculiar: "Es el ganador mas joven en la historia del Turismo Carretera.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 2 }
@@ -348,7 +348,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2002,
         imagen: "https://actc.org.ar/upload/autos/10718/imgs_v3/imgtorso/podio/juan_pablo_gianini.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/juan_pablo_gianini.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_pablo_gianini.webp",
         numeroAuto: 57,
         datoPeculiar: "Comenzó su trayectoria en el motociclismo y luego incursionó en el automovilismo.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 3 }
@@ -365,7 +365,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2002,
         imagen: "https://actc.org.ar/upload/autos/7621/imgs_v3/imgtorso/podio/christian_dose.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/christian_dose.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/christian_dose.webp",
         numeroAuto: 50,
         datoPeculiar: null,
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 227 }
@@ -382,7 +382,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2025,
         imagen: "https://actc.org.ar/upload/autos/9628/imgs_v3/imgtorso/podio/jeronimo_teti.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/jeronimo_teti.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jeronimo_teti.webp",
         numeroAuto: 60,
         datoPeculiar: "Consiguió una victoria y una victoria en serie en apenas sus dos primeras carreras de TC Mouras",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 21 }
@@ -399,7 +399,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2013,
         imagen: "https://actc.org.ar/upload/autos/10692/imgs_v3/imgtorso/podio/nicolas_bonelli.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_bonelli.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_bonelli.webp",
         numeroAuto: 63,
         datoPeculiar: "Es uno de los pilotos con más carreras en TC sin haber conseguido una victoria.",
         estadisticaDestacada: { "tipo": "series", "valor": 2 }
@@ -416,7 +416,7 @@ const pilotos = [
         campeonTC: true,
         anioDebutTC: 2017,
         imagen: "https://actc.org.ar/upload/autos/10720/imgs_v3/imgtorso/podio/julian_santero.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/julian_santero.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/julian_santero.webp",
         numeroAuto: 68,
         datoPeculiar: "Ganó carreras de TC con 4 marcas diferentes",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 10 }
@@ -433,7 +433,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2024,
         imagen: "https://actc.org.ar/upload/autos/7628/imgs_v3/imgtorso/podio/sebastian_abella.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/sebastian_abella.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/sebastian_abella.webp",
         numeroAuto: 71,
         datoPeculiar: "El GOAT",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 22 }
@@ -450,7 +450,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2013,
         imagen: "https://actc.org.ar/upload/autos/10688/imgs_v3/imgtorso/podio/martin_serrano.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/martin_serrano.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/martin_serrano.webp",
         numeroAuto: 72,
         datoPeculiar: "Largó dos veces desde la pole en el Desafío de las Estrellas",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 106 }
@@ -467,7 +467,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 1997,
         imagen: "https://actc.org.ar/upload/autos/9637/imgs_v3/imgtorso/podio/sergio_alaux.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/sergio_alaux.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/sergio_alaux.webp",
         numeroAuto: null,
         datoPeculiar: null,
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 2 }
@@ -484,7 +484,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2017,
         imagen: "https://actc.org.ar/upload/autos/10721/imgs_v3/imgtorso/podio/augusto_carinelli.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/augusto_carinelli.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/augusto_carinelli.webp",
         numeroAuto: 77,
         datoPeculiar: "Fue campeón de TC Pista Mouras en 2012",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 71 }
@@ -501,7 +501,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2024,
         imagen: "https://actc.org.ar/upload/autos/10722/imgs_v3/imgtorso/podio/facundo_chapur.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/facundo_chapur.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/facundo_chapur.webp",
         numeroAuto: 79,
         datoPeculiar: "Fue campeón de la Copa Mundial Rotax 125cc Junior",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 2 }
@@ -518,7 +518,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10723/imgs_v3/imgtorso/podio/tomas_abdala.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/tomas_abdala.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/tomas_abdala.webp",
         numeroAuto: 80,
         datoPeculiar: "Llegó al Turismo Carretera por su rendimiento en TC Pick Up",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 1 }
@@ -535,7 +535,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10724/imgs_v3/imgtorso/podio/lucas_carabajal.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/lucas_carabajal.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/lucas_carabajal.webp",
         numeroAuto: 81,
         datoPeculiar: "Fue campeón de TC Mouras en 2025",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 3 }
@@ -552,7 +552,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2013,
         imagen: "https://actc.org.ar/upload/autos/10725/imgs_v3/imgtorso/podio/facundo_ardusso.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/facundo_ardusso.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/facundo_ardusso.webp",
         numeroAuto: 83,
         datoPeculiar: "Es el máximo ganador histórico del TC en Viedma, con 3 victorias.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 9 }
@@ -569,7 +569,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2009,
         imagen: "https://actc.org.ar/upload/autos/10717/imgs_v3/imgtorso/podio/ricardo_risatti.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/ricardo_risatti.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/ricardo_risatti.webp",
         numeroAuto: 85,
         datoPeculiar: "En 2007 manejó un Toyota de Fórmula 1 en Paul Ricard",
         estadisticaDestacada: { "tipo": "series", "valor": 1 }
@@ -586,7 +586,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2025,
         imagen: "https://actc.org.ar/upload/autos/9664/imgs_v3/imgtorso/podio/ignacio_fain.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/ignacio_fain.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/ignacio_fain.webp",
         numeroAuto: 86,
         datoPeculiar: "En su segundo año en TC, clasificó a la Copa de Oro.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 1 }
@@ -603,7 +603,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2025,
         imagen: "https://actc.org.ar/upload/autos/10727/imgs_v3/imgtorso/podio/nicolas_impiombato.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_impiombato.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_impiombato.webp",
         numeroAuto: 87,
         datoPeculiar: "Ganó la primera carrera de la historia del TC Pista Pick Up.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 25 }
@@ -620,7 +620,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2014,
         imagen: "https://actc.org.ar/upload/autos/10728/imgs_v3/imgtorso/podio/nicolas_trosset.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_trosset.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_trosset.webp",
         numeroAuto: 88,
         datoPeculiar: "Ganó la primera carrera del TC después del parate por la pandemia de COVID-19.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 2 }
@@ -637,7 +637,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2021,
         imagen: "https://actc.org.ar/upload/autos/10705/imgs_v3/imgtorso/podio/marcos_landa.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/marcos_landa.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/marcos_landa.webp",
         numeroAuto: 95,
         datoPeculiar: "En 2023 fue el mejor piloto de Torino en el campeonato.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 87 }
@@ -654,7 +654,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2019,
         imagen: "https://actc.org.ar/upload/autos/10729/imgs_v3/imgtorso/podio/juan_cruz_benvenuti.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/juan_cruz_benvenuti.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_cruz_benvenuti.webp",
         numeroAuto: 96,
         datoPeculiar: "Ganó la etapa regular del Turismo Carretera en 2020.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 4 }
@@ -671,7 +671,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2006,
         imagen: "https://actc.org.ar/upload/autos/9600/imgs_v3/imgtorso/podio/jonatan_castellano.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/jonatan_castellano.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jonatan_castellano.webp",
         numeroAuto: 101,
         datoPeculiar: "Es uno de los cuatro pilotos que ganó la Etapa Regular del TC en dos ocasiones.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 9 }
@@ -688,7 +688,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2024,
         imagen: "https://actc.org.ar/upload/autos/10702/imgs_v3/imgtorso/podio/tobias_martinez.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/tobias_martinez.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/tobias_martinez.webp",
         numeroAuto: 107,
         datoPeculiar: "Ganó su primera carrera en TC justamente en el debut del Torino NG.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 2 }
@@ -705,7 +705,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10730/imgs_v3/imgtorso/podio/nicolas_moscardini.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_moscardini.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/nicolas_moscardini.webp",
         numeroAuto: 109,
         datoPeculiar: "En su debut en Turismo Carretera consiguió la pole y ganó la carrera.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 1 }
@@ -722,7 +722,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2025,
         imagen: "https://actc.org.ar/upload/autos/10731/imgs_v3/imgtorso/podio/diego_azar.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/diego_azar.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/diego_azar.webp",
         numeroAuto: 110,
         datoPeculiar: "Consiguió la primera victoria de Fiat en TC Pick Up.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 27 }
@@ -739,7 +739,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10733/imgs_v3/imgtorso/podio/lucas_valle.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/lucas_valle.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/lucas_valle.webp",
         numeroAuto: 112,
         datoPeculiar: "Su mejor resultado fue 4.º en el Desafío de las Estrellas",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 12 }
@@ -756,7 +756,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10734/imgs_v3/imgtorso/podio/rodrigo_lugon.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/rodrigo_lugon.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/rodrigo_lugon.webp",
         numeroAuto: 113,
         datoPeculiar: "Consiguió su ascenso al TC por acumulación de carreras.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 12 }
@@ -773,7 +773,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2019,
         imagen: "https://actc.org.ar/upload/autos/10735/imgs_v3/imgtorso/podio/gaston_ferrante.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/gaston_ferrante.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/gaston_ferrante.webp",
         numeroAuto: 114,
         datoPeculiar: "Participo en las 2 ediciones de los 1000km de Buenos Aires.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 105 }
@@ -790,7 +790,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2007,
         imagen: "https://actc.org.ar/upload/autos/9652/imgs_v3/imgtorso/podio/diego_de_carlo.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/diego_de_carlo.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/diego_de_carlo.webp",
         numeroAuto: 115,
         datoPeculiar: "Debutó en Turismo Carretera en 2007 integrando el HAZ Racing Team.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 257 }
@@ -807,7 +807,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2022,
         imagen: "https://actc.org.ar/upload/autos/10737/imgs_v3/imgtorso/podio/kevin_candela.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/kevin_candela.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/kevin_candela.webp",
         numeroAuto: 116,
         datoPeculiar: "Fue campeón de TC Pista en 2021.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 66 }
@@ -824,7 +824,7 @@ const pilotos = [
         campeonTC: true,
         anioDebutTC: 2003,
         imagen: "https://actc.org.ar/upload/autos/10738/imgs_v3/imgtorso/podio/matias_rossi.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/matias_rossi.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/matias_rossi.webp",
         numeroAuto: 117,
         datoPeculiar: "Es el máximo ganador histórico del TC en San Luis: ganó 4 veces.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 26 }
@@ -841,7 +841,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2025,
         imagen: "https://actc.org.ar/upload/autos/10739/imgs_v3/imgtorso/podio/hernan_palazzo.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/hernan_palazzo.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/hernan_palazzo.webp",
         numeroAuto: 119,
         datoPeculiar: "En 2024 fue campeón de TC Pista.",
         estadisticaDestacada: { "tipo": "series", "valor": 1 }
@@ -858,7 +858,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2021,
         imagen: "https://actc.org.ar/upload/autos/9667/imgs_v3/imgtorso/podio/andres_jakos.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/andres_jakos.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/andres_jakos.webp",
         numeroAuto: 122,
         datoPeculiar: "Fue subcampeón de TC Pista en 2020.",
         estadisticaDestacada: { "tipo": "series", "valor": 1 }
@@ -875,7 +875,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2023,
         imagen: "https://actc.org.ar/upload/autos/10741/imgs_v3/imgtorso/podio/martin_vazquez.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/martin_vazquez.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/martin_vazquez.webp",
         numeroAuto: 123,
         datoPeculiar: "Es el ganador del Desafio de las Estrellas 2025.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 1 }
@@ -892,7 +892,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10742/imgs_v3/imgtorso/podio/thomas_ricciardi.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/thomas_ricciardi.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/thomas_ricciardi.webp",
         numeroAuto: 126,
         datoPeculiar: "Debutó en el TC con un Camry, pero durante la misma temporada cambió a Challenger",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 8 }
@@ -909,7 +909,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2018,
         imagen: "https://actc.org.ar/upload/autos/10707/imgs_v3/imgtorso/podio/valentin_aguirre.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/valentin_aguirre.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/valentin_aguirre.webp",
         numeroAuto: 133,
         datoPeculiar: "Fue campeón del TC Pista en 2017.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 7 }
@@ -926,7 +926,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2005,
         imagen: "https://actc.org.ar/upload/autos/9614/imgs_v3/imgtorso/podio/matias_jalaf.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/matias_jalaf.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/matias_jalaf.webp",
         numeroAuto: 134,
         datoPeculiar: "Superó las 250 carreras en TC sin haber ganado nunca una final.",
         estadisticaDestacada: { "tipo": "series", "valor": 4 }
@@ -943,7 +943,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2025,
         imagen: "https://actc.org.ar/upload/autos/10744/imgs_v3/imgtorso/podio/jeremias_scialchi.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/jeremias_scialchi.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jeremias_scialchi.webp",
         numeroAuto: 137,
         datoPeculiar: "En 2024 debutó en TC Pista ganando en El Calafate",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 25 }
@@ -960,7 +960,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10745/imgs_v3/imgtorso/podio/gaspar_chansard.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/gaspar_chansard.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/gaspar_chansard.webp",
         numeroAuto: 140,
         datoPeculiar: "Fue campeón de TC Pista Mouras en 2021.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 11 }
@@ -977,7 +977,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10746/imgs_v3/imgtorso/podio/jorge_barrio.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/jorge_barrio.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jorge_barrio.webp",
         numeroAuto: 141,
         datoPeculiar: "Llegó al TC en 2026 después de ser subcampeón del TN Clase 3.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 11 }
@@ -994,7 +994,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10747/imgs_v3/imgtorso/podio/marco_dianda.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/marco_dianda.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/marco_dianda.webp",
         numeroAuto: 147,
         datoPeculiar: "Tiene la pole más joven de la historia del Turismo Carretera.",
         estadisticaDestacada: { "tipo": "series", "valor": 1 }
@@ -1011,7 +1011,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10748/imgs_v3/imgtorso/podio/joaquin_ochoa.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/joaquin_ochoa.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/joaquin_ochoa.webp",
         numeroAuto: 154,
         datoPeculiar: "Su primera victoria en TC Pista fue en Toay 2024.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 11 }
@@ -1028,7 +1028,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2007,
         imagen: "https://actc.org.ar/upload/autos/9662/imgs_v3/imgtorso/podio/juan_b._de_benedictis.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/juan_b._de_benedictis.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_b._de_benedictis.webp",
         numeroAuto: 157,
         datoPeculiar: "Ganó la primera carrera de Turismo Carretera disputada en el circuito de Toay, en 2012.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 6 }
@@ -1045,7 +1045,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2023,
         imagen: "https://actc.org.ar/upload/autos/10750/imgs_v3/imgtorso/podio/santiago_alvarez.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/santiago_alvarez.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/santiago_alvarez.webp",
         numeroAuto: 172,
         datoPeculiar: "En 2024 consiguió la primera victoria de un Chevrolet Camaro.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 1 }
@@ -1062,7 +1062,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2026,
         imagen: "https://actc.org.ar/upload/autos/10751/imgs_v3/imgtorso/podio/juan_manuel_tomasello.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/tomasello.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/tomasello.webp",
         numeroAuto: 178,
         datoPeculiar: "Corrio como invitado en los 1000km de Buenos Aires de 2018.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 2 }
@@ -1078,7 +1078,7 @@ const pilotos = [
         fechaNacimiento: "2000-10-30",
         campeonTC: false,
         anioDebutTC: 2026,
-        imagen: RUTA_IMAGENES + "pilotos/marcos_castro.png",
+        imagen: RUTA_IMAGENES + "pilotos/marcos_castro.webp",
         numeroAuto: 193,
         datoPeculiar: "En 2024 corrió en TC Pista con el Ford Falcon que Mariano Werner había utilizado para conseguir su tricampeonato.",
         estadisticaDestacada: { "tipo": "carrerasCorridas", "valor": 11 }
@@ -1095,7 +1095,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2023,
         imagen: "https://actc.org.ar/upload/autos/10753/imgs_v3/imgtorso/podio/marcos_quijada.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/marcos_quijada.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/marcos_quijada.webp",
         numeroAuto: 197,
         datoPeculiar: "En 2021 fue campeón de TC Mouras con Dodge.",
         estadisticaDestacada: { "tipo": "series", "valor": 4 }
@@ -1112,7 +1112,7 @@ const pilotos = [
         campeonTC: true,
         anioDebutTC: 2015,
         imagen: "https://actc.org.ar/upload/autos/9669/imgs_v3/imgtorso/podio/jose_manuel_urcera.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/jose_manuel_urcera.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jose_manuel_urcera.webp",
         numeroAuto: 231,
         datoPeculiar: "En 2026 llegó a competir con su quinta marca distinta en Turismo Carretera.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 7 }
@@ -1129,7 +1129,7 @@ const pilotos = [
         campeonTC: false,
         anioDebutTC: 2023,
         imagen: "https://actc.org.ar/upload/autos/10776/imgs_v3/imgtorso/podio/otto_fritzler.png",
-        imagenResultado: RUTA_IMAGENES + "pilotos/otto_fritzler.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/otto_fritzler.webp",
         numeroAuto: 256,
         datoPeculiar: "En 2021 consiguió tres poles consecutivas en su primera temporada de TC Pista.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 3 }
@@ -1151,7 +1151,7 @@ const pilotos = [
         anioDebutTC: 1938,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/juan_manuel_fangio.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_manuel_fangio.webp",
         numeroAuto: null,
         datoPeculiar: "Antes de ser cinco veces campeón mundial de Fórmula 1, le dio a Chevrolet su primer título en el TC.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 6 }
@@ -1171,7 +1171,7 @@ const pilotos = [
         anioDebutTC: 1937,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/oscar_alfredo_galvez.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/oscar_alfredo_galvez.webp",
         numeroAuto: null,
         datoPeculiar: "Un periodista le puso un apodo de ave porque decía que en la ruta 'volaba', y el autódromo porteño lleva su apellido junto al de su hermano.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 43 }
@@ -1191,7 +1191,7 @@ const pilotos = [
         anioDebutTC: 1941,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/juan_galvez.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_galvez.webp",
         numeroAuto: null,
         datoPeculiar: "Es el máximo campeón de la historia del TC, con nueve coronas.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 56 }
@@ -1211,7 +1211,7 @@ const pilotos = [
         anioDebutTC: 1948,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/eduardo_copello.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/eduardo_copello.webp",
         numeroAuto: null,
         datoPeculiar: "Fue el primer campeón del TC con una marca que no era Ford ni Chevrolet, y el autódromo sanjuanino lleva su nombre.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 21 }
@@ -1231,7 +1231,7 @@ const pilotos = [
         anioDebutTC: 1962,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/carlos_pairetti.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/carlos_pairetti.webp",
         numeroAuto: null,
         datoPeculiar: "Salió campeón en 1968 con un prototipo apodado 'Trueno Naranja' y también actuó en películas.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 22 }
@@ -1251,7 +1251,7 @@ const pilotos = [
         anioDebutTC: 1963,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/ruben_luis_di_palma.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/ruben_luis_di_palma.webp",
         numeroAuto: null,
         datoPeculiar: "Es el ganador más veterano de la historia del TC: se impuso en una carrera con 53 años, en 1998.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 20 }
@@ -1271,7 +1271,7 @@ const pilotos = [
         anioDebutTC: 1970,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/roberto_mouras.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/roberto_mouras.webp",
         numeroAuto: 7,
         datoPeculiar: "Su cupé dorada con el número 7 es una leyenda, y hoy dos categorías de la ACTC llevan su apellido.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 50 }
@@ -1291,7 +1291,7 @@ const pilotos = [
         anioDebutTC: 1980,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/juan_antonio_de_benedictis.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_antonio_de_benedictis.webp",
         numeroAuto: null,
         datoPeculiar: "Fue tres veces subcampeón sin ganar nunca el título, y por el color de sus autos lo apodaron 'El Pampero Verde'.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 16 }
@@ -1311,7 +1311,7 @@ const pilotos = [
         anioDebutTC: 1971,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/juan_maria_traverso.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_maria_traverso.webp",
         numeroAuto: null,
         datoPeculiar: "Le puso la voz a Doc Hudson en el doblaje argentino de la película Cars.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 46 }
@@ -1331,7 +1331,7 @@ const pilotos = [
         anioDebutTC: 1994,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/omar_martinez.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/omar_martinez.webp",
         numeroAuto: null,
         datoPeculiar: "Fue el primer campeón de la historia del Top Race, en 1997, y ganó su segundo título de TC con casi 50 años.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 33 }
@@ -1351,7 +1351,7 @@ const pilotos = [
         anioDebutTC: 1998,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/juan_manuel_silva.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_manuel_silva.webp",
         numeroAuto: null,
         datoPeculiar: "Ganó la carrera número 1000 de la historia del TC, en Paraná en 2003, y además ganó el mismo día de su debut.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 15 }
@@ -1371,7 +1371,7 @@ const pilotos = [
         anioDebutTC: 1986,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/roberto_urretavizcaya.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/roberto_urretavizcaya.webp",
         numeroAuto: null,
         datoPeculiar: "Su primera victoria en TC se definió porque un tren de pasajeros cruzó la pista y la carrera se tuvo que parar con bandera roja.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 10 }
@@ -1391,7 +1391,7 @@ const pilotos = [
         anioDebutTC: 1995,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/patricio_di_palma.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/patricio_di_palma.webp",
         numeroAuto: null,
         datoPeculiar: "Le devolvió a Torino una victoria en el TC en 2003, después de 28 años de sequía de la marca.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 5 }
@@ -1411,7 +1411,7 @@ const pilotos = [
         anioDebutTC: 1995,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/marcos_di_palma.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/marcos_di_palma.webp",
         numeroAuto: null,
         datoPeculiar: "Después de colgar el casco fue diputado bonaerense entre 2017 y 2021.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 11 }
@@ -1431,7 +1431,7 @@ const pilotos = [
         anioDebutTC: 1981,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/oscar_castellano.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/oscar_castellano.webp",
         numeroAuto: null,
         datoPeculiar: "Sus autos naranjas se hicieron famosos como 'La Naranja Mecánica' y él mismo los preparaba.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 27 }
@@ -1451,7 +1451,7 @@ const pilotos = [
         anioDebutTC: 1977,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/oscar_aventin.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/oscar_aventin.webp",
         numeroAuto: null,
         datoPeculiar: "En 1991 llevó a Maradona de acompañante en su Falcon en el Autódromo porteño y ese mismo día ganó la final.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 24 }
@@ -1471,7 +1471,7 @@ const pilotos = [
         anioDebutTC: 1999,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/diego_aventin.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/diego_aventin.webp",
         numeroAuto: null,
         datoPeculiar: "Al año siguiente de salir campeón se bajó del auto después de seis fechas para dedicarse a la dirigencia; su papá y su tío también fueron campeones de TC.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 16 }
@@ -1491,7 +1491,7 @@ const pilotos = [
         anioDebutTC: 1983,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/jorge_oyhanart.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jorge_oyhanart.webp",
         numeroAuto: null,
         datoPeculiar: "En 1993 corrió las 24 Horas de Daytona con un Oldsmobile, en una tripulación de pilotos de TC.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 6 }
@@ -1511,7 +1511,7 @@ const pilotos = [
         anioDebutTC: 1994,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/guillermo_ortelli.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/guillermo_ortelli.webp",
         numeroAuto: null,
         datoPeculiar: "Ganó la primera carrera de TC que corrió, como invitado en las 2 Horas de Buenos Aires de 1994, y terminó siendo heptacampeón: solo Juan Gálvez tiene más títulos.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 32 }
@@ -1531,7 +1531,7 @@ const pilotos = [
         anioDebutTC: 2008,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/jose_maria_lopez.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jose_maria_lopez.webp",
         numeroAuto: null,
         datoPeculiar: "Es tricampeón mundial de turismos (WTCC) y ganó las 24 Horas de Le Mans, el segundo argentino en lograrlo después de Froilán González.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 4 }
@@ -1551,7 +1551,7 @@ const pilotos = [
         anioDebutTC: 2008,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/leonel_pernia.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/leonel_pernia.webp",
         numeroAuto: null,
         datoPeculiar: "Es hijo de un ex defensor de Boca que también corrió y ganó en TC, y es cuatro veces campeón de TC2000.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 8 }
@@ -1571,7 +1571,7 @@ const pilotos = [
         anioDebutTC: 2008,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/juan_marcos_angelini.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/juan_marcos_angelini.webp",
         numeroAuto: null,
         datoPeculiar: "Referente de Dodge, en 2011 ganó en Rafaela encabezando un 1-2-3 de la marca que no se daba desde 1988.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 3 }
@@ -1591,7 +1591,7 @@ const pilotos = [
         anioDebutTC: 2009,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/guido_falaschi.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/guido_falaschi.webp",
         numeroAuto: 16,
         datoPeculiar: "Campeón de Fórmula Renault 2008, ganó en TC por única vez en Junín 2011.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 1 }
@@ -1611,7 +1611,7 @@ const pilotos = [
         anioDebutTC: 2011,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/mauro_giallombardo.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/mauro_giallombardo.webp",
         numeroAuto: null,
         datoPeculiar: "Fue el primer piloto en ser campeón en tres divisionales de la ACTC: TC Mouras, TC Pista y TC.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 3 }
@@ -1631,7 +1631,7 @@ const pilotos = [
         anioDebutTC: 1993,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/jose_ciantini.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/jose_ciantini.webp",
         numeroAuto: null,
         datoPeculiar: "Tuvo que esperar 154 carreras para ganar su primera final de TC, un récord de paciencia en ese momento.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 3 }
@@ -1651,7 +1651,7 @@ const pilotos = [
         anioDebutTC: 2020,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/diego_ciantini.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/diego_ciantini.webp",
         numeroAuto: null,
         datoPeculiar: "Antes de llegar al TC corrió Fórmula 4 en Italia y Alemania, y ganó la última fecha del TC 2024 en La Plata.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 3 }
@@ -1671,7 +1671,7 @@ const pilotos = [
         anioDebutTC: 2000,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/mariano_altuna.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/mariano_altuna.webp",
         numeroAuto: null,
         datoPeculiar: "Con apenas 17 años ganó en TC 2000 en Trelew 1999 y fue el ganador más joven de esa categoría.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 8 }
@@ -1691,7 +1691,7 @@ const pilotos = [
         anioDebutTC: 2002,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/emanuel_moriatis.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/emanuel_moriatis.webp",
         numeroAuto: null,
         datoPeculiar: "Además de su título de TC con Falcon, ganó dos campeonatos de Turismo Nacional Clase 3 con Ford Focus.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 11 }
@@ -1711,7 +1711,7 @@ const pilotos = [
         anioDebutTC: 1988,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/luis_minervino.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/luis_minervino.webp",
         numeroAuto: null,
         datoPeculiar: "Corrió sus 253 carreras de TC siempre con Chevrolet y después se hizo motorista campeón en TC Pista y TC Mouras.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 9 }
@@ -1731,7 +1731,7 @@ const pilotos = [
         anioDebutTC: 1988,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/fabian_acuna.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/fabian_acuna.webp",
         numeroAuto: null,
         datoPeculiar: "En la especial de dos pilotos de 1994 llevó como invitado a Guillermo Ortelli, que así logró su primera victoria en TC.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 18 }
@@ -1751,7 +1751,7 @@ const pilotos = [
         anioDebutTC: 1985,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/ernesto_bessone.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/ernesto_bessone.webp",
         numeroAuto: null,
         datoPeculiar: "Ganó la primera carrera de TC que corrió, en 1985, con un Falcon que estaba preparado para Traverso.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 9 }
@@ -1771,7 +1771,7 @@ const pilotos = [
         anioDebutTC: 1987,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/eduardo_ramos.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/eduardo_ramos.webp",
         numeroAuto: null,
         datoPeculiar: "Ganó con un Falcon la última carrera del TC disputada en ruta, en Santa Teresita en 1997.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 15 }
@@ -1791,7 +1791,7 @@ const pilotos = [
         anioDebutTC: 1980,
         retirado: true,
         imagen: null,
-        imagenResultado: RUTA_IMAGENES + "pilotos/emilio_satriano.png",
+        imagenResultado: RUTA_IMAGENES + "pilotos/emilio_satriano.webp",
         numeroAuto: null,
         datoPeculiar: "Antes de llegar al TC ganó cinco títulos seguidos en una monomarca manejando un Citroën 2CV.",
         estadisticaDestacada: { "tipo": "carrerasGanadas", "valor": 27 }

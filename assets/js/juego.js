@@ -323,9 +323,9 @@ function crearCeldaPiloto(piloto, coincide) {
     const celda = crearCelda("", coincide);
     const imagen = document.createElement("img");
 
-    // Igual que en el buscador: piloto.imagen (actc.org.ar) esta caida,
-    // usamos la foto local como fuente confiable.
-    imagen.src = piloto.imagenResultado || piloto.imagen;
+    // Igual que en el buscador: piloto.imagen (actc.org.ar) esta caida, y en la
+    // tabla la foto se ve chica, asi que alcanza con la miniatura local.
+    imagen.src = TCdle.obtenerImagenMiniPiloto(piloto);
     imagen.alt = "Foto de " + piloto.nombre;
     imagen.title = piloto.nombre;
     imagen.classList.add("foto-piloto");
