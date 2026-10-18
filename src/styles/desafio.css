@@ -5,165 +5,169 @@
  * intentos con zócalo.
  */
 
-/* La tarjeta del desafío sin el fondo ni el recorte de la tarjeta común. */
-.tarjeta-desafio--suelta {
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-    overflow: visible;
-}
+@layer base, juego, desafio, pagina;
 
-/* Desafío con foto: abajo va el estado (intentos, resultado y cuenta regresiva). */
-.tarjeta-desafio--foto .estado-diario {
-    gap: 0.875rem;
-    border-top: none;
-    justify-content: space-between;
-}
+@layer desafio {
+    /* La tarjeta del desafío sin el fondo ni el recorte de la tarjeta común. */
+    .tarjeta-desafio--suelta {
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        overflow: visible;
+    }
 
-.tarjeta-desafio--foto .contador-intentos {
-    margin: 0 auto;
-}
-
-.tarjeta-desafio--foto .cuenta-regresiva {
-    margin-left: auto;
-    flex: 0 0 auto;
-}
-
-/* Sin el contador abajo de la foto, lo que sigue sube pegado a ella. */
-.tarjeta-desafio--foto:not(:has(.cuenta-regresiva)) .estado-diario {
-    min-height: 0;
-    padding-top: 0;
-}
-
-.estado-final {
-    display: flex;
-    min-width: 0;
-    padding: 0;
-    color: #fff;
-    background: transparent;
-    text-align: left;
-    align-items: center;
-}
-
-.estado-final:focus {
-    outline: none;
-}
-
-.estado-final span {
-    color: #ff6071;
-    font-family: var(--fuente-titulos);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
-
-.estado-final--correcto span {
-    color: #44d487;
-}
-
-.estado-final strong {
-    margin-left: 0.5rem;
-    font-family: var(--fuente-titulos);
-    font-size: 1rem;
-    line-height: 1.1;
-    text-transform: uppercase;
-}
-
-/* Contador dentro de la fila de título (la ronda extra o "Intentos"): compacto y a la derecha. */
-.ronda-anio__cabecera .cuenta-regresiva,
-.titulo-seccion .cuenta-regresiva {
-    margin-left: auto;
-    flex-wrap: wrap;
-    font-size: 0.85rem;
-    align-self: center;
-    justify-content: flex-end;
-}
-
-.ronda-anio__cabecera .cuenta-regresiva strong,
-.titulo-seccion .cuenta-regresiva strong {
-    /* Mismo ángulo que las opciones (0.875rem de corte en 4rem de alto), a escala del reloj. */
-    --corte-reloj: 0.3125rem;
-    padding: 0.1875rem calc(var(--corte-reloj) + 0.5625rem);
-    font-size: 0.95rem;
-    clip-path: polygon(var(--corte-reloj) 0, 100% 0, calc(100% - var(--corte-reloj)) 100%, 0 100%);
-}
-
-/* La fila de "Intentos" pinta su span como barra roja: acá es solo el rótulo. */
-.titulo-seccion .cuenta-regresiva span {
-    width: auto;
-    background: none;
-    clip-path: none;
-}
-
-/* ---------- Historial: un zócalo por intento ---------- */
-
-.intento {
-    position: relative;
-    min-height: 3.75rem;
-    padding: 0.5rem 1.125rem 0.5rem calc(var(--sesgo) + 1.875rem);
-    background: var(--asfalto-claro);
-    clip-path: var(--corte);
-    animation: zocalo-entrada 340ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-.intento::before {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: calc(var(--sesgo) + 1rem);
-    background: var(--color-incorrecto);
-    clip-path: var(--corte);
-    content: "";
-}
-
-.intento--correcto {
-    color: var(--tinta);
-    background: var(--blanco);
-}
-
-.intento--correcto::before {
-    background: var(--color-correcto);
-}
-
-.intento--correcto::after {
-    position: absolute;
-    top: 50%;
-    right: calc(var(--sesgo) + 0.625rem);
-    display: grid;
-    width: 1.375rem;
-    height: 1.375rem;
-    border-radius: 50%;
-    color: #fff;
-    background: var(--color-correcto);
-    font-family: var(--fuente-titulos);
-    font-size: 0.75rem;
-    font-weight: 800;
-    content: "✓";
-    transform: translateY(-50%);
-    place-items: center;
-}
-
-@media (max-width: 620px) {
+    /* Desafío con foto: abajo va el estado (intentos, resultado y cuenta regresiva). */
     .tarjeta-desafio--foto .estado-diario {
-        min-height: 4.375rem;
-        gap: 0.3125rem;
-        text-align: center;
-        flex-direction: column;
+        gap: 0.875rem;
+        border-top: none;
+        justify-content: space-between;
     }
 
-    .estado-final,
+    .tarjeta-desafio--foto .contador-intentos {
+        margin: 0 auto;
+    }
+
     .tarjeta-desafio--foto .cuenta-regresiva {
-        margin: 0;
-        justify-content: center;
+        margin-left: auto;
+        flex: 0 0 auto;
     }
-}
 
-@media (prefers-reduced-motion: reduce) {
+    /* Sin el contador abajo de la foto, lo que sigue sube pegado a ella. */
+    .tarjeta-desafio--foto:not(:has(.cuenta-regresiva)) .estado-diario {
+        min-height: 0;
+        padding-top: 0;
+    }
+
+    .estado-final {
+        display: flex;
+        min-width: 0;
+        padding: 0;
+        color: #fff;
+        background: transparent;
+        text-align: left;
+        align-items: center;
+    }
+
+    .estado-final:focus {
+        outline: none;
+    }
+
+    .estado-final span {
+        color: #ff6071;
+        font-family: var(--fuente-titulos);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    .estado-final--correcto span {
+        color: #44d487;
+    }
+
+    .estado-final strong {
+        margin-left: 0.5rem;
+        font-family: var(--fuente-titulos);
+        font-size: 1rem;
+        line-height: 1.1;
+        text-transform: uppercase;
+    }
+
+    /* Contador dentro de la fila de título (la ronda extra o "Intentos"): compacto y a la derecha. */
+    .ronda-anio__cabecera .cuenta-regresiva,
+    .titulo-seccion .cuenta-regresiva {
+        margin-left: auto;
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+        align-self: center;
+        justify-content: flex-end;
+    }
+
+    .ronda-anio__cabecera .cuenta-regresiva strong,
+    .titulo-seccion .cuenta-regresiva strong {
+        /* Mismo ángulo que las opciones (0.875rem de corte en 4rem de alto), a escala del reloj. */
+        --corte-reloj: 0.3125rem;
+        padding: 0.1875rem calc(var(--corte-reloj) + 0.5625rem);
+        font-size: 0.95rem;
+        clip-path: polygon(var(--corte-reloj) 0, 100% 0, calc(100% - var(--corte-reloj)) 100%, 0 100%);
+    }
+
+    /* La fila de "Intentos" pinta su span como barra roja: acá es solo el rótulo. */
+    .titulo-seccion .cuenta-regresiva span {
+        width: auto;
+        background: none;
+        clip-path: none;
+    }
+
+    /* ---------- Historial: un zócalo por intento ---------- */
+
     .intento {
-        animation: none;
+        position: relative;
+        min-height: 3.75rem;
+        padding: 0.5rem 1.125rem 0.5rem calc(var(--sesgo) + 1.875rem);
+        background: var(--asfalto-claro);
+        clip-path: var(--corte);
+        animation: zocalo-entrada 340ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    .intento::before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: calc(var(--sesgo) + 1rem);
+        background: var(--color-incorrecto);
+        clip-path: var(--corte);
+        content: "";
+    }
+
+    .intento--correcto {
+        color: var(--tinta);
+        background: var(--blanco);
+    }
+
+    .intento--correcto::before {
+        background: var(--color-correcto);
+    }
+
+    .intento--correcto::after {
+        position: absolute;
+        top: 50%;
+        right: calc(var(--sesgo) + 0.625rem);
+        display: grid;
+        width: 1.375rem;
+        height: 1.375rem;
+        border-radius: 50%;
+        color: #fff;
+        background: var(--color-correcto);
+        font-family: var(--fuente-titulos);
+        font-size: 0.75rem;
+        font-weight: 800;
+        content: "✓";
+        transform: translateY(-50%);
+        place-items: center;
+    }
+
+    @media (max-width: 620px) {
+        .tarjeta-desafio--foto .estado-diario {
+            min-height: 4.375rem;
+            gap: 0.3125rem;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .estado-final,
+        .tarjeta-desafio--foto .cuenta-regresiva {
+            margin: 0;
+            justify-content: center;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .intento {
+            animation: none;
+        }
     }
 }
