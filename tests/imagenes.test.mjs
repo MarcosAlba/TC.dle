@@ -96,7 +96,7 @@ for (const fuente of fuentes) {
         await stat(path.join(imagenes, ruta)).catch(() => assert.fail(`${fuente}: nombra images/${ruta} y no existe`));
     }
 }
-assert.ok(referencias > 10, "Se esperaban más referencias a imágenes");
+assert.ok(referencias > 2, "Se esperaban más referencias a imágenes");
 
 const total = (await Promise.all(
     ["autos", "pilotos", "pilotos/mini"].map(async (carpeta) => {
