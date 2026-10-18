@@ -94,6 +94,37 @@
     flex: 0 0 auto;
 }
 
+/* Sin el contador abajo de la silueta, los intentos suben pegados a ella. */
+.tarjeta-circuito:not(:has(.cuenta-regresiva)) {
+    margin-bottom: 28px;
+}
+
+.tarjeta-circuito:not(:has(.cuenta-regresiva)) .estado-diario {
+    min-height: 0;
+    padding-top: 0;
+}
+
+/* Contador dentro de la fila de "Intentos": centrado y más compacto. */
+.titulo-seccion .cuenta-regresiva {
+    margin-left: auto;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    align-self: center;
+    justify-content: flex-end;
+}
+
+/* La fila de "Intentos" pinta su span como barra roja: acá es solo el rótulo. */
+.titulo-seccion .cuenta-regresiva span {
+    width: auto;
+    background: none;
+    clip-path: none;
+}
+
+.titulo-seccion .cuenta-regresiva strong {
+    padding: 3px calc(var(--sesgo) + 4px);
+    font-size: 0.95rem;
+}
+
 .intento-circuito {
     position: relative;
     display: grid;

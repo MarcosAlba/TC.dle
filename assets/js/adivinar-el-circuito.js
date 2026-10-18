@@ -254,6 +254,13 @@ function finalizarPartidaCircuito(acerto, abrirModal) {
     estadoFinalEtiquetaCircuito.textContent = acerto ? "¡Correcto!" : "El circuito era";
     estadoFinalNombreCircuito.textContent = obtenerEtiquetaCircuito(circuitoDelDia);
     estadoFinalCircuito.hidden = false;
+    // Al acertar, el resultado ya lo marca el historial: queda solo para lectores
+    // de pantalla y el contador sube a la fila de "Intentos".
+    estadoFinalCircuito.classList.toggle("solo-lectores", acerto);
+    if (acerto) {
+        document.getElementById("panel-intento-circuito").hidden = true;
+        historialCircuito.querySelector(".titulo-seccion").appendChild(regresoCircuito);
+    }
     iniciarCuentaRegresivaCircuito();
 
     if (abrirModal) {

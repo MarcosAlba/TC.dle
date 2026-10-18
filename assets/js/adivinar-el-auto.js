@@ -378,6 +378,8 @@ function finalizarPartidaAuto(acerto, abrirModal) {
     estadoFinalEtiqueta.textContent = acerto ? "¡Correcto!" : "Incorrecto";
     estadoFinalPiloto.textContent = pilotoSecretoAuto.nombre;
     estadoFinal.hidden = false;
+    // Al acertar el texto queda solo para lectores de pantalla; si no, es lo que muestra la respuesta.
+    estadoFinal.classList.toggle("solo-lectores", acerto);
     iniciarCuentaRegresivaAuto();
 
     // La ronda del año solo se abre al acertar el piloto; cuando queda
