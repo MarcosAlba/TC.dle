@@ -1,0 +1,41 @@
+---
+import Piloto from "../../games/Piloto.svelte";
+import PaginaJuego from "../../layouts/PaginaJuego.astro";
+import { urlImagen } from "../../lib/rutas";
+import "../../styles/piloto.css";
+---
+
+<PaginaJuego
+    juego="piloto"
+    titulo="TCdle | Adiviná el piloto"
+    descripcion="Adiviná el piloto de Turismo Carretera del día."
+    tituloIntro="Adiviná el piloto"
+>
+    <img
+        slot="intro-imagen"
+        class="intro-juego__imagen"
+        src={urlImagen("ejemplos/ejemplo-piloto.webp")}
+        alt="Ejemplo de una tabla de intentos del piloto secreto, con celdas de colores que indican qué tan cerca estuvo cada dato"
+        width="1024"
+        height="1024"
+        loading="lazy"
+    />
+
+    <Fragment slot="intro">
+        <p class="intro-juego__texto">
+            Tenés que adivinar quién es el piloto secreto de TC. Vas a tener una cantidad de <strong>8 intentos</strong>, y en cada uno vas a elegir un piloto para comparar sus datos con los del piloto correcto.
+        </p>
+
+        <p class="intro-juego__texto">
+            Después de cada intento, vas a recibir pistas de color que te dicen qué tan cerca estuviste en cada categoría. Usá esa
+            información para ir descartando opciones y acercarte cada vez más a la respuesta correcta.
+        </p>
+    </Fragment>
+
+    <section slot="presentacion" class="presentacion-juego" aria-labelledby="titulo-clasico">
+        <p class="modo-juego">Modo clásico</p>
+        <h1 id="titulo-clasico">Adiviná el piloto de hoy</h1>
+    </section>
+
+    <Piloto client:only="svelte" />
+</PaginaJuego>

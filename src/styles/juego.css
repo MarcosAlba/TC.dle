@@ -885,3 +885,8 @@ body.resultado-modal-abierto {
         transform: translateY(-0.4375rem);
     }
 }
+
+/* El cuerpo del resultado solo agrupa lo que el juego pone en la ventana. */
+.resultado-modal__cuerpo {
+    display: contents;
+}

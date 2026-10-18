@@ -4,7 +4,6 @@ import path from "node:path";
 
 const raiz = path.resolve(import.meta.dirname, "..");
 const paginas = [
-    "adivinar-el-piloto.html",
     "adivinar-el-auto.html",
     "adivinar-el-circuito.html"
 ];
@@ -34,7 +33,6 @@ for (const pagina of paginas) {
 }
 
 const archivosModo = [
-    "public/assets/js/juego.js",
     "public/assets/js/adivinar-el-auto.js",
     "public/assets/js/adivinar-el-circuito.js"
 ];
