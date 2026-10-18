@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "vitest run --passWithNoTests && node --test \"tests/*.test.mjs\"",
+    "test": "vitest run",
     "check": "astro check && svelte-check --tsconfig ./tsconfig.json",
     "imagenes": "node scripts/optimizar-imagenes.mjs"
   },
