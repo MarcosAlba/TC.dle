@@ -5,7 +5,6 @@ export const MAXIMO_INTENTOS_AUTO = 8;
 export const NIVELES_DESENFOQUE = [24, 20, 16, 12, 9, 6, 3, 1, 0];
 export const PRIMER_ANIO_TC = 1937;
 export const CANTIDAD_OPCIONES_ANIO = 5;
-const PROPORCION_PANORAMICA = 2.15;
 
 export function obtenerNivelDesenfoque(intentosUsados: number, terminada: boolean): number {
     return terminada ? 0 : NIVELES_DESENFOQUE[Math.min(intentosUsados, NIVELES_DESENFOQUE.length - 1)];
@@ -14,14 +13,10 @@ export function obtenerNivelDesenfoque(intentosUsados: number, terminada: boolea
 /** Variables CSS del marco de la foto para un nivel de desenfoque. */
 export function obtenerEstiloDesenfoque(nivel: number): { desenfoque: string; brillo: string; escala: string } {
     return {
-        desenfoque: nivel + "px",
+        desenfoque: nivel / 16 + "rem",
         brillo: nivel > 12 ? "0.72" : "1",
         escala: nivel > 0 ? "1.08" : "1",
     };
-}
-
-export function esFotoPanoramica(ancho: number, alto: number): boolean {
-    return ancho / alto > PROPORCION_PANORAMICA;
 }
 
 /**

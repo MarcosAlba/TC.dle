@@ -4,7 +4,7 @@ import pilotos from "../src/data/pilotos.json";
 import circuitos from "../src/data/circuitos.json";
 import { calendarioTC } from "../src/data/calendario";
 import type { Circuito, Piloto } from "../src/data/tipos";
-import { generarOpcionesAnio, obtenerEstiloDesenfoque, obtenerNivelDesenfoque, esFotoPanoramica } from "../src/lib/autos";
+import { generarOpcionesAnio, obtenerEstiloDesenfoque, obtenerNivelDesenfoque } from "../src/lib/autos";
 import { obtenerProximaCarrera, obtenerTiempoRestante } from "../src/lib/calendario";
 import {
     obtenerDetalleCircuito,
@@ -89,13 +89,8 @@ describe("auto: desenfoque y ronda del año", () => {
         expect(obtenerNivelDesenfoque(3, false)).toBe(12);
         expect(obtenerNivelDesenfoque(20, false)).toBe(0);
         expect(obtenerNivelDesenfoque(2, true)).toBe(0);
-        expect(obtenerEstiloDesenfoque(24)).toEqual({ desenfoque: "24px", brillo: "0.72", escala: "1.08" });
-        expect(obtenerEstiloDesenfoque(0)).toEqual({ desenfoque: "0px", brillo: "1", escala: "1" });
-    });
-
-    it("detecta fotos panorámicas", () => {
-        expect(esFotoPanoramica(2400, 1000)).toBe(true);
-        expect(esFotoPanoramica(1600, 900)).toBe(false);
+        expect(obtenerEstiloDesenfoque(24)).toEqual({ desenfoque: "1.5rem", brillo: "0.72", escala: "1.08" });
+        expect(obtenerEstiloDesenfoque(0)).toEqual({ desenfoque: "0rem", brillo: "1", escala: "1" });
     });
 
     it("las opciones de año son 5, ordenadas, incluyen el real y no pasan del año tope", () => {

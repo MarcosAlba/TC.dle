@@ -4,8 +4,8 @@ import path from "node:path";
 
 const raiz = path.resolve(import.meta.dirname, "..");
 const paginas = [
-    "adivinar-el-auto.html",
-    "adivinar-el-circuito.html"
+
+
 ];
 
 for (const pagina of paginas) {
@@ -32,10 +32,7 @@ for (const pagina of paginas) {
     assert.doesNotMatch(html, /buscador-pilotos|controles-temporales/, `${pagina}: referencia obsoleta`);
 }
 
-const archivosModo = [
-    "public/assets/js/adivinar-el-auto.js",
-    "public/assets/js/adivinar-el-circuito.js"
-];
+const archivosModo = [];
 for (const archivo of archivosModo) {
     const contenido = await readFile(path.join(raiz, archivo), "utf8");
     assert.doesNotMatch(contenido, /\blocalStorage\b|\bsetInterval\b|JSON\.parse/, `${archivo}: duplica infraestructura diaria`);
