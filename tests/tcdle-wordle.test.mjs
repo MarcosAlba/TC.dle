@@ -7,7 +7,7 @@ const raiz = path.resolve(import.meta.dirname, "..");
 
 const contextoPalabras = { window: {} };
 vm.runInNewContext(
-    await readFile(path.join(raiz, "assets/js/palabras-tc.js"), "utf8"),
+    await readFile(path.join(raiz, "public/assets/js/palabras-tc.js"), "utf8"),
     contextoPalabras
 );
 const palabrasTC = contextoPalabras.window.palabrasTC;
@@ -32,7 +32,7 @@ for (const entrada of palabrasTC) {
 
 const contextoWordle = { window: {} };
 vm.runInNewContext(
-    await readFile(path.join(raiz, "assets/js/tcdle-wordle.js"), "utf8"),
+    await readFile(path.join(raiz, "public/assets/js/tcdle-wordle.js"), "utf8"),
     contextoWordle
 );
 const evaluarIntentoOriginal = contextoWordle.window.TCdleWordle.evaluarIntento;

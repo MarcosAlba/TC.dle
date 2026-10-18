@@ -7,7 +7,7 @@ const raiz = path.resolve(import.meta.dirname, "..");
 const contexto = { window: {} };
 
 vm.runInNewContext(
-    await readFile(path.join(raiz, "assets/js/seleccion-diaria.js"), "utf8"),
+    await readFile(path.join(raiz, "public/assets/js/seleccion-diaria.js"), "utf8"),
     contexto
 );
 

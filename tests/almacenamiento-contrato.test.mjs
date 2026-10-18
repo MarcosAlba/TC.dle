@@ -9,7 +9,7 @@ import vm from "node:vm";
 
 const raiz = path.resolve(import.meta.dirname, "..");
 const contexto = { window: {} };
-vm.runInNewContext(await readFile(path.join(raiz, "assets/js/tcdle.js"), "utf8"), contexto);
+vm.runInNewContext(await readFile(path.join(raiz, "public/assets/js/tcdle.js"), "utf8"), contexto);
 const TCdle = contexto.window.TCdle;
 
 function crearAlmacenamiento() {

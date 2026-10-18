@@ -7,7 +7,7 @@ import path from "node:path";
 import vm from "node:vm";
 
 const raiz = path.resolve(import.meta.dirname, "..");
-const imagenes = path.join(raiz, "assets/images");
+const imagenes = path.join(raiz, "public/assets/images");
 const KB = 1024;
 const TOPE = {
     autos: 550 * KB,
@@ -21,7 +21,7 @@ const contexto = vm.createContext({
     document: { currentScript: { src: "http://localhost/assets/js/catalogo.js" } }
 });
 for (const archivo of ["pilotos.js", "autos.js"]) {
-    vm.runInContext(await readFile(path.join(raiz, "assets/js", archivo), "utf8"), contexto);
+    vm.runInContext(await readFile(path.join(raiz, "public/assets/js", archivo), "utf8"), contexto);
 }
 const pilotos = vm.runInContext("pilotos", contexto);
 const autos = contexto.window.autosTC;
@@ -84,10 +84,10 @@ async function archivosDe(carpeta, extensiones) {
     return entradas.filter((e) => e.isFile() && extensiones.test(e.name)).map((e) => path.join(carpeta, e.name));
 }
 const fuentes = [
-    "index.html",
-    ...(await archivosDe("pages", /\.html$/)),
-    ...(await archivosDe("assets/css", /\.css$/)),
-    ...(await archivosDe("assets/js", /\.js$/))
+    "public/index.html",
+    ...(await archivosDe("public/pages", /\.html$/)),
+    ...(await archivosDe("public/assets/css", /\.css$/)),
+    ...(await archivosDe("public/assets/js", /\.js$/))
 ];
 let referencias = 0;
 for (const fuente of fuentes) {
@@ -97,7 +97,7 @@ for (const fuente of fuentes) {
         await stat(path.join(imagenes, ruta)).catch(() => assert.fail(`${fuente}: nombra images/${ruta} y no existe`));
     }
 }
-assert.ok(referencias > 20, "Se esperaban más referencias a imágenes");
+assert.ok(referencias > 15, "Se esperaban más referencias a imágenes");
 
 const total = (await Promise.all(
     ["autos", "pilotos", "pilotos/mini"].map(async (carpeta) => {

@@ -20,7 +20,7 @@ function crearContexto() {
 }
 
 async function ejecutar(contexto, archivo, expresion) {
-    const codigo = await readFile(path.join(raiz, "assets/js", archivo), "utf8");
+    const codigo = await readFile(path.join(raiz, "public/assets/js", archivo), "utf8");
     vm.runInContext(codigo, contexto);
     return expresion ? vm.runInContext(expresion, contexto) : undefined;
 }

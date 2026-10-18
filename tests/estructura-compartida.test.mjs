@@ -10,7 +10,7 @@ const paginas = [
 ];
 
 for (const pagina of paginas) {
-    const html = await readFile(path.join(raiz, "pages", pagina), "utf8");
+    const html = await readFile(path.join(raiz, "public/pages", pagina), "utf8");
     for (const clase of [
         "encabezado-juego",
         "logo-juego",
@@ -34,9 +34,9 @@ for (const pagina of paginas) {
 }
 
 const archivosModo = [
-    "assets/js/juego.js",
-    "assets/js/adivinar-el-auto.js",
-    "assets/js/adivinar-el-circuito.js"
+    "public/assets/js/juego.js",
+    "public/assets/js/adivinar-el-auto.js",
+    "public/assets/js/adivinar-el-circuito.js"
 ];
 for (const archivo of archivosModo) {
     const contenido = await readFile(path.join(raiz, archivo), "utf8");

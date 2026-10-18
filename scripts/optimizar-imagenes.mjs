@@ -1,4 +1,4 @@
-// Optimiza las fotos de assets/images sin pérdida visible.
+// Optimiza las fotos de public/assets/images sin pérdida visible.
 //
 //   node scripts/optimizar-imagenes.mjs            convierte y reemplaza
 //   node scripts/optimizar-imagenes.mjs --simular  solo informa, no escribe
@@ -24,7 +24,7 @@ import { mkdir, readdir, readFile, rename, rm, writeFile } from "node:fs/promise
 import path from "node:path";
 import sharp from "sharp";
 
-const RAIZ = path.resolve(import.meta.dirname, "../assets/images");
+const RAIZ = path.resolve(import.meta.dirname, "../public/assets/images");
 const SIMULAR = process.argv.includes("--simular");
 sharp.concurrency(1);
 

@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 // SALIDA_SILUETAS permite generar en otra carpeta sin pisar las siluetas del juego.
-const SALIDA = path.resolve(process.env.SALIDA_SILUETAS || "assets/images/circuitos");
+const SALIDA = path.resolve(process.env.SALIDA_SILUETAS || "public/assets/images/circuitos");
 const RADIO_METROS = 3600;
 const VISTA_ANCHO = 1000;
 const VISTA_ALTO = 600;

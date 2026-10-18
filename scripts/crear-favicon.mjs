@@ -1,4 +1,4 @@
-// Crea assets/images/tc-dle.ico como un ICO de verdad (varias medidas), a partir
+// Crea public/assets/images/tc-dle.ico como un ICO de verdad (varias medidas), a partir
 // de una imagen cuadrada. El archivo anterior era un PNG de 1254x1254 px con
 // extensión .ico (664 KB) para un ícono que se ve a 16-32 px.
 //
@@ -14,7 +14,7 @@ const origen = process.argv[2];
 if (!origen) {
     throw new Error("Uso: node scripts/crear-favicon.mjs ruta/al/original.png");
 }
-const DESTINO = path.resolve(import.meta.dirname, "../assets/images/tc-dle.ico");
+const DESTINO = path.resolve(import.meta.dirname, "../public/assets/images/tc-dle.ico");
 const MEDIDAS = [16, 32, 48, 64, 128, 256];
 
 const imagenes = [];

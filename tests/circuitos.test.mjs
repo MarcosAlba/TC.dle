@@ -7,7 +7,7 @@ import vm from "node:vm";
 const raiz = path.resolve(import.meta.dirname, "..");
 const contexto = { window: {} };
 vm.runInNewContext(
-    await readFile(path.join(raiz, "assets/js/circuitos.js"), "utf8"),
+    await readFile(path.join(raiz, "public/assets/js/circuitos.js"), "utf8"),
     contexto
 );
 
@@ -26,7 +26,7 @@ for (const circuito of catalogo) {
     assert.ok(Array.isArray(circuito.aliases) && circuito.aliases.length > 0, `${circuito.id}: faltan respuestas alternativas`);
     assert.doesNotThrow(() => new URL(circuito.fuente), `${circuito.id}: fuente inválida`);
 
-    const svg = await readFile(path.join(raiz, "assets/images/circuitos", circuito.imagen), "utf8");
+    const svg = await readFile(path.join(raiz, "public/assets/images/circuitos", circuito.imagen), "utf8");
     const tieneViewBox = /<svg[^>]+viewBox="(?:-?\d+(?:\.\d+)?\s+){3}\d+(?:\.\d+)?"/i.test(svg);
     const tieneDimensiones = /<svg[^>]+\bwidth="\d+(?:\.\d+)?(?:px|pt)?"[^>]+\bheight="\d+(?:\.\d+)?(?:px|pt)?"/i.test(svg);
     assert.ok(tieneViewBox || tieneDimensiones, `${circuito.id}: faltan dimensiones SVG válidas`);
@@ -41,7 +41,7 @@ for (const variantes of [
     const hashes = [];
     for (const id of variantes) {
         const circuito = catalogo.find((item) => item.id === id);
-        const contenido = await readFile(path.join(raiz, "assets/images/circuitos", circuito.imagen));
+        const contenido = await readFile(path.join(raiz, "public/assets/images/circuitos", circuito.imagen));
         hashes.push(createHash("sha256").update(contenido).digest("hex"));
     }
     assert.notEqual(hashes[0], hashes[1], `${variantes.join(" / ")}: las variantes no pueden compartir silueta`);

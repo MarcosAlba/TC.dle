@@ -17,7 +17,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 
-const CARPETA = path.resolve(import.meta.dirname, "../assets/images/circuitos");
+const CARPETA = path.resolve(import.meta.dirname, "../public/assets/images/circuitos");
 const UMBRAL = 127.5;
 const TOLERANCIA_PX = 0.1;
 const DIFERENCIA_MAXIMA = 0.001;
