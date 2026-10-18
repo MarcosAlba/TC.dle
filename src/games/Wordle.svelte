@@ -61,7 +61,6 @@
     let finalizada = $state(estadoInicial.terminada);
     let elementoTablero: HTMLElement | undefined = $state();
     let modal: ReturnType<typeof ModalResultado> | undefined = $state();
-    const filasDom: HTMLElement[] = [];
 
     const contador = $derived(describirContador(estado));
 
@@ -114,8 +113,8 @@
         }
     }
 
-    async function agitarFilaActual() {
-        const fila = filasDom[filaActiva];
+    function agitarFilaActual() {
+        const fila = elementoTablero?.children[filaActiva] as HTMLElement | undefined;
 
         if (!fila) {
             return;
@@ -216,8 +215,8 @@
 
 <section class="tarjeta-desafio tarjeta-desafio--suelta tarjeta-wordle" aria-label="Tablero del día">
     <div bind:this={elementoTablero} class="tablero-wordle" role="group" aria-label="Tablero de letras" style:--largo-palabra={largo}>
-        {#each tablero as fila, indice}
-            <div bind:this={filasDom[indice]} class="fila-wordle" role="row">
+        {#each tablero as fila}
+            <div class="fila-wordle" role="row">
                 {#each fila.letras as letra, columna}
                     {@const estadoLetra = fila.estados[columna]}
                     <span

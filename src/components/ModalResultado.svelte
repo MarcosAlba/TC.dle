@@ -58,7 +58,9 @@
         <p class="resultado-modal__etiqueta">Bandera a cuadros</p>
         <h2 id={idBase + "-titulo"}>{titulo}</h2>
         <div id={idBase + "-detalle"} class="resultado-modal__cuerpo">
-            {@render children()}
+            {#if terminada}
+                {@render children()}
+            {/if}
         </div>
         <CuentaRegresiva clase="resultado-modal__regreso" etiqueta={etiquetaRegreso} activa={terminada} {fecha} />
         <SiguienteJuego juegoActual={juego} {terminada} />

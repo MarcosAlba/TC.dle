@@ -103,8 +103,7 @@ describe("referencias en el código", () => {
             }
         }
 
-        // Cuando se migran las páginas debería haber varias: se ajusta al final.
-        expect(referencias).toBeGreaterThanOrEqual(0);
+        expect(referencias).toBeGreaterThan(10);
     });
 
     it("el peso total de las fotos queda registrado", () => {
