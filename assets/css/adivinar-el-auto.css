@@ -118,6 +118,33 @@
     flex: 0 0 auto;
 }
 
+/* Sin el contador abajo de la foto, la ronda extra sube pegada a ella. */
+.tarjeta-auto:not(:has(.cuenta-regresiva)) {
+    margin-bottom: 14px;
+}
+
+.tarjeta-auto:not(:has(.cuenta-regresiva)) .estado-diario {
+    min-height: 0;
+    padding-top: 0;
+}
+
+/* Contador dentro de la fila de la ronda extra: centrado y más compacto. */
+.ronda-anio__cabecera .cuenta-regresiva {
+    margin-left: auto;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    align-self: center;
+    justify-content: flex-end;
+}
+
+.ronda-anio__cabecera .cuenta-regresiva strong {
+    /* Mismo ángulo que las opciones (14px de corte en 64px de alto), a escala del reloj. */
+    --corte-reloj: 5px;
+    padding: 3px calc(var(--corte-reloj) + 9px);
+    font-size: 0.95rem;
+    clip-path: polygon(var(--corte-reloj) 0, 100% 0, calc(100% - var(--corte-reloj)) 100%, 0 100%);
+}
+
 .intento-auto {
     position: relative;
     display: flex;
