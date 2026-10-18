@@ -8,7 +8,7 @@ import { JUEGOS } from "../src/lib/juegos";
 
 const raiz = path.resolve(import.meta.dirname, "..");
 const leer = (relativa: string) => readFileSync(path.join(raiz, relativa), "utf8");
-const PAGINAS = readdirSync(path.join(raiz, "src/pages/pages")).filter((archivo) => archivo.endsWith(".astro"));
+const PAGINAS = readdirSync(path.join(raiz, "src/pages/pages")).filter((archivo) => archivo.endsWith(".astro") && !archivo.startsWith("["));
 const JUEGOS_CON_BUSCADOR = ["Piloto", "Auto", "Circuito"];
 const clasesDe = (...fuentes: string[]) => fuentes.join("\n");
 

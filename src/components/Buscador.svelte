@@ -16,6 +16,7 @@
         opcion: Snippet<[T]>;
         alEnviar?: () => void;
         alCambiar?: () => void;
+        alSeleccionar?: (elemento: T) => void;
     }
 
     let {
@@ -28,6 +29,7 @@
         opcion,
         alEnviar,
         alCambiar,
+        alSeleccionar,
         ...configuracion
     }: Props = $props();
 
@@ -51,6 +53,7 @@
         valor = configuracion.obtenerEtiqueta(elemento);
         ocultar();
         campo.focus();
+        alSeleccionar?.(elemento);
     }
 
     function mostrar() {
