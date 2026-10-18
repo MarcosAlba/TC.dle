@@ -138,8 +138,11 @@
 }
 
 .ronda-anio__cabecera .cuenta-regresiva strong {
-    padding: 3px calc(var(--sesgo) + 4px);
+    /* Mismo ángulo que las opciones (14px de corte en 64px de alto), a escala del reloj. */
+    --corte-reloj: 5px;
+    padding: 3px calc(var(--corte-reloj) + 9px);
     font-size: 0.95rem;
+    clip-path: polygon(var(--corte-reloj) 0, 100% 0, calc(100% - var(--corte-reloj)) 100%, 0 100%);
 }
 
 .intento-auto {
