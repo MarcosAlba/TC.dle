@@ -1,0 +1,53 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - img "TCdle" [ref=e3]
+  - main [ref=e4]:
+    - region [ref=e5]:
+      - heading "Elegí un juego" [level=1] [ref=e6]
+      - generic [ref=e7]:
+        - link [ref=e8] [cursor=pointer]:
+          - /url: pages/adivinar-el-piloto.html
+          - img "Julián Santero" [ref=e10]
+          - generic [ref=e11]:
+            - strong [ref=e12]: Adiviná el piloto
+            - generic [aria-hidden] [ref=e13]: Jugar
+        - link [ref=e14] [cursor=pointer]:
+          - /url: pages/adivinar-el-auto.html
+          - img "Auto de Agustín Canapino" [ref=e16]
+          - generic [ref=e17]:
+            - strong [ref=e18]: Adiviná el auto
+            - generic [aria-hidden] [ref=e19]: Jugar
+        - link [ref=e20] [cursor=pointer]:
+          - /url: pages/adivinar-el-circuito.html
+          - img "Silueta del Autódromo Oscar Cabalén" [ref=e22]
+          - generic [ref=e23]:
+            - strong [ref=e24]: Adiviná el circuito
+            - generic [aria-hidden] [ref=e25]: Jugar
+        - link [ref=e26] [cursor=pointer]:
+          - /url: pages/tcdle-wordle.html
+          - generic [aria-hidden] [ref=e28]:
+            - generic [ref=e29]: T
+            - generic [ref=e30]: C
+            - generic [ref=e31]: D
+            - generic [ref=e32]: L
+            - generic [ref=e33]: E
+          - generic [ref=e34]:
+            - strong [ref=e35]: Wordle del TC
+            - generic [aria-hidden] [ref=e36]: Jugar
+    - 'region "Próxima carrera: fecha 13 en Rosario, el 25 de octubre" [ref=e37]':
+      - paragraph [aria-hidden] [ref=e38]:
+        - generic [ref=e39]: Fecha 13
+        - generic [ref=e40]: Rosario
+      - generic [aria-hidden] [ref=e41]:
+        - generic [ref=e42]:
+          - generic [ref=e43]: "07"
+          - generic [ref=e44]: días
+        - generic [ref=e45]:
+          - generic [ref=e46]: "15"
+          - generic [ref=e47]: horas
+        - generic [ref=e48]:
+          - generic [ref=e49]: "13"
+          - generic [ref=e50]: min
+        - generic [ref=e51]:
+          - generic [ref=e52]: "35"
+          - generic [ref=e53]: seg

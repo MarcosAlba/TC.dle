@@ -1,0 +1,74 @@
+---
+import ProximaCarrera from "../components/ProximaCarrera.astro";
+import TarjetaJuego from "../components/TarjetaJuego.astro";
+import Pagina from "../layouts/Pagina.astro";
+import { urlImagen } from "../lib/rutas";
+import "../styles/portada.css";
+---
+
+<Pagina titulo="TCdle" descripcion="Elegí uno de los cuatro desafíos diarios de TCdle." claseBody="portada">
+    <!-- Bandera a cuadros de las rachas: dos banderas cruzadas. Los cuadros siguen una onda para que
+         flameen; los blancos toman el color del texto y los negros van por CSS. -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+        <symbol id="bandera-cuadros" viewBox="0 0 24 24">
+            <g id="bandera-izquierda" transform="rotate(-28 12 15)">
+                <rect x="11.2" y="4" width="1.6" height="19.5" rx=".8"></rect>
+                <circle cx="12" cy="4" r="1.5"></circle>
+                <path
+                    d="M11.2 5L9.32 5.9L9.32 7.9L11.2 7ZM11.2 9L9.32 9.9L9.32 11.9L11.2 11ZM9.32 7.9L7.45 7L7.45 9L9.32 9.9ZM7.45 5L5.57 4.1L5.57 6.1L7.45 7ZM7.45 9L5.57 8.1L5.57 10.1L7.45 11ZM5.57 6.1L3.7 7L3.7 9L5.57 8.1Z"
+                ></path>
+                <path
+                    class="tarjeta-juego__racha-negros"
+                    d="M11.2 7L9.32 7.9L9.32 9.9L11.2 9ZM9.32 5.9L7.45 5L7.45 7L9.32 7.9ZM9.32 9.9L7.45 9L7.45 11L9.32 11.9ZM7.45 7L5.57 6.1L5.57 8.1L7.45 9ZM5.57 4.1L3.7 5L3.7 7L5.57 6.1ZM5.57 8.1L3.7 9L3.7 11L5.57 10.1Z"
+                ></path>
+            </g>
+            <use href="#bandera-izquierda" transform="translate(24 0) scale(-1 1)"></use>
+        </symbol>
+    </svg>
+
+    <header class="encabezado-inicio">
+        <img class="logo-inicio" src={urlImagen("tcdle-logo-frenada.svg")} alt="TCdle" width="1570" height="384" />
+    </header>
+
+    <main class="inicio">
+        <section class="selector-juegos" aria-labelledby="titulo-selector">
+            <h1 id="titulo-selector">Elegí un juego</h1>
+
+            <div class="grilla-juegos">
+                <TarjetaJuego juego="piloto">
+                    <img
+                        src={urlImagen("pilotos/mini/julian_santero.webp")}
+                        srcset={`${urlImagen("pilotos/mini/julian_santero.webp")} 240w, ${urlImagen("pilotos/julian_santero.webp")} 500w`}
+                        sizes="(max-width: 700px) 340px, 228px"
+                        alt="Julián Santero"
+                        width="240"
+                        height="240"
+                    />
+                </TarjetaJuego>
+
+                <TarjetaJuego juego="auto">
+                    <img src={urlImagen("autos/agustin_canapino_2026.webp")} alt="Auto de Agustín Canapino" width="915" height="900" />
+                </TarjetaJuego>
+
+                <TarjetaJuego juego="circuito">
+                    <img
+                        src={urlImagen("circuitos/buenos-aires-12-sin-chicana.svg")}
+                        alt="Silueta del Autódromo Oscar Cabalén"
+                    />
+                </TarjetaJuego>
+
+                <TarjetaJuego juego="wordle">
+                    <span class="tarjeta-juego__letras" aria-hidden="true">
+                        <span>T</span><span>C</span><span>D</span><span>L</span><span>E</span>
+                    </span>
+                </TarjetaJuego>
+            </div>
+        </section>
+
+        <ProximaCarrera />
+    </main>
+
+    <script>
+        import "../scripts/portada";
+    </script>
+</Pagina>

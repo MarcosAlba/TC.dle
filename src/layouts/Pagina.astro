@@ -1,0 +1,40 @@
+---
+// Página base: <head>, fuentes, tokens y los dos scripts que corren antes del
+// primer pintado (tema de Halloween e introducción del juego ya vista).
+import "../styles/fuentes.css";
+import "../styles/tokens.css";
+import "../styles/base.css";
+import fuenteNormal from "../assets/fonts/archivo-normal.woff2?url";
+import fuenteCursiva from "../assets/fonts/archivo-italic.woff2?url";
+import { aplicarIntroInicial, aplicarTemaInicial } from "../lib/inicio-pagina";
+import { urlImagen } from "../lib/rutas";
+
+interface Props {
+    titulo: string;
+    descripcion: string;
+    /** Clave de localStorage de la introducción del juego (solo en páginas de juego). */
+    claveIntro?: string;
+    claseBody?: string;
+}
+
+const { titulo, descripcion, claveIntro, claseBody } = Astro.props;
+const scriptInicial =
+    `(${aplicarTemaInicial})();` + (claveIntro ? `(${aplicarIntroInicial})(${JSON.stringify(claveIntro)});` : "");
+---
+
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={descripcion} />
+        <title>{titulo}</title>
+        <link rel="icon" type="image/x-icon" href={urlImagen("tc-dle.ico")} />
+        <link rel="preload" as="font" type="font/woff2" href={fuenteNormal} crossorigin />
+        <link rel="preload" as="font" type="font/woff2" href={fuenteCursiva} crossorigin />
+        <script is:inline set:html={scriptInicial} />
+    </head>
+    <body class={claseBody}>
+        <slot />
+    </body>
+</html>

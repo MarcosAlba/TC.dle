@@ -84,7 +84,6 @@ async function archivosDe(carpeta, extensiones) {
     return entradas.filter((e) => e.isFile() && extensiones.test(e.name)).map((e) => path.join(carpeta, e.name));
 }
 const fuentes = [
-    "public/index.html",
     ...(await archivosDe("public/pages", /\.html$/)),
     ...(await archivosDe("public/assets/css", /\.css$/)),
     ...(await archivosDe("public/assets/js", /\.js$/))
@@ -97,7 +96,7 @@ for (const fuente of fuentes) {
         await stat(path.join(imagenes, ruta)).catch(() => assert.fail(`${fuente}: nombra images/${ruta} y no existe`));
     }
 }
-assert.ok(referencias > 15, "Se esperaban más referencias a imágenes");
+assert.ok(referencias > 10, "Se esperaban más referencias a imágenes");
 
 const total = (await Promise.all(
     ["autos", "pilotos", "pilotos/mini"].map(async (carpeta) => {
