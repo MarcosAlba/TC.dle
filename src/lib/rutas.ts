@@ -1,4 +1,4 @@
-// URLs del sitio respetando la base (el sitio vive en /TC.dle/ en GitHub Pages).
+// URLs del sitio respetando la base de astro.config.mjs (la raíz en Vercel).
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 export function ruta(destino: string): string {

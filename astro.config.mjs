@@ -1,12 +1,12 @@
 import { defineConfig } from "astro/config";
 import svelte from "@astrojs/svelte";
 
-// El sitio se publica como página de proyecto de GitHub Pages
-// (https://marcosalba.github.io/TC.dle/), por eso la base no es la raíz.
-// Con un dominio propio o un repo "usuario.github.io" alcanza con
-// SITIO_BASE=/ y SITIO_URL=https://mi-dominio.com al construir.
-const base = process.env.SITIO_BASE ?? "/TC.dle";
-const site = process.env.SITIO_URL ?? "https://marcosalba.github.io";
+// El sitio se publica en Vercel (https://tc-dle.vercel.app), que lo sirve desde
+// la raíz: la base es "/". Para publicarlo como página de proyecto de GitHub
+// Pages (https://marcosalba.github.io/TC.dle/) se construye con
+// SITIO_BASE=/TC.dle y SITIO_URL=https://marcosalba.github.io.
+const base = process.env.SITIO_BASE ?? "/";
+const site = process.env.SITIO_URL ?? "https://tc-dle.vercel.app";
 
 export default defineConfig({
     site,

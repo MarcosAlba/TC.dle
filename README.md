@@ -2,7 +2,7 @@
 
 Juego diario del Turismo Carretera con cuatro modos: adivinar el piloto, el auto, el circuito y el Wordle del TC. Cada jugador ve el mismo desafío el mismo día; el progreso y las rachas se guardan en su navegador (`localStorage`) y el desafío cambia a su medianoche.
 
-Hecho con [Astro](https://astro.build) (sitio estático), TypeScript y Svelte para las pantallas de juego. Se publica en GitHub Pages: <https://marcosalba.github.io/TC.dle/>.
+Hecho con [Astro](https://astro.build) (sitio estático), TypeScript y Svelte para las pantallas de juego. Se publica en Vercel: <https://tc-dle.vercel.app>.
 
 ## Desarrollo
 
@@ -10,7 +10,7 @@ Hace falta Node 22 (`.nvmrc`).
 
 ```bash
 npm install
-npm run dev      # servidor de desarrollo en http://localhost:4321/TC.dle/
+npm run dev      # servidor de desarrollo en http://localhost:4321/
 npm test         # Vitest: lógica, catálogos, imágenes, formato guardado y selección diaria
 npm run check    # tipos de Astro, Svelte y TypeScript
 npm run build    # genera el sitio en dist/ (npm run preview para verlo)
@@ -35,4 +35,4 @@ Tampoco se cambian las claves ni el formato de lo que se guarda en `localStorage
 
 ## Despliegue
 
-`.github/workflows/publicar.yml` corre los tests y el build en cada push y pull request, y publica en GitHub Pages cuando el push es a `main`. En el repositorio, Settings > Pages debe tener como fuente "GitHub Actions". Como el sitio vive en `/TC.dle/`, la base está en `astro.config.mjs`; con un dominio propio se construye con `SITIO_BASE=/ SITIO_URL=https://mi-dominio.com`.
+Vercel publica `main` solo: detecta Astro, ejecuta `npm run build` y sirve `dist` desde la raíz, que es la base por defecto de `astro.config.mjs`. `.github/workflows/verificar.yml` corre los tests, los tipos y el build en cada push y pull request para avisar si algo se rompe antes de publicar. Para publicar en GitHub Pages como página de proyecto hay que construir con `SITIO_BASE=/TC.dle SITIO_URL=https://marcosalba.github.io`.
