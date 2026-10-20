@@ -8,6 +8,7 @@ import fuenteNormal from "../assets/fonts/archivo-normal.woff2?url";
 import fuenteCursiva from "../assets/fonts/archivo-italic.woff2?url";
 import { aplicarIntroInicial, aplicarTemaInicial } from "../lib/inicio-pagina";
 import { urlImagen } from "../lib/rutas";
+import Analytics from "@vercel/analytics/astro";
 
 interface Props {
     titulo: string;
@@ -34,6 +35,7 @@ const scriptInicial =
         <link rel="preload" as="font" type="font/woff2" href={fuenteNormal} crossorigin />
         <link rel="preload" as="font" type="font/woff2" href={fuenteCursiva} crossorigin />
         <script is:inline set:html={scriptInicial} />
+        <Analytics />
     </head>
     <body class={claseBody}>
         <slot />
