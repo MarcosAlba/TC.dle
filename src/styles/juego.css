@@ -3,10 +3,16 @@
 @layer base, juego, desafio, pagina;
 
 @layer juego {
+    /*
+     * Mismas medidas que el encabezado de la portada (portada.css) para que el
+     * logo no salte al entrar a un juego. Allá la franja roja es un borde de
+     * 2 px que ocupa lugar; acá es un ::after superpuesto, por eso el relleno de
+     * abajo suma esos 2 px.
+     */
     .encabezado-juego {
         position: relative;
         display: flex;
-        min-height: 4.25rem;
+        min-height: 4.75rem;
         padding: 0.875rem 1.25rem 1rem;
         background: var(--asfalto-profundo);
         align-items: center;
@@ -96,6 +102,18 @@
     @media (prefers-reduced-motion: reduce) {
         :root[data-tema="halloween"] .logo-juego__calabaza {
             animation: none;
+        }
+    }
+
+    /* Mismo corte y medidas que el encabezado de la portada en celular. */
+    @media (max-width: 700px) {
+        .encabezado-juego {
+            min-height: 4.25rem;
+            padding: 0.75rem 1rem calc(0.75rem + 0.125rem);
+        }
+
+        .logo-juego {
+            width: 6rem;
         }
     }
 
