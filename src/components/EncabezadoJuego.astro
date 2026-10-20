@@ -1,5 +1,6 @@
 ---
 import { urlImagen, urlInicio } from "../lib/rutas";
+import calabaza from "../assets/halloween/calabaza.webp";
 ---
 
 <header class="encabezado-juego">
@@ -13,5 +14,7 @@ import { urlImagen, urlInicio } from "../lib/rutas";
             width="800"
             height="196"
         />
+        <!-- Solo se ve con el tema de Halloween: cae sobre la T del logo. -->
+        <img class="logo-juego__calabaza" src={calabaza.src} width={calabaza.width} height={calabaza.height} alt="" />
     </a>
 </header>

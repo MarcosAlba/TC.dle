@@ -26,6 +26,24 @@
         height: auto;
     }
 
+    /*
+     * En Halloween se muestra el logo con la calabaza sobre la T. Su vista es
+     * 165 unidades más alta (de 1570 de ancho), así que sube ese mismo tanto
+     * para que las letras queden donde siempre.
+     */
+    .logo-inicio--halloween {
+        display: none;
+        margin-top: calc(-165 / 1570 * 7rem);
+    }
+
+    :root[data-tema="halloween"] .logo-inicio--normal {
+        display: none;
+    }
+
+    :root[data-tema="halloween"] .logo-inicio--halloween {
+        display: block;
+    }
+
     .inicio {
         width: min(60rem, calc(100% - 2rem));
         margin: 0 auto;
@@ -327,6 +345,10 @@
 
         .logo-inicio {
             width: 6rem;
+        }
+
+        .logo-inicio--halloween {
+            margin-top: calc(-165 / 1570 * 6rem);
         }
 
         .inicio {

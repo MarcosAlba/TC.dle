@@ -24,6 +24,7 @@
     }
 
     .encabezado-juego a {
+        position: relative;
         display: block;
         border-radius: 0.125rem;
     }
@@ -38,6 +39,64 @@
         width: 7rem;
         height: auto;
         margin: 0 auto;
+    }
+
+    /*
+     * Calabaza de Halloween sobre la T. Las medidas salen del logo (1570x384):
+     * la calabaza mide 170 de ancho, está centrada en x=305 y se apoya en y=33,
+     * igual que en el logo animado de la portada.
+     */
+    .logo-juego__calabaza {
+        display: none;
+    }
+
+    :root[data-tema="halloween"] .logo-juego__calabaza {
+        position: absolute;
+        bottom: calc((384 - 33) / 384 * 100%);
+        left: calc((305 - 85) / 1570 * 100%);
+        display: block;
+        width: calc(170 / 1570 * 100%);
+        height: auto;
+        rotate: -6deg;
+        transform-origin: 50% 100%;
+        pointer-events: none;
+        animation: calabaza-cae 1s 0.35s backwards;
+    }
+
+    @keyframes calabaza-cae {
+        0% {
+            transform: translateY(-500%) rotate(-25deg);
+            animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+        }
+
+        48% {
+            transform: translateY(0) scale(1.12, 0.82);
+            animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+        }
+
+        64% {
+            transform: translateY(-25%) rotate(-6deg) scale(0.95, 1.06);
+            animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+        }
+
+        78% {
+            transform: translateY(0) scale(1.05, 0.94);
+            animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+        }
+
+        88% {
+            transform: translateY(-5%) scale(0.99, 1.01);
+        }
+
+        100% {
+            transform: none;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        :root[data-tema="halloween"] .logo-juego__calabaza {
+            animation: none;
+        }
     }
 
     .juego {
