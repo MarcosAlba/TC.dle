@@ -84,6 +84,35 @@ export interface Circuito {
     fuente: string;
 }
 
+/** Una posición de la final de una carrera. */
+export interface ResultadoCarrera {
+    /** 1..n, sin huecos; incluye a los que abandonaron. */
+    posicion: number;
+    numero: number;
+    /** "Nombre Apellido". */
+    piloto: string;
+    marca: string;
+    vueltas: number;
+    /** Diferencia con el ganador según la ACTC; null para el ganador. */
+    diferencia: string | null;
+}
+
+/**
+ * Final de una carrera del TC. Viene del repo tcdle-resultados (scripts/bajar-carreras.mjs):
+ * no se edita a mano. El id es estable ("2019-05-rosario"); sumar o sacar carreras
+ * cambia la selección diaria igual que en los otros catálogos.
+ */
+export interface Carrera {
+    id: string;
+    anio: number;
+    fechaNro: number;
+    nombre: string;
+    circuito: string;
+    /** AAAA-MM-DD */
+    fecha: string;
+    resultados: ResultadoCarrera[];
+}
+
 /**
  * Palabras del Wordle del TC: solo letras A-Z o Ñ en mayúsculas, sin tildes
  * ni espacios, de 4 a 8 letras, sin repetir. La palabra es su propio id.

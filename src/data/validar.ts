@@ -4,6 +4,7 @@ import {
     LARGO_MAXIMO_PALABRA,
     LARGO_MINIMO_PALABRA,
     type Auto,
+    type Carrera,
     type Circuito,
     type Palabra,
     type Piloto,
@@ -84,6 +85,30 @@ export function validarCircuitos(circuitos: Circuito[]): void {
         exigir(circuito.aliases.every(esTextoNoVacio), `${donde}: alias vacío`);
         exigir(circuito.imagen.endsWith(".svg"), `${donde}: la silueta es un SVG`);
         exigir(URL.canParse(circuito.fuente), `${donde}: fuente inválida`);
+    }
+}
+
+export function validarCarreras(carreras: Carrera[]): void {
+    const ids = new Set<string>();
+
+    for (const carrera of carreras) {
+        const donde = `carrera ${carrera.id}`;
+        exigir(esTextoNoVacio(carrera.id), "carrera sin id");
+        exigir(!ids.has(carrera.id), `${donde}: id repetido`);
+        ids.add(carrera.id);
+        for (const campo of ["nombre", "circuito"] as const) {
+            exigir(esTextoNoVacio(carrera[campo]), `${donde}: falta ${campo}`);
+        }
+        exigir(FECHA.test(carrera.fecha), `${donde}: fecha AAAA-MM-DD`);
+        exigir(carrera.resultados.length >= 2, `${donde}: faltan resultados`);
+
+        const pilotos = new Set<string>();
+        carrera.resultados.forEach((resultado, i) => {
+            exigir(resultado.posicion === i + 1, `${donde}: posición ${resultado.posicion} donde iba ${i + 1}`);
+            exigir(esTextoNoVacio(resultado.piloto), `${donde}: posición ${resultado.posicion} sin piloto`);
+            exigir(!pilotos.has(resultado.piloto), `${donde}: piloto repetido ${resultado.piloto}`);
+            pilotos.add(resultado.piloto);
+        });
     }
 }
 

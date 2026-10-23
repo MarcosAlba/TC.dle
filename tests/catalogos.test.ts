@@ -4,11 +4,12 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import autos from "../src/data/autos.json";
+import carreras from "../src/data/carreras.json";
 import circuitos from "../src/data/circuitos.json";
 import palabras from "../src/data/palabras.json";
 import pilotos from "../src/data/pilotos.json";
-import type { Auto, Circuito, Piloto } from "../src/data/tipos";
-import { validarAutos, validarCircuitos, validarPalabras, validarPilotos } from "../src/data/validar";
+import type { Auto, Carrera, Circuito, Piloto } from "../src/data/tipos";
+import { validarAutos, validarCarreras, validarCircuitos, validarPalabras, validarPilotos } from "../src/data/validar";
 
 const imagenesCircuitos = path.resolve(import.meta.dirname, "../public/assets/images/circuitos");
 
@@ -17,6 +18,7 @@ describe("validación de los catálogos reales", () => {
     it("autos", () => expect(() => validarAutos(autos as Auto[], pilotos as Piloto[])).not.toThrow());
     it("circuitos", () => expect(() => validarCircuitos(circuitos as Circuito[])).not.toThrow());
     it("palabras", () => expect(() => validarPalabras(palabras)).not.toThrow());
+    it("carreras", () => expect(() => validarCarreras(carreras as Carrera[])).not.toThrow());
 });
 
 describe("la validación frena datos mal cargados", () => {
@@ -32,6 +34,21 @@ describe("la validación frena datos mal cargados", () => {
 
     it("un auto de un piloto que no existe", () => {
         expect(() => validarAutos([{ pilotoId: 99999, archivo: "x.webp", anio: 2020 }], [piloto])).toThrow(/no existe/);
+    });
+
+    it("una carrera con posiciones salteadas o un id repetido", () => {
+        const resultado = (posicion: number, piloto: string) => ({
+            posicion, numero: posicion, piloto, marca: "Ford", vueltas: 25, diferencia: null,
+        });
+        const carrera = {
+            id: "2019-05-rosario", anio: 2019, fechaNro: 5, nombre: "Rosario", circuito: "Rosario",
+            fecha: "2019-05-05", resultados: [resultado(1, "Matías Rossi"), resultado(2, "Christian Ledesma")],
+        };
+        expect(() => validarCarreras([carrera])).not.toThrow();
+        expect(() => validarCarreras([carrera, carrera])).toThrow(/id repetido/);
+        expect(() =>
+            validarCarreras([{ ...carrera, resultados: [resultado(1, "A B"), resultado(3, "C D")] }])
+        ).toThrow(/donde iba 2/);
     });
 
     it("una palabra con tilde o repetida", () => {

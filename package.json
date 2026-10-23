@@ -8,7 +8,8 @@
     "preview": "astro preview",
     "test": "vitest run",
     "check": "astro check && svelte-check --tsconfig ./tsconfig.json",
-    "imagenes": "node scripts/optimizar-imagenes.mjs"
+    "imagenes": "node scripts/optimizar-imagenes.mjs",
+    "carreras": "node scripts/bajar-carreras.mjs"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
