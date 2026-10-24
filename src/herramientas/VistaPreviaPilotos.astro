@@ -1,0 +1,67 @@
+---
+// Herramienta interna (solo en desarrollo): las fotos de la ACTC que trajo el
+// scraper (src/data/fotos-carreras.json), completas y montadas en un escalón
+// del podio del Top 10, para revisarlas antes de publicar. Al final, la
+// silueta que llevan los que no tienen foto. La marca de la chapa es la de la
+// última final que corrió cada uno.
+import { carreras, fotosCarreras, pilotos } from "../data";
+import { urlImagen } from "../lib/rutas";
+import { buscarPilotoCatalogo, FOTO_SILUETA, obtenerIdPilotoCarrera, obtenerLogoMarca, obtenerNombreMarca } from "../lib/top10";
+
+const ultimaMarca = new Map<string, { piloto: string; marca: string; apellido: string }>();
+for (const carrera of [...carreras].sort((a, b) => a.fecha.localeCompare(b.fecha))) {
+    for (const resultado of carrera.resultados) {
+        ultimaMarca.set(obtenerIdPilotoCarrera(resultado.piloto), { piloto: resultado.piloto, marca: resultado.marca, apellido: resultado.apellido });
+    }
+}
+
+const conFoto = new Set(fotosCarreras.map((foto) => obtenerIdPilotoCarrera(foto.piloto)));
+const sinFoto = [...ultimaMarca.values()]
+    .filter(({ piloto }) => !conFoto.has(obtenerIdPilotoCarrera(piloto)) && !buscarPilotoCatalogo(piloto, pilotos))
+    .sort((a, b) => a.piloto.localeCompare(b.piloto, "es"));
+
+const fichas = [
+    ...fotosCarreras.map((foto) => ({
+        ...ultimaMarca.get(obtenerIdPilotoCarrera(foto.piloto))!,
+        imagen: "pilotos-carreras/" + foto.archivo,
+        origenUrl: foto.origenUrl as string | null,
+    })),
+    // Uno de muestra alcanza para ver cómo queda la silueta.
+    ...sinFoto.slice(0, 1).map((datos) => ({ ...datos, imagen: FOTO_SILUETA, origenUrl: null })),
+];
+---
+
+<p class="vista-pilotos__resumen">
+    {fotosCarreras.length} fotos de la ACTC. {sinFoto.length} pilotos sin foto llevan la silueta (la última ficha es un ejemplo).
+</p>
+
+<ul class="vista-pilotos">
+    {
+        fichas.map((ficha) => {
+            const logo = obtenerLogoMarca(ficha.marca);
+            return (
+                <li class="vista-pilotos__item">
+                    <img class="vista-pilotos__original" src={urlImagen(ficha.imagen)} alt={ficha.piloto} />
+
+                    <div class="podio__puesto podio__puesto--1 vista-pilotos__podio" aria-hidden="true">
+                        <div class="podio__cima">
+                            <img class="podio__foto" src={urlImagen(ficha.imagen)} alt="" />
+                            {logo && (
+                                <span class="placa-marca placa-marca--chapa">
+                                    <img src={urlImagen(logo)} alt="" />
+                                </span>
+                            )}
+                        </div>
+                        <span class="podio__apellido">{ficha.apellido}</span>
+                    </div>
+
+                    <div class="vista-pilotos__datos">
+                        <strong>{ficha.piloto}</strong>
+                        <span>{obtenerNombreMarca(ficha.marca)}</span>
+                        {ficha.origenUrl ? <a href={ficha.origenUrl}>Ver en la ACTC</a> : <span>Silueta</span>}
+                    </div>
+                </li>
+            );
+        })
+    }
+</ul>

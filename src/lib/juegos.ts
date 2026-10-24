@@ -1,8 +1,8 @@
-// Los cuatro juegos del día, en el orden en que se sugieren. Las claves de
+// Los juegos del día, en el orden en que se sugieren. Las claves de
 // partida y los ids son parte del formato guardado en el navegador de quien
 // ya jugó (tests/almacenamiento-contrato.test.ts): no se renombran.
 
-export type JuegoId = "piloto" | "auto" | "circuito" | "wordle";
+export type JuegoId = "piloto" | "auto" | "circuito" | "wordle" | "top10";
 
 export interface Juego {
     id: JuegoId;
@@ -47,6 +47,14 @@ export const JUEGOS: readonly Juego[] = [
         archivo: "tcdle-wordle.html",
         clavePartida: "partidaTCdleWordle",
         claveIntro: "tcdleIntroWordleVista",
+    },
+    {
+        id: "top10",
+        nombre: "Top 10 de la carrera",
+        corto: "Top 10",
+        archivo: "top-10-de-la-carrera.html",
+        clavePartida: "partidaTCdleTop10",
+        claveIntro: "tcdleIntroTop10Vista",
     },
 ];
 

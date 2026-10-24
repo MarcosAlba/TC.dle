@@ -4,7 +4,9 @@ import {
     LARGO_MAXIMO_PALABRA,
     LARGO_MINIMO_PALABRA,
     type Auto,
+    type Carrera,
     type Circuito,
+    type FotoCarrera,
     type Palabra,
     type Piloto,
 } from "./tipos";
@@ -84,6 +86,46 @@ export function validarCircuitos(circuitos: Circuito[]): void {
         exigir(circuito.aliases.every(esTextoNoVacio), `${donde}: alias vacío`);
         exigir(circuito.imagen.endsWith(".svg"), `${donde}: la silueta es un SVG`);
         exigir(URL.canParse(circuito.fuente), `${donde}: fuente inválida`);
+    }
+}
+
+export function validarCarreras(carreras: Carrera[]): void {
+    const ids = new Set<string>();
+
+    for (const carrera of carreras) {
+        const donde = `carrera ${carrera.id}`;
+        exigir(esTextoNoVacio(carrera.id), "carrera sin id");
+        exigir(!ids.has(carrera.id), `${donde}: id repetido`);
+        ids.add(carrera.id);
+        for (const campo of ["nombre", "circuito"] as const) {
+            exigir(esTextoNoVacio(carrera[campo]), `${donde}: falta ${campo}`);
+        }
+        exigir(FECHA.test(carrera.fecha), `${donde}: fecha AAAA-MM-DD`);
+        exigir(carrera.resultados.length >= 2, `${donde}: faltan resultados`);
+
+        const pilotos = new Set<string>();
+        carrera.resultados.forEach((resultado, i) => {
+            exigir(resultado.posicion === i + 1, `${donde}: posición ${resultado.posicion} donde iba ${i + 1}`);
+            exigir(esTextoNoVacio(resultado.piloto), `${donde}: posición ${resultado.posicion} sin piloto`);
+            exigir(
+                esTextoNoVacio(resultado.apellido) && resultado.piloto.endsWith(resultado.apellido),
+                `${donde}: posición ${resultado.posicion} con apellido inválido`
+            );
+            exigir(!pilotos.has(resultado.piloto), `${donde}: piloto repetido ${resultado.piloto}`);
+            pilotos.add(resultado.piloto);
+        });
+    }
+}
+
+export function validarFotosCarreras(fotos: FotoCarrera[]): void {
+    const pilotos = new Set<string>();
+
+    for (const foto of fotos) {
+        const donde = `foto de ${foto.piloto}`;
+        exigir(esTextoNoVacio(foto.piloto) && !pilotos.has(foto.piloto), `${donde}: piloto vacío o repetido`);
+        pilotos.add(foto.piloto);
+        exigir(/^[a-z0-9-]+\.webp$/.test(foto.archivo), `${donde}: archivo webp sin carpetas`);
+        exigir(URL.canParse(foto.origenUrl), `${donde}: falta el origen`);
     }
 }
 

@@ -84,6 +84,51 @@ export interface Circuito {
     fuente: string;
 }
 
+/** Una posición de la final de una carrera. */
+export interface ResultadoCarrera {
+    /** 1..n, sin huecos; incluye a los que abandonaron. */
+    posicion: number;
+    numero: number;
+    /** "Nombre Apellido". */
+    piloto: string;
+    /** El apellido según la ACTC: "Ponce de León", "Catalán Magni". */
+    apellido: string;
+    marca: string;
+    vueltas: number;
+    /** Diferencia con el ganador según la ACTC; null para el ganador. */
+    diferencia: string | null;
+}
+
+/**
+ * Final de una carrera del TC. Viene del repo tcdle-resultados (scripts/bajar-carreras.mjs):
+ * no se edita a mano. El id es estable ("2019-05-rosario"); sumar o sacar carreras
+ * cambia la selección diaria igual que en los otros catálogos.
+ */
+export interface Carrera {
+    id: string;
+    anio: number;
+    fechaNro: number;
+    nombre: string;
+    circuito: string;
+    /** AAAA-MM-DD */
+    fecha: string;
+    resultados: ResultadoCarrera[];
+}
+
+/**
+ * Foto de la ACTC de un piloto de las carreras que no está en pilotos.json.
+ * Viene del repo tcdle-resultados (scripts/bajar-carreras.mjs), igual que
+ * carreras.json. Los que no tienen ninguna foto llevan la silueta genérica.
+ */
+export interface FotoCarrera {
+    /** Nombre como figura en los resultados. */
+    piloto: string;
+    /** Archivo dentro de public/assets/images/pilotos-carreras. */
+    archivo: string;
+    /** La imagen original en el sitio de la ACTC. */
+    origenUrl: string;
+}
+
 /**
  * Palabras del Wordle del TC: solo letras A-Z o Ñ en mayúsculas, sin tildes
  * ni espacios, de 4 a 8 letras, sin repetir. La palabra es su propio id.

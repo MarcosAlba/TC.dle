@@ -1,0 +1,62 @@
+/* Vista previa de las fotos de pilotos del scraper (herramienta interna). */
+
+@layer base, juego, desafio, pagina;
+
+@layer pagina {
+    .vista-pilotos__resumen {
+        margin: 0 0 1rem;
+        color: var(--color-texto-suave);
+        text-align: center;
+    }
+
+    .vista-pilotos {
+        display: grid;
+        margin: 0;
+        padding: 0;
+        gap: 0.75rem;
+        grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+        list-style: none;
+    }
+
+    .vista-pilotos__item {
+        display: grid;
+        padding: 0.75rem;
+        border-radius: 0.25rem;
+        background: var(--color-superficie);
+        gap: 0.75rem;
+        grid-template-columns: 6rem 6.5rem minmax(0, 1fr);
+        align-items: end;
+    }
+
+    .vista-pilotos__original {
+        width: 6rem;
+        height: 7.5rem;
+        object-fit: cover;
+        background: var(--color-superficie-clara);
+    }
+
+    /* El escalón del podio, como en el juego (sin el bloque con el número). */
+    .vista-pilotos__podio {
+        width: 6.5rem;
+    }
+
+    .vista-pilotos__datos {
+        display: grid;
+        gap: 0.125rem;
+        align-self: center;
+        font-size: 0.85rem;
+        color: var(--color-texto-suave);
+        overflow-wrap: anywhere;
+    }
+
+    .vista-pilotos__datos strong {
+        color: var(--blanco);
+        font-size: 0.95rem;
+        font-style: italic;
+        font-weight: 900;
+    }
+
+    .vista-pilotos__datos a {
+        color: var(--blanco);
+    }
+}
