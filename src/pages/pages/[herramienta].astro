@@ -1,33 +1,58 @@
 ---
 // Herramientas internas: solo existen con `npm run dev`. En el build no se
-// genera ninguna página (se sacó la vista previa de autos del sitio publicado
-// a propósito), así que no hay nada que publicar ni que enlazar.
+// genera ninguna página (se sacaron del sitio publicado a propósito), así que
+// no hay nada que publicar ni que enlazar.
 import EncabezadoJuego from "../../components/EncabezadoJuego.astro";
 import Pagina from "../../layouts/Pagina.astro";
 import VistaPreviaAutos from "../../herramientas/VistaPreviaAutos.svelte";
+import VistaPreviaPilotos from "../../herramientas/VistaPreviaPilotos.astro";
 import "../../styles/juego.css";
 import "../../styles/desafio.css";
 import "../../styles/auto.css";
+import "../../styles/top10.css";
 import "../../styles/vista-previa-autos.css";
+import "../../styles/vista-previa-pilotos.css";
 
 export function getStaticPaths() {
-    return import.meta.env.DEV ? [{ params: { herramienta: "vista-previa-autos" } }] : [];
+    return import.meta.env.DEV
+        ? [{ params: { herramienta: "vista-previa-autos" } }, { params: { herramienta: "vista-previa-pilotos" } }]
+        : [];
 }
+
+const { herramienta } = Astro.params;
 ---
 
-<Pagina titulo="TCdle | Vista previa de autos" descripcion="Herramienta interna para revisar las fotos de autos antes de cargarlas al juego.">
-    <EncabezadoJuego />
+{
+    herramienta === "vista-previa-pilotos" ? (
+        <Pagina titulo="TCdle | Vista previa de pilotos" descripcion="Herramienta interna para revisar las fotos de pilotos que trajo el scraper.">
+            <EncabezadoJuego />
 
-    <main class="juego juego--auto">
-        <section class="presentacion-juego" aria-labelledby="titulo-vista-previa">
-            <p class="modo-juego">Herramienta de carga</p>
-            <h1 id="titulo-vista-previa">Vista previa de autos</h1>
-            <p>
-                Buscá un piloto para revisar su foto antes de cargarla al juego. Si tiene más de un año cargado, el buscador te muestra
-                cada uno por separado.
-            </p>
-        </section>
+            <main class="juego juego--top10">
+                <section class="presentacion-juego" aria-labelledby="titulo-vista-previa">
+                    <p class="modo-juego">Herramienta de carga</p>
+                    <h1 id="titulo-vista-previa">Vista previa de pilotos</h1>
+                    <p>Las fotos de la ACTC que trajo el scraper para pilotos sin foto propia, tal como se ven en el podio del Top 10.</p>
+                </section>
 
-        <VistaPreviaAutos client:only="svelte" />
-    </main>
-</Pagina>
+                <VistaPreviaPilotos />
+            </main>
+        </Pagina>
+    ) : (
+        <Pagina titulo="TCdle | Vista previa de autos" descripcion="Herramienta interna para revisar las fotos de autos antes de cargarlas al juego.">
+            <EncabezadoJuego />
+
+            <main class="juego juego--auto">
+                <section class="presentacion-juego" aria-labelledby="titulo-vista-previa">
+                    <p class="modo-juego">Herramienta de carga</p>
+                    <h1 id="titulo-vista-previa">Vista previa de autos</h1>
+                    <p>
+                        Buscá un piloto para revisar su foto antes de cargarla al juego. Si tiene más de un año cargado, el buscador te muestra
+                        cada uno por separado.
+                    </p>
+                </section>
+
+                <VistaPreviaAutos client:only="svelte" />
+            </main>
+        </Pagina>
+    )
+}

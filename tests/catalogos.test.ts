@@ -1,15 +1,23 @@
 // Catálogos: lo que valida el build y la auditoría de las siluetas de circuito.
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import autos from "../src/data/autos.json";
 import carreras from "../src/data/carreras.json";
 import circuitos from "../src/data/circuitos.json";
+import fotosCarreras from "../src/data/fotos-carreras.json";
 import palabras from "../src/data/palabras.json";
 import pilotos from "../src/data/pilotos.json";
-import type { Auto, Carrera, Circuito, Piloto } from "../src/data/tipos";
-import { validarAutos, validarCarreras, validarCircuitos, validarPalabras, validarPilotos } from "../src/data/validar";
+import type { Auto, Carrera, Circuito, FotoCarrera, Piloto } from "../src/data/tipos";
+import {
+    validarAutos,
+    validarCarreras,
+    validarCircuitos,
+    validarFotosCarreras,
+    validarPalabras,
+    validarPilotos,
+} from "../src/data/validar";
 
 const imagenesCircuitos = path.resolve(import.meta.dirname, "../public/assets/images/circuitos");
 
@@ -19,6 +27,13 @@ describe("validación de los catálogos reales", () => {
     it("circuitos", () => expect(() => validarCircuitos(circuitos as Circuito[])).not.toThrow());
     it("palabras", () => expect(() => validarPalabras(palabras)).not.toThrow());
     it("carreras", () => expect(() => validarCarreras(carreras as Carrera[])).not.toThrow());
+    it("fotos de las carreras, con su archivo en public", () => {
+        expect(() => validarFotosCarreras(fotosCarreras as FotoCarrera[])).not.toThrow();
+        for (const foto of fotosCarreras as FotoCarrera[]) {
+            const archivo = path.resolve(import.meta.dirname, "../public/assets/images/pilotos-carreras", foto.archivo);
+            expect(existsSync(archivo), `falta ${foto.archivo}`).toBe(true);
+        }
+    });
 });
 
 describe("la validación frena datos mal cargados", () => {
@@ -38,7 +53,7 @@ describe("la validación frena datos mal cargados", () => {
 
     it("una carrera con posiciones salteadas o un id repetido", () => {
         const resultado = (posicion: number, piloto: string) => ({
-            posicion, numero: posicion, piloto, marca: "Ford", vueltas: 25, diferencia: null,
+            posicion, numero: posicion, piloto, apellido: piloto.split(" ").pop()!, marca: "Ford", vueltas: 25, diferencia: null,
         });
         const carrera = {
             id: "2019-05-rosario", anio: 2019, fechaNro: 5, nombre: "Rosario", circuito: "Rosario",
@@ -49,6 +64,18 @@ describe("la validación frena datos mal cargados", () => {
         expect(() =>
             validarCarreras([{ ...carrera, resultados: [resultado(1, "A B"), resultado(3, "C D")] }])
         ).toThrow(/donde iba 2/);
+    });
+
+    it("una foto repetida, en otra carpeta o sin origen", () => {
+        const foto: FotoCarrera = {
+            piloto: "Matías Rodríguez",
+            archivo: "rodriguez-matias.webp",
+            origenUrl: "https://actc.org.ar/uploads/actc-pilotos/rodriguez-matias/rodriguez-matias-torso.png",
+        };
+        expect(() => validarFotosCarreras([foto])).not.toThrow();
+        expect(() => validarFotosCarreras([foto, foto])).toThrow(/repetido/);
+        expect(() => validarFotosCarreras([{ ...foto, archivo: "otra/rodriguez.webp" }])).toThrow(/carpetas/);
+        expect(() => validarFotosCarreras([{ ...foto, origenUrl: "" }])).toThrow(/origen/);
     });
 
     it("una palabra con tilde o repetida", () => {

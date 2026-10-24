@@ -1,6 +1,6 @@
 # TCdle
 
-Juego diario del Turismo Carretera con cuatro modos: adivinar el piloto, el auto, el circuito y el Wordle del TC. Cada jugador ve el mismo desafío el mismo día; el progreso y las rachas se guardan en su navegador (`localStorage`) y el desafío cambia a su medianoche.
+Juego diario del Turismo Carretera con cinco modos: adivinar el piloto, el auto, el circuito, el Wordle del TC y el top 10 de una carrera. Cada jugador ve el mismo desafío el mismo día; el progreso y las rachas se guardan en su navegador (`localStorage`) y el desafío cambia a su medianoche.
 
 Hecho con [Astro](https://astro.build) (sitio estático), TypeScript y Svelte para las pantallas de juego. Se publica en Vercel: <https://tc-dle.vercel.app>.
 
@@ -20,7 +20,7 @@ Para probar el tema de Halloween fuera de fecha: agregar `?halloween=1` a la URL
 
 ## Dónde está cada cosa
 
-- `src/data/`: catálogos en JSON (pilotos, autos, circuitos, palabras) y `calendario.ts`. `tipos.ts` es el esquema y documenta cada campo; `validar.ts` frena el build si un dato está mal.
+- `src/data/`: catálogos en JSON (pilotos, autos, circuitos, palabras) y `calendario.ts`. `carreras.json` (finales del TC desde 2010) no se edita a mano: viene del repo [tcdle-resultados](https://github.com/MarcosAlba/tcdle-resultados) con `npm run carreras`. `tipos.ts` es el esquema y documenta cada campo; `validar.ts` frena el build si un dato está mal.
 - `src/lib/`: lógica en TypeScript puro y con tests (selección diaria, partida, rachas, buscador, calendario, wordle).
 - `src/games/` y `src/components/`: pantallas de juego y piezas compartidas en Svelte.
 - `src/pages/`: la portada y una página por juego en `pages/*.html` (esos nombres no se tocan: hay links compartidos).

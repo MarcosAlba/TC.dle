@@ -1,0 +1,78 @@
+---
+import Top10 from "../../games/Top10.svelte";
+import PaginaJuego from "../../layouts/PaginaJuego.astro";
+import { urlImagen } from "../../lib/rutas";
+import "../../styles/top10.css";
+
+// Podio de muestra de la introducción: la pista de cada puesto es el logo.
+const muestra = [
+    { puesto: 2, logo: "marcas/chevrolet-clasico.png" },
+    { puesto: 1, logo: "marcas/ford-clasico.png" },
+    { puesto: 3, logo: "marcas/torino-clasico.png" },
+];
+---
+
+<PaginaJuego
+    juego="top10"
+    titulo="TCdle | Top 10 de la carrera"
+    descripcion="Adiviná quiénes terminaron entre los diez primeros de una final del Turismo Carretera."
+    tituloIntro="¿Cómo terminó la carrera?"
+>
+    <div slot="intro-imagen" class="intro-juego__imagen intro-top10" aria-hidden="true">
+        {
+            muestra.map(({ puesto, logo }) => (
+                <div class={`intro-top10__escalon intro-top10__escalon--${puesto}`}>
+                    <span class="placa-marca">
+                        <img src={urlImagen(logo)} alt="" />
+                    </span>
+                    <span class="intro-top10__bloque">
+                        <span class="numero-podio">{puesto}</span>
+                    </span>
+                </div>
+            ))
+        }
+    </div>
+
+    <Fragment slot="intro">
+        <p class="intro-juego__texto">
+            Te mostramos una final del TC desde 2010 y tenés que completar quiénes llegaron entre los diez primeros. Escribí un piloto:
+            si terminó en el top 10, se acomoda solo en su lugar.
+        </p>
+
+        <fieldset class="opciones-top10">
+            <legend>Marcas</legend>
+            <label><input type="radio" name="top10-marcas" value="si" checked /><span>Con marcas</span></label>
+            <label><input type="radio" name="top10-marcas" value="no" /><span>Sin marcas</span></label>
+        </fieldset>
+
+        <fieldset class="opciones-top10">
+            <legend>Tiempo</legend>
+            <label><input type="radio" name="top10-tiempo" value="libre" checked /><span>Ilimitado</span></label>
+            <label><input type="radio" name="top10-tiempo" value="cronometro" /><span>2 minutos</span></label>
+        </fieldset>
+    </Fragment>
+
+    <section slot="presentacion" class="presentacion-juego" aria-labelledby="titulo-top10">
+        <p class="modo-juego">Modo top 10</p>
+        <h1 id="titulo-top10">¿Cómo terminó la carrera?</h1>
+    </section>
+
+    <Top10 client:only="svelte" />
+</PaginaJuego>
+
+<script>
+    import { obtenerAlmacenamiento } from "../../lib/almacenamiento";
+    import { EVENTO_OPCIONES_TOP10, guardarOpcionesTop10 } from "../../lib/top10";
+
+    // "Empezar" guarda las opciones elegidas (y la hora, para el cronómetro) y
+    // se las pasa al juego, que ya está montado detrás de la introducción.
+    document.querySelector<HTMLButtonElement>("[data-intro-clave]")?.addEventListener("click", () => {
+        const elegido = (nombre: string) => document.querySelector<HTMLInputElement>(`input[name="${nombre}"]:checked`)?.value;
+        const opciones = guardarOpcionesTop10(obtenerAlmacenamiento(), {
+            marcas: elegido("top10-marcas") !== "no",
+            cronometro: elegido("top10-tiempo") === "cronometro",
+        });
+
+        document.dispatchEvent(new CustomEvent(EVENTO_OPCIONES_TOP10, { detail: opciones }));
+    });
+</script>

@@ -91,6 +91,8 @@ export interface ResultadoCarrera {
     numero: number;
     /** "Nombre Apellido". */
     piloto: string;
+    /** El apellido según la ACTC: "Ponce de León", "Catalán Magni". */
+    apellido: string;
     marca: string;
     vueltas: number;
     /** Diferencia con el ganador según la ACTC; null para el ganador. */
@@ -111,6 +113,20 @@ export interface Carrera {
     /** AAAA-MM-DD */
     fecha: string;
     resultados: ResultadoCarrera[];
+}
+
+/**
+ * Foto de la ACTC de un piloto de las carreras que no está en pilotos.json.
+ * Viene del repo tcdle-resultados (scripts/bajar-carreras.mjs), igual que
+ * carreras.json. Los que no tienen ninguna foto llevan la silueta genérica.
+ */
+export interface FotoCarrera {
+    /** Nombre como figura en los resultados. */
+    piloto: string;
+    /** Archivo dentro de public/assets/images/pilotos-carreras. */
+    archivo: string;
+    /** La imagen original en el sitio de la ACTC. */
+    origenUrl: string;
 }
 
 /**

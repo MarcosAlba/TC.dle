@@ -22,12 +22,14 @@ describe("contrato de localStorage", () => {
             ["auto", "partidaTCdleAuto"],
             ["circuito", "partidaTCdleCircuito"],
             ["wordle", "partidaTCdleWordle"],
+            ["top10", "partidaTCdleTop10"],
         ]);
         expect(JUEGOS.map(({ claveIntro }) => claveIntro)).toEqual([
             "tcdleIntroPilotoVista",
             "tcdleIntroAutoVista",
             "tcdleIntroCircuitoVista",
             "tcdleIntroWordleVista",
+            "tcdleIntroTop10Vista",
         ]);
     });
 
@@ -109,6 +111,7 @@ describe("contrato de localStorage", () => {
             auto: { estado: "fallado", racha: 3 },
             circuito: { estado: "pendiente", racha: 0 },
             wordle: { estado: "pendiente", racha: 0 },
+            top10: { estado: "pendiente", racha: 0 },
         });
     });
 

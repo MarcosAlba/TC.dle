@@ -1,0 +1,17 @@
+[
+  {
+    "piloto": "Agustín Martínez",
+    "archivo": "martinez-agustin.webp",
+    "origenUrl": "https://actc.org.ar/uploads/actc-pilotos/martinez-agustin/martinez-agustin-torso.png"
+  },
+  {
+    "piloto": "Lautaro De La Iglesia",
+    "archivo": "de-la-iglesia-lautaro.webp",
+    "origenUrl": "https://actc.org.ar/uploads/actc-pilotos/de-la-iglesia-lautaro/de-la-iglesia-lautaro-torso.png"
+  },
+  {
+    "piloto": "Matías Rodríguez",
+    "archivo": "rodriguez-matias.webp",
+    "origenUrl": "https://actc.org.ar/uploads/actc-pilotos/rodriguez-matias/rodriguez-matias-torso.png"
+  }
+]

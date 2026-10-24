@@ -67,9 +67,11 @@ export function obtenerRacha(
 
 interface PartidaGuardada {
     fecha: string;
-    objetivoId: unknown;
-    idsIntentados: unknown[];
+    objetivoId?: unknown;
+    idsIntentados?: unknown[];
     terminada: boolean;
+    /** Solo el Top 10, que no tiene un único objetivo: dice si completó los diez. */
+    gano?: boolean;
 }
 
 /** "acertado", "fallado" o "pendiente" según la partida guardada de hoy. */
@@ -80,7 +82,13 @@ export function obtenerEstadoJuego(
 ): EstadoJuego {
     const partida = leerJson<PartidaGuardada>(almacenamiento, juego.clavePartida);
 
-    if (!partida || partida.fecha !== fecha || !partida.terminada || !Array.isArray(partida.idsIntentados)) {
+    if (!partida || partida.fecha !== fecha || !partida.terminada) {
+        return "pendiente";
+    }
+    if (typeof partida.gano === "boolean") {
+        return partida.gano ? "acertado" : "fallado";
+    }
+    if (!Array.isArray(partida.idsIntentados)) {
         return "pendiente";
     }
 
