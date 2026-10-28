@@ -31,3 +31,10 @@ export function obtenerTiempoRestante(inicio: Date, ahora: Date): TiempoRestante
         segundos: restante % 60,
     };
 }
+
+/** "Faltan 17 días", "Falta 1 día" o, en el último día, las horas o los minutos que quedan. */
+export function describirTiempoRestante({ dias, horas, minutos }: TiempoRestante): string {
+    const [cantidad, unidad] = dias > 0 ? [dias, "día"] : horas > 0 ? [horas, "hora"] : [Math.max(minutos, 1), "minuto"];
+
+    return cantidad === 1 ? "Falta 1 " + unidad : "Faltan " + cantidad + " " + unidad + "s";
+}

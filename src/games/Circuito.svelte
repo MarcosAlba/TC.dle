@@ -153,6 +153,7 @@
             idLista="sugerencias-circuitos"
             placeholder="Escribí el nombre del circuito"
             etiquetaCampo="Nombre del circuito"
+            consejoVacio="Probá con la ciudad o el autódromo."
             deshabilitado={estado.terminada}
             elementos={circuitos}
             obtenerEtiqueta={etiqueta}

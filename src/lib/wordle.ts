@@ -56,3 +56,39 @@ export function mejorarEstadoTecla(
 export function esIntentoValido(id: unknown, largo: number): boolean {
     return typeof id === "string" && id.length === largo && /^[A-ZÑ]+$/.test(id);
 }
+
+/** Cómo se dice el estado de una letra, para lectores de pantalla (el color solo no alcanza). */
+export const DESCRIPCION_ESTADO_LETRA: Record<EstadoLetra, string> = {
+    correcta: "en su lugar",
+    presente: "en otra posición",
+    ausente: "no está en la palabra",
+};
+
+/**
+ * Lo que se anuncia al terminar de revelar una fila, por ejemplo
+ * "Intento 3. En su lugar: C, O. En otra posición: R. No están: A, L."
+ */
+export function describirIntento(palabra: string, estados: readonly EstadoLetra[], numero: number): string {
+    if (estados.length > 0 && estados.every((estado) => estado === "correcta")) {
+        return "Intento " + numero + ". Todas las letras en su lugar.";
+    }
+
+    const letrasCon = (buscado: EstadoLetra) => palabra.split("").filter((_, indice) => estados[indice] === buscado);
+    const grupos: [string, string[]][] = [
+        ["En su lugar", letrasCon("correcta")],
+        ["En otra posición", letrasCon("presente")],
+        ["No están", letrasCon("ausente")],
+    ];
+    const partes = grupos.filter(([, letras]) => letras.length > 0).map(([titulo, letras]) => titulo + ": " + letras.join(", ") + ".");
+
+    return ["Intento " + numero + ".", ...partes].join(" ");
+}
+
+/** Etiqueta de una celda del tablero: la letra con su estado, o "vacía". */
+export function describirCelda(letra: string, estado: EstadoLetra | null): string {
+    if (letra === "") {
+        return "vacía";
+    }
+
+    return estado ? letra + ", " + DESCRIPCION_ESTADO_LETRA[estado] : letra;
+}

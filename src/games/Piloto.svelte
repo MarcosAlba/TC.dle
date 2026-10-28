@@ -205,6 +205,8 @@
             bind:this={campoBuscador}
             id="nombre-piloto"
             idLista="sugerencias-pilotos"
+            etiquetaCampo="Nombre del piloto"
+            consejoVacio="Probá con el apellido."
             placeholder="Adiviná el piloto de hoy"
             deshabilitado={controlesBloqueados}
             elementos={pilotos}

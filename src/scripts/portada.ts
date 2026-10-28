@@ -2,7 +2,7 @@
 // próxima carrera. No usa Svelte: es DOM mínimo y la portada queda liviana.
 import { calendarioTC } from "../data/calendario";
 import { obtenerAlmacenamiento } from "../lib/almacenamiento";
-import { obtenerProximaCarrera, obtenerTiempoRestante, type CarreraConInicio } from "../lib/calendario";
+import { describirTiempoRestante, obtenerProximaCarrera, obtenerTiempoRestante, type CarreraConInicio } from "../lib/calendario";
 import { JUEGOS } from "../lib/juegos";
 import { obtenerRacha } from "../lib/rachas";
 import { urlImagen } from "../lib/rutas";
@@ -38,8 +38,12 @@ function iniciarCuentaRegresiva(): void {
 
     const campo = (id: string) => document.getElementById("proxima-carrera-" + id)!;
     const trazado = campo("trazado") as HTMLImageElement;
+    const resumen = campo("resumen");
     let carrera = null as CarreraConInicio | null;
     let intervalo: number | undefined;
+    // El resumen para lectores de pantalla se reescribe solo cuando cambia lo que dice, no cada segundo.
+    let frase = "";
+    let fraseActual = "";
 
     function mostrarCarrera(): void {
         carrera = obtenerProximaCarrera(calendarioTC, new Date());
@@ -57,7 +61,8 @@ function iniciarCuentaRegresiva(): void {
         if (carrera.circuito) {
             trazado.src = urlImagen("circuitos/" + carrera.circuito + ".svg");
         }
-        bloque!.setAttribute("aria-label", "Próxima carrera: fecha " + carrera.fecha + " en " + carrera.lugar + ", el " + dia);
+        frase = "Fecha " + carrera.fecha + ", " + carrera.lugar + ", el " + dia + ".";
+        fraseActual = "";
     }
 
     function actualizar(): void {
@@ -74,6 +79,12 @@ function iniciarCuentaRegresiva(): void {
         campo("horas").textContent = dosDigitos(horas);
         campo("minutos").textContent = dosDigitos(minutos);
         campo("segundos").textContent = dosDigitos(segundos);
+
+        const restante = describirTiempoRestante({ dias, horas, minutos, segundos });
+        if (restante !== fraseActual) {
+            fraseActual = restante;
+            resumen.textContent = frase + " " + restante + ".";
+        }
     }
 
     mostrarCarrera();

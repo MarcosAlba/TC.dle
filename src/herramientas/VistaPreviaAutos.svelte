@@ -126,6 +126,7 @@
                 idLista="sugerencias-vista-previa"
                 placeholder="Escribí el nombre del piloto"
                 etiquetaCampo="Nombre del piloto"
+                consejoVacio="Probá con el apellido."
                 elementos={autosVistaPrevia}
                 minimoCaracteres={1}
                 obtenerEtiqueta={(auto: AutoVistaPrevia) => auto.piloto.nombre + (auto.anio ? " (" + auto.anio + ")" : "")}

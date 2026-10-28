@@ -16,10 +16,12 @@
      * tamaño base para agrandar la página de forma pareja en monitores grandes
      * y que se vea como en 1920x1080 (16 px). Se mira ancho y alto a la vez
      * (el menor de los dos), así un ultrawide no queda gigante. Reemplaza al
-     * `zoom` de CSS, que no es estándar.
+     * `zoom` de CSS, que no es estándar. El piso y el techo van en porcentaje (100 % y
+     * 200 %), no en píxeles: así parten del tamaño de letra que eligió la persona en su
+     * navegador (16 px por defecto) y quien pidió letra grande la sigue viendo grande.
      */
     html {
-        font-size: clamp(16px, min(0.8333vw, 1.4815vh), 32px);
+        font-size: clamp(100%, min(0.8333vw, 1.4815vh), 200%);
         color-scheme: dark;
     }
 

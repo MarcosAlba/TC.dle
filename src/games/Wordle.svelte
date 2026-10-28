@@ -12,7 +12,10 @@
     import { urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import {
+        DESCRIPCION_ESTADO_LETRA,
         FILAS_TECLADO,
+        describirCelda,
+        describirIntento,
         esIntentoValido,
         evaluarIntento,
         filtrarPalabrasJugables,
@@ -59,6 +62,8 @@
     let intentoActual = "";
     let filaActiva = $state(estadoInicial.idsIntentados.length);
     let mensaje = $state<{ texto: string; tipo: TipoMensaje }>({ texto: "", tipo: "" });
+    // Lo que se anuncia a los lectores de pantalla al terminar de revelar cada fila.
+    let anuncio = $state("");
     // El resultado espera a que termine la animación de la última fila.
     let finalizada = $state(estadoInicial.terminada);
     let elementoTablero: HTMLElement | undefined = $state();
@@ -177,6 +182,7 @@
         intentoActual = "";
 
         await revelarFila(indiceFila, palabraEnviada);
+        anuncio = describirIntento(palabraEnviada, evaluarIntento(palabraEnviada, palabraDelDia), indiceFila + 1);
 
         // El resultado (ganaste o perdiste) lo anuncia el modal: acá solo se limpia el error previo.
         mostrarMensaje("");
@@ -227,7 +233,7 @@
 <svelte:document onkeydown={alTeclear} />
 
 <section class="tarjeta-desafio tarjeta-desafio--suelta tarjeta-wordle" aria-label="Tablero del día">
-    <div bind:this={elementoTablero} class="tablero-wordle" role="group" aria-label="Tablero de letras" style:--largo-palabra={largo}>
+    <div bind:this={elementoTablero} class="tablero-wordle" role="grid" aria-label="Tablero de letras" style:--largo-palabra={largo}>
         {#each tablero as fila}
             <div class="fila-wordle" role="row">
                 {#each fila.letras as letra, columna}
@@ -240,7 +246,8 @@
                         class:celda-wordle--presente={estadoLetra === "presente"}
                         class:celda-wordle--ausente={estadoLetra === "ausente"}
                         class:celda-wordle--salto={fila.salto[columna]}
-                        role="gridcell">{letra}</span
+                        role="gridcell"
+                        aria-label={describirCelda(letra, estadoLetra)}>{letra}</span
                     >
                 {/each}
             </div>
@@ -255,6 +262,7 @@
 </section>
 
 <p class={"mensaje-juego mensaje-wordle" + (mensaje.tipo ? " mensaje-juego--" + mensaje.tipo : "")} aria-live="polite">{mensaje.texto}</p>
+<p class="solo-lectores" role="status" aria-live="polite" aria-atomic="true">{anuncio}</p>
 
 <section class="teclado-virtual" class:teclado-virtual--final={finalizada} aria-label="Teclado virtual">
     {#each FILAS_TECLADO as filaTeclas}
@@ -269,7 +277,11 @@
                     class:tecla--presente={teclas[tecla] === "presente"}
                     class:tecla--ausente={teclas[tecla] === "ausente"}
                     disabled={finalizada}
-                    aria-label={tecla === "BORRAR" ? "Borrar letra" : tecla === "ENTER" ? "Enviar intento" : "Letra " + tecla}
+                    aria-label={tecla === "BORRAR"
+                        ? "Borrar letra"
+                        : tecla === "ENTER"
+                          ? "Enviar intento"
+                          : "Letra " + tecla + (teclas[tecla] ? ", " + DESCRIPCION_ESTADO_LETRA[teclas[tecla]] : "")}
                     onclick={() => manejarTecla(tecla)}
                 >
                     {tecla === "BORRAR" ? "⌫" : tecla}

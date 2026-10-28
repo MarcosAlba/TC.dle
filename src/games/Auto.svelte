@@ -218,6 +218,7 @@
             idLista="sugerencias-auto"
             placeholder="Adiviná el piloto del auto"
             etiquetaCampo="Nombre del piloto"
+            consejoVacio="Probá con el apellido."
             deshabilitado={estado.terminada}
             elementos={pilotos}
             obtenerEtiqueta={(piloto: Piloto) => piloto.nombre}

@@ -254,6 +254,7 @@
             idLista="sugerencias-top10"
             placeholder="Escribí un piloto"
             etiquetaCampo="Nombre del piloto"
+            consejoVacio="Probá con el apellido."
             deshabilitado={estado.terminada}
             elementos={candidatos}
             obtenerEtiqueta={(piloto: PilotoCarrera) => piloto.nombre}
