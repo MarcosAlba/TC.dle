@@ -12,6 +12,7 @@
     import { urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import {
+        ANIMACION_FILA,
         DESCRIPCION_ESTADO_LETRA,
         FILAS_TECLADO,
         describirCelda,
@@ -135,17 +136,21 @@
     async function revelarFila(indiceFila: number, palabraIntentada: string) {
         const estados = evaluarIntento(palabraIntentada, palabraDelDia);
         const fila = tablero[indiceFila];
-        const duracionGiro = 420;
 
-        for (let columna = 0; columna < largo; columna++) {
-            fila.letras[columna] = palabraIntentada[columna];
-            fila.girando[columna] = true;
-            await esperar(duracionGiro / 2);
-            fila.estados[columna] = estados[columna];
-            await esperar(duracionGiro / 2);
-            fila.girando[columna] = false;
-            pintarTecla(palabraIntentada[columna], estados[columna]);
-        }
+        // Las letras giran en cascada: cada una arranca un escalón después de la anterior sin esperar
+        // a que termine, y el color cambia a la mitad del giro, cuando la celda queda de canto.
+        await Promise.all(
+            palabraIntentada.split("").map(async (letra, columna) => {
+                fila.letras[columna] = letra;
+                await esperar(columna * ANIMACION_FILA.escalon);
+                fila.girando[columna] = true;
+                await esperar(ANIMACION_FILA.giro / 2);
+                fila.estados[columna] = estados[columna];
+                await esperar(ANIMACION_FILA.giro / 2);
+                fila.girando[columna] = false;
+                pintarTecla(letra, estados[columna]);
+            })
+        );
     }
 
     async function celebrarFilaGanadora(indiceFila: number) {
@@ -233,7 +238,12 @@
 <svelte:document onkeydown={alTeclear} />
 
 <section class="tarjeta-desafio tarjeta-desafio--suelta tarjeta-wordle" aria-label="Tablero del día">
-    <div bind:this={elementoTablero} class="tablero-wordle" role="grid" aria-label="Tablero de letras" style:--largo-palabra={largo}>
+    <div bind:this={elementoTablero} class="tablero-wordle"
+        role="grid"
+        aria-label="Tablero de letras"
+        style:--largo-palabra={largo}
+        style:--giro-duracion={ANIMACION_FILA.giro + "ms"}
+    >
         {#each tablero as fila}
             <div class="fila-wordle" role="row">
                 {#each fila.letras as letra, columna}

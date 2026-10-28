@@ -52,3 +52,28 @@ export function aplicarTemaInicial(): void {
         document.documentElement.dataset.tema = "halloween";
     }
 }
+
+/**
+ * Logo de la portada: la primera vez en la sesión hace la frenada completa y las siguientes lo
+ * muestra ya terminado (pidiendo el SVG con #visto), así no se repite cada vez que se vuelve
+ * de un juego. Va justo después del logo para correr antes del primer pintado.
+ */
+export function dejarLogoQuieto(): void {
+    const clave = "tcdleLogoVisto";
+    let visto = false;
+
+    try {
+        visto = sessionStorage.getItem(clave) === "1";
+        sessionStorage.setItem(clave, "1");
+    } catch {
+        // Sin sessionStorage el logo se anima siempre, como antes.
+    }
+
+    if (!visto) {
+        return;
+    }
+
+    document.querySelectorAll<HTMLImageElement>(".logo-inicio").forEach((logo) => {
+        logo.src = logo.src.split("#")[0] + "#visto";
+    });
+}

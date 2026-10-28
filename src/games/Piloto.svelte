@@ -26,7 +26,10 @@
     import type { FilaPiloto } from "./piloto/tipos";
 
     const MAXIMO_INTENTOS = 8;
-    const RETRASO_CELDAS = 350;
+    // Cada celda empieza a revelarse RETRASO_CELDAS después de la anterior y dura DURACION_CELDA
+    // (el CSS la lee de --revelado-duracion). Seis celdas tardan poco más de un segundo.
+    const RETRASO_CELDAS = 160;
+    const DURACION_CELDA = 300;
     const CELDAS_CON_PISTA = 6;
 
     const secreto = obtenerSeleccionDiaria(pilotos, "pilotos")!;
@@ -128,6 +131,9 @@
             await esperar(RETRASO_CELDAS);
             filaReactiva.reveladas = celda;
         }
+
+        // La última celda todavía se está dando vuelta: el resultado espera a que termine.
+        await esperar(DURACION_CELDA);
 
         intentosVisibles = juego.estado.intentosUsados;
         revelando = false;
@@ -261,7 +267,12 @@
 {/if}
 
 {#if tablaVisible}
-    <section id="panel-intentos" class="panel-intentos" aria-labelledby="titulo-intentos">
+    <section
+        id="panel-intentos"
+        class="panel-intentos"
+        aria-labelledby="titulo-intentos"
+        style:--revelado-duracion={DURACION_CELDA + "ms"}
+    >
         <div class="titulo-seccion">
             <span></span>
             <h2 id="titulo-intentos">Intentos</h2>
@@ -286,32 +297,30 @@
             </tbody>
         </table>
 
-        {#if !revelando}
-            <aside id="guia-pistas" class="guia-pistas" aria-labelledby="titulo-guia">
-                <h3 id="titulo-guia">Guía de pistas</h3>
-                <div class="guia-pistas__grilla">
-                    <div class="guia-pista guia-pista--correcta">
-                        <strong>Coincide</strong>
-                        <span>El dato es correcto</span>
-                    </div>
-                    <div class="guia-pista guia-pista--cerca">
-                        <strong>Cerca</strong>
-                        <span>Misma provincia</span>
-                    </div>
-                    <div class="guia-pista guia-pista--incorrecta">
-                        <strong>No coincide</strong>
-                        <span>El dato es diferente</span>
-                    </div>
-                    <div class="guia-pista guia-pista--mayor">
-                        <strong>↑ Mayor</strong>
-                        <span>El valor buscado es más alto</span>
-                    </div>
-                    <div class="guia-pista guia-pista--menor">
-                        <strong>↓ Menor</strong>
-                        <span>El valor buscado es más bajo</span>
-                    </div>
+        <aside id="guia-pistas" class="guia-pistas" class:guia-pistas--atenuada={revelando} aria-labelledby="titulo-guia">
+            <h3 id="titulo-guia">Guía de pistas</h3>
+            <div class="guia-pistas__grilla">
+                <div class="guia-pista guia-pista--correcta">
+                    <strong>Coincide</strong>
+                    <span>El dato es correcto</span>
                 </div>
-            </aside>
-        {/if}
+                <div class="guia-pista guia-pista--cerca">
+                    <strong>Cerca</strong>
+                    <span>Misma provincia</span>
+                </div>
+                <div class="guia-pista guia-pista--incorrecta">
+                    <strong>No coincide</strong>
+                    <span>El dato es diferente</span>
+                </div>
+                <div class="guia-pista guia-pista--mayor">
+                    <strong>↑ Mayor</strong>
+                    <span>El valor buscado es más alto</span>
+                </div>
+                <div class="guia-pista guia-pista--menor">
+                    <strong>↓ Menor</strong>
+                    <span>El valor buscado es más bajo</span>
+                </div>
+            </div>
+        </aside>
     </section>
 {/if}

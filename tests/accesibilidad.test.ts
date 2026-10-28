@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { describirTiempoRestante } from "../src/lib/calendario";
 import { mensajesDeBusqueda } from "../src/lib/mensajes";
-import { describirCelda, describirIntento, evaluarIntento } from "../src/lib/wordle";
+import { ANIMACION_FILA, describirCelda, describirIntento, duracionRevelado, evaluarIntento } from "../src/lib/wordle";
 
 describe("describirIntento (lo que anuncia el lector tras cada fila del Wordle)", () => {
     it("agrupa las letras por estado, en el orden en que aparecen", () => {
@@ -73,5 +73,17 @@ describe("mensajesDeBusqueda", () => {
             expect(texto).not.toMatch(/por favor/i);
             expect(texto.endsWith(".")).toBe(true);
         }
+    });
+});
+
+describe("animación del Wordle", () => {
+    it("revela una fila en cascada: una palabra de 8 letras tarda menos de 2 s, no los 3,4 s de antes", () => {
+        expect(duracionRevelado(8)).toBe(1850);
+        expect(duracionRevelado(5)).toBe(1250);
+        expect(duracionRevelado(8)).toBeLessThan(8 * 420);
+    });
+
+    it("el color cambia justo a la mitad del giro", () => {
+        expect(ANIMACION_FILA.giro / 2).toBe(225);
     });
 });

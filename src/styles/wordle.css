@@ -79,8 +79,9 @@
         animation: aparecer-letra 110ms ease-out;
     }
 
+    /* La duración llega del JS (--giro-duracion, ver ANIMACION_FILA): el color cambia a la mitad exacta, por eso la curva es simétrica. */
     .celda-wordle--girando {
-        animation: girar-celda 480ms ease;
+        animation: girar-celda var(--giro-duracion, 450ms) cubic-bezier(0.45, 0, 0.55, 1);
     }
 
     .celda-wordle--correcta,

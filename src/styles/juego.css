@@ -736,9 +736,45 @@
         outline: none;
     }
 
+    /*
+     * Entrada y salida con fundido. El estado "abierto" define la entrada (200 ms, frena al llegar) y el
+     * "cerrado" la salida (150 ms, más corta que la entrada). display y overlay con allow-discrete
+     * mantienen la ventana en pantalla hasta que termina el fundido. Sin soporte del navegador
+     * simplemente aparece y desaparece de golpe, como antes.
+     */
+    .resultado-modal {
+        transition: opacity 200ms ease-out, transform 200ms ease-out, overlay 200ms allow-discrete, display 200ms allow-discrete;
+    }
+
+    .resultado-modal:not([open]) {
+        opacity: 0;
+        transform: translateY(0.5rem);
+        transition: opacity 150ms ease-in, transform 150ms ease-in, overlay 150ms allow-discrete, display 150ms allow-discrete;
+    }
+
+    @starting-style {
+        .resultado-modal[open] {
+            opacity: 0;
+            transform: translateY(0.5rem);
+        }
+    }
+
     .resultado-modal::backdrop {
         background: rgb(0 0 0 / 78%);
         backdrop-filter: blur(0.25rem);
+        transition: opacity 200ms ease-out, overlay 200ms allow-discrete, display 200ms allow-discrete;
+    }
+
+    .resultado-modal:not([open])::backdrop {
+        opacity: 0;
+        transition-duration: 150ms;
+        transition-timing-function: ease-in;
+    }
+
+    @starting-style {
+        .resultado-modal[open]::backdrop {
+            opacity: 0;
+        }
     }
 
     .resultado-modal[open] .resultado-modal__contenido {
@@ -999,7 +1035,8 @@
         height: 2.875rem;
         background: var(--mascota-perdida) center / contain no-repeat;
         content: "";
-        animation: fantasma-flota 2.6s ease-in-out infinite alternate;
+        /* Flota cuatro veces (sube, baja, sube, baja) y queda quieto: antes seguía flotando para siempre. */
+        animation: fantasma-flota 2.6s ease-in-out 4 alternate both;
     }
 
     .resultado-modal--correcto .resultado-modal__contenido::after,
@@ -1009,12 +1046,15 @@
         animation: var(--mascota-animacion-ganada);
     }
 
+    /* Aparece desde scale(0.6) con fundido: nacer de scale(0) hacía que apareciera de la nada. */
     @keyframes calabaza-salta {
         from {
-            transform: scale(0) rotate(-25deg);
+            opacity: 0;
+            transform: scale(0.6) rotate(-25deg);
         }
 
         to {
+            opacity: 1;
             transform: scale(1) rotate(-8deg);
         }
     }

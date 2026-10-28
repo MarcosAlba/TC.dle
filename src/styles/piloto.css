@@ -96,8 +96,9 @@
         visibility: hidden;
     }
 
+    /* La duración llega del JS (--revelado-duracion): la celda cae con perspectiva y frena al llegar. */
     .celda-visible {
-        animation: revelar-celda 340ms ease-out both;
+        animation: revelar-celda var(--revelado-duracion, 300ms) cubic-bezier(0.23, 1, 0.32, 1) both;
     }
 
     .celda-visible > * {
@@ -282,6 +283,13 @@
         margin-top: 1.125rem;
         padding-top: 1.125rem;
         border-top: 0.0625rem solid var(--color-borde);
+        transition: opacity 150ms ease-out;
+    }
+
+    /* Mientras se revela una fila la guía queda en su lugar, más tenue: antes desaparecía y volvía de golpe. */
+    .guia-pistas--atenuada {
+        opacity: 0.4;
+        pointer-events: none;
     }
 
     .guia-pistas h3 {
@@ -487,15 +495,16 @@
         clip-path: var(--corte);
     }
 
+    /* Sin perspective() el rotateX solo aplastaba la celda: no se veía como un giro. */
     @keyframes revelar-celda {
         0% {
             opacity: 0;
-            transform: translateY(-0.5rem) rotateX(35deg);
+            transform: perspective(37.5rem) rotateX(-60deg) translateY(-0.25rem);
         }
 
         100% {
             opacity: 1;
-            transform: translateY(0) rotateX(0);
+            transform: none;
         }
     }
 

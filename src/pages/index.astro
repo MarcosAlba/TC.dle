@@ -2,6 +2,7 @@
 import ProximaCarrera from "../components/ProximaCarrera.astro";
 import TarjetaJuego from "../components/TarjetaJuego.astro";
 import Pagina from "../layouts/Pagina.astro";
+import { dejarLogoQuieto } from "../lib/inicio-pagina";
 import { urlImagen } from "../lib/rutas";
 import "../styles/portada.css";
 ---
@@ -30,6 +31,8 @@ import "../styles/portada.css";
         <img class="logo-inicio logo-inicio--normal" src={urlImagen("tcdle-logo-frenada.svg")} alt="TCdle" width="1570" height="384" />
         <img class="logo-inicio logo-inicio--halloween" src={urlImagen("tcdle-logo-frenada-halloween.svg")} alt="TCdle" width="1570" height="549" />
     </header>
+    <!-- Corre antes del primer pintado: desde la segunda vez en la sesión el logo ya aparece terminado. -->
+    <script is:inline set:html={`(${dejarLogoQuieto})();`} />
 
     <main class="inicio">
         <section class="selector-juegos" aria-labelledby="titulo-selector">

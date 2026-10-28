@@ -92,3 +92,20 @@ export function describirCelda(letra: string, estado: EstadoLetra | null): strin
 
     return estado ? letra + ", " + DESCRIPCION_ESTADO_LETRA[estado] : letra;
 }
+
+/**
+ * Tiempos de la animación de cada fila, en milisegundos. El tablero los pasa al CSS
+ * (--giro-duracion): así el JS y la animación comparten una sola cifra y no se desfasan
+ * (antes uno esperaba 420 ms y el otro animaba 480 ms, y la celda daba un saltito).
+ */
+export const ANIMACION_FILA = {
+    /** Lo que tarda cada letra en darse vuelta; el color cambia justo a la mitad. */
+    giro: 450,
+    /** Cuánto después de la anterior empieza a girar la siguiente: las letras giran en cascada. */
+    escalon: 200,
+} as const;
+
+/** Lo que tarda en revelarse una fila de ese largo (la última letra empieza (largo - 1) escalones después). */
+export function duracionRevelado(largo: number): number {
+    return Math.max(0, largo - 1) * ANIMACION_FILA.escalon + ANIMACION_FILA.giro;
+}

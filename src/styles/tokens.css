@@ -93,7 +93,7 @@
     --mascota-ganada: url("../assets/halloween/calabaza.webp");
     --mascota-perdida: url("../assets/halloween/fantasma.svg");
     --mascota-brillo: drop-shadow(0 0 0.625rem rgb(255 160 40 / 60%));
-    --mascota-animacion-ganada: calabaza-salta 700ms cubic-bezier(0.3, 1.6, 0.5, 1) 300ms both;
+    --mascota-animacion-ganada: calabaza-salta 500ms cubic-bezier(0.34, 1.4, 0.64, 1) 300ms both;
 }
 
 :root[data-tema="halloween"] body {
