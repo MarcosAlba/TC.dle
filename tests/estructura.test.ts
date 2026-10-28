@@ -132,3 +132,27 @@ describe("pantallas táctiles", () => {
         expect(pagina).toMatch(/viewport-fit=cover/);
     });
 });
+
+describe("íconos compartidos", () => {
+    const lee = (ruta: string) => readFileSync(ruta, "utf8");
+
+    it("el sprite define los íconos y la página lo incluye", () => {
+        const sprite = lee("src/components/Iconos.astro");
+        for (const id of ["icono-cerrar", "icono-avanzar", "bandera-cuadros"]) {
+            expect(sprite).toContain(`id="${id}"`);
+        }
+        expect(lee("src/layouts/Pagina.astro")).toContain("<Iconos />");
+    });
+
+    it("los componentes usan los íconos que existen en el sprite", () => {
+        const sprite = lee("src/components/Iconos.astro");
+        const usados = [
+            ...lee("src/components/ModalResultado.svelte").matchAll(/href="#(icono-[a-z]+)"/g),
+            ...lee("src/components/SiguienteJuego.svelte").matchAll(/href="#(icono-[a-z]+)"/g),
+        ];
+        expect(usados.length).toBeGreaterThan(0);
+        for (const [, id] of usados) {
+            expect(sprite).toContain(`id="${id}"`);
+        }
+    });
+});

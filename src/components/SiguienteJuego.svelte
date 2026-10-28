@@ -33,7 +33,10 @@
     <div class="siguiente-juego-contenedor">
         {#if estado.siguiente}
             <a class="siguiente-juego" href={urlJuego(estado.siguiente.archivo)}>
-                <strong>Siguiente: {estado.siguiente.nombre} →</strong>
+                <strong>
+                    Siguiente: {estado.siguiente.nombre}
+                    <svg class="icono" viewBox="0 0 22 16" aria-hidden="true"><use href="#icono-avanzar"></use></svg>
+                </strong>
                 <small>{estado.pendientes === 1 ? "Te queda 1 juego hoy" : "Te quedan " + estado.pendientes + " juegos hoy"}</small>
             </a>
         {:else}

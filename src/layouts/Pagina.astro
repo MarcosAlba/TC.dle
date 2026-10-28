@@ -9,6 +9,7 @@ import fuenteCursiva from "../assets/fonts/archivo-italic.woff2?url";
 import { aplicarIntroInicial, aplicarTemaInicial } from "../lib/inicio-pagina";
 import { urlImagen } from "../lib/rutas";
 import Analytics from "@vercel/analytics/astro";
+import Iconos from "../components/Iconos.astro";
 
 interface Props {
     titulo: string;
@@ -39,6 +40,7 @@ const scriptInicial =
         <Analytics />
     </head>
     <body class={claseBody}>
+        <Iconos />
         <slot />
     </body>
 </html>

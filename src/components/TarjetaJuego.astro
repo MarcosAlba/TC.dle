@@ -12,7 +12,7 @@ const { juego: id } = Astro.props;
 const juego = obtenerJuego(id);
 ---
 
-<a class={`tarjeta-juego tarjeta-juego--${id}`} href={urlJuego(juego.archivo)} data-juego={id}>
+<a class={`tarjeta-juego tarjeta-juego--${id} caja-chaflan`} href={urlJuego(juego.archivo)} data-juego={id}>
     <span class="tarjeta-juego__imagen"><slot /></span>
     <span class="tarjeta-juego__contenido">
         <strong class="tarjeta-juego__nombre">{juego.nombre}</strong>

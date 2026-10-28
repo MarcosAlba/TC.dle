@@ -100,7 +100,9 @@
 >
     <div class="resultado-modal__contenido">
         <span class="resultado-modal__asa" aria-hidden="true"></span>
-        <button bind:this={botonCerrar} class="resultado-modal__cerrar" type="button" aria-label="Cerrar resultado" onclick={cerrar}>×</button>
+        <button bind:this={botonCerrar} class="resultado-modal__cerrar" type="button" aria-label="Cerrar resultado" onclick={cerrar}>
+            <svg class="icono" viewBox="0 0 20 20" aria-hidden="true"><use href="#icono-cerrar"></use></svg>
+        </button>
         <p class="resultado-modal__etiqueta">{correcto ? "Bandera a cuadros" : "Abandono"}</p>
         <h2 id={idBase + "-titulo"}>{titulo}</h2>
         <div id={idBase + "-detalle"} class="resultado-modal__cuerpo">
@@ -120,7 +122,7 @@
             {#if racha > 0}
                 <span class="resultado-barra__racha">Racha {racha}</span>
             {/if}
-            <span class="resultado-barra__flecha" aria-hidden="true">⌃</span>
+            <svg class="icono resultado-barra__flecha" viewBox="0 0 22 16" aria-hidden="true"><use href="#icono-avanzar"></use></svg>
         </button>
         <BotonCompartir texto={armarTexto(racha)} clase="boton-compartir--barra" />
     </div>

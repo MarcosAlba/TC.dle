@@ -40,11 +40,15 @@
         padding-left: env(safe-area-inset-left, 0px);
         color: var(--color-texto);
         background-color: var(--asfalto);
+        /*
+         * Líneas de barrido de TV muy finas y diagonales con la inclinación del corte de los zócalos.
+         * Antes era una cuadrícula de 2 rem, que parecía papel milimetrado y no decía nada de TV ni de autos.
+         */
         background-image:
             radial-gradient(circle at 50% 7rem, var(--resplandor), transparent 30rem),
-            linear-gradient(90deg, rgb(255 255 255 / var(--rejilla)) 0.0625rem, transparent 0.0625rem),
-            linear-gradient(rgb(255 255 255 / var(--rejilla)) 0.0625rem, transparent 0.0625rem);
-        background-size: auto, 2rem 2rem, 2rem 2rem;
+            repeating-linear-gradient(0deg, rgb(255 255 255 / 1.5%) 0 0.0625rem, transparent 0.0625rem 0.25rem),
+            repeating-linear-gradient(var(--angulo-corte), transparent 0 3rem, rgb(255 255 255 / var(--rejilla)) 3rem calc(3rem + 0.0625rem));
+        background-size: auto;
         font-family: var(--fuente-texto);
     }
 
@@ -82,11 +86,40 @@
     .titulo-seccion,
     .resultado-modal {
         font-family: var(--fuente-titulos);
-        font-stretch: 68%;
+        font-stretch: var(--ancho-zocalo);
     }
 
     [hidden] {
         display: none !important;
+    }
+
+    /*
+     * Caja con chanfle arriba a la derecha (--corte-caja), del mismo ángulo que los zócalos. El
+     * clip-path recorta el borde y el contorno de foco, así que el borde se dibuja con una capa
+     * superpuesta (::after) que sigue el corte, y el anillo de foco va por dentro.
+     */
+    .caja-chaflan {
+        position: relative;
+        border: 0;
+        border-radius: 0;
+        clip-path: var(--corte-caja);
+    }
+
+    .caja-chaflan::after {
+        position: absolute;
+        z-index: 3;
+        inset: 0;
+        background: linear-gradient(
+                to bottom left,
+                transparent 50%,
+                var(--borde-caja, var(--linea)) 50%,
+                var(--borde-caja, var(--linea)) calc(50% + 0.0625rem),
+                transparent calc(50% + 0.0625rem)
+            )
+            top right / var(--sesgo) var(--sesgo) no-repeat;
+        box-shadow: inset 0 0 0 0.0625rem var(--borde-caja, var(--linea));
+        pointer-events: none;
+        content: "";
     }
 
     .solo-lectores {
