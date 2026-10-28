@@ -329,6 +329,24 @@
             margin-bottom: auto;
         }
 
+        /* Terminada la partida el teclado ya no se usa: el resultado ocupa su lugar. */
+        .teclado-virtual--final {
+            display: none;
+        }
+
+        .resumen-wordle-modal {
+            margin-top: 0.75rem;
+        }
+
+        .resumen-wordle-modal__fila {
+            grid-template-columns: repeat(var(--largo-palabra, 5), 0.75rem);
+        }
+
+        .resumen-wordle-modal__celda {
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+
         .teclado-virtual {
             position: sticky;
             z-index: 5;

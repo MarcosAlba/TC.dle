@@ -101,9 +101,30 @@
             max-height: 13.125rem;
         }
 
+        /* En el panel del celular la silueta va a la izquierda y el texto a la derecha. */
+        .resultado-circuito-modal .resultado-modal__cuerpo {
+            display: grid;
+            text-align: left;
+            column-gap: 0.875rem;
+            grid-template-columns: auto minmax(0, 1fr);
+            align-items: center;
+        }
+
         .resultado-circuito-modal__silueta {
-            width: 10rem;
-            height: 7.8125rem;
+            width: 6.5rem;
+            height: 5rem;
+            margin: 0.75rem 0 0;
+            padding: 0.5rem;
+            grid-row: 1 / span 2;
+        }
+
+        .resultado-circuito-modal .resultado-modal__nombre {
+            justify-self: start;
+            margin-top: 0.75rem;
+        }
+
+        .resultado-circuito-modal .resultado-modal__detalle {
+            margin-top: 0.25rem;
         }
     }
 }

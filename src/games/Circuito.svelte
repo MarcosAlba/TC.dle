@@ -18,7 +18,8 @@
     import { obtenerFechaLocal } from "../lib/fechas";
     import { describirContador, palabraIntentos } from "../lib/intentos";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
-    import { urlImagen } from "../lib/rutas";
+    import { construirTextoCompartir, filaIntentos } from "../lib/compartir";
+    import { urlImagen, urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import { crearJuegoAdivinanza } from "./compartido/juego-adivinanza.svelte";
 
@@ -60,6 +61,17 @@
             .reverse()
     );
     const urlSilueta = urlImagen("circuitos/" + secreto.imagen);
+
+    const armarTexto = (racha: number) =>
+        construirTextoCompartir({
+            juego: "circuito",
+            fecha,
+            puntaje: estado.acerto ? estado.intentosUsados : null,
+            maximo: MAXIMO_INTENTOS,
+            racha,
+            filas: [filaIntentos(estado.intentosUsados, estado.acerto)],
+            url: urlSitio(),
+        });
 
     async function abrirModal() {
         await tick();
@@ -196,6 +208,8 @@
     terminada={estado.terminada}
     correcto={estado.acerto}
     titulo={estado.acerto ? "¡Adivinaste!" : "No lo adivinaste"}
+    resumen={estado.acerto ? "Ganaste en " + estado.intentosUsados : "Abandono"}
+    {armarTexto}
     etiquetaRegreso="Nuevo circuito en:"
     clase="resultado-circuito-modal"
     focoRetorno={() => estadoFinal}

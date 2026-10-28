@@ -21,7 +21,8 @@
     import { describirContador, palabraIntentos } from "../lib/intentos";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
     import { obtenerApellidoPiloto, obtenerImagenMiniPiloto } from "../lib/pilotos";
-    import { urlImagen } from "../lib/rutas";
+    import { construirTextoCompartir, filaIntentos } from "../lib/compartir";
+    import { urlImagen, urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import { crearJuegoAdivinanza } from "./compartido/juego-adivinanza.svelte";
 
@@ -153,6 +154,17 @@
     }
 
     const intentosUsados = $derived(estado.intentosUsados);
+
+    const armarTexto = (racha: number) =>
+        construirTextoCompartir({
+            juego: "auto",
+            fecha,
+            puntaje: estado.acerto ? estado.intentosUsados : null,
+            maximo: MAXIMO_INTENTOS_AUTO,
+            racha,
+            filas: [filaIntentos(estado.intentosUsados, estado.acerto)],
+            url: urlSitio(),
+        });
 </script>
 
 <section class="tarjeta-desafio tarjeta-desafio--suelta tarjeta-desafio--foto" aria-label="Auto del día">
@@ -295,6 +307,9 @@
     terminada={estado.terminada}
     correcto={estado.acerto}
     titulo={estado.acerto ? "¡Adivinaste!" : "No lo adivinaste"}
+    resumen={estado.acerto ? "Ganaste en " + estado.intentosUsados : "Abandono"}
+    {armarTexto}
+    pendiente={rondaAnioPendiente}
     etiquetaRegreso="Nuevo auto en:"
     clase="resultado-auto-modal"
     focoRetorno={() => estadoFinal}

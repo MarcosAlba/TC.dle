@@ -5,9 +5,11 @@
     import ModalResultado from "../components/ModalResultado.svelte";
     import { palabras } from "../data";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
+    import { construirTextoCompartir, filaWordle } from "../lib/compartir";
     import { obtenerFechaLocal } from "../lib/fechas";
     import { describirContador, palabraIntentos } from "../lib/intentos";
     import { crearPartidaDiaria } from "../lib/partida";
+    import { urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import {
         FILAS_TECLADO,
@@ -209,6 +211,17 @@
 
     // Resumen del resultado en la ventana final (sin letras, para compartir el recorrido).
     const resumen = $derived(estado.idsIntentados.map((palabra) => evaluarIntento(palabra, palabraDelDia)));
+
+    const armarTexto = (racha: number) =>
+        construirTextoCompartir({
+            juego: "wordle",
+            fecha,
+            puntaje: estado.acerto ? estado.intentosUsados : null,
+            maximo: maximoIntentos,
+            racha,
+            filas: resumen.map(filaWordle),
+            url: urlSitio(),
+        });
 </script>
 
 <svelte:document onkeydown={alTeclear} />
@@ -243,7 +256,7 @@
 
 <p class={"mensaje-juego mensaje-wordle" + (mensaje.tipo ? " mensaje-juego--" + mensaje.tipo : "")} aria-live="polite">{mensaje.texto}</p>
 
-<section class="teclado-virtual" aria-label="Teclado virtual">
+<section class="teclado-virtual" class:teclado-virtual--final={finalizada} aria-label="Teclado virtual">
     {#each FILAS_TECLADO as filaTeclas}
         <div class="teclado-virtual__fila">
             {#each filaTeclas as tecla}
@@ -273,6 +286,8 @@
     terminada={finalizada}
     correcto={estado.acerto}
     titulo={estado.acerto ? "¡Adivinaste!" : "No la adivinaste"}
+    resumen={estado.acerto ? "Ganaste en " + estado.intentosUsados : "Abandono"}
+    {armarTexto}
     etiquetaRegreso="Nueva palabra en:"
     clase="resultado-wordle-modal"
     focoRetorno={() => elementoTablero}

@@ -240,9 +240,29 @@
             font-size: 1.5rem;
         }
 
+        /* En el panel del celular la foto va a la izquierda y el texto a la derecha. */
+        .resultado-auto-modal .resultado-modal__cuerpo {
+            display: grid;
+            text-align: left;
+            column-gap: 0.875rem;
+            grid-template-columns: auto minmax(0, 1fr);
+            align-items: center;
+        }
+
         .resultado-auto-modal__foto {
-            width: 8.75rem;
-            height: 8.75rem;
+            width: 5.25rem;
+            height: 5.25rem;
+            margin: 0.75rem 0 0;
+            grid-row: 1 / span 3;
+        }
+
+        .resultado-auto-modal .resultado-modal__nombre {
+            justify-self: start;
+            margin-top: 0.75rem;
+        }
+
+        .resultado-auto-modal .resultado-modal__detalle {
+            margin-top: 0.25rem;
         }
     }
 }

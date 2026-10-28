@@ -78,7 +78,14 @@ describe("piezas compartidas", () => {
             expect(leer(`src/games/${juego}.svelte`)).toMatch(/import ModalResultado from "..\/components\/ModalResultado.svelte"/);
         }
         expect(leer("src/components/ModalResultado.svelte")).toMatch(/CuentaRegresiva/);
-        expect(leer("src/components/ModalResultado.svelte")).toMatch(/SiguienteJuego/);
+        // El modal ofrece racha, compartir y el siguiente juego a través de AccionesResultado.
+        expect(leer("src/components/ModalResultado.svelte")).toMatch(/AccionesResultado/);
+        expect(leer("src/components/AccionesResultado.svelte")).toMatch(/SiguienteJuego/);
+        expect(leer("src/components/AccionesResultado.svelte")).toMatch(/BotonCompartir/);
+    });
+
+    it("el piloto, que muestra el resultado dentro de la página, ofrece las mismas acciones", () => {
+        expect(leer("src/games/Piloto.svelte")).toMatch(/AccionesResultado/);
     });
 });
 

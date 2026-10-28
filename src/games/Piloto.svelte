@@ -1,5 +1,6 @@
 <script lang="ts">
     // Modo clásico: adivinar el piloto del día comparando sus datos.
+    import AccionesResultado from "../components/AccionesResultado.svelte";
     import Buscador from "../components/Buscador.svelte";
     import CuentaRegresiva from "../components/CuentaRegresiva.svelte";
     import OpcionPiloto from "../components/OpcionPiloto.svelte";
@@ -7,6 +8,7 @@
     import { pilotos } from "../data";
     import type { Piloto } from "../data/tipos";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
+    import { construirTextoCompartir, filaPiloto } from "../lib/compartir";
     import { obtenerFechaLocal } from "../lib/fechas";
     import { describirContador, palabraIntentos } from "../lib/intentos";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
@@ -16,7 +18,7 @@
         obtenerPistasPiloto,
         obtenerTextoBusquedaPiloto,
     } from "../lib/pilotos";
-    import { urlImagen } from "../lib/rutas";
+    import { urlImagen, urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import { crearJuegoAdivinanza } from "./compartido/juego-adivinanza.svelte";
     import FilaIntento from "./piloto/FilaIntento.svelte";
@@ -142,6 +144,21 @@
         campoBuscador!.enfocar();
     }
 
+    // Una fila de colores por intento, del primero al último, igual que la tabla pero sin nombres.
+    const armarTexto = (racha: number) =>
+        construirTextoCompartir({
+            juego: "piloto",
+            fecha,
+            puntaje: estado.acerto ? estado.intentosUsados : null,
+            maximo: MAXIMO_INTENTOS,
+            racha,
+            filas: estado.idsIntentados
+                .map((id) => pilotos.find((piloto) => piloto.id === id))
+                .filter((piloto) => piloto !== undefined)
+                .map((piloto) => filaPiloto(compararPiloto(piloto, secreto))),
+            url: urlSitio(),
+        });
+
     function alternarPista(id: string) {
         pistaActiva = pistaActiva === id ? null : id;
     }
@@ -236,6 +253,7 @@
                     : "No lograste encontrarlo en los " + MAXIMO_INTENTOS + " intentos disponibles."}
             </p>
             <CuentaRegresiva clase="resultado-final__regreso" etiqueta="Nuevo piloto en:" activa={true} {fecha} />
+            <AccionesResultado juego="piloto" {fecha} terminada={estado.terminada} {armarTexto} />
         </div>
     </section>
 {/if}

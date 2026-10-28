@@ -14,7 +14,8 @@
     import type { ResultadoCarrera } from "../data/tipos";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import { obtenerFechaLocal } from "../lib/fechas";
-    import { urlImagen } from "../lib/rutas";
+    import { construirTextoCompartir, filaTop10 } from "../lib/compartir";
+    import { urlImagen, urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import {
         buscarPilotoCatalogo,
@@ -149,6 +150,18 @@
         mensaje = { texto: `Te faltaron ${PUESTOS - estado.acertados.length}.`, tipo: "info" };
         abrirModal();
     }
+
+    // El marcador es cuántos puestos se descubrieron, se haya completado el Top 10 o no.
+    const armarTexto = (racha: number) =>
+        construirTextoCompartir({
+            juego: "top10",
+            fecha,
+            puntaje: estado.acertados.length,
+            maximo: PUESTOS,
+            racha,
+            filas: [filaTop10(estado.acertados, PUESTOS)],
+            url: urlSitio(),
+        });
 </script>
 
 {#snippet logo(resultado: ResultadoCarrera, clase: string)}
@@ -283,6 +296,8 @@
     terminada={estado.terminada}
     correcto={estado.gano}
     titulo={estado.gano ? "¡Top 10 completo!" : estado.sinTiempo ? "Se terminó el tiempo" : "Te rendiste"}
+    resumen={estado.acertados.length + " de " + PUESTOS}
+    {armarTexto}
     etiquetaRegreso="Nueva carrera en:"
     clase="resultado-top10-modal"
     focoRetorno={() => tablero}

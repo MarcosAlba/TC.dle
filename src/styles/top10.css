@@ -592,6 +592,14 @@
             font-size: 0.92rem;
         }
 
+        .resultado-top10-modal__marcador {
+            margin-top: 0.5rem;
+        }
+
+        .resultado-top10-modal__marcador strong {
+            font-size: 1.75rem;
+        }
+
         /*
          * Buscador fijo al pie: se escribe sin bajar hasta el final de la carrera. Queda
          * pegado abajo mientras la carrera se ve y recupera su lugar al terminar la página.
