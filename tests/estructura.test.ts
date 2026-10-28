@@ -149,10 +149,34 @@ describe("íconos compartidos", () => {
         const usados = [
             ...lee("src/components/ModalResultado.svelte").matchAll(/href="#(icono-[a-z]+)"/g),
             ...lee("src/components/SiguienteJuego.svelte").matchAll(/href="#(icono-[a-z]+)"/g),
+            ...lee("src/components/BotonCompartir.svelte").matchAll(/href="#(icono-[a-z]+)"/g),
         ];
         expect(usados.length).toBeGreaterThan(0);
         for (const [, id] of usados) {
             expect(sprite).toContain(`id="${id}"`);
         }
+    });
+});
+
+describe("acciones al terminar", () => {
+    const lee = (ruta: string) => readFileSync(ruta, "utf8");
+
+    it("el resultado no repite la racha: va solo en el texto que se comparte", () => {
+        const acciones = lee("src/components/AccionesResultado.svelte");
+        expect(acciones).not.toContain("resultado-racha");
+        expect(acciones).toContain("armarTexto(racha)");
+    });
+
+    it("en el piloto, los botones van fuera del bloque (que recorta el chanfle)", () => {
+        const piloto = lee("src/games/Piloto.svelte");
+        const bloque = piloto.slice(piloto.indexOf("<section"), piloto.indexOf("</section>"));
+        expect(bloque).not.toContain("<AccionesResultado");
+        expect(piloto).toContain("resultado-final__acciones");
+    });
+
+    it("el Top 10 se rinde manteniendo apretado, sin un segundo paso", () => {
+        const top10 = lee("src/games/Top10.svelte");
+        expect(top10).toContain("<BotonMantener");
+        expect(top10).not.toContain("confirmandoRendirse");
     });
 });

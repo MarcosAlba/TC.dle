@@ -362,12 +362,17 @@
 
     /* ---------- Resultado ---------- */
 
+    /* El bloque y sus botones: el marco da el ancho y el lugar en la página. */
+    .resultado-final-marco {
+        position: relative;
+        width: min(47.5rem, 100%);
+        margin: 0 auto var(--espacio-28);
+    }
+
     .resultado-final {
         position: relative;
         display: grid;
-        width: min(47.5rem, 100%);
         min-height: 16.875rem;
-        margin: 0 auto var(--espacio-28);
         background: var(--color-superficie);
         grid-template-columns: minmax(13.75rem, 40%) 1fr;
         overflow: hidden;
@@ -391,6 +396,7 @@
     }
 
     .resultado-final__media {
+        position: relative;
         display: flex;
         min-height: 16.875rem;
         background: var(--fondo-retrato);
@@ -398,13 +404,109 @@
         justify-content: center;
     }
 
+    /* La foto ocupa todo el alto del bloque, así no queda aire arriba de la cabeza. */
     .resultado-final__foto {
+        position: absolute;
+        inset: var(--espacio-14) 0 0;
         display: block;
         width: 100%;
-        height: 16.25rem;
+        height: calc(100% - 0.875rem);
         object-fit: contain;
         object-position: center bottom;
         filter: drop-shadow(0 0.5rem 1rem rgb(0 0 0 / 50%));
+    }
+
+    /*
+     * Tablet: los botones van debajo del bloque, a la derecha. Aparecen cuando el bloque
+     * termina de entrar (solo opacidad: en PC el transform los centra en el alto).
+     */
+    .resultado-final__acciones {
+        display: flex;
+        animation: acciones-entrada 200ms ease-out 300ms both;
+        margin-top: var(--espacio-8);
+        justify-content: flex-end;
+    }
+
+    .resultado-final__acciones .resultado-acciones {
+        width: min(28rem, 100%);
+        margin-top: 0;
+    }
+
+    /*
+     * PC: dos botones cuadrados, uno arriba del otro, al costado del bloque y centrados en
+     * su alto. Arriba "Compartir" (blanco) y abajo el juego que sigue (rojo).
+     */
+    @media (min-width: 64rem) {
+        .resultado-final__acciones {
+            position: absolute;
+            top: 50%;
+            left: calc(100% + var(--espacio-14));
+            margin: 0;
+            transform: translateY(-50%);
+        }
+
+        .resultado-final__acciones .resultado-acciones {
+            width: 5.5rem;
+            flex-direction: column;
+            gap: var(--espacio-10);
+        }
+
+        .resultado-final__acciones .boton-compartir,
+        .resultado-final__acciones .siguiente-juego {
+            display: flex;
+            width: 5.5rem;
+            height: 5.5rem;
+            min-height: 0;
+            padding: var(--espacio-8);
+            gap: var(--espacio-8);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            clip-path: var(--corte-caja);
+        }
+
+        .resultado-final__acciones .boton-compartir .icono {
+            width: 1.625rem;
+            height: 1.625rem;
+        }
+
+        .resultado-final__acciones .boton-compartir__etiqueta,
+        .resultado-final__acciones .siguiente-juego__corto {
+            display: inline;
+        }
+
+        .resultado-final__acciones .boton-compartir__etiqueta {
+            font-size: var(--texto-xs);
+            font-stretch: var(--ancho-zocalo);
+        }
+
+        .resultado-final__acciones .siguiente-juego .icono {
+            width: 1.875rem;
+            height: 1.375rem;
+            order: -1;
+        }
+
+        .resultado-final__acciones .siguiente-juego strong {
+            width: auto;
+            font-size: var(--texto-s);
+            text-align: center;
+            flex: none;
+        }
+
+        /* "Siguiente:", el nombre largo y el contador quedan para los lectores de pantalla. */
+        .resultado-final__acciones .siguiente-juego__prefijo,
+        .resultado-final__acciones .siguiente-juego__largo {
+            position: absolute;
+            width: 0.0625rem;
+            height: 0.0625rem;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+        }
+
+        .resultado-final__acciones .siguiente-juego__extra {
+            display: none;
+        }
     }
 
     .resultado-final__contenido {
@@ -509,6 +611,12 @@
         }
     }
 
+    @keyframes acciones-entrada {
+        from {
+            opacity: 0;
+        }
+    }
+
     @media (max-width: 760px) {
         .juego--piloto {
             width: min(100% - 1rem, 68.75rem);
@@ -522,12 +630,19 @@
             min-height: 13.125rem;
         }
 
-        .resultado-final__foto {
-            height: 13.125rem;
+        .resultado-final__contenido {
+            padding: var(--espacio-24) var(--espacio-20) 0;
         }
 
-        .resultado-final__contenido {
-            padding: var(--espacio-24) var(--espacio-20);
+        /* Celular: los botones siguen pegados abajo, con el mismo fondo, como parte del bloque. */
+        .resultado-final__acciones {
+            margin-top: 0;
+            padding: var(--espacio-16) var(--espacio-20) var(--espacio-24);
+            background: var(--color-superficie);
+        }
+
+        .resultado-final__acciones .resultado-acciones {
+            width: 100%;
         }
 
         .guia-pistas__grilla {

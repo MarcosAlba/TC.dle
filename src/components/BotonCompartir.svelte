@@ -6,9 +6,11 @@
     interface Props {
         texto: string;
         clase?: string;
+        /** Solo el ícono (el aviso de "¡Copiado!" igual aparece con texto). */
+        icono?: boolean;
     }
 
-    let { texto, clase = "" }: Props = $props();
+    let { texto, clase = "", icono = false }: Props = $props();
     let aviso = $state("");
     let temporizador: ReturnType<typeof setTimeout> | undefined;
 
@@ -34,8 +36,13 @@
     }
 </script>
 
-<button type="button" class={"boton-compartir " + clase} onclick={compartir}>
-    <span aria-hidden="true">{aviso || "Compartir"}</span>
+<button type="button" class={"boton-compartir " + clase} class:boton-compartir--icono={icono} onclick={compartir}>
+    {#if icono && !aviso}
+        <svg class="icono" viewBox="0 0 20 20" aria-hidden="true"><use href="#icono-compartir"></use></svg>
+        <span class="boton-compartir__etiqueta" aria-hidden="true">Compartir</span>
+    {:else}
+        <span aria-hidden="true">{aviso || "Compartir"}</span>
+    {/if}
     <span class="solo-lectores">Compartir resultado</span>
 </button>
 <span class="solo-lectores" role="status">{aviso}</span>

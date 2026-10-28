@@ -1,6 +1,7 @@
 <script lang="ts">
-    // Lo que se puede hacer al terminar la partida: ver la racha, compartir el
-    // resultado y pasar al próximo juego. Lo usan el panel de resultado y el piloto.
+    // Lo que se puede hacer al terminar la partida: pasar al próximo juego (lo principal)
+    // y compartir el resultado. Lo usan el panel de resultado y el piloto. La racha no
+    // se muestra acá: va en el texto que se comparte.
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import type { JuegoId } from "../lib/juegos";
     import { obtenerRacha } from "../lib/rachas";
@@ -17,19 +18,13 @@
 
     let { juego, fecha, terminada, armarTexto }: Props = $props();
 
-    // La racha se registra al terminar la partida, antes de que este bloque se muestre.
+    // La racha se registra al terminar la partida, antes de que este bloque se muestre; se suma al texto compartido.
     const racha = $derived(terminada ? obtenerRacha(obtenerAlmacenamiento(), juego, fecha) : 0);
 </script>
 
 {#if terminada}
-    {#if racha > 0}
-        <p class="resultado-racha">
-            <strong>{racha}</strong>
-            {racha === 1 ? "día seguido" : "días seguidos"}
-        </p>
-    {/if}
     <div class="resultado-acciones">
-        <BotonCompartir texto={armarTexto(racha)} />
+        <BotonCompartir texto={armarTexto(racha)} icono />
         <SiguienteJuego juegoActual={juego} {terminada} />
     </div>
 {/if}

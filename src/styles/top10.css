@@ -339,6 +339,7 @@
 
     .rendirse {
         display: flex;
+        width: 100%;
         margin-top: var(--espacio-8);
         gap: var(--espacio-12);
         align-items: center;
@@ -346,15 +347,11 @@
         flex-wrap: wrap;
     }
 
-    .rendirse__pregunta {
-        color: var(--color-texto-suave);
-        font-size: var(--texto-s);
-    }
-
-    /* 44 px de alto: con 30 px, "Sí, me rindo" y "Seguir jugando" quedaban a un dedo de distancia. */
+    /* Un solo botón de 44 px: se mantiene apretado para rendirse (BotonMantener). */
     .rendirse__boton {
+        width: min(22rem, 100%);
         min-height: 2.75rem;
-        padding: var(--espacio-8) var(--espacio-16);
+        padding: var(--espacio-6) var(--espacio-16);
         border: 0.0625rem solid var(--color-borde);
         border-radius: 0;
         color: var(--blanco);
@@ -366,6 +363,24 @@
         cursor: pointer;
     }
 
+    .rendirse__texto {
+        display: block;
+        font-stretch: var(--ancho-zocalo);
+        text-transform: uppercase;
+    }
+
+    .rendirse__boton small {
+        display: block;
+        color: var(--color-texto-suave);
+        font-size: var(--texto-xs);
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    .rendirse__boton.boton-mantener--activo small {
+        color: inherit;
+    }
+
     @media (hover: hover) {
         .rendirse__boton:hover {
             border-color: var(--blanco);
@@ -375,11 +390,6 @@
     .rendirse__boton:focus-visible {
         outline: 0.125rem solid var(--blanco);
         outline-offset: 0.125rem;
-    }
-
-    .rendirse__boton--confirmar {
-        border-color: var(--rojo);
-        background: var(--rojo);
     }
 
     .resultado-top10-modal__marcador {

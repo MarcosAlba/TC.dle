@@ -143,5 +143,10 @@
             animation-iteration-count: 1 !important;
             transition-duration: 0.01ms !important;
         }
+
+        /* El relleno del botón de mantener no es movimiento: es lo que muestra cuánto falta. */
+        .boton-mantener--activo::before {
+            transition-duration: var(--duracion-mantener, 1200ms) !important;
+        }
     }
 }

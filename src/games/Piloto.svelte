@@ -242,28 +242,33 @@
 </PanelIntento>
 
 {#if resultadoVisible}
-    <section
-        bind:this={panelResultado}
-        id="resultado-final"
-        class={"resultado-final " + (acerto ? "resultado-final--correcto" : "resultado-final--incorrecto") + claseNombre}
-        aria-labelledby="nombre-piloto-final"
-    >
-        <div class="resultado-final__media">
-            <img class="resultado-final__foto" src={urlImagen(secreto.foto)} alt={"Foto de " + secreto.nombre} />
-        </div>
-        <div class="resultado-final__contenido">
-            <p class="resultado-final__etiqueta">{acerto ? "Bandera a cuadros" : "Se terminaron los intentos"}</p>
-            <p class="resultado-final__subtitulo">{acerto ? "Piloto del día" : "El piloto del día era"}</p>
-            <h2 id="nombre-piloto-final">{secreto.nombre}</h2>
-            <p id="detalle-resultado-final">
-                {acerto
-                    ? "Lo resolviste en " + estado.intentosUsados + " " + palabraIntentos(estado.intentosUsados) + "."
-                    : "No lograste encontrarlo en los " + MAXIMO_INTENTOS + " intentos disponibles."}
-            </p>
-            <CuentaRegresiva clase="resultado-final__regreso" etiqueta="Nuevo piloto en:" activa={true} {fecha} />
+    <!-- Los botones van fuera del bloque (que recorta el chanfle): en PC, al costado; en celular, debajo. -->
+    <div class="resultado-final-marco">
+        <section
+            bind:this={panelResultado}
+            id="resultado-final"
+            class={"resultado-final " + (acerto ? "resultado-final--correcto" : "resultado-final--incorrecto") + claseNombre}
+            aria-labelledby="nombre-piloto-final"
+        >
+            <div class="resultado-final__media">
+                <img class="resultado-final__foto" src={urlImagen(secreto.foto)} alt={"Foto de " + secreto.nombre} />
+            </div>
+            <div class="resultado-final__contenido">
+                <p class="resultado-final__etiqueta">{acerto ? "Bandera a cuadros" : "Se terminaron los intentos"}</p>
+                <p class="resultado-final__subtitulo">{acerto ? "Piloto del día" : "El piloto del día era"}</p>
+                <h2 id="nombre-piloto-final">{secreto.nombre}</h2>
+                <p id="detalle-resultado-final">
+                    {acerto
+                        ? "Lo resolviste en " + estado.intentosUsados + " " + palabraIntentos(estado.intentosUsados) + "."
+                        : "No lograste encontrarlo en los " + MAXIMO_INTENTOS + " intentos disponibles."}
+                </p>
+                <CuentaRegresiva clase="resultado-final__regreso" etiqueta="Nuevo piloto en:" activa={true} {fecha} />
+            </div>
+        </section>
+        <div class="resultado-final__acciones">
             <AccionesResultado juego="piloto" {fecha} terminada={estado.terminada} {armarTexto} />
         </div>
-    </section>
+    </div>
 {/if}
 
 {#if tablaVisible}

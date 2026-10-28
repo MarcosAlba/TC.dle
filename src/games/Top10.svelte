@@ -4,6 +4,7 @@
     // la marca de cada puesto, si se eligió jugar con marcas. Las opciones se
     // eligen en la introducción. La partida vive en src/lib/top10.ts.
     import { tick } from "svelte";
+    import BotonMantener from "../components/BotonMantener.svelte";
     import Buscador from "../components/Buscador.svelte";
     import Cronometro from "../components/Cronometro.svelte";
     import CuentaRegresiva from "../components/CuentaRegresiva.svelte";
@@ -55,7 +56,6 @@
     let estado = $state(partida.cargar());
     let mensaje = $state<{ texto: string; tipo: "" | "error" | "exito" | "info" }>({ texto: "", tipo: "" });
     let ultimoAcierto = $state<number | null>(null);
-    let confirmandoRendirse = $state(false);
     let entradaInvalida = $state(false);
     let campoBuscador: ReturnType<typeof Buscador<PilotoCarrera>> | undefined = $state();
     let modal: ReturnType<typeof ModalResultado> | undefined = $state();
@@ -85,7 +85,6 @@
     function terminarTiempo() {
         estado = partida.revisarTiempo();
         if (estado.sinTiempo) {
-            confirmandoRendirse = false;
             mensaje = { texto: "Se terminó el tiempo.", tipo: "info" };
             abrirModal();
         }
@@ -124,7 +123,6 @@
         const { resultado, estado: nuevo } = partida.intentar(elegido.id);
         estado = nuevo;
         campoBuscador!.limpiar();
-        confirmandoRendirse = false;
 
         if (resultado.tipo === "bloqueada") {
             terminarTiempo();
@@ -151,13 +149,12 @@
         }
     }
 
+    // Se confirma manteniendo apretado el botón (BotonMantener), sin un segundo paso.
     function rendirse() {
-        if (!confirmandoRendirse) {
-            confirmandoRendirse = true;
+        if (estado.terminada) {
             return;
         }
         estado = partida.rendirse();
-        confirmandoRendirse = false;
         mensaje = { texto: `Te faltaron ${PUESTOS - estado.acertados.length}.`, tipo: "info" };
         abrirModal();
     }
@@ -295,13 +292,10 @@
     {#snippet pie()}
         <p id="mensaje-top10" class={"mensaje-juego" + (mensaje.tipo ? " mensaje-juego--" + mensaje.tipo : "")} aria-live="polite">{mensaje.texto}</p>
         <div class="rendirse">
-            {#if confirmandoRendirse}
-                <span class="rendirse__pregunta">¿Ver el resultado y terminar?</span>
-                <button type="button" class="rendirse__boton rendirse__boton--confirmar" onclick={rendirse}>Sí, me rindo</button>
-                <button type="button" class="rendirse__boton" onclick={() => (confirmandoRendirse = false)}>Seguir jugando</button>
-            {:else}
-                <button type="button" class="rendirse__boton" onclick={rendirse}>Me rindo</button>
-            {/if}
+            <BotonMantener clase="rendirse__boton" alCompletar={rendirse} ayuda="Mantené apretado para rendirte y ver el resultado.">
+                <span class="rendirse__texto">Mantené para rendirte</span>
+                <small>Soltá para seguir jugando</small>
+            </BotonMantener>
         </div>
     {/snippet}
 </PanelIntento>
