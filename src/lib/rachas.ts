@@ -69,6 +69,8 @@ interface PartidaGuardada {
     fecha: string;
     objetivoId?: unknown;
     idsIntentados?: unknown[];
+    /** Solo el Top 10: los nombres que se probaron. */
+    intentos?: unknown[];
     terminada: boolean;
     /** Solo el Top 10, que no tiene un único objetivo: dice si completó los diez. */
     gano?: boolean;
@@ -93,6 +95,23 @@ export function obtenerEstadoJuego(
     }
 
     return partida.idsIntentados.includes(partida.objetivoId) ? "acertado" : "fallado";
+}
+
+/** Cómo va el juego hoy, para la portada: como obtenerEstadoJuego, pero distingue lo empezado. */
+export function obtenerProgresoJuego(
+    almacenamiento: Almacenamiento,
+    juego: Juego,
+    fecha: string = obtenerFechaLocal()
+): EstadoJuego | "en-curso" {
+    const estado = obtenerEstadoJuego(almacenamiento, juego, fecha);
+    if (estado !== "pendiente") {
+        return estado;
+    }
+
+    const partida = leerJson<PartidaGuardada>(almacenamiento, juego.clavePartida);
+    const intentos = partida?.fecha === fecha ? (partida.idsIntentados ?? partida.intentos) : null;
+
+    return Array.isArray(intentos) && intentos.length > 0 ? "en-curso" : "pendiente";
 }
 
 export function obtenerEstadoJuegos(

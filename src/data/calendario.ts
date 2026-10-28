@@ -10,6 +10,8 @@ export interface Carrera {
     lugar: string;
     /** Opcional: nombre del SVG (sin extensión) en public/assets/images/circuitos. */
     circuito?: string;
+    /** Opcional: el circuito como figura en carreras.json, para mostrar el último ganador ahí. */
+    circuitoResultados?: string;
     /** ISO 8601 con zona horaria. */
     largada: string;
 }
@@ -19,24 +21,28 @@ export const calendarioTC: Carrera[] = [
         fecha: 12,
         lugar: "San Nicolás",
         circuito: "san-nicolas",
+        circuitoResultados: "Ciudad San Nicolás - Buenos Aires",
         largada: "2026-10-04T14:00:00-03:00",
     },
     {
         fecha: 13,
         lugar: "Rosario",
         circuito: "rosario",
+        circuitoResultados: "Rosario- Santa Fe",
         largada: "2026-10-25T14:00:00-03:00",
     },
     {
         fecha: 14,
         lugar: "Río Cuarto",
         circuito: "rio-cuarto",
+        circuitoResultados: "Parque Ciudad de Río Cuarto",
         largada: "2026-11-15T14:00:00-03:00",
     },
     {
         fecha: 15,
         lugar: "La Plata",
         circuito: "la-plata-sin-chicana",
+        circuitoResultados: "Roberto José Mouras - La Plata",
         largada: "2026-12-06T14:00:00-03:00",
     },
 ];

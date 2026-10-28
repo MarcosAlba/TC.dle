@@ -1,9 +1,22 @@
 ---
 // Cuenta regresiva a la próxima carrera. Queda oculta hasta que
 // src/scripts/portada.ts sabe qué carrera sigue (depende de la hora del jugador).
+// El último ganador de cada circuito se calcula acá, al construir el sitio, para
+// no mandarle al navegador todos los resultados.
+import { calendarioTC } from "../data/calendario";
+import { carreras } from "../data";
+import { obtenerUltimoGanador, type GanadorAnterior } from "../lib/calendario";
+
+const ganadores: Record<number, GanadorAnterior> = {};
+for (const carrera of calendarioTC) {
+    const ganador = carrera.circuitoResultados && obtenerUltimoGanador(carreras, carrera.circuitoResultados, carrera.largada.slice(0, 10));
+    if (ganador) {
+        ganadores[carrera.fecha] = ganador;
+    }
+}
 ---
 
-<section id="proxima-carrera" class="proxima-carrera caja-chaflan" aria-label="Próxima carrera" hidden>
+<section id="proxima-carrera" class="proxima-carrera caja-chaflan" aria-label="Próxima carrera" data-ganadores={JSON.stringify(ganadores)} hidden>
     <!-- El script completa el texto (fecha, lugar y cuánto falta): lo visual de abajo queda oculto para el lector. -->
     <p id="proxima-carrera-resumen" class="solo-lectores"></p>
     <!-- Sin src hasta saber el circuito: un src vacío puede hacer que el navegador pida la página otra vez. -->
@@ -11,6 +24,11 @@
     <p class="proxima-carrera__titulo" aria-hidden="true">
         <span id="proxima-carrera-fecha" class="proxima-carrera__fecha"></span>
         <span id="proxima-carrera-lugar" class="proxima-carrera__lugar"></span>
+    </p>
+    <p id="proxima-carrera-ganador" class="proxima-carrera__ganador" hidden>
+        <small>Último ganador acá</small>
+        <strong id="proxima-carrera-ganador-nombre"></strong>
+        <span id="proxima-carrera-ganador-anio"></span>
     </p>
     <div class="proxima-carrera__reloj" aria-hidden="true">
         <span class="proxima-carrera__tile"><b id="proxima-carrera-dias">00</b><small>días</small></span>

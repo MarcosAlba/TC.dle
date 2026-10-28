@@ -7,7 +7,7 @@ import { urlImagen } from "../lib/rutas";
 import "../styles/portada.css";
 ---
 
-<Pagina titulo="TCdle" descripcion="Elegí uno de los cuatro desafíos diarios de TCdle." claseBody="portada">
+<Pagina titulo="TCdle" descripcion="Elegí uno de los cinco desafíos diarios de TCdle." claseBody="portada">
     <header class="encabezado-inicio">
         <img class="logo-inicio logo-inicio--normal" src={urlImagen("tcdle-logo-frenada.svg")} alt="TCdle" width="1570" height="384" />
         <img class="logo-inicio logo-inicio--halloween" src={urlImagen("tcdle-logo-frenada-halloween.svg")} alt="TCdle" width="1570" height="549" />
@@ -17,7 +17,22 @@ import "../styles/portada.css";
 
     <main class="inicio">
         <section class="selector-juegos" aria-labelledby="titulo-selector">
-            <h1 id="titulo-selector">Elegí un juego</h1>
+            <!-- En PC el título va a la izquierda con la fecha y, a la derecha, cuántos juegos se completaron hoy. -->
+            <div class="selector-juegos__cabecera">
+                <div class="selector-juegos__titulo">
+                    <p id="fecha-hoy" class="selector-juegos__fecha"></p>
+                    <h1 id="titulo-selector">
+                        <span class="selector-juegos__titulo-celular">Elegí un juego</span>
+                        <span class="selector-juegos__titulo-pc">Desafíos de hoy</span>
+                    </h1>
+                </div>
+                <div id="progreso-dia" class="progreso-dia" hidden>
+                    <p class="progreso-dia__texto"><span>Completados</span> <b id="progreso-dia-cuenta"></b></p>
+                    <span class="progreso-dia__barra" aria-hidden="true">
+                        <i></i><i></i><i></i><i></i><i></i>
+                    </span>
+                </div>
+            </div>
 
             <div class="grilla-juegos">
                 <TarjetaJuego juego="piloto">

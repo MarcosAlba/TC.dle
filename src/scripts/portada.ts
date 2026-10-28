@@ -1,10 +1,11 @@
-// Portada: racha de cada juego sobre su tarjeta y cuenta regresiva a la
-// próxima carrera. No usa Svelte: es DOM mínimo y la portada queda liviana.
+// Portada: racha y estado del día de cada juego sobre su tarjeta, la fecha y el
+// progreso del día, y la cuenta regresiva a la próxima carrera. No usa Svelte:
+// es DOM mínimo y la portada queda liviana.
 import { calendarioTC } from "../data/calendario";
 import { obtenerAlmacenamiento } from "../lib/almacenamiento";
 import { describirTiempoRestante, obtenerProximaCarrera, obtenerTiempoRestante, type CarreraConInicio } from "../lib/calendario";
 import { JUEGOS } from "../lib/juegos";
-import { obtenerRacha } from "../lib/rachas";
+import { obtenerProgresoJuego, obtenerRacha } from "../lib/rachas";
 import { urlImagen } from "../lib/rutas";
 
 // Racha sobre la tarjeta: suma un día por cada acierto seguido y desaparece
@@ -29,6 +30,46 @@ function mostrarRachas(): void {
 
 const dosDigitos = (numero: number): string => String(numero).padStart(2, "0");
 
+// En PC el estado se ve en el color de la franja del zócalo; esto es lo que oye el lector de pantalla.
+function describirProgreso(estado: ReturnType<typeof obtenerProgresoJuego>): string {
+    if (estado === "acertado") {
+        return "Resuelto.";
+    }
+    if (estado === "fallado") {
+        return "Terminado sin acertar.";
+    }
+    return estado === "en-curso" ? "En curso." : "Sin jugar.";
+}
+
+function mostrarEstados(): void {
+    const almacenamiento = obtenerAlmacenamiento();
+    let completados = 0;
+
+    for (const juego of JUEGOS) {
+        const tarjeta = document.querySelector<HTMLElement>(`.tarjeta-juego--${juego.id}`);
+        if (!tarjeta) {
+            continue;
+        }
+
+        const progreso = obtenerProgresoJuego(almacenamiento, juego);
+        tarjeta.dataset.estado = progreso;
+        tarjeta.querySelector("[data-estado-lector]")!.textContent = describirProgreso(progreso);
+
+        if (progreso === "acertado" || progreso === "fallado") {
+            completados++;
+        }
+    }
+
+    const fecha = new Date();
+    const dia = fecha.toLocaleDateString("es-AR", { weekday: "long" });
+    document.getElementById("fecha-hoy")!.textContent = dia + " " + dosDigitos(fecha.getDate()) + "/" + dosDigitos(fecha.getMonth() + 1);
+
+    const bloque = document.getElementById("progreso-dia")!;
+    document.getElementById("progreso-dia-cuenta")!.textContent = completados + " de " + JUEGOS.length;
+    bloque.querySelectorAll("i").forEach((tramo, indice) => tramo.classList.toggle("lleno", indice < completados));
+    bloque.hidden = false;
+}
+
 function iniciarCuentaRegresiva(): void {
     const bloque = document.getElementById("proxima-carrera");
 
@@ -38,6 +79,7 @@ function iniciarCuentaRegresiva(): void {
 
     const campo = (id: string) => document.getElementById("proxima-carrera-" + id)!;
     const trazado = campo("trazado") as HTMLImageElement;
+    const ganadores = JSON.parse(bloque.dataset.ganadores || "{}") as Record<string, { piloto: string; anio: number }>;
     const resumen = campo("resumen");
     let carrera = null as CarreraConInicio | null;
     let intervalo: number | undefined;
@@ -61,7 +103,21 @@ function iniciarCuentaRegresiva(): void {
         if (carrera.circuito) {
             trazado.src = urlImagen("circuitos/" + carrera.circuito + ".svg");
         }
-        frase = "Fecha " + carrera.fecha + ", " + carrera.lugar + ", el " + dia + ".";
+        const ganador = ganadores[carrera.fecha];
+        campo("ganador").hidden = !ganador;
+        if (ganador) {
+            campo("ganador-nombre").textContent = ganador.piloto;
+            campo("ganador-anio").textContent = String(ganador.anio);
+        }
+        frase =
+            "Fecha " +
+            carrera.fecha +
+            ", " +
+            carrera.lugar +
+            ", el " +
+            dia +
+            "." +
+            (ganador ? " La última vez ganó " + ganador.piloto + ", en " + ganador.anio + "." : "");
         fraseActual = "";
     }
 
@@ -96,4 +152,5 @@ function iniciarCuentaRegresiva(): void {
 }
 
 mostrarRachas();
+mostrarEstados();
 iniciarCuentaRegresiva();

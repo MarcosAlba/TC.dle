@@ -71,6 +71,19 @@
         clip-path: var(--corte);
     }
 
+    /* En celular y tablet la cabecera es solo el título, como siempre. */
+    .selector-juegos__cabecera,
+    .selector-juegos__titulo {
+        display: contents;
+    }
+
+    .selector-juegos__titulo-pc,
+    .selector-juegos__fecha,
+    .progreso-dia,
+    .proxima-carrera__ganador {
+        display: none;
+    }
+
     .grilla-juegos {
         display: grid;
         width: 100%;
@@ -78,7 +91,7 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    /* El Top 10 va abajo, a lo ancho: con cinco columnas los nombres no entraban. */
+    /* Hasta la PC ancha, el Top 10 va abajo, a lo ancho: con cinco columnas angostas los nombres no entraban. */
     .tarjeta-juego--top10 {
         grid-column: 1 / -1;
     }
@@ -412,6 +425,29 @@
         }
     }
 
+    /*
+     * PC: los cinco juegos en una sola fila de columnas iguales (antes eran 4 + el Top 10
+     * a lo ancho, que parecía destacado sin serlo). Desde 77 rem la página se abre a 75 rem y
+     * los nombres entran en dos renglones; más angosto, quedaban en tres y los zócalos desparejos.
+     */
+    @media (min-width: 77rem) {
+        .inicio {
+            width: min(75rem, calc(100% - 2rem));
+        }
+
+        .grilla-juegos {
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+        }
+
+        .tarjeta-juego--top10 {
+            grid-column: auto;
+        }
+
+        .tarjeta-juego--top10 .tarjeta-juego__imagen {
+            height: 13.75rem;
+        }
+    }
+
     @media (max-width: 700px) {
         :root {
             --sesgo: 0.6875rem;
@@ -593,5 +629,169 @@
 
     .tarjeta-juego__racha-negros {
         fill: var(--tinta);
+    }
+
+    /*
+     * PC: "Desafíos de hoy" con la fecha, cuántos se completaron y el estado de cada juego
+     * en su zócalo (sin jugar, en curso, resuelto). La franja de arriba del zócalo toma el
+     * color del estado. La racha sigue en la pestaña de la bandera, como en el celular.
+     */
+    @media (min-width: 77rem) {
+        .selector-juegos__cabecera {
+            display: flex;
+            width: 100%;
+            margin-bottom: var(--espacio-24);
+            gap: var(--espacio-24);
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .selector-juegos__titulo {
+            display: flex;
+            gap: var(--espacio-6);
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .selector-juegos h1 {
+            margin: 0;
+        }
+
+        .selector-juegos__titulo-celular {
+            display: none;
+        }
+
+        .selector-juegos__titulo-pc {
+            display: inline;
+        }
+
+        .selector-juegos__fecha {
+            display: block;
+            margin: 0;
+            padding: var(--espacio-4) calc(var(--sesgo) + 0.625rem);
+            color: #fff;
+            background: var(--rojo);
+            font-size: var(--texto-s);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 800;
+            text-transform: uppercase;
+            clip-path: var(--corte);
+        }
+
+        .progreso-dia {
+            display: grid;
+            width: min(20rem, 40%);
+            gap: var(--espacio-8);
+        }
+
+        .progreso-dia__texto {
+            display: flex;
+            margin: 0;
+            color: var(--blanco);
+            font-size: var(--texto-l);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 900;
+            line-height: 1;
+            text-transform: uppercase;
+            justify-content: space-between;
+        }
+
+        .progreso-dia__texto span {
+            color: var(--color-texto-suave);
+        }
+
+        .progreso-dia__texto b {
+            font-weight: inherit;
+        }
+
+        /* Un tramo por juego, inclinado como los cortes de los zócalos. */
+        .progreso-dia__barra {
+            display: grid;
+            gap: var(--espacio-4);
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .progreso-dia__barra i {
+            height: 0.5rem;
+            background: #26262e;
+            transform: skewX(-20deg);
+        }
+
+        .progreso-dia__barra i.lleno {
+            background: var(--celda-correcta-borde);
+        }
+
+        /* El estado se ve en la franja de arriba del zócalo. */
+        .tarjeta-juego {
+            --color-estado: var(--rojo);
+        }
+
+        .tarjeta-juego[data-estado="en-curso"] {
+            --color-estado: var(--color-cerca);
+        }
+
+        .tarjeta-juego[data-estado="acertado"] {
+            --color-estado: var(--color-correcto);
+        }
+
+        .tarjeta-juego[data-estado="fallado"] {
+            --color-estado: #55555e;
+        }
+
+        .tarjeta-juego__contenido {
+            border-top: 0.25rem solid var(--color-estado);
+        }
+
+        /* Siempre en dos renglones, haya o no botón "Jugar" al lado: todos los zócalos quedan iguales. */
+        .tarjeta-juego__nombre {
+            max-width: 6em;
+        }
+
+        /* "Jugar" mientras falte terminarlo; resuelto o no, ya no hay nada que jugar hoy. */
+        .tarjeta-juego[data-estado="acertado"] .tarjeta-juego__jugar,
+        .tarjeta-juego[data-estado="fallado"] .tarjeta-juego__jugar {
+            display: none;
+        }
+
+        /* Próxima carrera: el último ganador en ese circuito ocupa el lugar libre del medio. */
+        .proxima-carrera {
+            grid-template-columns: auto auto 1fr auto;
+        }
+
+        /* Si no hay ganador para mostrar, el reloj igual queda a la derecha. */
+        .proxima-carrera__reloj {
+            grid-column: -2;
+        }
+
+        .proxima-carrera__ganador {
+            display: grid;
+            margin: 0;
+            padding-left: var(--espacio-24);
+            border-left: 0.0625rem solid var(--linea);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            justify-self: start;
+        }
+
+        .proxima-carrera__ganador small {
+            color: var(--color-texto-suave);
+            font-size: var(--texto-xs);
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .proxima-carrera__ganador strong {
+            font-size: var(--texto-xl);
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .proxima-carrera__ganador span {
+            color: var(--color-texto-suave);
+            font-size: var(--texto-s);
+            font-weight: 700;
+        }
     }
 }
