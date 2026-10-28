@@ -180,3 +180,12 @@ describe("acciones al terminar", () => {
         expect(top10).not.toContain("confirmandoRendirse");
     });
 });
+
+describe("encabezado de los juegos", () => {
+    const lee = (ruta: string) => readFileSync(ruta, "utf8");
+
+    it("cada página de juego marca su pestaña", () => {
+        expect(lee("src/layouts/PaginaJuego.astro")).toContain("<EncabezadoJuego juegoActual={id} />");
+        expect(lee("src/components/EncabezadoJuego.astro")).toContain("aria-current");
+    });
+});

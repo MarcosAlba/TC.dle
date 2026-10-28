@@ -29,13 +29,13 @@
         content: "";
     }
 
-    .encabezado-juego a {
+    .encabezado-juego__logo {
         position: relative;
         display: block;
         border-radius: 0.125rem;
     }
 
-    .encabezado-juego a:focus-visible {
+    .encabezado-juego__logo:focus-visible {
         outline: 0.125rem solid var(--blanco);
         outline-offset: 0.375rem;
     }
@@ -114,6 +114,84 @@
 
         .logo-juego {
             width: 6rem;
+        }
+    }
+
+    /*
+     * Pestañas de los juegos: solo en PC, donde el logo pasa a la izquierda. El punto
+     * dice cómo va cada uno hoy, con los mismos colores que la portada.
+     */
+    .pestanas-juegos {
+        display: none;
+    }
+
+    @media (min-width: 64rem) {
+        .encabezado-juego {
+            padding-inline: var(--espacio-48);
+            justify-content: space-between;
+        }
+
+        .logo-juego {
+            margin: 0;
+        }
+
+        .pestanas-juegos {
+            display: flex;
+            gap: var(--espacio-6);
+        }
+
+        .pestanas-juegos__pestana {
+            display: flex;
+            padding: var(--espacio-8) calc(var(--sesgo) + 0.75rem) var(--espacio-8) calc(var(--sesgo) + 0.5rem);
+            color: var(--color-texto-suave);
+            background: #16161b;
+            font-size: var(--texto-s);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 800;
+            text-decoration: none;
+            text-transform: uppercase;
+            gap: var(--espacio-8);
+            align-items: center;
+            clip-path: var(--corte);
+            transition: color 160ms ease, background-color 160ms ease;
+        }
+
+        .pestanas-juegos__pestana[aria-current="page"] {
+            color: var(--tinta);
+            background: var(--blanco);
+        }
+
+        .pestanas-juegos__pestana:focus-visible {
+            color: var(--blanco);
+            outline: none;
+            box-shadow: inset 0 -0.1875rem 0 var(--blanco);
+        }
+
+        @media (hover: hover) {
+            .pestanas-juegos__pestana:not([aria-current="page"]):hover {
+                color: var(--blanco);
+                background: #22222a;
+            }
+        }
+
+        .pestanas-juegos__punto {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background: #3a3a44;
+        }
+
+        [data-estado="en-curso"] > .pestanas-juegos__punto {
+            background: var(--celda-cerca-borde);
+        }
+
+        [data-estado="acertado"] > .pestanas-juegos__punto {
+            background: var(--celda-correcta-borde);
+        }
+
+        [data-estado="fallado"] > .pestanas-juegos__punto {
+            background: #6a6a74;
         }
     }
 

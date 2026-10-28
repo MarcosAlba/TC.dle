@@ -4,6 +4,7 @@
     // la marca de cada puesto, si se eligió jugar con marcas. Las opciones se
     // eligen en la introducción. La partida vive en src/lib/top10.ts.
     import { tick } from "svelte";
+    import AccionesResultado from "../components/AccionesResultado.svelte";
     import BotonMantener from "../components/BotonMantener.svelte";
     import Buscador from "../components/Buscador.svelte";
     import Cronometro from "../components/Cronometro.svelte";
@@ -26,6 +27,7 @@
         leerOpcionesTop10,
         obtenerCarrerasJugables,
         obtenerFotoPilotoCarrera,
+        obtenerIdPilotoCarrera,
         obtenerLogoMarca,
         obtenerNombreMarca,
         obtenerPilotosDeCarreras,
@@ -42,6 +44,8 @@
     const podio = [top10[1], top10[0], top10[2]];
     const resto = top10.slice(3);
     const candidatos = obtenerPilotosDeCarreras(carreras);
+    const nombrePorId = new Map(candidatos.map((piloto) => [piloto.id, piloto.nombre]));
+    const llegadaPorId = new Map(carrera.resultados.map((resultado) => [obtenerIdPilotoCarrera(resultado.piloto), resultado.posicion]));
 
     const almacenamiento = obtenerAlmacenamiento();
     const partida = crearPartidaTop10({
@@ -54,13 +58,21 @@
     });
 
     let estado = $state(partida.cargar());
-    let mensaje = $state<{ texto: string; tipo: "" | "error" | "exito" | "info" }>({ texto: "", tipo: "" });
+    // intento: el mensaje es el resultado de un piloto probado. En PC eso ya lo dice la lista de intentos.
+    let mensaje = $state<{ texto: string; tipo: "" | "error" | "exito" | "info"; intento?: boolean }>({ texto: "", tipo: "" });
     let ultimoAcierto = $state<number | null>(null);
     let entradaInvalida = $state(false);
     let campoBuscador: ReturnType<typeof Buscador<PilotoCarrera>> | undefined = $state();
     let modal: ReturnType<typeof ModalResultado> | undefined = $state();
     let tablero: HTMLElement | undefined = $state();
 
+    // En PC, al costado del buscador: los pilotos probados (el último arriba) y dónde llegaron.
+    const ultimosIntentos = $derived(
+        estado.intentos
+            .slice()
+            .reverse()
+            .map((id) => ({ id, nombre: nombrePorId.get(id) ?? id, llegada: llegadaPorId.get(id) ?? null }))
+    );
     const acertado = (posicion: number) => estado.acertados.includes(posicion);
     const visible = (posicion: number) => acertado(posicion) || estado.terminada;
     /** Sin marcas, el logo aparece recién cuando se descubre el puesto. */
@@ -132,11 +144,12 @@
             ultimoAcierto = resultado.posicion;
             mensaje = estado.gano
                 ? { texto: "¡Completaste el top 10!", tipo: "exito" }
-                : { texto: `${elegido.nombre} llegó ${resultado.posicion}º.`, tipo: "exito" };
+                : { texto: `${elegido.nombre} llegó ${resultado.posicion}º.`, tipo: "exito", intento: true };
         } else if (resultado.tipo === "error") {
             mensaje = {
                 texto: resultado.posicion === null ? `${elegido.nombre} no corrió esta final.` : `${elegido.nombre} corrió, pero llegó ${resultado.posicion}º.`,
                 tipo: "error",
+                intento: true,
             };
         } else if (resultado.tipo === "repetido") {
             rechazarEntrada(mensajes.repetido);
@@ -254,6 +267,13 @@
     </div>
 </section>
 
+<!-- En PC el cronómetro va arriba, al lado del título; el del pie del tablero se oculta, pero es el que corta la partida. -->
+<div class="top10-reloj" aria-hidden="true">
+    {#if !estado.terminada}
+        <Cronometro opciones={estado.opciones} activo={!estado.terminada} alTerminar={() => {}} />
+    {/if}
+</div>
+
 <PanelIntento id="panel-intento-top10" titulo="Elegí un piloto" oculto={estado.terminada} deshabilitado={estado.terminada} alIntentar={intentar}>
     {#snippet buscador()}
         <Buscador
@@ -290,7 +310,9 @@
         </Buscador>
     {/snippet}
     {#snippet pie()}
-        <p id="mensaje-top10" class={"mensaje-juego" + (mensaje.tipo ? " mensaje-juego--" + mensaje.tipo : "")} aria-live="polite">{mensaje.texto}</p>
+        <p id="mensaje-top10" class={"mensaje-juego" + (mensaje.tipo ? " mensaje-juego--" + mensaje.tipo : "")}
+            class:mensaje-juego--intento={mensaje.intento}
+            aria-live="polite">{mensaje.texto}</p>
         <div class="rendirse">
             <BotonMantener clase="rendirse__boton" alCompletar={rendirse} ayuda="Mantené apretado para rendirte y ver el resultado.">
                 <span class="rendirse__texto">Mantené para rendirte</span>
@@ -299,6 +321,36 @@
         </div>
     {/snippet}
 </PanelIntento>
+
+<!--
+    Solo en PC: al terminar, el resultado ocupa el lugar del buscador (en celular está la
+    ventana y la barra de abajo). Es lo mismo que la ventana, sin tapar el tablero.
+-->
+{#if estado.terminada}
+    <section class="top10-resultado" class:top10-resultado--correcto={estado.gano} aria-labelledby="titulo-top10-resultado">
+        <p class="top10-resultado__etiqueta">{estado.gano ? "Bandera a cuadros" : "Abandono"}</p>
+        <h2 id="titulo-top10-resultado">{estado.gano ? "¡Top 10 completo!" : estado.sinTiempo ? "Se terminó el tiempo" : "Te rendiste"}</h2>
+        <p class="top10-resultado__marcador"><strong>{estado.acertados.length}</strong> de {PUESTOS}</p>
+        <CuentaRegresiva clase="top10-resultado__regreso" etiqueta="Nueva carrera en:" activa={estado.terminada} {fecha} />
+        <AccionesResultado juego="top10" {fecha} terminada={estado.terminada} {armarTexto} />
+    </section>
+{/if}
+
+<!-- Solo en PC: los pilotos probados (el tablero ya lo dice para los lectores). Queda también al terminar. -->
+{#if ultimosIntentos.length > 0}
+    <div class="top10-ultimos" aria-hidden="true">
+        <p class="top10-ultimos__titulo">Intentos</p>
+        <ol>
+            {#each ultimosIntentos as intento (intento.id)}
+                {@const acierto = intento.llegada !== null && intento.llegada <= PUESTOS}
+                <li class:top10-ultimos__acierto={acierto}>
+                    <b>{intento.nombre}</b>
+                    <span>{acierto ? "P" + intento.llegada : intento.llegada === null ? "No corrió" : "Llegó " + intento.llegada + "º"}</span>
+                </li>
+            {/each}
+        </ol>
+    </div>
+{/if}
 
 <ModalResultado
     bind:this={modal}

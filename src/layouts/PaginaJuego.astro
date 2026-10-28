@@ -20,7 +20,7 @@ const juego = obtenerJuego(id);
 ---
 
 <Pagina titulo={titulo} descripcion={descripcion} claveIntro={juego.claveIntro}>
-    <EncabezadoJuego />
+    <EncabezadoJuego juegoActual={id} />
 
     <main class={`juego juego--${id}`}>
         <div class="intro-bloque">

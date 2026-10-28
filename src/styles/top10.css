@@ -663,4 +663,264 @@
             box-shadow: 0 -0.875rem 2rem rgb(0 0 0 / 55%);
         }
     }
+
+    /* ---------- PC: la carrera a la izquierda y el buscador a la derecha ---------- */
+
+    .presentacion-juego__ayuda,
+    .top10-reloj,
+    .top10-resultado,
+    .top10-ultimos {
+        display: none;
+    }
+
+    /*
+     * Dos columnas: el tablero y el buscador a la vista al mismo tiempo, sin bajar. A la
+     * derecha van el título con el cronómetro, el buscador, "rendirse" y los últimos intentos.
+     * El juego de Svelte vive dentro de un <astro-island>: se lo "aplana" para que sus
+     * partes entren en la grilla.
+     */
+    @media (min-width: 64rem) {
+        .juego--top10 {
+            width: min(75rem, calc(100% - 3rem));
+        }
+
+        :root.intro-vista .juego--top10 .contenido-juego {
+            display: grid;
+            column-gap: var(--espacio-32);
+            grid-template-columns: minmax(0, 37.5rem) minmax(0, 1fr);
+            grid-template-rows: auto auto 1fr;
+            align-items: start;
+        }
+
+        .juego--top10 .contenido-juego > astro-island {
+            display: contents;
+        }
+
+        .juego--top10 .top10,
+        .juego--top10 .cargando-juego {
+            width: 100%;
+            margin: 0;
+            grid-column: 1;
+            grid-row: 1 / -1;
+        }
+
+        .juego--top10 .contenido-juego .presentacion-juego {
+            margin: 0 0 var(--espacio-20);
+            justify-content: start;
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .juego--top10 .contenido-juego .presentacion-juego h1 {
+            font-size: var(--texto-3xl);
+        }
+
+        .juego--top10 .presentacion-juego > .presentacion-juego__ayuda {
+            display: block;
+            width: auto;
+            min-width: 0;
+            margin: var(--espacio-14) 0 0;
+            text-align: left;
+            justify-self: start;
+        }
+
+        /* Mientras se juega va el buscador; al terminar, el resultado en el mismo lugar. */
+        .juego--top10 .panel-intento,
+        .top10-resultado {
+            width: 100%;
+            margin: 0;
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .top10-resultado {
+            display: grid;
+            padding: var(--espacio-20) var(--espacio-24) var(--espacio-24);
+            border-top: 0.375rem solid var(--franja);
+            background: var(--color-superficie);
+            justify-items: start;
+            clip-path: var(--corte-caja);
+            animation: caja-entrada 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
+        .top10-resultado--correcto {
+            border-top-color: var(--color-correcto);
+        }
+
+        .top10-resultado__etiqueta {
+            margin: 0;
+            padding: var(--espacio-4) calc(var(--sesgo) + 0.625rem);
+            color: #fff;
+            background: #3a3a44;
+            font-size: var(--texto-s);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 800;
+            clip-path: var(--corte);
+        }
+
+        .top10-resultado--correcto .top10-resultado__etiqueta {
+            background: var(--color-correcto);
+        }
+
+        .top10-resultado h2 {
+            margin: var(--espacio-10) 0 0;
+            padding: 0.1em calc(var(--sesgo) + 0.45em);
+            color: var(--tinta);
+            background: var(--blanco);
+            font-size: var(--texto-3xl);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 900;
+            line-height: 1;
+            text-transform: uppercase;
+            clip-path: var(--corte);
+        }
+
+        .top10-resultado__marcador {
+            margin: var(--espacio-12) 0 0;
+            color: var(--color-texto-suave);
+            font-size: var(--texto-m);
+        }
+
+        .top10-resultado__marcador strong {
+            color: var(--blanco);
+            font-size: 2.25rem;
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 900;
+        }
+
+        .top10-resultado__regreso {
+            display: flex;
+            width: 100%;
+            margin: var(--espacio-16) 0 0;
+            padding-top: var(--espacio-14);
+            border-top: 0.0625rem solid var(--color-borde);
+            color: var(--color-texto-suave);
+            font-family: var(--fuente-titulos);
+            font-size: var(--texto-m);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 700;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* El cronómetro sube al lado del título (a la altura del zócalo blanco). */
+        .top10-reloj {
+            display: block;
+            margin-top: 1.75rem;
+            grid-column: 2;
+            grid-row: 1;
+            justify-self: end;
+            align-self: start;
+        }
+
+        .top10-reloj .cronometro {
+            font-size: var(--texto-xl);
+        }
+
+        /* Mientras se juega, el pie del tablero queda vacío: el reloj está arriba y los aciertos se ven en el tablero. */
+        .juego--top10 .top10__cuenta,
+        .juego--top10 .top10__pie .cronometro {
+            display: none;
+        }
+
+        /* El pie del tablero no hace falta en PC: el reloj va arriba y, al terminar, la cuenta está en el resultado. */
+        .juego--top10 .top10__pie {
+            display: none;
+        }
+
+        /*
+         * "Rendirse" va pegado al buscador. El resultado de cada piloto ya está en la lista de
+         * intentos: ese mensaje queda solo para el lector de pantalla, y el renglón de mensajes
+         * no ocupa lugar mientras está vacío (los avisos de "no está en la lista" sí se ven).
+         */
+        .juego--top10 .rendirse {
+            justify-content: flex-end;
+        }
+
+        .juego--top10 .mensaje-juego:empty {
+            min-height: 0;
+            margin: 0;
+        }
+
+        .juego--top10 .mensaje-juego--intento {
+            position: absolute;
+            width: 0.0625rem;
+            height: 0.0625rem;
+            margin: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+        }
+
+        .juego--top10 .rendirse__boton {
+            width: auto;
+        }
+
+        .top10-ultimos__titulo {
+            margin: 0;
+            color: var(--color-texto-suave);
+            font-size: var(--texto-m);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 900;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        /*
+         * La lista ocupa el alto que le deja el tablero, así termina a la altura del último
+         * puesto y, si hay más intentos, se desliza por dentro.
+         */
+        .top10-ultimos {
+            display: grid;
+            min-height: 0;
+            margin: var(--espacio-24) 0 var(--espacio-18);
+            gap: var(--espacio-10);
+            grid-template-rows: auto minmax(0, 1fr);
+            grid-column: 2;
+            grid-row: 3;
+            align-self: stretch;
+        }
+
+        /* contain: size para que la lista no estire el panel: llena lo que queda y se desliza. */
+        .top10-ultimos ol {
+            display: grid;
+            margin: 0;
+            padding: 0;
+            overflow-y: auto;
+            gap: var(--espacio-6);
+            align-content: start;
+            list-style: none;
+            contain: size;
+            scrollbar-width: thin;
+        }
+
+        .top10-ultimos li {
+            display: flex;
+            padding: var(--espacio-10) var(--espacio-14);
+            border-left: 0.1875rem solid #55555e;
+            color: var(--color-texto-suave);
+            background: #16161b;
+            font-size: var(--texto-m);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 800;
+            text-transform: uppercase;
+            justify-content: space-between;
+            gap: var(--espacio-12);
+        }
+
+        .top10-ultimos li.top10-ultimos__acierto {
+            border-left-color: var(--celda-correcta-borde);
+            color: var(--blanco);
+        }
+
+        .top10-ultimos__acierto span {
+            color: var(--celda-correcta-borde);
+        }
+    }
 }
