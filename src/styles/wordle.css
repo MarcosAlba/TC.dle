@@ -308,7 +308,36 @@
             font-size: clamp(0.95rem, 5.5vw, 1.2rem);
         }
 
+        /*
+         * Teclado anclado abajo: la página ocupa toda la pantalla, el tablero se centra
+         * en el espacio libre y el teclado queda en la zona del pulgar. Si el tablero es
+         * más alto que la pantalla (palabras largas), el teclado se queda fijo igual.
+         * El alto descuenta el encabezado (4.75rem) y el margen de arriba (1rem).
+         */
+        :root.intro-vista .juego--wordle .contenido-juego {
+            display: flex;
+            min-height: calc(100dvh - 5.75rem);
+            flex-direction: column;
+        }
+
+        .juego--wordle {
+            margin-bottom: 0;
+        }
+
+        .tarjeta-desafio--suelta.tarjeta-wordle {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
         .teclado-virtual {
+            position: sticky;
+            z-index: 5;
+            bottom: 0;
+            width: auto;
+            margin: auto -0.5rem 0;
+            padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom, 0px));
+            border-top: 0.0625rem solid var(--linea);
+            background: var(--asfalto-profundo);
             gap: 0.3125rem;
         }
 
