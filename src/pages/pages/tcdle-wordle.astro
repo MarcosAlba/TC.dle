@@ -1,5 +1,6 @@
 ---
 import Wordle from "../../games/Wordle.svelte";
+import CargandoJuego from "../../components/CargandoJuego.astro";
 import PaginaJuego from "../../layouts/PaginaJuego.astro";
 import { urlImagen } from "../../lib/rutas";
 import "../../styles/desafio.css";
@@ -51,5 +52,9 @@ import "../../styles/wordle.css";
         <h1 id="titulo-wordle">Adiviná la palabra de hoy</h1>
     </section>
 
-    <Wordle client:only="svelte" />
+    <Wordle client:only="svelte">
+        <Fragment slot="fallback">
+            <CargandoJuego forma="wordle" />
+        </Fragment>
+    </Wordle>
 </PaginaJuego>

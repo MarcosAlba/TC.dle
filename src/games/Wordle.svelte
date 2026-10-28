@@ -254,7 +254,7 @@
         {/each}
     </div>
     <div class="estado-diario">
-        <p class="contador-intentos solo-lectores" class:contador-intentos--ultimo={contador.ultimo} aria-live="polite" hidden={estado.terminada}>
+        <p class="contador-intentos" class:contador-intentos--ultimo={contador.ultimo} aria-live="polite" hidden={estado.terminada}>
             {contador.texto}
         </p>
         <CuentaRegresiva etiqueta="Nueva palabra en:" activa={finalizada} {fecha} />

@@ -11,6 +11,7 @@
     import { construirTextoCompartir, filaPiloto } from "../lib/compartir";
     import { obtenerFechaLocal } from "../lib/fechas";
     import { describirContador, palabraIntentos } from "../lib/intentos";
+    import { mensajesDeBusqueda } from "../lib/mensajes";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
     import {
         compararPiloto,
@@ -46,11 +47,8 @@
                 }),
         }),
         obtenerId: (piloto) => piloto.id,
-        textos: {
-            vacio: "Por favor, ingresá un nombre de piloto.",
-            noEncontrado: "Piloto no encontrado.",
-            repetido: "Ya intentaste con ese piloto.",
-        },
+        textos: mensajesDeBusqueda("piloto"),
+        alError: () => campoBuscador?.sacudir(),
     });
 
     function crearFila(piloto: Piloto, animada: boolean): FilaPiloto {
@@ -216,6 +214,8 @@
             minimoCaracteres={1}
             estaExcluido={(piloto: Piloto) => estado.idsIntentados.includes(piloto.id)}
             alEnviar={intentar}
+            invalido={juego.entradaInvalida}
+            idMensaje="mensaje-piloto"
             alCambiar={() => juego.mostrarMensaje("")}
         >
             {#snippet opcion(piloto: Piloto)}
@@ -228,7 +228,7 @@
             <span class="contador-intentos" class:contador-intentos--ultimo={contador.ultimo} aria-live="polite" hidden={estado.terminada}>
                 {contador.texto}
             </span>
-            <p class={"mensaje-juego" + (juego.mensaje.tipo ? " mensaje-juego--" + juego.mensaje.tipo : "")} aria-live="polite">
+            <p id="mensaje-piloto" class={"mensaje-juego" + (juego.mensaje.tipo ? " mensaje-juego--" + juego.mensaje.tipo : "")} aria-live="polite">
                 {juego.mensaje.texto}
             </p>
         </div>

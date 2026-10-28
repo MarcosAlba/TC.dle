@@ -15,6 +15,7 @@
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import { obtenerFechaLocal } from "../lib/fechas";
     import { construirTextoCompartir, filaTop10 } from "../lib/compartir";
+    import { mensajesDeBusqueda } from "../lib/mensajes";
     import { urlImagen, urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import {
@@ -55,6 +56,7 @@
     let mensaje = $state<{ texto: string; tipo: "" | "error" | "exito" | "info" }>({ texto: "", tipo: "" });
     let ultimoAcierto = $state<number | null>(null);
     let confirmandoRendirse = $state(false);
+    let entradaInvalida = $state(false);
     let campoBuscador: ReturnType<typeof Buscador<PilotoCarrera>> | undefined = $state();
     let modal: ReturnType<typeof ModalResultado> | undefined = $state();
     let tablero: HTMLElement | undefined = $state();
@@ -94,6 +96,15 @@
         modal?.abrir();
     }
 
+    const mensajes = mensajesDeBusqueda("piloto");
+
+    // Lo escrito no vale (vacío, fuera de la lista o repetido): se marca el campo hasta que se vuelva a escribir.
+    function rechazarEntrada(texto: string) {
+        mensaje = { texto, tipo: "error" };
+        entradaInvalida = true;
+        campoBuscador?.sacudir();
+    }
+
     function intentar() {
         const valor = campoBuscador!.obtenerValor();
         const elegido = campoBuscador!.resolver().elemento;
@@ -102,11 +113,11 @@
             return;
         }
         if (valor.trim() === "") {
-            mensaje = { texto: "Escribí o elegí un piloto.", tipo: "error" };
+            rechazarEntrada(mensajes.vacio);
             return;
         }
         if (!elegido) {
-            mensaje = { texto: "Ese piloto no está en la lista.", tipo: "error" };
+            rechazarEntrada(mensajes.noEncontrado);
             return;
         }
 
@@ -130,7 +141,7 @@
                 tipo: "error",
             };
         } else if (resultado.tipo === "repetido") {
-            mensaje = { texto: "Ya probaste con ese piloto.", tipo: "error" };
+            rechazarEntrada(mensajes.repetido);
         }
 
         if (estado.terminada) {
@@ -261,7 +272,12 @@
             obtenerTextoCorto={(piloto: PilotoCarrera) => piloto.nombre.split(" ").pop() ?? piloto.nombre}
             estaExcluido={(piloto: PilotoCarrera) => estado.intentos.includes(piloto.id)}
             alEnviar={intentar}
-            alCambiar={() => (mensaje = { texto: "", tipo: "" })}
+            invalido={entradaInvalida}
+            idMensaje="mensaje-top10"
+            alCambiar={() => {
+                mensaje = { texto: "", tipo: "" };
+                entradaInvalida = false;
+            }}
         >
             {#snippet opcion(piloto: PilotoCarrera)}
                 {@const delCatalogo = buscarPilotoCatalogo(piloto.nombre, pilotos)}
@@ -277,7 +293,7 @@
         </Buscador>
     {/snippet}
     {#snippet pie()}
-        <p class={"mensaje-juego" + (mensaje.tipo ? " mensaje-juego--" + mensaje.tipo : "")} aria-live="polite">{mensaje.texto}</p>
+        <p id="mensaje-top10" class={"mensaje-juego" + (mensaje.tipo ? " mensaje-juego--" + mensaje.tipo : "")} aria-live="polite">{mensaje.texto}</p>
         <div class="rendirse">
             {#if confirmandoRendirse}
                 <span class="rendirse__pregunta">¿Ver el resultado y terminar?</span>

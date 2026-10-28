@@ -12,6 +12,10 @@
         /** Nombre del campo para lectores de pantalla: no se ve, pero el campo no puede quedar sin él. */
         etiquetaCampo: string;
         deshabilitado?: boolean;
+        /** Lo escrito no vale: el campo se marca y el lector de pantalla lo anuncia. */
+        invalido?: boolean;
+        /** Id del aviso de error que explica por qué; el campo lo lee junto con su nombre. */
+        idMensaje?: string;
         /** Qué probar cuando no hay coincidencias, por ejemplo "Probá con el apellido." */
         consejoVacio?: string;
         opcion: Snippet<[T]>;
@@ -26,6 +30,8 @@
         placeholder,
         etiquetaCampo,
         deshabilitado = false,
+        invalido = false,
+        idMensaje,
         consejoVacio = "",
         opcion,
         alEnviar,
@@ -146,6 +152,18 @@
     export function enfocar() {
         campo.focus();
     }
+
+    /** Sacudida corta del campo para un intento que no vale; no se mueve si la persona pidió menos movimiento. */
+    export function sacudir() {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            return;
+        }
+
+        campo.animate(
+            [{ translate: "0" }, { translate: "-0.3rem" }, { translate: "0.3rem" }, { translate: "-0.2rem" }, { translate: "0" }],
+            { duration: 260, easing: "ease-out" }
+        );
+    }
 </script>
 
 <svelte:document onclick={alClickearFuera} />
@@ -164,6 +182,8 @@
         aria-autocomplete="list"
         aria-controls={idLista}
         aria-expanded={hayOpciones}
+        aria-invalid={invalido || undefined}
+        aria-describedby={invalido ? idMensaje : undefined}
         aria-activedescendant={indiceActivo >= 0 ? idLista + "-activa" : undefined}
         oninput={alEscribir}
         onkeydown={alTeclear}

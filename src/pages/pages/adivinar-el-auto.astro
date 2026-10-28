@@ -1,5 +1,6 @@
 ---
 import Auto from "../../games/Auto.svelte";
+import CargandoJuego from "../../components/CargandoJuego.astro";
 import PaginaJuego from "../../layouts/PaginaJuego.astro";
 import { urlImagen } from "../../lib/rutas";
 import "../../styles/desafio.css";
@@ -39,5 +40,9 @@ import "../../styles/auto.css";
         <h1 id="titulo-auto">¿Quién maneja este TC?</h1>
     </section>
 
-    <Auto client:only="svelte" />
+    <Auto client:only="svelte">
+        <Fragment slot="fallback">
+            <CargandoJuego forma="foto" />
+        </Fragment>
+    </Auto>
 </PaginaJuego>

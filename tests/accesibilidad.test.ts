@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { describirTiempoRestante } from "../src/lib/calendario";
+import { mensajesDeBusqueda } from "../src/lib/mensajes";
 import { describirCelda, describirIntento, evaluarIntento } from "../src/lib/wordle";
 
 describe("describirIntento (lo que anuncia el lector tras cada fila del Wordle)", () => {
@@ -52,5 +53,25 @@ describe("describirTiempoRestante (próxima carrera)", () => {
         expect(describirTiempoRestante(tiempo(0, 1, 0))).toBe("Falta 1 hora");
         expect(describirTiempoRestante(tiempo(0, 0, 42))).toBe("Faltan 42 minutos");
         expect(describirTiempoRestante(tiempo(0, 0, 0))).toBe("Falta 1 minuto");
+    });
+});
+
+describe("mensajesDeBusqueda", () => {
+    it("dice lo mismo en todos los juegos y solo cambia el sustantivo", () => {
+        expect(mensajesDeBusqueda("piloto")).toEqual({
+            vacio: "Escribí o elegí un piloto.",
+            noEncontrado: "Ese piloto no está en la lista.",
+            repetido: "Ya probaste con ese piloto.",
+        });
+        expect(mensajesDeBusqueda("circuito").vacio).toBe("Escribí o elegí un circuito.");
+    });
+
+    it("no usa 'por favor' ni cambia de verbo entre avisos", () => {
+        const { vacio, noEncontrado, repetido } = mensajesDeBusqueda("piloto");
+
+        for (const texto of [vacio, noEncontrado, repetido]) {
+            expect(texto).not.toMatch(/por favor/i);
+            expect(texto.endsWith(".")).toBe(true);
+        }
     });
 });

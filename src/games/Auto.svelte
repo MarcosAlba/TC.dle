@@ -19,6 +19,7 @@
     import { crearDatoDiario } from "../lib/dato-diario";
     import { obtenerFechaLocal } from "../lib/fechas";
     import { describirContador, palabraIntentos } from "../lib/intentos";
+    import { mensajesDeBusqueda } from "../lib/mensajes";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
     import { obtenerApellidoPiloto, obtenerImagenMiniPiloto } from "../lib/pilotos";
     import { construirTextoCompartir, filaIntentos } from "../lib/compartir";
@@ -50,11 +51,8 @@
                 }),
         }),
         obtenerId: (piloto) => piloto.id,
-        textos: {
-            vacio: "Ingresá o elegí un piloto.",
-            noEncontrado: "Ese piloto no está en la lista.",
-            repetido: "Ya intentaste con ese piloto.",
-        },
+        textos: mensajesDeBusqueda("piloto"),
+        alError: () => campoBuscador?.sacudir(),
     });
 
     // La respuesta guardada puede venir de la versión anterior (año escrito a mano).
@@ -226,6 +224,8 @@
             minimoCaracteres={1}
             estaExcluido={(piloto: Piloto) => estado.idsIntentados.includes(piloto.id)}
             alEnviar={intentar}
+            invalido={juego.entradaInvalida}
+            idMensaje="mensaje-auto"
             alCambiar={() => juego.mostrarMensaje("")}
         >
             {#snippet opcion(piloto: Piloto)}
@@ -234,7 +234,7 @@
         </Buscador>
     {/snippet}
     {#snippet pie()}
-        <p class={"mensaje-juego" + (juego.mensaje.tipo ? " mensaje-juego--" + juego.mensaje.tipo : "")} aria-live="polite">
+        <p id="mensaje-auto" class={"mensaje-juego" + (juego.mensaje.tipo ? " mensaje-juego--" + juego.mensaje.tipo : "")} aria-live="polite">
             {juego.mensaje.texto}
         </p>
     {/snippet}

@@ -1,5 +1,6 @@
 ---
 import Circuito from "../../games/Circuito.svelte";
+import CargandoJuego from "../../components/CargandoJuego.astro";
 import PaginaJuego from "../../layouts/PaginaJuego.astro";
 import { urlImagen } from "../../lib/rutas";
 import "../../styles/desafio.css";
@@ -38,5 +39,9 @@ import "../../styles/circuito.css";
         <h1 id="titulo-circuito">¿Qué circuito es este?</h1>
     </section>
 
-    <Circuito client:only="svelte" />
+    <Circuito client:only="svelte">
+        <Fragment slot="fallback">
+            <CargandoJuego forma="foto" />
+        </Fragment>
+    </Circuito>
 </PaginaJuego>
