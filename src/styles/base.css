@@ -23,11 +23,21 @@
     html {
         font-size: clamp(100%, min(0.8333vw, 1.4815vh), 200%);
         color-scheme: dark;
+        /* Sin el recuadro gris o azul que el navegador del celular dibuja al tocar: cada control tiene su propio feedback. */
+        -webkit-tap-highlight-color: transparent;
+        /* iOS agranda el texto al girar el teléfono si no se le dice que no. */
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
     }
 
     body {
         min-height: 100vh;
+        /* En celular 100vh mide la pantalla con la barra del navegador escondida: sobraba scroll. dvh mide lo visible. */
+        min-height: 100dvh;
         margin: 0;
+        /* Con viewport-fit=cover el contenido llega a los bordes: en horizontal se corre lo que tapan la muesca y las esquinas. */
+        padding-right: env(safe-area-inset-right, 0px);
+        padding-left: env(safe-area-inset-left, 0px);
         color: var(--color-texto);
         background-color: var(--asfalto);
         background-image:
@@ -45,6 +55,20 @@
 
     button {
         cursor: pointer;
+    }
+
+    /* Sin la espera de doble toque (y sin zoom por tocar dos veces seguidas la misma tecla). */
+    button,
+    a,
+    label,
+    [role="option"] {
+        touch-action: manipulation;
+    }
+
+    /* Tocar una tecla o un botón no tiene que seleccionar su texto. */
+    button {
+        -webkit-user-select: none;
+        user-select: none;
     }
 
     /* Tipografía de zócalo: condensada, pesada e inclinada como el logo. */

@@ -237,10 +237,15 @@
         color: var(--rojo);
     }
 
-    .pista--disponible:hover,
     .pista--disponible:focus-visible {
         background: #dfe5ee;
         outline: none;
+    }
+
+    @media (hover: hover) {
+        .pista--disponible:hover {
+            background: #dfe5ee;
+        }
     }
 
     .pista--disponible:focus-visible {

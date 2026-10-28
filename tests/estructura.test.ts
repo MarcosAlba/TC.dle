@@ -102,3 +102,33 @@ describe("responsabilidades", () => {
         expect(leer("src/games/" + archivo), "va en src/lib").not.toMatch(/\blocalStorage\b|\bsetInterval\b|JSON\.parse/);
     });
 });
+
+describe("pantallas táctiles", () => {
+    const hojas = readdirSync(path.join(raiz, "src/styles")).filter((archivo) => archivo.endsWith(".css"));
+    // La vista previa de autos es una herramienta interna; la pista abierta solo conserva su estilo al pasar el mouse.
+    const permitidos = [/vista-previa-/, /\.pista--activa:hover/];
+
+    it.each(hojas)("%s: el :hover solo vale con mouse (en el celular quedaba pegado y tapaba colores)", (hoja) => {
+        const lineas = leer("src/styles/" + hoja).split(/\r?\n/);
+
+        lineas.forEach((linea, indice) => {
+            if (!linea.includes(":hover") || permitidos.some((permitido) => permitido.test(hoja) || permitido.test(linea))) {
+                return;
+            }
+
+            const cercanas = lineas.slice(Math.max(0, indice - 3), indice + 1).join("\n");
+            expect(cercanas, hoja + ":" + (indice + 1) + " " + linea.trim()).toContain("@media (hover: hover)");
+        });
+    });
+
+    it("el celular recibe la base táctil: sin recuadro al tocar, sin espera de doble toque y con la barra del color del sitio", () => {
+        const base = leer("src/styles/base.css");
+        const pagina = leer("src/layouts/Pagina.astro");
+
+        expect(base).toMatch(/-webkit-tap-highlight-color: transparent/);
+        expect(base).toMatch(/touch-action: manipulation/);
+        expect(base).toMatch(/min-height: 100dvh/);
+        expect(pagina).toMatch(/name="theme-color"/);
+        expect(pagina).toMatch(/viewport-fit=cover/);
+    });
+});

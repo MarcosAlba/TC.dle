@@ -150,8 +150,11 @@
         flex: 1;
     }
 
-    .tecla:hover:not(:disabled) {
-        background: #46474f;
+    /* Solo con mouse: en el celular el hover queda pegado y tapaba el verde o el amarillo de la letra. */
+    @media (hover: hover) {
+        .tecla:hover:not(:disabled, .tecla--correcta, .tecla--presente, .tecla--ausente) {
+            background: #46474f;
+        }
     }
 
     .tecla:active:not(:disabled) {
@@ -172,6 +175,11 @@
     .tecla--ancha {
         flex: 1.6;
         font-size: 0.7rem;
+    }
+
+    /* En el celular "ENTER" se reemplaza por el ícono: el texto quedaba a menos de 10 px. */
+    .tecla__icono {
+        display: none;
     }
 
     .tecla--correcta {
@@ -356,17 +364,33 @@
             padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom, 0px));
             border-top: 0.0625rem solid var(--linea);
             background: var(--asfalto-profundo);
-            gap: 0.3125rem;
+            gap: 0.5rem;
         }
 
+        /*
+         * Teclas de hasta 52 px de alto (antes 40) y 8 px entre filas: más fáciles de acertar
+         * con el pulgar. En pantallas bajas el alto baja con la pantalla (7,5 % de su altura,
+         * mínimo 40 px) para que el teclado no se coma el tablero.
+         */
         .tecla {
-            height: 2.5rem;
+            height: clamp(2.5rem, 7.5dvh, 3.25rem);
             min-width: 1.5rem;
-            font-size: 0.76rem;
+            font-size: 0.85rem;
         }
 
         .tecla--ancha {
-            font-size: 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        .tecla__texto {
+            display: none;
+        }
+
+        .tecla__icono {
+            display: inline;
+            font-size: 1.3rem;
+            font-style: normal;
+            line-height: 1;
         }
     }
 

@@ -171,11 +171,17 @@
         transition: background-color 150ms ease, color 150ms ease;
     }
 
-    .ronda-anio__opcion:hover,
     .ronda-anio__opcion:focus-visible {
         color: var(--tinta);
         background: var(--blanco);
         outline: none;
+    }
+
+    @media (hover: hover) {
+        .ronda-anio__opcion:hover {
+            color: var(--tinta);
+            background: var(--blanco);
+        }
     }
 
     .ronda-anio__opcion:focus-visible {

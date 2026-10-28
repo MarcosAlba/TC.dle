@@ -178,6 +178,10 @@
         role="combobox"
         {placeholder}
         autocomplete="off"
+        autocapitalize="off"
+        autocorrect="off"
+        spellcheck="false"
+        enterkeyhint="go"
         disabled={deshabilitado}
         aria-autocomplete="list"
         aria-controls={idLista}

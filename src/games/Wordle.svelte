@@ -284,7 +284,14 @@
                           : "Letra " + tecla + (teclas[tecla] ? ", " + DESCRIPCION_ESTADO_LETRA[teclas[tecla]] : "")}
                     onclick={() => manejarTecla(tecla)}
                 >
-                    {tecla === "BORRAR" ? "⌫" : tecla}
+                    {#if tecla === "BORRAR"}
+                        ⌫
+                    {:else if tecla === "ENTER"}
+                        <span class="tecla__texto">ENTER</span>
+                        <span class="tecla__icono" aria-hidden="true">⏎</span>
+                    {:else}
+                        {tecla}
+                    {/if}
                 </button>
             {/each}
         </div>
