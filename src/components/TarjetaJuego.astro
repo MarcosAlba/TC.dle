@@ -1,6 +1,7 @@
 ---
 // Tarjeta de un juego en la portada. La imagen va en el slot; la insignia de
-// racha viene oculta y la completa src/scripts/portada.ts con lo guardado.
+// racha y el estado del día (en PC, el color de la franja del zócalo) los completa
+// src/scripts/portada.ts con lo guardado.
 import { obtenerJuego, type JuegoId } from "../lib/juegos";
 import { urlJuego } from "../lib/rutas";
 
@@ -12,11 +13,12 @@ const { juego: id } = Astro.props;
 const juego = obtenerJuego(id);
 ---
 
-<a class={`tarjeta-juego tarjeta-juego--${id}`} href={urlJuego(juego.archivo)} data-juego={id}>
+<a class={`tarjeta-juego tarjeta-juego--${id} caja-chaflan`} href={urlJuego(juego.archivo)} data-juego={id}>
     <span class="tarjeta-juego__imagen"><slot /></span>
     <span class="tarjeta-juego__contenido">
         <strong class="tarjeta-juego__nombre">{juego.nombre}</strong>
         <span class="tarjeta-juego__jugar" aria-hidden="true">Jugar</span>
+        <span class="solo-lectores" data-estado-lector></span>
     </span>
     <span class="tarjeta-juego__racha" hidden>
         <svg class="tarjeta-juego__racha-icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#bandera-cuadros"></use></svg>

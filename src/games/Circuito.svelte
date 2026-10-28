@@ -17,8 +17,10 @@
     } from "../lib/circuitos";
     import { obtenerFechaLocal } from "../lib/fechas";
     import { describirContador, palabraIntentos } from "../lib/intentos";
+    import { mensajesDeBusqueda } from "../lib/mensajes";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
-    import { urlImagen } from "../lib/rutas";
+    import { construirTextoCompartir, filaIntentos } from "../lib/compartir";
+    import { urlImagen, urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import { crearJuegoAdivinanza } from "./compartido/juego-adivinanza.svelte";
 
@@ -40,11 +42,10 @@
         }),
         obtenerId: (circuito) => circuito.id,
         textos: {
-            vacio: "Ingresá o elegí un circuito.",
+            ...mensajesDeBusqueda("circuito"),
             ambiguo: "Ese autódromo tiene más de un trazado. Elegí una variante de la lista.",
-            noEncontrado: "Ese circuito no está en la lista.",
-            repetido: "Ya intentaste con ese trazado.",
         },
+        alError: () => campoBuscador?.sacudir(),
     });
 
     let campoBuscador: ReturnType<typeof Buscador<Circuito>> | undefined = $state();
@@ -60,6 +61,17 @@
             .reverse()
     );
     const urlSilueta = urlImagen("circuitos/" + secreto.imagen);
+
+    const armarTexto = (racha: number) =>
+        construirTextoCompartir({
+            juego: "circuito",
+            fecha,
+            puntaje: estado.acerto ? estado.intentosUsados : null,
+            maximo: MAXIMO_INTENTOS,
+            racha,
+            filas: [filaIntentos(estado.intentosUsados, estado.acerto)],
+            url: urlSitio(),
+        });
 
     async function abrirModal() {
         await tick();
@@ -141,6 +153,7 @@
             idLista="sugerencias-circuitos"
             placeholder="Escribí el nombre del circuito"
             etiquetaCampo="Nombre del circuito"
+            consejoVacio="Probá con la ciudad o el autódromo."
             deshabilitado={estado.terminada}
             elementos={circuitos}
             obtenerEtiqueta={etiqueta}
@@ -148,6 +161,8 @@
             obtenerValoresExactos={(circuito: Circuito) => obtenerValoresExactosCircuito(circuito, circuitos)}
             estaExcluido={(circuito: Circuito) => estado.idsIntentados.includes(circuito.id)}
             alEnviar={intentar}
+            invalido={juego.entradaInvalida}
+            idMensaje="mensaje-circuito"
             alCambiar={() => juego.mostrarMensaje("")}
         >
             <!-- Sin silueta: la miniatura regalaba la respuesta del día. -->
@@ -160,7 +175,7 @@
         </Buscador>
     {/snippet}
     {#snippet pie()}
-        <p class={"mensaje-juego" + (juego.mensaje.tipo ? " mensaje-juego--" + juego.mensaje.tipo : "")} aria-live="polite">
+        <p id="mensaje-circuito" class={"mensaje-juego" + (juego.mensaje.tipo ? " mensaje-juego--" + juego.mensaje.tipo : "")} aria-live="polite">
             {juego.mensaje.texto}
         </p>
     {/snippet}
@@ -196,6 +211,8 @@
     terminada={estado.terminada}
     correcto={estado.acerto}
     titulo={estado.acerto ? "¡Adivinaste!" : "No lo adivinaste"}
+    resumen={estado.acerto ? "Ganaste en " + estado.intentosUsados : "Abandono"}
+    {armarTexto}
     etiquetaRegreso="Nuevo circuito en:"
     clase="resultado-circuito-modal"
     focoRetorno={() => estadoFinal}

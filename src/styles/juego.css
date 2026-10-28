@@ -13,7 +13,7 @@
         position: relative;
         display: flex;
         min-height: 4.75rem;
-        padding: 0.875rem 1.25rem 1rem;
+        padding: var(--espacio-14) var(--espacio-20) var(--espacio-16);
         background: var(--asfalto-profundo);
         align-items: center;
         justify-content: center;
@@ -29,13 +29,13 @@
         content: "";
     }
 
-    .encabezado-juego a {
+    .encabezado-juego__logo {
         position: relative;
         display: block;
         border-radius: 0.125rem;
     }
 
-    .encabezado-juego a:focus-visible {
+    .encabezado-juego__logo:focus-visible {
         outline: 0.125rem solid var(--blanco);
         outline-offset: 0.375rem;
     }
@@ -109,7 +109,7 @@
     @media (max-width: 700px) {
         .encabezado-juego {
             min-height: 4.25rem;
-            padding: 0.75rem 1rem calc(0.75rem + 0.125rem);
+            padding: var(--espacio-12) var(--espacio-16) calc(0.75rem + 0.125rem);
         }
 
         .logo-juego {
@@ -117,16 +117,94 @@
         }
     }
 
+    /*
+     * Pestañas de los juegos: solo en PC, donde el logo pasa a la izquierda. El punto
+     * dice cómo va cada uno hoy, con los mismos colores que la portada.
+     */
+    .pestanas-juegos {
+        display: none;
+    }
+
+    @media (min-width: 64rem) {
+        .encabezado-juego {
+            padding-inline: var(--espacio-48);
+            justify-content: space-between;
+        }
+
+        .logo-juego {
+            margin: 0;
+        }
+
+        .pestanas-juegos {
+            display: flex;
+            gap: var(--espacio-6);
+        }
+
+        .pestanas-juegos__pestana {
+            display: flex;
+            padding: var(--espacio-8) calc(var(--sesgo) + 0.75rem) var(--espacio-8) calc(var(--sesgo) + 0.5rem);
+            color: var(--color-texto-suave);
+            background: #16161b;
+            font-size: var(--texto-s);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 800;
+            text-decoration: none;
+            text-transform: uppercase;
+            gap: var(--espacio-8);
+            align-items: center;
+            clip-path: var(--corte);
+            transition: color 160ms ease, background-color 160ms ease;
+        }
+
+        .pestanas-juegos__pestana[aria-current="page"] {
+            color: var(--tinta);
+            background: var(--blanco);
+        }
+
+        .pestanas-juegos__pestana:focus-visible {
+            color: var(--blanco);
+            outline: none;
+            box-shadow: inset 0 -0.1875rem 0 var(--blanco);
+        }
+
+        @media (hover: hover) {
+            .pestanas-juegos__pestana:not([aria-current="page"]):hover {
+                color: var(--blanco);
+                background: #22222a;
+            }
+        }
+
+        .pestanas-juegos__punto {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background: #3a3a44;
+        }
+
+        [data-estado="en-curso"] > .pestanas-juegos__punto {
+            background: var(--celda-cerca-borde);
+        }
+
+        [data-estado="acertado"] > .pestanas-juegos__punto {
+            background: var(--celda-correcta-borde);
+        }
+
+        [data-estado="fallado"] > .pestanas-juegos__punto {
+            background: #6a6a74;
+        }
+    }
+
     .juego {
         width: min(47.5rem, calc(100% - 2rem));
-        margin: 2.25rem auto 3rem;
+        margin: 2.25rem auto var(--espacio-48);
     }
 
     /* ---------- Título como zócalo ---------- */
 
     .presentacion-juego {
         display: grid;
-        margin: 0 auto 1.75rem;
+        margin: 0 auto var(--espacio-28);
         justify-content: center;
         justify-items: start;
     }
@@ -135,10 +213,10 @@
         position: relative;
         z-index: 1;
         margin: 0 0 -0.125rem;
-        padding: 0.25rem calc(var(--sesgo) + 0.625rem) 0.3125rem;
+        padding: var(--espacio-4) calc(var(--sesgo) + 0.625rem) var(--espacio-6);
         color: #fff;
         background: var(--rojo);
-        font-size: 0.86rem;
+        font-size: var(--texto-s);
         font-style: italic;
         font-weight: 800;
         line-height: 1.1;
@@ -161,9 +239,9 @@
     .presentacion-juego > p:last-child:not(.modo-juego) {
         width: 0;
         min-width: 100%;
-        margin: 0.75rem 0 0;
+        margin: var(--espacio-12) 0 0;
         color: var(--color-texto-suave);
-        font-size: 0.92rem;
+        font-size: var(--texto-s);
         text-align: center;
         justify-self: center;
     }
@@ -172,16 +250,16 @@
 
     .tarjeta-desafio {
         width: min(40rem, 100%);
-        margin: 0 auto 1.375rem;
-        border-radius: 0.25rem;
+        margin: 0 auto var(--espacio-24);
         background: var(--color-superficie);
         overflow: hidden;
+        clip-path: var(--corte-caja);
     }
 
     .estado-diario {
         display: flex;
         min-height: 0;
-        padding: 0.75rem 0.25rem 0;
+        padding: var(--espacio-12) var(--espacio-4) 0;
         align-items: center;
         justify-content: center;
     }
@@ -192,7 +270,7 @@
      */
     .contador-intentos {
         margin: 0;
-        font-size: 1rem;
+        font-size: var(--texto-m);
         font-style: italic;
         font-weight: 800;
         text-align: center;
@@ -210,7 +288,7 @@
     }
 
     .contador-intentos--ultimo {
-        padding: 0.25rem calc(var(--sesgo) + 0.625rem);
+        padding: var(--espacio-4) calc(var(--sesgo) + 0.625rem);
         color: var(--tinta);
         background: var(--color-cerca);
         clip-path: var(--corte);
@@ -220,18 +298,18 @@
         display: flex;
         margin: 0;
         color: var(--color-texto-suave);
-        font-size: 0.95rem;
+        font-size: var(--texto-m);
         font-style: italic;
         font-weight: 700;
-        gap: 0.625rem;
+        gap: var(--espacio-10);
         align-items: center;
     }
 
     .cuenta-regresiva strong {
-        padding: 0.1875rem calc(var(--sesgo) + 0.375rem);
+        padding: var(--espacio-4) calc(var(--sesgo) + 0.375rem);
         color: var(--tinta);
         background: var(--blanco);
-        font-size: 1.05rem;
+        font-size: var(--texto-m);
         font-variant-numeric: tabular-nums;
         font-weight: 900;
         clip-path: var(--corte);
@@ -242,7 +320,7 @@
     .panel-intento,
     .historial-intentos {
         width: min(47.5rem, 100%);
-        margin: 0 auto 1.75rem;
+        margin: 0 auto var(--espacio-28);
     }
 
     /*
@@ -256,15 +334,15 @@
 
     .panel-intento__cabecera {
         display: flex;
-        margin-bottom: 0.5rem;
+        margin-bottom: var(--espacio-8);
     }
 
     .panel-intento__cabecera h2 {
         margin: 0;
-        padding: 0.3125rem calc(var(--sesgo) + 0.75rem);
+        padding: var(--espacio-6) calc(var(--sesgo) + 0.75rem);
         color: #fff;
         background: var(--color-superficie-clara);
-        font-size: 1.05rem;
+        font-size: var(--texto-m);
         font-style: italic;
         font-weight: 900;
         line-height: 1.1;
@@ -277,7 +355,7 @@
     }
 
     .estado-partida {
-        margin-top: 0.625rem;
+        margin-top: var(--espacio-10);
     }
 
     /*
@@ -308,7 +386,7 @@
         border-radius: 0;
         color: var(--tinta);
         background: var(--blanco);
-        font-size: 1.05rem;
+        font-size: var(--texto-m);
         font-weight: 500;
         outline: none;
         clip-path: var(--corte);
@@ -317,12 +395,23 @@
 
     .buscador > input::placeholder,
     .fila-busqueda > input::placeholder {
-        color: #6c7588;
+        /* 5,5:1 sobre el blanco del campo; el anterior (#6c7588) daba 4,2:1 y no llegaba a 4,5:1. */
+        color: #5b6476;
     }
 
     .buscador > input:focus,
     .fila-busqueda > input:focus {
         box-shadow: inset 0 -0.3125rem 0 var(--rojo);
+    }
+
+    /*
+     * Intento que no vale: el zócalo se tiñe y el filete pasa a bordó (el rojo del foco
+     * y el del error se parecían), así el error se ve en el campo y no solo en la línea de abajo.
+     */
+    .buscador > input[aria-invalid="true"],
+    .fila-busqueda > input[aria-invalid="true"] {
+        background: #ffe3e6;
+        box-shadow: inset 0 -0.3125rem 0 var(--color-incorrecto);
     }
 
     .buscador > input:disabled,
@@ -342,7 +431,7 @@
         border-radius: 0;
         color: #fff;
         background: linear-gradient(90deg, var(--blanco) 50%, var(--rojo) 50%) 100% 0 / 201% 100%;
-        font-size: 1.25rem;
+        font-size: var(--texto-xl);
         font-style: italic;
         font-weight: 900;
         text-transform: uppercase;
@@ -350,11 +439,17 @@
         transition: background-position 220ms cubic-bezier(0.2, 0.8, 0.2, 1), color 220ms ease, transform 120ms ease;
     }
 
-    .boton-intentar:hover:not(:disabled),
     .boton-intentar:focus-visible {
         color: var(--rojo);
         background-position: 0 0;
         outline: none;
+    }
+
+    @media (hover: hover) {
+        .boton-intentar:hover:not(:disabled) {
+            color: var(--rojo);
+            background-position: 0 0;
+        }
     }
 
     .boton-intentar:focus-visible {
@@ -388,14 +483,14 @@
         display: flex;
         width: 100%;
         min-height: 3.625rem;
-        padding: 0.4375rem 0.875rem;
+        padding: var(--espacio-8) var(--espacio-14);
         border: 0;
         border-bottom: 0.0625rem solid #dde2ea;
         color: var(--tinta);
         background: transparent;
-        font-stretch: 100%;
+        font-stretch: var(--ancho-texto);
         text-align: left;
-        gap: 0.75rem;
+        gap: var(--espacio-12);
         align-items: center;
     }
 
@@ -403,12 +498,18 @@
         border-bottom: 0;
     }
 
-    .buscador__opcion:hover,
     .buscador__opcion:focus-visible,
     .buscador__opcion--activa {
         background: #e3e8f0;
         box-shadow: inset 0.3125rem 0 0 var(--rojo);
         outline: none;
+    }
+
+    @media (hover: hover) {
+        .buscador__opcion:hover {
+            background: #e3e8f0;
+            box-shadow: inset 0.3125rem 0 0 var(--rojo);
+        }
     }
 
     .buscador__avatar {
@@ -433,14 +534,14 @@
     .buscador__iniciales {
         color: #c9d0dc;
         font-family: var(--fuente-titulos);
-        font-size: 0.8rem;
+        font-size: var(--texto-xs);
         font-weight: 800;
     }
 
     .buscador__nombre,
     .buscador__contenido strong {
         font-family: var(--fuente-texto);
-        font-size: 0.95rem;
+        font-size: var(--texto-m);
         font-weight: 700;
     }
 
@@ -453,15 +554,15 @@
     .buscador__contenido span {
         color: #5b6476;
         font-family: var(--fuente-texto);
-        font-size: 0.74rem;
+        font-size: var(--texto-xs);
     }
 
     .buscador__vacio {
         margin: 0;
-        padding: 0.875rem;
+        padding: var(--espacio-14);
         color: #5b6476;
         font-family: var(--fuente-texto);
-        font-size: 0.85rem;
+        font-size: var(--texto-s);
         text-align: center;
     }
 
@@ -470,12 +571,12 @@
     .intro-juego {
         display: flex;
         width: min(45rem, 100%);
-        margin: 1.5rem auto 2rem;
-        padding: 1.625rem;
-        border-radius: 0.25rem;
+        margin: var(--espacio-24) auto var(--espacio-32);
+        padding: var(--espacio-28);
         background: var(--color-superficie);
+        clip-path: var(--corte-caja);
         text-align: left;
-        gap: 1.625rem;
+        gap: var(--espacio-28);
         align-items: center;
         justify-content: center;
     }
@@ -499,9 +600,9 @@
 
     .intro-juego__texto {
         max-width: 62ch;
-        margin: 0 0 0.75rem;
+        margin: 0 0 var(--espacio-12);
         color: #c7c8d0;
-        font-size: 0.95rem;
+        font-size: var(--texto-m);
         line-height: 1.55;
     }
 
@@ -515,18 +616,18 @@
 
     .intro-juego__leyenda {
         display: grid;
-        margin: 0 0 0.75rem;
+        margin: 0 0 var(--espacio-12);
         padding: 0;
-        gap: 0.5rem;
+        gap: var(--espacio-8);
         list-style: none;
     }
 
     .intro-juego__leyenda li {
         display: flex;
         color: #c7c8d0;
-        font-size: 0.9rem;
+        font-size: var(--texto-s);
         line-height: 1.4;
-        gap: 0.625rem;
+        gap: var(--espacio-10);
         align-items: flex-start;
     }
 
@@ -558,12 +659,12 @@
     .intro-juego__boton {
         align-self: flex-start;
         min-height: 2.875rem;
-        margin-top: 1.25rem;
+        margin-top: var(--espacio-20);
         padding: 0 calc(var(--sesgo) + 1.5rem);
         border: 0;
         color: #fff;
         background: linear-gradient(90deg, var(--blanco) 50%, var(--rojo) 50%) 100% 0 / 201% 100%;
-        font-size: 1.15rem;
+        font-size: var(--texto-l);
         font-style: italic;
         font-weight: 900;
         text-transform: uppercase;
@@ -571,11 +672,17 @@
         transition: background-position 220ms cubic-bezier(0.2, 0.8, 0.2, 1), color 220ms ease;
     }
 
-    .intro-juego__boton:hover,
     .intro-juego__boton:focus-visible {
         color: var(--rojo);
         background-position: 0 0;
         outline: none;
+    }
+
+    @media (hover: hover) {
+        .intro-juego__boton:hover {
+            color: var(--rojo);
+            background-position: 0 0;
+        }
     }
 
     .intro-juego__boton:focus-visible {
@@ -586,7 +693,7 @@
         .intro-juego {
             flex-direction: column;
             width: min(100% - 1rem, 45rem);
-            padding: 1.25rem;
+            padding: var(--espacio-20);
             align-items: center;
             text-align: center;
         }
@@ -606,15 +713,15 @@
 
     .mensaje-juego {
         min-height: 1.25rem;
-        margin: 0.75rem 0 0;
+        margin: var(--espacio-12) 0 0;
         font-family: var(--fuente-texto);
-        font-size: 0.85rem;
-        font-weight: 600;
+        font-size: var(--texto-m);
+        font-weight: 700;
         text-align: center;
     }
 
     .mensaje-juego--error {
-        color: #ff7080;
+        color: var(--color-texto-error);
     }
 
     .mensaje-juego--info {
@@ -622,15 +729,15 @@
     }
 
     .mensaje-juego--exito {
-        color: #4fdc93;
+        color: var(--color-texto-exito);
     }
 
     /* ---------- Historial ---------- */
 
     .titulo-seccion {
         display: flex;
-        margin-bottom: 0.75rem;
-        gap: 0.25rem;
+        margin-bottom: var(--espacio-12);
+        gap: var(--espacio-4);
         align-items: stretch;
     }
 
@@ -642,10 +749,10 @@
 
     .titulo-seccion h2 {
         margin: 0;
-        padding: 0.3125rem calc(var(--sesgo) + 0.875rem);
+        padding: var(--espacio-6) calc(var(--sesgo) + 0.875rem);
         color: #fff;
         background: var(--color-superficie-clara);
-        font-size: 1.05rem;
+        font-size: var(--texto-m);
         font-style: italic;
         font-weight: 900;
         text-transform: uppercase;
@@ -654,13 +761,13 @@
 
     .lista-intentos {
         display: grid;
-        gap: 0.375rem;
+        gap: var(--espacio-6);
     }
 
     /*
      * Cada intento entra como un zócalo que barre de costado. Los dos polígonos
      * tienen cuatro puntos para que el corte diagonal se interpole y quede
-     * aplicado al terminar. Las piezas sin corte usan panel-entrada.
+     * aplicado al terminar. Las cajas con chanfle usan caja-entrada.
      */
     @keyframes zocalo-entrada {
         from {
@@ -674,14 +781,15 @@
         }
     }
 
-    @keyframes panel-entrada {
+    /* Entrada de las cajas con chanfle: una cortina de izquierda a derecha que termina en el corte (mismos 5 vértices en los dos extremos). */
+    @keyframes caja-entrada {
         from {
-            clip-path: inset(0 100% 0 0);
+            clip-path: polygon(0 0, 0 0, 0 0, 0 100%, 0 100%);
             transform: translateX(-1.125rem);
         }
 
         to {
-            clip-path: inset(0 0 0 0);
+            clip-path: var(--corte-caja);
             transform: none;
         }
     }
@@ -695,6 +803,7 @@
     .resultado-modal {
         width: min(31.25rem, calc(100% - 1.75rem));
         max-height: calc(100vh - 1.75rem);
+        max-height: calc(100dvh - 1.75rem);
         padding: 0;
         border: 0;
         color: var(--color-texto);
@@ -702,23 +811,74 @@
         overflow: visible;
     }
 
+    .resultado-modal:focus {
+        outline: none;
+    }
+
+    /*
+     * Entrada y salida con fundido. El estado "abierto" define la entrada (200 ms, frena al llegar) y el
+     * "cerrado" la salida (150 ms, más corta que la entrada). display y overlay con allow-discrete
+     * mantienen la ventana en pantalla hasta que termina el fundido. Sin soporte del navegador
+     * simplemente aparece y desaparece de golpe, como antes.
+     */
+    .resultado-modal {
+        transition: opacity 200ms ease-out, transform 200ms ease-out, overlay 200ms allow-discrete, display 200ms allow-discrete;
+    }
+
+    .resultado-modal:not([open]) {
+        opacity: 0;
+        transform: translateY(0.5rem);
+        transition: opacity 150ms ease-in, transform 150ms ease-in, overlay 150ms allow-discrete, display 150ms allow-discrete;
+    }
+
+    @starting-style {
+        .resultado-modal[open] {
+            opacity: 0;
+            transform: translateY(0.5rem);
+        }
+    }
+
     .resultado-modal::backdrop {
         background: rgb(0 0 0 / 78%);
         backdrop-filter: blur(0.25rem);
+        transition: opacity 200ms ease-out, overlay 200ms allow-discrete, display 200ms allow-discrete;
+    }
+
+    .resultado-modal:not([open])::backdrop {
+        opacity: 0;
+        transition-duration: 150ms;
+        transition-timing-function: ease-in;
+    }
+
+    @starting-style {
+        .resultado-modal[open]::backdrop {
+            opacity: 0;
+        }
     }
 
     .resultado-modal[open] .resultado-modal__contenido {
-        animation: panel-entrada 380ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        animation: caja-entrada 380ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    /* El clip-path del chanfle recortaría la sombra de la caja: se la pone el <dialog>, que no está recortado. */
+    .resultado-modal {
+        filter: drop-shadow(0 1.875rem 2.5rem rgb(0 0 0 / 55%));
     }
 
     .resultado-modal__contenido {
         position: relative;
-        padding: 2.375rem 1.875rem 1.75rem;
-        border-radius: 0.25rem;
+        padding: var(--espacio-40) var(--espacio-32) var(--espacio-28);
         background: var(--asfalto-claro);
-        box-shadow: 0 1.875rem 4.375rem rgb(0 0 0 / 60%);
+        clip-path: var(--corte-caja);
         text-align: center;
-        overflow: hidden;
+        /*
+         * Si el resultado no entra en pantalla (un celular apaisado, por ejemplo) se desliza por
+         * dentro. Antes quedaba cortado y el botón "Siguiente" no se podía alcanzar.
+         */
+        max-height: inherit;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
     }
 
     .resultado-modal__contenido::before {
@@ -727,7 +887,7 @@
         right: 0;
         left: 0;
         height: 0.375rem;
-        background: var(--franja);
+        background: #55555e;
         content: "";
     }
 
@@ -735,45 +895,72 @@
         background: var(--color-correcto);
     }
 
+    /* Íconos del sprite (Iconos.astro): del color del texto y inclinados como la cursiva del logo. */
+    .icono {
+        display: inline-block;
+        width: 1.25rem;
+        height: 1.25rem;
+        flex: none;
+        vertical-align: -0.1875em;
+        transform: skewX(-12deg);
+    }
+
+    .siguiente-juego .icono {
+        width: 1.25rem;
+        height: 0.875rem;
+    }
+
     .resultado-modal__cerrar {
         position: absolute;
         top: 0.875rem;
         right: 0.75rem;
-        width: 2.25rem;
-        height: 2.25rem;
+        width: 2.75rem;
+        height: 2.75rem;
         padding: 0;
         border: 0;
         border-radius: 0.125rem;
         color: var(--color-texto-suave);
         background: transparent;
-        font-size: 1.6rem;
         font-style: normal;
     }
 
-    .resultado-modal__cerrar:hover,
+    .resultado-modal__cerrar .icono {
+        width: 1.25rem;
+        height: 1.25rem;
+        vertical-align: middle;
+    }
+
     .resultado-modal__cerrar:focus-visible {
         color: var(--blanco);
         outline: 0.125rem solid var(--blanco);
     }
 
+    @media (hover: hover) {
+        .resultado-modal__cerrar:hover {
+            color: var(--blanco);
+            outline: 0.125rem solid var(--blanco);
+        }
+    }
+
     .resultado-modal__etiqueta {
         display: inline-block;
         margin: 0;
-        padding: 0.25rem calc(var(--sesgo) + 0.625rem);
-        color: #fff;
-        background: var(--rojo);
-        font-size: 0.9rem;
+        padding: var(--espacio-4) calc(var(--sesgo) + 0.625rem);
+        color: #e4e4ea;
+        background: #3a3a44;
+        font-size: var(--texto-s);
         font-style: italic;
         font-weight: 800;
         clip-path: var(--corte);
     }
 
     .resultado-modal--correcto .resultado-modal__etiqueta {
+        color: #fff;
         background: var(--color-correcto);
     }
 
     .resultado-modal h2 {
-        margin: 0.75rem 0 0;
+        margin: var(--espacio-12) 0 0;
         font-size: clamp(2rem, 7vw, 2.8rem);
         font-style: italic;
         font-weight: 900;
@@ -783,7 +970,7 @@
 
     .resultado-modal__nombre {
         display: inline-block;
-        margin-top: 1rem;
+        margin-top: var(--espacio-16);
         padding: 0.12em calc(var(--sesgo) + 0.5em);
         color: var(--tinta);
         background: var(--blanco);
@@ -796,20 +983,20 @@
     }
 
     .resultado-modal__detalle {
-        margin: 0.75rem 0 0;
+        margin: var(--espacio-12) 0 0;
         color: #c7c8d0;
         font-family: var(--fuente-texto);
-        font-size: 0.92rem;
-        font-stretch: 100%;
+        font-size: var(--texto-s);
+        font-stretch: var(--ancho-texto);
     }
 
     .resultado-modal__regreso {
         display: flex;
-        margin: 1.5rem 0 0;
-        padding-top: 1rem;
+        margin: var(--espacio-24) 0 0;
+        padding-top: var(--espacio-16);
         border-top: 0.0625rem solid var(--color-borde);
         color: var(--color-texto-suave);
-        font-size: 0.95rem;
+        font-size: var(--texto-m);
         font-style: italic;
         font-weight: 700;
         align-items: center;
@@ -817,10 +1004,10 @@
     }
 
     .resultado-modal__regreso strong {
-        padding: 0.1875rem calc(var(--sesgo) + 0.375rem);
+        padding: var(--espacio-4) calc(var(--sesgo) + 0.375rem);
         color: var(--tinta);
         background: var(--blanco);
-        font-size: 1.05rem;
+        font-size: var(--texto-m);
         font-variant-numeric: tabular-nums;
         font-weight: 900;
         clip-path: var(--corte);
@@ -829,26 +1016,26 @@
     @media (max-width: 620px) {
         .juego {
             width: min(100% - 1rem, 47.5rem);
-            margin-top: 1.5rem;
+            margin-top: var(--espacio-24);
         }
 
         .boton-intentar {
             min-width: 0;
             padding: 0 calc(var(--sesgo) + 0.75rem);
-            font-size: 1.05rem;
+            font-size: var(--texto-m);
         }
 
         .buscador > input,
         .fila-busqueda > input {
-            font-size: 1rem;
+            font-size: var(--texto-m);
         }
 
         .resultado-modal__contenido {
-            padding: 2.125rem 1.125rem 1.5rem;
+            padding: var(--espacio-32) var(--espacio-18) var(--espacio-24);
         }
 
         .resultado-modal__regreso {
-            gap: 0.625rem;
+            gap: var(--espacio-10);
         }
     }
 
@@ -857,48 +1044,123 @@
         display: none;
     }
 
+    /*
+     * Mismo barrido que "Intentar": al pasar el mouse o enfocar, el blanco entra desde
+     * la izquierda. Antes solo cambiaba de rojo a rojo oscuro y con teclado casi no se notaba.
+     */
     .siguiente-juego {
-        display: block;
+        --acento: var(--color-rojo);
+        display: flex;
         width: 100%;
-        margin-top: 1.125rem;
-        padding: 0.8125rem 1.375rem;
-        background: var(--color-rojo);
+        min-height: 3.25rem;
+        margin-top: var(--espacio-18);
+        padding: 0 calc(var(--sesgo) + 0.875rem);
+        gap: var(--espacio-10);
+        align-items: center;
+        background: linear-gradient(90deg, var(--blanco) 50%, var(--acento) 50%) 100% 0 / 201% 100%;
         color: var(--blanco);
         font-family: var(--fuente-titulos);
         text-align: center;
         text-decoration: none;
         clip-path: var(--corte);
-        transition: background-color 160ms ease;
+        transition: background-position 220ms cubic-bezier(0.2, 0.8, 0.2, 1), color 220ms ease;
     }
 
-    .siguiente-juego:hover,
     .siguiente-juego:focus-visible {
-        background: var(--color-rojo-oscuro);
+        background-position: 0 0;
+        color: var(--tinta);
+        outline: none;
     }
 
+    @media (hover: hover) {
+        .siguiente-juego:hover {
+            background-position: 0 0;
+            color: var(--tinta);
+        }
+    }
+
+    .siguiente-juego:focus-visible {
+        box-shadow: inset 0 -0.3125rem 0 var(--acento);
+    }
+
+    /*
+     * Un solo renglón: si el nombre no entra, se corta con "…" antes que partir el botón.
+     * width: 0 + flex: 1 (no alcanza con min-width: 0) para que el texto no ensanche la columna.
+     */
     .siguiente-juego strong {
-        display: block;
-        font-size: 1.05rem;
+        width: 0;
+        min-width: 0;
+        overflow: hidden;
+        font-size: var(--texto-m);
+        font-stretch: var(--ancho-zocalo);
         font-style: italic;
         font-weight: 900;
+        text-align: left;
+        text-overflow: ellipsis;
         text-transform: uppercase;
+        white-space: nowrap;
+        flex: 1;
     }
 
-    .siguiente-juego small {
-        display: block;
-        margin-top: 0.125rem;
-        font-size: 0.8rem;
-        font-weight: 600;
-        opacity: 0.85;
+    .siguiente-juego__corto,
+    .boton-compartir__etiqueta {
+        display: none;
+    }
+
+    /* Cuántos juegos quedan hoy, como contador. */
+    .siguiente-juego__extra {
+        padding: 0.125rem var(--espacio-8);
+        background: rgb(0 0 0 / 22%);
+        font-size: var(--texto-xs);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 800;
+        text-transform: uppercase;
+        white-space: nowrap;
+        flex: none;
     }
 
     .siguiente-juego--completo {
-        background: var(--color-correcto);
+        --acento: var(--color-correcto);
     }
 
     @media (max-width: 620px) {
         .siguiente-juego strong {
-            font-size: 0.92rem;
+            font-size: var(--texto-s);
+        }
+
+        .resultado-acciones .siguiente-juego {
+            padding: 0 calc(var(--sesgo) + 0.5rem);
+            gap: var(--espacio-8);
+        }
+
+        .resultado-acciones .boton-compartir--icono {
+            padding: 0 calc(var(--sesgo) + 0.5rem);
+        }
+
+        /* Oculto a la vista, no a los lectores de pantalla (el corto es aria-hidden). */
+        .siguiente-juego__largo {
+            position: absolute;
+            width: 0.0625rem;
+            height: 0.0625rem;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+        }
+
+        .siguiente-juego__corto {
+            display: inline;
+        }
+
+        /* En 320 px el contador no entra (y "Compartir" se angosta): el nombre del juego es lo que importa. */
+        @media (max-width: 360px) {
+            .siguiente-juego__extra {
+                display: none;
+            }
+
+            .resultado-acciones .boton-compartir--icono {
+                padding: 0 calc(var(--sesgo) + 0.25rem);
+            }
         }
     }
 
@@ -934,7 +1196,8 @@
         height: 2.875rem;
         background: var(--mascota-perdida) center / contain no-repeat;
         content: "";
-        animation: fantasma-flota 2.6s ease-in-out infinite alternate;
+        /* Flota cuatro veces (sube, baja, sube, baja) y queda quieto: antes seguía flotando para siempre. */
+        animation: fantasma-flota 2.6s ease-in-out 4 alternate both;
     }
 
     .resultado-modal--correcto .resultado-modal__contenido::after,
@@ -944,12 +1207,15 @@
         animation: var(--mascota-animacion-ganada);
     }
 
+    /* Aparece desde scale(0.6) con fundido: nacer de scale(0) hacía que apareciera de la nada. */
     @keyframes calabaza-salta {
         from {
-            transform: scale(0) rotate(-25deg);
+            opacity: 0;
+            transform: scale(0.6) rotate(-25deg);
         }
 
         to {
+            opacity: 1;
             transform: scale(1) rotate(-8deg);
         }
     }
@@ -966,8 +1232,395 @@
         }
     }
 
+    /* ---------- Esqueleto de carga (CargandoJuego.astro) ---------- */
+
+    .cargando-juego {
+        display: grid;
+        gap: var(--espacio-16);
+        justify-items: center;
+    }
+
+    .cargando-juego i {
+        display: block;
+        background: #14141a;
+        animation: cargando-late 1.4s ease-in-out infinite;
+    }
+
+    .cargando-juego__pistas {
+        display: grid;
+        width: min(47.5rem, 100%);
+        gap: var(--espacio-4);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .cargando-juego__pistas i {
+        height: 3.375rem;
+        clip-path: var(--corte);
+    }
+
+    .cargando-juego__foto,
+    .cargando-juego__carrera {
+        width: min(47.5rem, 100%);
+        aspect-ratio: 16 / 10;
+        clip-path: var(--corte-caja);
+    }
+
+    .cargando-juego__carrera {
+        width: min(34rem, 100%);
+        aspect-ratio: auto;
+        height: 36rem;
+    }
+
+    .cargando-juego__tablero {
+        width: min(26.875rem, 100%);
+        height: 24rem;
+        clip-path: var(--corte-caja);
+    }
+
+    .cargando-juego__buscador {
+        display: flex;
+        width: min(36.25rem, 100%);
+    }
+
+    .cargando-juego--foto .cargando-juego__buscador {
+        width: min(47.5rem, 100%);
+    }
+
+    .cargando-juego--top10 .cargando-juego__buscador {
+        width: min(34rem, 100%);
+    }
+
+    .cargando-juego__buscador i {
+        height: 3.625rem;
+        clip-path: var(--corte);
+        flex: 1;
+    }
+
+    .cargando-juego__buscador i + i {
+        margin-left: calc(var(--sesgo) * -1 + 0.3125rem);
+        flex: 0 0 8rem;
+        animation-delay: 0.2s;
+    }
+
+    .cargando-juego__teclado {
+        display: grid;
+        width: min(35rem, calc(100% - 1rem));
+        gap: var(--espacio-6);
+    }
+
+    .cargando-juego__teclado i {
+        height: 2.75rem;
+        border-radius: 0.1875rem;
+    }
+
+    .cargando-juego__teclado i:nth-child(2) {
+        animation-delay: 0.15s;
+    }
+
+    .cargando-juego__teclado i:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    @keyframes cargando-late {
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    .intro-juego__sin-js {
+        margin-top: var(--espacio-16);
+        color: var(--color-texto-error);
+        font-weight: 700;
+    }
+
     /* El cuerpo del resultado solo agrupa lo que el juego pone en la ventana. */
     .resultado-modal__cuerpo {
         display: contents;
+    }
+
+    /*
+     * Botón de mantener apretado: el rojo lo llena de izquierda a derecha mientras se
+     * mantiene y, al soltar antes, vuelve rápido. Lento cuando la persona decide, rápido
+     * cuando el sitio responde.
+     */
+    .boton-mantener {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+        touch-action: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        transition: transform 160ms ease-out;
+    }
+
+    .boton-mantener::before {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        background: var(--color-rojo);
+        clip-path: inset(0 100% 0 0);
+        transition: clip-path 200ms ease-out;
+        content: "";
+    }
+
+    .boton-mantener--activo {
+        transform: scale(0.98);
+    }
+
+    .boton-mantener--activo::before {
+        clip-path: inset(0 0 0 0);
+        transition: clip-path var(--duracion-mantener, 1200ms) linear;
+    }
+
+    /* ---------- Acciones del resultado: compartir y siguiente juego ---------- */
+
+    .resultado-modal__asa {
+        display: none;
+    }
+
+    .resultado-acciones {
+        display: flex;
+        width: 100%;
+        margin-top: var(--espacio-16);
+        gap: var(--espacio-8);
+        align-items: stretch;
+    }
+
+    /* "Siguiente" se queda con el ancho; "Compartir" es un botón cuadrado con el ícono. */
+    .resultado-acciones .boton-compartir {
+        flex: none;
+    }
+
+    .resultado-acciones .siguiente-juego-contenedor {
+        display: flex;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .resultado-acciones .siguiente-juego {
+        margin-top: 0;
+    }
+
+    .resultado-acciones .siguiente-juego-contenedor:empty {
+        display: none;
+    }
+
+    .boton-compartir--icono {
+        display: grid;
+        padding: 0 calc(var(--sesgo) + 0.75rem);
+        place-items: center;
+    }
+
+    .boton-compartir {
+        min-height: 3.25rem;
+        padding: 0 calc(var(--sesgo) + 0.875rem);
+        border: 0;
+        border-radius: 0;
+        color: var(--tinta);
+        background: var(--blanco);
+        font-size: var(--texto-m);
+        font-style: italic;
+        font-weight: 900;
+        text-transform: uppercase;
+        clip-path: var(--corte);
+        transition: background-color 160ms ease, color 160ms ease;
+    }
+
+    .boton-compartir:focus-visible {
+        color: #fff;
+        background: var(--color-rojo);
+        outline: none;
+    }
+
+    @media (hover: hover) {
+        .boton-compartir:hover {
+            color: #fff;
+            background: var(--color-rojo);
+        }
+    }
+
+    .boton-compartir:focus-visible {
+        box-shadow: inset 0 -0.3125rem 0 var(--blanco);
+    }
+
+    /* La barra de resultado y el panel acoplado solo existen en celular. */
+    .resultado-barra {
+        display: none;
+    }
+
+    @keyframes hoja-sube {
+        from {
+            opacity: 0;
+            transform: translateY(1.5rem);
+        }
+
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @media (max-width: 620px) {
+        /*
+         * Panel acoplado: sube desde abajo sin oscurecer ni bloquear la página, así
+         * se sigue viendo cómo se llegó al resultado. Si no entra, se desliza por dentro.
+         */
+        .resultado-modal {
+            position: fixed;
+            z-index: 50;
+            inset: auto 0 0;
+            width: 100%;
+            max-width: none;
+            max-height: 82dvh;
+            margin: 0;
+        }
+
+        .resultado-modal::backdrop {
+            background: transparent;
+            backdrop-filter: none;
+        }
+
+        .resultado-modal[open] .resultado-modal__contenido {
+            animation: hoja-sube 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
+        /* El panel que sube desde abajo es otra pieza: esquinas redondeadas arriba, sin chanfle, y su sombra propia. */
+        .resultado-modal {
+            filter: none;
+        }
+
+        .resultado-modal__contenido {
+            padding: var(--espacio-8) var(--espacio-16) calc(1rem + env(safe-area-inset-bottom, 0px));
+            border-radius: 1rem 1rem 0 0;
+            box-shadow: 0 -1rem 2rem rgb(0 0 0 / 60%);
+            clip-path: none;
+        }
+
+        .resultado-modal__asa {
+            display: block;
+            width: 2.5rem;
+            height: 0.25rem;
+            margin: var(--espacio-6) auto var(--espacio-10);
+            border-radius: 1rem;
+            background: #45454f;
+        }
+
+        .resultado-modal__cerrar {
+            top: 0.75rem;
+            right: 0.375rem;
+        }
+
+        .resultado-modal h2 {
+            margin-top: var(--espacio-8);
+            font-size: var(--texto-2xl);
+        }
+
+        .resultado-modal__nombre {
+            margin-top: var(--espacio-10);
+            font-size: var(--texto-xl);
+        }
+
+        .resultado-modal__detalle {
+            margin-top: var(--espacio-8);
+            font-size: var(--texto-s);
+        }
+
+        .resultado-modal__regreso {
+            margin-top: var(--espacio-14);
+            padding-top: var(--espacio-12);
+        }
+
+        .resultado-acciones {
+            margin-top: var(--espacio-12);
+        }
+
+        /* Barra: lo que queda del resultado al cerrar el panel. */
+        .resultado-barra {
+            position: fixed;
+            z-index: 40;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            padding: var(--espacio-8) var(--espacio-8) calc(0.5rem + env(safe-area-inset-bottom, 0px));
+            border-top: 0.25rem solid #55555e;
+            background: var(--asfalto-claro);
+            box-shadow: 0 -0.75rem 1.5rem rgb(0 0 0 / 55%);
+            gap: var(--espacio-8);
+            align-items: center;
+        }
+
+        .resultado-barra--correcto {
+            border-top-color: var(--color-correcto);
+        }
+
+        .resultado-barra__abrir {
+            display: flex;
+            min-width: 0;
+            min-height: 2.75rem;
+            padding: 0 var(--espacio-8);
+            border: 0;
+            color: var(--blanco);
+            background: transparent;
+            font-size: var(--texto-m);
+            font-style: italic;
+            font-weight: 900;
+            text-align: left;
+            text-transform: uppercase;
+            flex: 1;
+            gap: var(--espacio-10);
+            align-items: center;
+        }
+
+        .resultado-barra__abrir:focus-visible {
+            outline: 0.125rem solid var(--blanco);
+            outline-offset: -0.125rem;
+        }
+
+        .resultado-barra__resumen {
+            min-width: 0;
+            overflow: hidden;
+            font-size: var(--texto-m);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .resultado-barra__racha {
+            padding: 0.125rem calc(var(--sesgo) + 0.25rem);
+            background: var(--rojo);
+            font-size: var(--texto-xs);
+            white-space: nowrap;
+            clip-path: var(--corte);
+            flex: none;
+        }
+
+        .resultado-barra__flecha {
+            margin-left: auto;
+            width: 1.375rem;
+            height: 1rem;
+            color: var(--color-texto-suave);
+            transform: rotate(-90deg);
+        }
+
+        .boton-compartir--barra {
+            min-height: 2.75rem;
+            padding: 0 calc(var(--sesgo) + 0.625rem);
+            font-size: var(--texto-s);
+            flex: none;
+        }
+
+        /* En 320 px no entra todo: la racha ya se ve al abrir el panel. */
+        @media (max-width: 360px) {
+            .resultado-barra__racha,
+            .resultado-barra__flecha {
+                display: none;
+            }
+        }
+
+        /* Deja lugar para que la barra no tape el final de la página. */
+        body:has(.resultado-barra) {
+            padding-bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+        }
     }
 }

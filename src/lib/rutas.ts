@@ -16,3 +16,6 @@ export function urlJuego(archivo: string): string {
 }
 
 export const urlInicio = (): string => ruta("");
+
+/** Dirección completa del sitio (con dominio), para los textos que se comparten. Solo en el navegador. */
+export const urlSitio = (): string => new URL(urlInicio(), location.href).href;

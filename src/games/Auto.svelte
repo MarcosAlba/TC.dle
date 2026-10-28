@@ -2,6 +2,7 @@
     // Adiviná el piloto por su auto: la foto se vuelve más nítida con cada
     // error y, al acertar, hay una ronda extra para adivinar el año del auto.
     import { onMount, tick } from "svelte";
+    import AccionesResultado from "../components/AccionesResultado.svelte";
     import Buscador from "../components/Buscador.svelte";
     import CuentaRegresiva from "../components/CuentaRegresiva.svelte";
     import ModalResultado from "../components/ModalResultado.svelte";
@@ -19,9 +20,11 @@
     import { crearDatoDiario } from "../lib/dato-diario";
     import { obtenerFechaLocal } from "../lib/fechas";
     import { describirContador, palabraIntentos } from "../lib/intentos";
+    import { mensajesDeBusqueda } from "../lib/mensajes";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
     import { obtenerApellidoPiloto, obtenerImagenMiniPiloto } from "../lib/pilotos";
-    import { urlImagen } from "../lib/rutas";
+    import { construirTextoCompartir, filaIntentos } from "../lib/compartir";
+    import { urlImagen, urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import { crearJuegoAdivinanza } from "./compartido/juego-adivinanza.svelte";
 
@@ -49,11 +52,8 @@
                 }),
         }),
         obtenerId: (piloto) => piloto.id,
-        textos: {
-            vacio: "Ingresá o elegí un piloto.",
-            noEncontrado: "Ese piloto no está en la lista.",
-            repetido: "Ya intentaste con ese piloto.",
-        },
+        textos: mensajesDeBusqueda("piloto"),
+        alError: () => campoBuscador?.sacudir(),
     });
 
     // La respuesta guardada puede venir de la versión anterior (año escrito a mano).
@@ -70,6 +70,8 @@
     const hayRondaAnio = anioDelAuto !== null;
     const rondaAnioVisible = $derived(estado.acerto && hayRondaAnio);
     const rondaAnioPendiente = $derived(hayRondaAnio && respuestaAnio === null);
+    // En PC el resultado queda al costado del auto cuando ya no falta nada por jugar (ni la ronda extra).
+    const resultadoVisible = $derived(estado.terminada && !(rondaAnioVisible && rondaAnioPendiente));
     const estiloFoto = $derived(obtenerEstiloDesenfoque(obtenerNivelDesenfoque(estado.intentosUsados, estado.terminada)));
     // La respuesta más antigua puede no estar entre las opciones sorteadas: se suma para poder marcarla.
     const opciones = $derived.by(() => {
@@ -153,6 +155,17 @@
     }
 
     const intentosUsados = $derived(estado.intentosUsados);
+
+    const armarTexto = (racha: number) =>
+        construirTextoCompartir({
+            juego: "auto",
+            fecha,
+            puntaje: estado.acerto ? estado.intentosUsados : null,
+            maximo: MAXIMO_INTENTOS_AUTO,
+            racha,
+            filas: [filaIntentos(estado.intentosUsados, estado.acerto)],
+            url: urlSitio(),
+        });
 </script>
 
 <section class="tarjeta-desafio tarjeta-desafio--suelta tarjeta-desafio--foto" aria-label="Auto del día">
@@ -206,6 +219,7 @@
             idLista="sugerencias-auto"
             placeholder="Adiviná el piloto del auto"
             etiquetaCampo="Nombre del piloto"
+            consejoVacio="Probá con el apellido."
             deshabilitado={estado.terminada}
             elementos={pilotos}
             obtenerEtiqueta={(piloto: Piloto) => piloto.nombre}
@@ -213,6 +227,8 @@
             minimoCaracteres={1}
             estaExcluido={(piloto: Piloto) => estado.idsIntentados.includes(piloto.id)}
             alEnviar={intentar}
+            invalido={juego.entradaInvalida}
+            idMensaje="mensaje-auto"
             alCambiar={() => juego.mostrarMensaje("")}
         >
             {#snippet opcion(piloto: Piloto)}
@@ -221,7 +237,7 @@
         </Buscador>
     {/snippet}
     {#snippet pie()}
-        <p class={"mensaje-juego" + (juego.mensaje.tipo ? " mensaje-juego--" + juego.mensaje.tipo : "")} aria-live="polite">
+        <p id="mensaje-auto" class={"mensaje-juego" + (juego.mensaje.tipo ? " mensaje-juego--" + juego.mensaje.tipo : "")} aria-live="polite">
             {juego.mensaje.texto}
         </p>
     {/snippet}
@@ -288,6 +304,42 @@
     </section>
 {/if}
 
+<!--
+    Solo en PC: el resultado en un panel al costado del auto (el buscador ya no hace falta),
+    así el auto y los intentos quedan a la vista. En celular está la ventana y la barra.
+-->
+{#if resultadoVisible}
+    <section class="auto-resultado" class:auto-resultado--correcto={estado.acerto} aria-labelledby="titulo-auto-resultado">
+        <div class="auto-resultado__cabecera">
+            <img class="auto-resultado__foto" src={urlImagen(secreto.foto)} alt="" />
+            <div>
+                <p class="auto-resultado__etiqueta">
+                    {estado.acerto ? "Bandera a cuadros · " + intentosUsados + "/" + MAXIMO_INTENTOS_AUTO : "Abandono"}
+                </p>
+                <h2 id="titulo-auto-resultado">{secreto.nombre}</h2>
+            </div>
+        </div>
+        <p class="auto-resultado__detalle">
+            {estado.acerto
+                ? "Lo resolviste en " + intentosUsados + " " + palabraIntentos(intentosUsados) + "."
+                : "No lo adivinaste en los " + MAXIMO_INTENTOS_AUTO + " intentos."}
+        </p>
+        {#if respuestaAnio !== null}
+            {@const acertoAnio = respuestaAnio === anioDelAuto}
+            <p class="auto-resultado__bonus" class:auto-resultado__bonus--correcto={acertoAnio}>
+                Ronda extra:
+                {#if acertoAnio}
+                    le acertaste al año, <strong>{anioDelAuto}</strong>.
+                {:else}
+                    el diseño era de <strong>{anioDelAuto}</strong> (dijiste {respuestaAnio}).
+                {/if}
+            </p>
+        {/if}
+        <CuentaRegresiva clase="auto-resultado__regreso" etiqueta="Nuevo auto en:" activa={estado.terminada} {fecha} />
+        <AccionesResultado juego="auto" {fecha} terminada={estado.terminada} {armarTexto} />
+    </section>
+{/if}
+
 <ModalResultado
     bind:this={modal}
     juego="auto"
@@ -295,6 +347,9 @@
     terminada={estado.terminada}
     correcto={estado.acerto}
     titulo={estado.acerto ? "¡Adivinaste!" : "No lo adivinaste"}
+    resumen={estado.acerto ? "Ganaste en " + estado.intentosUsados : "Abandono"}
+    {armarTexto}
+    pendiente={rondaAnioPendiente}
     etiquetaRegreso="Nuevo auto en:"
     clase="resultado-auto-modal"
     focoRetorno={() => estadoFinal}

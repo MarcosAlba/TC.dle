@@ -55,7 +55,10 @@
     @media (prefers-reduced-motion: reduce) {
       .tcdle-frenada, .tcdle-frenada * { animation: none !important; }
     }
+    /* Con #visto al final de la dirección (tcdle-logo-frenada.svg#visto) el logo se muestra ya terminado, sin repetir la frenada. */
+    #visto:target ~ * { --tcdle-t0: -10s; }
   </style>
+  <g id="visto"/>
   <defs>
     <path id="tcdle-fr-q1" d="M117.3 174.3H164.8C169.7 174.3 179.3 172.7 180.9 166.8L187.7 141.1H136.1C131.9 141.1 125 143.2 123.8 147.9L117.3 174.3Z"/>
     <path id="tcdle-fr-q2" d="M117.8 173.2H67.5C63.8 173.2 55.7 175.2 54.5 179.2L46 207.1H96.3C102 207.1 110.6 202.6 112 196.8L117.8 173.2Z"/>

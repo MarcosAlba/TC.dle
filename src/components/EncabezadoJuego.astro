@@ -1,10 +1,21 @@
 ---
-import { urlImagen, urlInicio } from "../lib/rutas";
+// Encabezado de las páginas de juego. En PC lleva el logo a la izquierda y, a la
+// derecha, una pestaña por juego para pasar de uno a otro; el punto de cada
+// pestaña muestra cómo va hoy (lo completa el script de abajo con lo guardado).
+import { JUEGOS, type JuegoId } from "../lib/juegos";
+import { urlImagen, urlInicio, urlJuego } from "../lib/rutas";
 import calabaza from "../assets/halloween/calabaza.webp";
+
+interface Props {
+    /** El juego de la página; sin él (herramientas internas) no hay pestañas. */
+    juegoActual?: JuegoId;
+}
+
+const { juegoActual } = Astro.props;
 ---
 
 <header class="encabezado-juego">
-    <a href={urlInicio()} aria-label="Volver al inicio">
+    <a class="encabezado-juego__logo" href={urlInicio()} aria-label="Volver al inicio">
         <img
             class="logo-juego"
             src={urlImagen("tcdle-logo-336.webp")}
@@ -17,4 +28,42 @@ import calabaza from "../assets/halloween/calabaza.webp";
         <!-- Solo se ve con el tema de Halloween: cae sobre la T del logo. -->
         <img class="logo-juego__calabaza" src={calabaza.src} width={calabaza.width} height={calabaza.height} alt="" />
     </a>
+    {
+        juegoActual && (
+            <nav class="pestanas-juegos" aria-label="Juegos de hoy">
+                {JUEGOS.map((juego) => (
+                    <a
+                        class="pestanas-juegos__pestana"
+                        href={urlJuego(juego.archivo)}
+                        data-juego={juego.id}
+                        aria-current={juego.id === juegoActual ? "page" : undefined}
+                    >
+                        <span class="pestanas-juegos__punto" aria-hidden="true" />
+                        {juego.corto}
+                        <span class="solo-lectores" data-estado-lector />
+                    </a>
+                ))}
+            </nav>
+        )
+    }
 </header>
+
+<script>
+    import { obtenerAlmacenamiento } from "../lib/almacenamiento";
+    import { JUEGOS } from "../lib/juegos";
+    import { obtenerProgresoJuego } from "../lib/rachas";
+
+    const NOMBRES = { acertado: "resuelto", fallado: "terminado", "en-curso": "en curso", pendiente: "sin jugar" };
+    const almacenamiento = obtenerAlmacenamiento();
+
+    for (const juego of JUEGOS) {
+        const pestana = document.querySelector<HTMLElement>(`.pestanas-juegos__pestana[data-juego="${juego.id}"]`);
+        if (!pestana) {
+            continue;
+        }
+
+        const progreso = obtenerProgresoJuego(almacenamiento, juego);
+        pestana.dataset.estado = progreso;
+        pestana.querySelector("[data-estado-lector]")!.textContent = ", " + NOMBRES[progreso];
+    }
+</script>

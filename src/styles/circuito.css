@@ -10,15 +10,15 @@
 
     /* Sin el contador abajo de la silueta, los intentos suben pegados a ella. */
     .juego--circuito .tarjeta-desafio--foto:not(:has(.cuenta-regresiva)) {
-        margin-bottom: 1.75rem;
+        margin-bottom: var(--espacio-28);
     }
 
     .marco-circuito {
         position: relative;
         display: grid;
         min-height: 21.875rem;
-        padding: 2.125rem 1.875rem;
-        border-radius: 0.25rem;
+        padding: var(--espacio-32);
+        clip-path: var(--corte-caja);
         background:
             radial-gradient(circle at center, rgb(255 255 255 / 6%), transparent 62%),
             var(--color-superficie);
@@ -50,8 +50,8 @@
 
     .intento--circuito strong {
         font-family: var(--fuente-titulos);
-        font-size: 1.15rem;
-        font-stretch: 68%;
+        font-size: var(--texto-l);
+        font-stretch: var(--ancho-zocalo);
         font-style: italic;
         font-weight: 800;
         text-transform: uppercase;
@@ -59,8 +59,8 @@
 
     .intento--circuito span {
         color: var(--color-texto-suave);
-        font-stretch: 100%;
-        font-size: 0.75rem;
+        font-stretch: var(--ancho-texto);
+        font-size: var(--texto-xs);
     }
 
     .intento--circuito.intento--correcto span {
@@ -71,8 +71,8 @@
         display: grid;
         width: 11.875rem;
         height: 9.375rem;
-        margin: 1.125rem auto 0;
-        padding: 0.875rem;
+        margin: var(--espacio-18) auto 0;
+        padding: var(--espacio-14);
         border-radius: 0.125rem;
         background: var(--asfalto-profundo);
         overflow: hidden;
@@ -94,16 +94,37 @@
     @media (max-width: 620px) {
         .marco-circuito {
             min-height: 17.5rem;
-            padding: 1.625rem 1.125rem;
+            padding: var(--espacio-28) var(--espacio-18);
         }
 
         .foto-circuito {
             max-height: 13.125rem;
         }
 
+        /* En el panel del celular la silueta va a la izquierda y el texto a la derecha. */
+        .resultado-circuito-modal .resultado-modal__cuerpo {
+            display: grid;
+            text-align: left;
+            column-gap: var(--espacio-14);
+            grid-template-columns: auto minmax(0, 1fr);
+            align-items: center;
+        }
+
         .resultado-circuito-modal__silueta {
-            width: 10rem;
-            height: 7.8125rem;
+            width: 6.5rem;
+            height: 5rem;
+            margin: var(--espacio-12) 0 0;
+            padding: var(--espacio-8);
+            grid-row: 1 / span 2;
+        }
+
+        .resultado-circuito-modal .resultado-modal__nombre {
+            justify-self: start;
+            margin-top: var(--espacio-12);
+        }
+
+        .resultado-circuito-modal .resultado-modal__detalle {
+            margin-top: var(--espacio-4);
         }
     }
 }

@@ -1,5 +1,6 @@
 <script lang="ts">
     // Modo clásico: adivinar el piloto del día comparando sus datos.
+    import AccionesResultado from "../components/AccionesResultado.svelte";
     import Buscador from "../components/Buscador.svelte";
     import CuentaRegresiva from "../components/CuentaRegresiva.svelte";
     import OpcionPiloto from "../components/OpcionPiloto.svelte";
@@ -7,8 +8,10 @@
     import { pilotos } from "../data";
     import type { Piloto } from "../data/tipos";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
+    import { construirTextoCompartir, filaPiloto } from "../lib/compartir";
     import { obtenerFechaLocal } from "../lib/fechas";
     import { describirContador, palabraIntentos } from "../lib/intentos";
+    import { mensajesDeBusqueda } from "../lib/mensajes";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
     import {
         compararPiloto,
@@ -16,14 +19,17 @@
         obtenerPistasPiloto,
         obtenerTextoBusquedaPiloto,
     } from "../lib/pilotos";
-    import { urlImagen } from "../lib/rutas";
+    import { urlImagen, urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import { crearJuegoAdivinanza } from "./compartido/juego-adivinanza.svelte";
     import FilaIntento from "./piloto/FilaIntento.svelte";
     import type { FilaPiloto } from "./piloto/tipos";
 
     const MAXIMO_INTENTOS = 8;
-    const RETRASO_CELDAS = 350;
+    // Cada celda empieza a revelarse RETRASO_CELDAS después de la anterior y dura DURACION_CELDA
+    // (el CSS la lee de --revelado-duracion). Seis celdas tardan poco más de un segundo.
+    const RETRASO_CELDAS = 160;
+    const DURACION_CELDA = 300;
     const CELDAS_CON_PISTA = 6;
 
     const secreto = obtenerSeleccionDiaria(pilotos, "pilotos")!;
@@ -44,11 +50,8 @@
                 }),
         }),
         obtenerId: (piloto) => piloto.id,
-        textos: {
-            vacio: "Por favor, ingresá un nombre de piloto.",
-            noEncontrado: "Piloto no encontrado.",
-            repetido: "Ya intentaste con ese piloto.",
-        },
+        textos: mensajesDeBusqueda("piloto"),
+        alError: () => campoBuscador?.sacudir(),
     });
 
     function crearFila(piloto: Piloto, animada: boolean): FilaPiloto {
@@ -129,6 +132,9 @@
             filaReactiva.reveladas = celda;
         }
 
+        // La última celda todavía se está dando vuelta: el resultado espera a que termine.
+        await esperar(DURACION_CELDA);
+
         intentosVisibles = juego.estado.intentosUsados;
         revelando = false;
 
@@ -141,6 +147,21 @@
 
         campoBuscador!.enfocar();
     }
+
+    // Una fila de colores por intento, del primero al último, igual que la tabla pero sin nombres.
+    const armarTexto = (racha: number) =>
+        construirTextoCompartir({
+            juego: "piloto",
+            fecha,
+            puntaje: estado.acerto ? estado.intentosUsados : null,
+            maximo: MAXIMO_INTENTOS,
+            racha,
+            filas: estado.idsIntentados
+                .map((id) => pilotos.find((piloto) => piloto.id === id))
+                .filter((piloto) => piloto !== undefined)
+                .map((piloto) => filaPiloto(compararPiloto(piloto, secreto))),
+            url: urlSitio(),
+        });
 
     function alternarPista(id: string) {
         pistaActiva = pistaActiva === id ? null : id;
@@ -188,6 +209,8 @@
             bind:this={campoBuscador}
             id="nombre-piloto"
             idLista="sugerencias-pilotos"
+            etiquetaCampo="Nombre del piloto"
+            consejoVacio="Probá con el apellido."
             placeholder="Adiviná el piloto de hoy"
             deshabilitado={controlesBloqueados}
             elementos={pilotos}
@@ -197,6 +220,8 @@
             minimoCaracteres={1}
             estaExcluido={(piloto: Piloto) => estado.idsIntentados.includes(piloto.id)}
             alEnviar={intentar}
+            invalido={juego.entradaInvalida}
+            idMensaje="mensaje-piloto"
             alCambiar={() => juego.mostrarMensaje("")}
         >
             {#snippet opcion(piloto: Piloto)}
@@ -209,7 +234,7 @@
             <span class="contador-intentos" class:contador-intentos--ultimo={contador.ultimo} aria-live="polite" hidden={estado.terminada}>
                 {contador.texto}
             </span>
-            <p class={"mensaje-juego" + (juego.mensaje.tipo ? " mensaje-juego--" + juego.mensaje.tipo : "")} aria-live="polite">
+            <p id="mensaje-piloto" class={"mensaje-juego" + (juego.mensaje.tipo ? " mensaje-juego--" + juego.mensaje.tipo : "")} aria-live="polite">
                 {juego.mensaje.texto}
             </p>
         </div>
@@ -217,31 +242,42 @@
 </PanelIntento>
 
 {#if resultadoVisible}
-    <section
-        bind:this={panelResultado}
-        id="resultado-final"
-        class={"resultado-final " + (acerto ? "resultado-final--correcto" : "resultado-final--incorrecto") + claseNombre}
-        aria-labelledby="nombre-piloto-final"
-    >
-        <div class="resultado-final__media">
-            <img class="resultado-final__foto" src={urlImagen(secreto.foto)} alt={"Foto de " + secreto.nombre} />
+    <!-- Los botones van fuera del bloque (que recorta el chanfle): en PC, al costado; en celular, debajo. -->
+    <div class="resultado-final-marco">
+        <section
+            bind:this={panelResultado}
+            id="resultado-final"
+            class={"resultado-final " + (acerto ? "resultado-final--correcto" : "resultado-final--incorrecto") + claseNombre}
+            aria-labelledby="nombre-piloto-final"
+        >
+            <div class="resultado-final__media">
+                <img class="resultado-final__foto" src={urlImagen(secreto.foto)} alt={"Foto de " + secreto.nombre} />
+            </div>
+            <div class="resultado-final__contenido">
+                <p class="resultado-final__etiqueta">{acerto ? "Bandera a cuadros" : "Se terminaron los intentos"}</p>
+                <p class="resultado-final__subtitulo">{acerto ? "Piloto del día" : "El piloto del día era"}</p>
+                <h2 id="nombre-piloto-final">{secreto.nombre}</h2>
+                <p id="detalle-resultado-final">
+                    {acerto
+                        ? "Lo resolviste en " + estado.intentosUsados + " " + palabraIntentos(estado.intentosUsados) + "."
+                        : "No lograste encontrarlo en los " + MAXIMO_INTENTOS + " intentos disponibles."}
+                </p>
+                <CuentaRegresiva clase="resultado-final__regreso" etiqueta="Nuevo piloto en:" activa={true} {fecha} />
+            </div>
+        </section>
+        <div class="resultado-final__acciones">
+            <AccionesResultado juego="piloto" {fecha} terminada={estado.terminada} {armarTexto} />
         </div>
-        <div class="resultado-final__contenido">
-            <p class="resultado-final__etiqueta">{acerto ? "Bandera a cuadros" : "Se terminaron los intentos"}</p>
-            <p class="resultado-final__subtitulo">{acerto ? "Piloto del día" : "El piloto del día era"}</p>
-            <h2 id="nombre-piloto-final">{secreto.nombre}</h2>
-            <p id="detalle-resultado-final">
-                {acerto
-                    ? "Lo resolviste en " + estado.intentosUsados + " " + palabraIntentos(estado.intentosUsados) + "."
-                    : "No lograste encontrarlo en los " + MAXIMO_INTENTOS + " intentos disponibles."}
-            </p>
-            <CuentaRegresiva clase="resultado-final__regreso" etiqueta="Nuevo piloto en:" activa={true} {fecha} />
-        </div>
-    </section>
+    </div>
 {/if}
 
 {#if tablaVisible}
-    <section id="panel-intentos" class="panel-intentos" aria-labelledby="titulo-intentos">
+    <section
+        id="panel-intentos"
+        class="panel-intentos"
+        aria-labelledby="titulo-intentos"
+        style:--revelado-duracion={DURACION_CELDA + "ms"}
+    >
         <div class="titulo-seccion">
             <span></span>
             <h2 id="titulo-intentos">Intentos</h2>
@@ -266,32 +302,30 @@
             </tbody>
         </table>
 
-        {#if !revelando}
-            <aside id="guia-pistas" class="guia-pistas" aria-labelledby="titulo-guia">
-                <h3 id="titulo-guia">Guía de pistas</h3>
-                <div class="guia-pistas__grilla">
-                    <div class="guia-pista guia-pista--correcta">
-                        <strong>Coincide</strong>
-                        <span>El dato es correcto</span>
-                    </div>
-                    <div class="guia-pista guia-pista--cerca">
-                        <strong>Cerca</strong>
-                        <span>Misma provincia</span>
-                    </div>
-                    <div class="guia-pista guia-pista--incorrecta">
-                        <strong>No coincide</strong>
-                        <span>El dato es diferente</span>
-                    </div>
-                    <div class="guia-pista guia-pista--mayor">
-                        <strong>↑ Mayor</strong>
-                        <span>El valor buscado es más alto</span>
-                    </div>
-                    <div class="guia-pista guia-pista--menor">
-                        <strong>↓ Menor</strong>
-                        <span>El valor buscado es más bajo</span>
-                    </div>
+        <aside id="guia-pistas" class="guia-pistas" class:guia-pistas--atenuada={revelando} aria-labelledby="titulo-guia">
+            <h3 id="titulo-guia">Guía de pistas</h3>
+            <div class="guia-pistas__grilla">
+                <div class="guia-pista guia-pista--correcta">
+                    <strong>Coincide</strong>
+                    <span>El dato es correcto</span>
                 </div>
-            </aside>
-        {/if}
+                <div class="guia-pista guia-pista--cerca">
+                    <strong>Cerca</strong>
+                    <span>Misma provincia</span>
+                </div>
+                <div class="guia-pista guia-pista--incorrecta">
+                    <strong>No coincide</strong>
+                    <span>El dato es diferente</span>
+                </div>
+                <div class="guia-pista guia-pista--mayor">
+                    <strong>↑ Mayor</strong>
+                    <span>El valor buscado es más alto</span>
+                </div>
+                <div class="guia-pista guia-pista--menor">
+                    <strong>↓ Menor</strong>
+                    <span>El valor buscado es más bajo</span>
+                </div>
+            </div>
+        </aside>
     </section>
 {/if}

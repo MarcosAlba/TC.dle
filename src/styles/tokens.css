@@ -19,6 +19,56 @@
     --rojo-oscuro: #b7071c;
     --slime: #8cff3a;
     --sesgo: 0.875rem;
+    /* La mitad del corte: para las piezas bajas (filas de la torre, pestañas) cuya diagonal tiene que ser paralela a la de los zócalos. */
+    --sesgo-chico: calc(var(--sesgo) * 0.5);
+
+    /*
+     * Escala de texto: ocho pasos (12, 14, 16, 18, 20, 24, 28 y 32 px) y nada por debajo de 12 px.
+     * Los números grandes del podio y los titulares con clamp() son gráfica, no texto: quedan afuera.
+     */
+    --texto-xs: 0.75rem;
+    --texto-s: 0.875rem;
+    --texto-m: 1rem;
+    --texto-l: 1.125rem;
+    --texto-xl: 1.25rem;
+    --texto-2xl: 1.5rem;
+    --texto-3xl: 1.75rem;
+    --texto-4xl: 2rem;
+
+    /* Ancho de la fuente variable (eje wdth): tres voces con un rol cada una, en lugar de seis valores sueltos. */
+    --ancho-display: 62%; /* números grandes */
+    --ancho-zocalo: 68%; /* zócalos, botones y titulares */
+    --ancho-texto: 100%; /* texto corrido */
+
+    /* Espaciado: pasos de 2 px, el ritmo que el sitio ya usaba. El nombre es el valor en px. */
+    --espacio-4: 0.25rem;
+    --espacio-6: 0.375rem;
+    --espacio-8: 0.5rem;
+    --espacio-10: 0.625rem;
+    --espacio-12: 0.75rem;
+    --espacio-14: 0.875rem;
+    --espacio-16: 1rem;
+    --espacio-18: 1.125rem;
+    --espacio-20: 1.25rem;
+    --espacio-24: 1.5rem;
+    --espacio-28: 1.75rem;
+    --espacio-32: 2rem;
+    --espacio-40: 2.5rem;
+    --espacio-48: 3rem;
+
+    /* Inclinación de las líneas del fondo y de las franjas: la misma que el corte de los zócalos. */
+    --angulo-corte: 104deg;
+
+    /*
+     * Fondo de los retratos de pilotos, como la presentación de la grilla en la TV: una franja del
+     * color de la marca en diagonal, un rayado fino y el pie más oscuro. Las fotos tienen fondo
+     * transparente, así que esto se ve detrás del piloto (antes era un negro liso).
+     */
+    --fondo-retrato:
+        linear-gradient(180deg, transparent 55%, rgb(0 0 0 / 70%)),
+        linear-gradient(var(--angulo-corte), transparent 36%, var(--rojo) 36% 62%, transparent 62%),
+        repeating-linear-gradient(var(--angulo-corte), rgb(255 255 255 / 5%) 0 0.0625rem, transparent 0.0625rem 0.5rem),
+        var(--asfalto-profundo);
 
     --color-fondo: var(--asfalto);
     --color-superficie: var(--asfalto-claro);
@@ -31,11 +81,16 @@
     --color-correcto: #17905a;
     --color-cerca: #d49b0b;
     --color-incorrecto: #b42335;
+    /* Texto de aviso (error o acierto) sobre fondo oscuro. */
+    --color-texto-error: #ff6b7a;
+    --color-texto-exito: #4ad98f;
 
     --fuente-titulos: "Archivo", "Arial Narrow", sans-serif;
     --fuente-texto: "Archivo", Helvetica, sans-serif;
 
     --corte: polygon(var(--sesgo) 0, 100% 0, calc(100% - var(--sesgo)) 100%, 0 100%);
+    /* Para las cajas grandes (tarjetas, paneles): esquinas rectas y un solo chanfle arriba a la derecha. */
+    --corte-caja: polygon(0 0, calc(100% - var(--sesgo)) 0, 100% var(--sesgo), 100% 100%, 0 100%);
     --franja: var(--rojo);
 
     /* Fondo de la página: rejilla y un resplandor opcional arriba. */
@@ -76,6 +131,8 @@
     --rojo-oscuro: #b33f00;
     --color-correcto: #2f8a12;
     --color-cerca: #e5b400;
+    --color-texto-error: #ff8a3d;
+    --color-texto-exito: var(--slime);
     --rejilla: 1.8%;
 
     --celda-correcta-borde: var(--slime);
@@ -93,7 +150,7 @@
     --mascota-ganada: url("../assets/halloween/calabaza.webp");
     --mascota-perdida: url("../assets/halloween/fantasma.svg");
     --mascota-brillo: drop-shadow(0 0 0.625rem rgb(255 160 40 / 60%));
-    --mascota-animacion-ganada: calabaza-salta 700ms cubic-bezier(0.3, 1.6, 0.5, 1) 300ms both;
+    --mascota-animacion-ganada: calabaza-salta 500ms cubic-bezier(0.34, 1.4, 0.64, 1) 300ms both;
 }
 
 :root[data-tema="halloween"] body {

@@ -1,5 +1,6 @@
 ---
 import Top10 from "../../games/Top10.svelte";
+import CargandoJuego from "../../components/CargandoJuego.astro";
 import PaginaJuego from "../../layouts/PaginaJuego.astro";
 import { urlImagen } from "../../lib/rutas";
 import "../../styles/top10.css";
@@ -55,9 +56,14 @@ const muestra = [
     <section slot="presentacion" class="presentacion-juego" aria-labelledby="titulo-top10">
         <p class="modo-juego">Modo top 10</p>
         <h1 id="titulo-top10">¿Cómo terminó la carrera?</h1>
+        <p class="presentacion-juego__ayuda">Nombrá a los diez primeros de la final. Cada acierto se ubica en su posición.</p>
     </section>
 
-    <Top10 client:only="svelte" />
+    <Top10 client:only="svelte">
+        <Fragment slot="fallback">
+            <CargandoJuego forma="top10" />
+        </Fragment>
+    </Top10>
 </PaginaJuego>
 
 <script>

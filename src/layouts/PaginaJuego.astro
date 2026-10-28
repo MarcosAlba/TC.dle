@@ -20,7 +20,7 @@ const juego = obtenerJuego(id);
 ---
 
 <Pagina titulo={titulo} descripcion={descripcion} claveIntro={juego.claveIntro}>
-    <EncabezadoJuego />
+    <EncabezadoJuego juegoActual={id} />
 
     <main class={`juego juego--${id}`}>
         <div class="intro-bloque">
@@ -34,6 +34,9 @@ const juego = obtenerJuego(id);
                 <div class="intro-juego__info">
                     <slot name="intro" />
                     <button type="button" class="intro-juego__boton" data-intro-clave={juego.claveIntro}>Empezar</button>
+                    <noscript>
+                        <p class="intro-juego__texto intro-juego__sin-js">TCdle necesita JavaScript para jugar. Activalo en tu navegador y volvé a cargar la página.</p>
+                    </noscript>
                 </div>
             </section>
         </div>

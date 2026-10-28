@@ -13,7 +13,7 @@
         position: relative;
         display: flex;
         min-height: 4.75rem;
-        padding: 0.875rem 1.25rem;
+        padding: var(--espacio-14) var(--espacio-20);
         border-bottom: 0.125rem solid var(--rojo);
         background: var(--asfalto-profundo);
         align-items: center;
@@ -47,7 +47,7 @@
     .inicio {
         width: min(60rem, calc(100% - 2rem));
         margin: 0 auto;
-        padding: 2.5rem 0 4.5rem;
+        padding: var(--espacio-40) 0 4.5rem;
     }
 
     /* ---------- Selector de juegos ---------- */
@@ -58,12 +58,12 @@
     }
 
     .selector-juegos h1 {
-        margin: 0 0 2.5rem;
+        margin: 0 0 var(--espacio-40);
         padding: 0.16em calc(var(--sesgo) + 0.55em) 0.12em;
         color: var(--tinta);
         background: var(--blanco);
         font-size: clamp(1.5rem, 4vw, 2.1rem);
-        font-stretch: 68%;
+        font-stretch: var(--ancho-zocalo);
         font-style: italic;
         font-weight: 900;
         line-height: 1.02;
@@ -71,29 +71,38 @@
         clip-path: var(--corte);
     }
 
+    /* En celular y tablet la cabecera es solo el título, como siempre. */
+    .selector-juegos__cabecera,
+    .selector-juegos__titulo {
+        display: contents;
+    }
+
+    .selector-juegos__titulo-pc,
+    .selector-juegos__fecha,
+    .progreso-dia,
+    .proxima-carrera__ganador {
+        display: none;
+    }
+
     .grilla-juegos {
         display: grid;
         width: 100%;
-        gap: 1rem;
+        gap: var(--espacio-16);
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    /* El Top 10 va abajo, a lo ancho: con cinco columnas los nombres no entraban. */
-    @media (min-width: 701px) {
-        .tarjeta-juego--top10 {
-            grid-column: 1 / -1;
-        }
+    /* Hasta la PC ancha, el Top 10 va abajo, a lo ancho: con cinco columnas angostas los nombres no entraban. */
+    .tarjeta-juego--top10 {
+        grid-column: 1 / -1;
+    }
 
-        .tarjeta-juego--top10 .tarjeta-juego__imagen {
-            height: 9.5rem;
-        }
+    .tarjeta-juego--top10 .tarjeta-juego__imagen {
+        height: 9.5rem;
     }
 
     .tarjeta-juego {
         display: flex;
         min-width: 0;
-        border: 0.0625rem solid var(--linea);
-        border-radius: 0.25rem;
         color: var(--tinta);
         background: var(--asfalto-tarjeta);
         text-decoration: none;
@@ -101,9 +110,14 @@
         overflow: hidden;
     }
 
+    /* El contorno de foco quedaría recortado por el chanfle: el anillo va por dentro, en el borde de la caja. */
     .tarjeta-juego:focus-visible {
-        outline: 0.1875rem solid var(--blanco);
-        outline-offset: 0.25rem;
+        --borde-caja: var(--blanco);
+        outline: none;
+    }
+
+    .tarjeta-juego:focus-visible::after {
+        box-shadow: inset 0 0 0 0.1875rem var(--blanco);
     }
 
     .tarjeta-juego__imagen {
@@ -121,13 +135,14 @@
     }
 
     .tarjeta-juego--piloto .tarjeta-juego__imagen {
-        background: #050506;
+        background: var(--fondo-retrato);
     }
 
     .tarjeta-juego--piloto .tarjeta-juego__imagen img {
-        padding: 0.875rem 0.9375rem 0;
+        padding: var(--espacio-14) var(--espacio-16) 0;
         object-fit: contain;
         object-position: center bottom;
+        filter: drop-shadow(0 0.5rem 1rem rgb(0 0 0 / 50%));
     }
 
     .tarjeta-juego--auto .tarjeta-juego__imagen img {
@@ -136,7 +151,7 @@
     }
 
     .tarjeta-juego--circuito .tarjeta-juego__imagen img {
-        padding: 2.75rem 1.5rem;
+        padding: 2.75rem var(--espacio-24);
         object-fit: contain;
         filter: brightness(0) invert(1);
     }
@@ -144,7 +159,7 @@
     .tarjeta-juego__letras {
         display: grid;
         width: min(10rem, 70%);
-        gap: 0.375rem;
+        gap: var(--espacio-6);
         grid-template-columns: repeat(5, 1fr);
     }
 
@@ -153,8 +168,8 @@
         aspect-ratio: 1 / 1;
         border-radius: 0.125rem;
         color: #fff;
-        font-size: 1.1rem;
-        font-stretch: 68%;
+        font-size: var(--texto-l);
+        font-stretch: var(--ancho-zocalo);
         font-weight: 900;
         place-items: center;
     }
@@ -174,7 +189,7 @@
     .tarjeta-juego__podio {
         display: grid;
         width: min(11rem, 78%);
-        gap: 0.3125rem;
+        gap: var(--espacio-6);
         grid-template-columns: 1fr 1.12fr 1fr;
         align-items: end;
     }
@@ -188,8 +203,8 @@
     .tarjeta-juego__podio img {
         width: 2.375rem;
         height: 2.375rem;
-        margin-bottom: 0.375rem;
-        padding: 0.4375rem;
+        margin-bottom: var(--espacio-6);
+        padding: var(--espacio-8);
         border-radius: 50%;
         background: var(--asfalto-profundo);
         box-shadow: inset 0 0 0 0.125rem var(--blanco);
@@ -205,7 +220,7 @@
         color: transparent;
         background: #19191f;
         font-size: 3rem;
-        font-stretch: 62%;
+        font-stretch: var(--ancho-display);
         font-style: italic;
         font-weight: 900;
         line-height: 0.85;
@@ -238,24 +253,31 @@
     .tarjeta-juego__contenido {
         display: flex;
         min-height: 4rem;
-        padding: 0.625rem 0.625rem 0.625rem 1rem;
+        padding: var(--espacio-10) var(--espacio-10) var(--espacio-10) var(--espacio-16);
         background: linear-gradient(90deg, var(--rojo) 50%, var(--blanco) 50%) 100% 0 / 201% 100%;
-        gap: 0.625rem;
+        gap: var(--espacio-10);
         align-items: center;
         justify-content: space-between;
         transition: background-position 260ms cubic-bezier(0.2, 0.8, 0.2, 1), color 200ms ease;
     }
 
-    .tarjeta-juego:hover .tarjeta-juego__contenido,
-    .tarjeta-juego:focus-visible .tarjeta-juego__contenido {
+    .tarjeta-juego:focus-visible .tarjeta-juego__contenido,
+    .tarjeta-juego:active .tarjeta-juego__contenido {
         color: #fff;
         background-position: 0 0;
     }
 
+    @media (hover: hover) {
+        .tarjeta-juego:hover .tarjeta-juego__contenido {
+            color: #fff;
+            background-position: 0 0;
+        }
+    }
+
     .tarjeta-juego__nombre {
-        font-size: 1.22rem;
+        font-size: var(--texto-xl);
         text-wrap: balance;
-        font-stretch: 68%;
+        font-stretch: var(--ancho-zocalo);
         font-style: italic;
         font-weight: 900;
         line-height: 1;
@@ -264,20 +286,26 @@
 
     .tarjeta-juego__jugar {
         flex: none;
-        padding: 0.3125rem calc(var(--sesgo) + 0.5rem);
+        padding: var(--espacio-6) calc(var(--sesgo) + 0.5rem);
         color: #fff;
         background: var(--rojo);
-        font-size: 0.95rem;
-        font-stretch: 68%;
+        font-size: var(--texto-m);
+        font-stretch: var(--ancho-zocalo);
         font-style: italic;
         font-weight: 800;
         clip-path: var(--corte);
         transition: background-color 200ms ease;
     }
 
-    .tarjeta-juego:hover .tarjeta-juego__jugar,
-    .tarjeta-juego:focus-visible .tarjeta-juego__jugar {
+    .tarjeta-juego:focus-visible .tarjeta-juego__jugar,
+    .tarjeta-juego:active .tarjeta-juego__jugar {
         background: var(--tinta);
+    }
+
+    @media (hover: hover) {
+        .tarjeta-juego:hover .tarjeta-juego__jugar {
+            background: var(--tinta);
+        }
     }
 
     /* ---------- Cuenta regresiva a la próxima carrera ---------- */
@@ -285,13 +313,11 @@
     .proxima-carrera {
         display: grid;
         width: 100%;
-        margin-top: 1rem;
-        padding: 1rem 1.25rem;
-        border: 0.0625rem solid var(--linea);
-        border-radius: 0.25rem;
+        margin-top: var(--espacio-16);
+        padding: var(--espacio-16) var(--espacio-20);
         background: var(--asfalto-tarjeta);
         grid-template-columns: auto 1fr auto;
-        gap: 1.25rem;
+        gap: var(--espacio-20);
         align-items: center;
     }
 
@@ -303,7 +329,7 @@
     .proxima-carrera__titulo {
         display: flex;
         margin: 0;
-        gap: 0.3125rem;
+        gap: var(--espacio-6);
         align-items: flex-start;
         flex-direction: column;
     }
@@ -311,48 +337,48 @@
     .proxima-carrera__fecha,
     .proxima-carrera__lugar {
         display: flex;
-        font-stretch: 68%;
+        font-stretch: var(--ancho-zocalo);
         font-style: italic;
         align-items: center;
         clip-path: var(--corte);
     }
 
     .proxima-carrera__fecha {
-        padding: 0.1875rem calc(var(--sesgo) + 0.625rem);
+        padding: var(--espacio-4) calc(var(--sesgo) + 0.625rem);
         color: #fff;
         background: var(--rojo);
-        font-size: 0.95rem;
+        font-size: var(--texto-m);
         font-weight: 800;
     }
 
     .proxima-carrera__lugar {
-        padding: 0.25rem calc(var(--sesgo) + 0.875rem);
+        padding: var(--espacio-4) calc(var(--sesgo) + 0.875rem);
         color: var(--tinta);
         background: var(--blanco);
-        font-size: 1.6rem;
+        font-size: var(--texto-2xl);
         font-weight: 900;
         text-transform: uppercase;
     }
 
     .proxima-carrera__reloj {
         display: flex;
-        gap: 0.3125rem;
+        gap: var(--espacio-6);
     }
 
     .proxima-carrera__tile {
         display: grid;
         min-width: 4.125rem;
-        padding: 0.4375rem calc(var(--sesgo) + 0.375rem) 0.3125rem;
+        padding: var(--espacio-8) calc(var(--sesgo) + 0.375rem) var(--espacio-6);
         color: var(--tinta);
         background: var(--blanco);
-        font-stretch: 68%;
+        font-stretch: var(--ancho-zocalo);
         font-style: italic;
         justify-items: center;
         clip-path: var(--corte);
     }
 
     .proxima-carrera__tile b {
-        font-size: 1.7rem;
+        font-size: var(--texto-3xl);
         font-variant-numeric: tabular-nums;
         font-weight: 900;
         line-height: 1;
@@ -360,7 +386,7 @@
 
     .proxima-carrera__tile small {
         color: #55565f;
-        font-size: 0.72rem;
+        font-size: var(--texto-xs);
         font-weight: 700;
     }
 
@@ -382,8 +408,8 @@
         .proxima-carrera {
             width: min(37.5rem, 100%);
             margin-inline: auto;
-            padding: 0.875rem 1rem;
-            gap: 0.875rem;
+            padding: var(--espacio-14) var(--espacio-16);
+            gap: var(--espacio-14);
         }
 
         .proxima-carrera__trazado {
@@ -391,11 +417,34 @@
         }
 
         .proxima-carrera__lugar {
-            font-size: 1.3rem;
+            font-size: var(--texto-xl);
         }
 
         .proxima-carrera__tile {
             min-width: 3.625rem;
+        }
+    }
+
+    /*
+     * PC: los cinco juegos en una sola fila de columnas iguales (antes eran 4 + el Top 10
+     * a lo ancho, que parecía destacado sin serlo). Desde 77 rem la página se abre a 75 rem y
+     * los nombres entran en dos renglones; más angosto, quedaban en tres y los zócalos desparejos.
+     */
+    @media (min-width: 77rem) {
+        .inicio {
+            width: min(75rem, calc(100% - 2rem));
+        }
+
+        .grilla-juegos {
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+        }
+
+        .tarjeta-juego--top10 {
+            grid-column: auto;
+        }
+
+        .tarjeta-juego--top10 .tarjeta-juego__imagen {
+            height: 13.75rem;
         }
     }
 
@@ -406,7 +455,7 @@
 
         .encabezado-inicio {
             min-height: 4.25rem;
-            padding: 0.75rem 1rem;
+            padding: var(--espacio-12) var(--espacio-16);
         }
 
         .logo-inicio {
@@ -419,42 +468,123 @@
 
         .inicio {
             width: min(100% - 1.375rem, 60rem);
+            padding: var(--espacio-20) 0 var(--espacio-40);
         }
 
+        .selector-juegos h1 {
+            margin-bottom: var(--espacio-20);
+        }
+
+        /*
+         * Dos columnas: los cinco juegos y la próxima carrera entran en el
+         * primer pantallazo de un celular. El Top 10 sigue a lo ancho con su podio.
+         */
         .grilla-juegos {
-            width: min(21.25rem, 100%);
-            gap: 0.875rem;
-            grid-template-columns: 1fr;
+            gap: var(--espacio-10);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         .tarjeta-juego__imagen {
-            height: 12.5rem;
+            height: 7rem;
         }
 
+        .tarjeta-juego--top10 .tarjeta-juego__imagen {
+            height: 8rem;
+        }
+
+        .tarjeta-juego--piloto .tarjeta-juego__imagen img {
+            padding: var(--espacio-8) var(--espacio-8) 0;
+        }
+
+        .tarjeta-juego--circuito .tarjeta-juego__imagen img {
+            padding: var(--espacio-16) var(--espacio-12);
+        }
+
+        .tarjeta-juego__letras {
+            width: min(8rem, 80%);
+            gap: var(--espacio-4);
+        }
+
+        .tarjeta-juego__letras span {
+            font-size: var(--texto-s);
+        }
+
+        /* flex: 1 hace que el zócalo llene la tarjeta aunque la de al lado tenga el nombre en más líneas. */
+        .tarjeta-juego__contenido {
+            min-height: 3.25rem;
+            padding: var(--espacio-8) var(--espacio-8) var(--espacio-8) var(--espacio-12);
+            gap: var(--espacio-6);
+            flex: 1;
+        }
+
+        .tarjeta-juego__nombre {
+            font-size: var(--texto-m);
+        }
+
+        .tarjeta-juego__jugar {
+            padding: var(--espacio-4) calc(var(--sesgo) + 0.25rem);
+            font-size: var(--texto-xs);
+        }
+
+        .tarjeta-juego__racha {
+            padding: var(--espacio-4) var(--espacio-8) var(--espacio-4) var(--espacio-14);
+            font-size: var(--texto-s);
+        }
+
+        .tarjeta-juego__racha-icono {
+            width: 1.1rem;
+            height: 1.1rem;
+        }
+
+        /* Próxima carrera en dos filas: trazado y lugar arriba, reloj abajo. */
         .proxima-carrera {
-            width: min(21.25rem, 100%);
-            margin: 0.875rem auto 0;
-            padding: 1rem;
-            grid-template-columns: 1fr;
-            gap: 0.875rem;
-            justify-items: center;
+            margin-top: var(--espacio-10);
+            padding: var(--espacio-12);
+            grid-template-columns: auto 1fr;
+            gap: var(--espacio-10) var(--espacio-12);
         }
 
         .proxima-carrera__trazado {
-            width: 4rem;
+            width: 3rem;
         }
 
-        .proxima-carrera__titulo {
-            align-items: center;
+        .proxima-carrera__fecha {
+            font-size: var(--texto-xs);
         }
 
         .proxima-carrera__lugar {
-            font-size: 1.3rem;
+            font-size: var(--texto-l);
+        }
+
+        .proxima-carrera__reloj {
+            grid-column: 1 / -1;
         }
 
         .proxima-carrera__tile {
             min-width: 0;
+            padding-block: var(--espacio-6) var(--espacio-4);
             flex: 1;
+        }
+
+        .proxima-carrera__tile b {
+            font-size: var(--texto-xl);
+        }
+    }
+
+    /* Celulares angostos (320 px): nombre y botón un escalón más chicos para que el nombre no ocupe tres líneas. */
+    @media (max-width: 360px) {
+        .tarjeta-juego__contenido {
+            padding: var(--espacio-8) var(--espacio-6) var(--espacio-8) var(--espacio-8);
+            gap: var(--espacio-4);
+        }
+
+        .tarjeta-juego__nombre {
+            font-size: var(--texto-s);
+        }
+
+        .tarjeta-juego__jugar {
+            padding: var(--espacio-4) calc(var(--sesgo) + 0.0625rem);
+            font-size: var(--texto-xs);
         }
     }
 
@@ -476,17 +606,17 @@
         right: 0;
         z-index: 2;
         display: flex;
-        padding: 0.375rem 0.75rem 0.4375rem 1.125rem;
+        padding: var(--espacio-6) var(--espacio-12) var(--espacio-8) var(--espacio-18);
         background: var(--rojo);
         color: var(--blanco);
-        clip-path: polygon(0.75rem 0, 100% 0, 100% 100%, 0 100%);
+        clip-path: polygon(var(--sesgo) 0, 100% 0, 100% 100%, 0 100%);
         font-family: var(--fuente-titulos);
-        font-size: 1rem;
+        font-size: var(--texto-m);
         font-style: italic;
         font-weight: 900;
         line-height: 1;
         align-items: center;
-        gap: 0.375rem;
+        gap: var(--espacio-6);
     }
 
     .tarjeta-juego__racha-icono {
@@ -499,5 +629,169 @@
 
     .tarjeta-juego__racha-negros {
         fill: var(--tinta);
+    }
+
+    /*
+     * PC: "Desafíos de hoy" con la fecha, cuántos se completaron y el estado de cada juego
+     * en su zócalo (sin jugar, en curso, resuelto). La franja de arriba del zócalo toma el
+     * color del estado. La racha sigue en la pestaña de la bandera, como en el celular.
+     */
+    @media (min-width: 77rem) {
+        .selector-juegos__cabecera {
+            display: flex;
+            width: 100%;
+            margin-bottom: var(--espacio-24);
+            gap: var(--espacio-24);
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .selector-juegos__titulo {
+            display: flex;
+            gap: var(--espacio-6);
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .selector-juegos h1 {
+            margin: 0;
+        }
+
+        .selector-juegos__titulo-celular {
+            display: none;
+        }
+
+        .selector-juegos__titulo-pc {
+            display: inline;
+        }
+
+        .selector-juegos__fecha {
+            display: block;
+            margin: 0;
+            padding: var(--espacio-4) calc(var(--sesgo) + 0.625rem);
+            color: #fff;
+            background: var(--rojo);
+            font-size: var(--texto-s);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 800;
+            text-transform: uppercase;
+            clip-path: var(--corte);
+        }
+
+        .progreso-dia {
+            display: grid;
+            width: min(20rem, 40%);
+            gap: var(--espacio-8);
+        }
+
+        .progreso-dia__texto {
+            display: flex;
+            margin: 0;
+            color: var(--blanco);
+            font-size: var(--texto-l);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 900;
+            line-height: 1;
+            text-transform: uppercase;
+            justify-content: space-between;
+        }
+
+        .progreso-dia__texto span {
+            color: var(--color-texto-suave);
+        }
+
+        .progreso-dia__texto b {
+            font-weight: inherit;
+        }
+
+        /* Un tramo por juego, inclinado como los cortes de los zócalos. */
+        .progreso-dia__barra {
+            display: grid;
+            gap: var(--espacio-4);
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .progreso-dia__barra i {
+            height: 0.5rem;
+            background: #26262e;
+            transform: skewX(-20deg);
+        }
+
+        .progreso-dia__barra i.lleno {
+            background: var(--celda-correcta-borde);
+        }
+
+        /* El estado se ve en la franja de arriba del zócalo. */
+        .tarjeta-juego {
+            --color-estado: var(--rojo);
+        }
+
+        .tarjeta-juego[data-estado="en-curso"] {
+            --color-estado: var(--color-cerca);
+        }
+
+        .tarjeta-juego[data-estado="acertado"] {
+            --color-estado: var(--color-correcto);
+        }
+
+        .tarjeta-juego[data-estado="fallado"] {
+            --color-estado: #55555e;
+        }
+
+        .tarjeta-juego__contenido {
+            border-top: 0.25rem solid var(--color-estado);
+        }
+
+        /* Siempre en dos renglones, haya o no botón "Jugar" al lado: todos los zócalos quedan iguales. */
+        .tarjeta-juego__nombre {
+            max-width: 6em;
+        }
+
+        /* "Jugar" mientras falte terminarlo; resuelto o no, ya no hay nada que jugar hoy. */
+        .tarjeta-juego[data-estado="acertado"] .tarjeta-juego__jugar,
+        .tarjeta-juego[data-estado="fallado"] .tarjeta-juego__jugar {
+            display: none;
+        }
+
+        /* Próxima carrera: el último ganador en ese circuito ocupa el lugar libre del medio. */
+        .proxima-carrera {
+            grid-template-columns: auto auto 1fr auto;
+        }
+
+        /* Si no hay ganador para mostrar, el reloj igual queda a la derecha. */
+        .proxima-carrera__reloj {
+            grid-column: -2;
+        }
+
+        .proxima-carrera__ganador {
+            display: grid;
+            margin: 0;
+            padding-left: var(--espacio-24);
+            border-left: 0.0625rem solid var(--linea);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            justify-self: start;
+        }
+
+        .proxima-carrera__ganador small {
+            color: var(--color-texto-suave);
+            font-size: var(--texto-xs);
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .proxima-carrera__ganador strong {
+            font-size: var(--texto-xl);
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .proxima-carrera__ganador span {
+            color: var(--color-texto-suave);
+            font-size: var(--texto-s);
+            font-weight: 700;
+        }
     }
 }

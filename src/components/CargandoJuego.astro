@@ -1,0 +1,40 @@
+---
+// Lo que se ve mientras el juego descarga y arranca. Los juegos se arman solo en el
+// navegador (client:only), así que sin esto la zona quedaba en blanco y después todo
+// saltaba hacia abajo. La forma imita el alto real de cada juego para que no se mueva nada.
+interface Props {
+    forma: "piloto" | "foto" | "wordle" | "top10";
+}
+
+const { forma } = Astro.props;
+---
+
+<div class={"cargando-juego cargando-juego--" + forma} role="status" aria-busy="true">
+    <span class="solo-lectores">Cargando el juego…</span>
+    {
+        forma === "piloto" && (
+            <div class="cargando-juego__pistas" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+            </div>
+        )
+    }
+    {forma === "foto" && <i class="cargando-juego__foto" aria-hidden="true" />}
+    {forma === "wordle" && <i class="cargando-juego__tablero" aria-hidden="true" />}
+    {forma === "top10" && <i class="cargando-juego__carrera" aria-hidden="true" />}
+    {
+        forma === "wordle" ? (
+            <div class="cargando-juego__teclado" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+            </div>
+        ) : (
+            <div class="cargando-juego__buscador" aria-hidden="true">
+                <i />
+                <i />
+            </div>
+        )
+    }
+</div>

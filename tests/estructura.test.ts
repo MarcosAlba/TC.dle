@@ -78,7 +78,14 @@ describe("piezas compartidas", () => {
             expect(leer(`src/games/${juego}.svelte`)).toMatch(/import ModalResultado from "..\/components\/ModalResultado.svelte"/);
         }
         expect(leer("src/components/ModalResultado.svelte")).toMatch(/CuentaRegresiva/);
-        expect(leer("src/components/ModalResultado.svelte")).toMatch(/SiguienteJuego/);
+        // El modal ofrece racha, compartir y el siguiente juego a través de AccionesResultado.
+        expect(leer("src/components/ModalResultado.svelte")).toMatch(/AccionesResultado/);
+        expect(leer("src/components/AccionesResultado.svelte")).toMatch(/SiguienteJuego/);
+        expect(leer("src/components/AccionesResultado.svelte")).toMatch(/BotonCompartir/);
+    });
+
+    it("el piloto, que muestra el resultado dentro de la página, ofrece las mismas acciones", () => {
+        expect(leer("src/games/Piloto.svelte")).toMatch(/AccionesResultado/);
     });
 });
 
@@ -93,5 +100,92 @@ describe("responsabilidades", () => {
 
     it.each(juegos)("%s no duplica la infraestructura diaria (almacenamiento, relojes, JSON)", (archivo) => {
         expect(leer("src/games/" + archivo), "va en src/lib").not.toMatch(/\blocalStorage\b|\bsetInterval\b|JSON\.parse/);
+    });
+});
+
+describe("pantallas táctiles", () => {
+    const hojas = readdirSync(path.join(raiz, "src/styles")).filter((archivo) => archivo.endsWith(".css"));
+    // La vista previa de autos es una herramienta interna; la pista abierta solo conserva su estilo al pasar el mouse.
+    const permitidos = [/vista-previa-/, /\.pista--activa:hover/];
+
+    it.each(hojas)("%s: el :hover solo vale con mouse (en el celular quedaba pegado y tapaba colores)", (hoja) => {
+        const lineas = leer("src/styles/" + hoja).split(/\r?\n/);
+
+        lineas.forEach((linea, indice) => {
+            if (!linea.includes(":hover") || permitidos.some((permitido) => permitido.test(hoja) || permitido.test(linea))) {
+                return;
+            }
+
+            const cercanas = lineas.slice(Math.max(0, indice - 3), indice + 1).join("\n");
+            expect(cercanas, hoja + ":" + (indice + 1) + " " + linea.trim()).toContain("@media (hover: hover)");
+        });
+    });
+
+    it("el celular recibe la base táctil: sin recuadro al tocar, sin espera de doble toque y con la barra del color del sitio", () => {
+        const base = leer("src/styles/base.css");
+        const pagina = leer("src/layouts/Pagina.astro");
+
+        expect(base).toMatch(/-webkit-tap-highlight-color: transparent/);
+        expect(base).toMatch(/touch-action: manipulation/);
+        expect(base).toMatch(/min-height: 100dvh/);
+        expect(pagina).toMatch(/name="theme-color"/);
+        expect(pagina).toMatch(/viewport-fit=cover/);
+    });
+});
+
+describe("íconos compartidos", () => {
+    const lee = (ruta: string) => readFileSync(ruta, "utf8");
+
+    it("el sprite define los íconos y la página lo incluye", () => {
+        const sprite = lee("src/components/Iconos.astro");
+        for (const id of ["icono-cerrar", "icono-avanzar", "bandera-cuadros"]) {
+            expect(sprite).toContain(`id="${id}"`);
+        }
+        expect(lee("src/layouts/Pagina.astro")).toContain("<Iconos />");
+    });
+
+    it("los componentes usan los íconos que existen en el sprite", () => {
+        const sprite = lee("src/components/Iconos.astro");
+        const usados = [
+            ...lee("src/components/ModalResultado.svelte").matchAll(/href="#(icono-[a-z]+)"/g),
+            ...lee("src/components/SiguienteJuego.svelte").matchAll(/href="#(icono-[a-z]+)"/g),
+            ...lee("src/components/BotonCompartir.svelte").matchAll(/href="#(icono-[a-z]+)"/g),
+        ];
+        expect(usados.length).toBeGreaterThan(0);
+        for (const [, id] of usados) {
+            expect(sprite).toContain(`id="${id}"`);
+        }
+    });
+});
+
+describe("acciones al terminar", () => {
+    const lee = (ruta: string) => readFileSync(ruta, "utf8");
+
+    it("el resultado no repite la racha: va solo en el texto que se comparte", () => {
+        const acciones = lee("src/components/AccionesResultado.svelte");
+        expect(acciones).not.toContain("resultado-racha");
+        expect(acciones).toContain("armarTexto(racha)");
+    });
+
+    it("en el piloto, los botones van fuera del bloque (que recorta el chanfle)", () => {
+        const piloto = lee("src/games/Piloto.svelte");
+        const bloque = piloto.slice(piloto.indexOf("<section"), piloto.indexOf("</section>"));
+        expect(bloque).not.toContain("<AccionesResultado");
+        expect(piloto).toContain("resultado-final__acciones");
+    });
+
+    it("el Top 10 se rinde manteniendo apretado, sin un segundo paso", () => {
+        const top10 = lee("src/games/Top10.svelte");
+        expect(top10).toContain("<BotonMantener");
+        expect(top10).not.toContain("confirmandoRendirse");
+    });
+});
+
+describe("encabezado de los juegos", () => {
+    const lee = (ruta: string) => readFileSync(ruta, "utf8");
+
+    it("cada página de juego marca su pestaña", () => {
+        expect(lee("src/layouts/PaginaJuego.astro")).toContain("<EncabezadoJuego juegoActual={id} />");
+        expect(lee("src/components/EncabezadoJuego.astro")).toContain("aria-current");
     });
 });
