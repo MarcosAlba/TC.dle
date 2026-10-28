@@ -271,4 +271,210 @@
             margin-top: var(--espacio-4);
         }
     }
+
+    /* ---------- PC: el resultado en un panel al costado del auto ---------- */
+
+    .auto-resultado {
+        display: none;
+    }
+
+    /*
+     * Cuando la partida terminó, el auto y los intentos quedan a la izquierda y el resultado
+     * ocupa el lugar del buscador, a la derecha. Mientras se juega no cambia nada. El juego de
+     * Svelte vive dentro de un <astro-island>: se lo "aplana" para que sus partes entren en la grilla.
+     */
+    @media (min-width: 64rem) {
+        .juego--auto:has(.auto-resultado) {
+            width: min(68rem, calc(100% - 3rem));
+        }
+
+        :root.intro-vista .juego--auto .contenido-juego:has(.auto-resultado) {
+            display: grid;
+            column-gap: var(--espacio-28);
+            grid-template-columns: minmax(0, 1fr) 24rem;
+            align-items: start;
+        }
+
+        .juego--auto .contenido-juego:has(.auto-resultado) > astro-island {
+            display: contents;
+        }
+
+        .juego--auto .contenido-juego:has(.auto-resultado) > *,
+        .juego--auto .contenido-juego:has(.auto-resultado) > astro-island > * {
+            grid-column: 1;
+        }
+
+        /*
+         * El buscador ya no sirve y lo de abajo del auto (el resultado y la cuenta) está en el panel.
+         * Eso último queda para el lector de pantalla y para devolverle el foco al cerrar la ventana.
+         */
+        .juego--auto .contenido-juego:has(.auto-resultado) .panel-intento {
+            display: none;
+        }
+
+        .juego--auto .contenido-juego:has(.auto-resultado) .estado-diario {
+            position: absolute;
+            width: 0.0625rem;
+            height: 0.0625rem;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+        }
+
+        .juego--auto .contenido-juego:has(.auto-resultado) .presentacion-juego {
+            margin-inline: 0;
+            justify-content: start;
+        }
+
+        /* La cuenta regresiva ya está en el panel. */
+        .juego--auto .contenido-juego:has(.auto-resultado) .ronda-anio .cuenta-regresiva {
+            display: none;
+        }
+
+        /* El panel va a la altura de la foto, con el mismo alto: arriba y abajo quedan parejos. */
+        .juego--auto .contenido-juego:has(.auto-resultado) .tarjeta-desafio {
+            margin-bottom: var(--espacio-14);
+        }
+
+        .juego--auto .contenido-juego:has(.auto-resultado) .tarjeta-desafio,
+        .juego--auto .contenido-juego:has(.auto-resultado) .historial-intentos,
+        .juego--auto .contenido-juego:has(.auto-resultado) .ronda-anio {
+            width: 100%;
+        }
+
+        .juego--auto .contenido-juego > astro-island > .auto-resultado {
+            display: flex;
+            margin-bottom: var(--espacio-14);
+            padding: var(--espacio-24);
+            border-top: 0.375rem solid var(--franja);
+            background: var(--color-superficie);
+            flex-direction: column;
+            align-self: stretch;
+            grid-column: 2;
+            grid-row: 2;
+            clip-path: var(--corte-caja);
+            animation: caja-entrada 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
+        .juego--auto .contenido-juego > astro-island > .auto-resultado--correcto {
+            border-top-color: var(--color-correcto);
+        }
+
+        .auto-resultado__cabecera {
+            display: flex;
+            gap: var(--espacio-14);
+            align-items: center;
+        }
+
+        .auto-resultado__foto {
+            width: 5rem;
+            height: 5rem;
+            flex: none;
+            border: 0.1875rem solid var(--franja);
+            border-radius: 50%;
+            background: var(--fondo-retrato);
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .auto-resultado--correcto .auto-resultado__foto {
+            border-color: var(--color-correcto);
+        }
+
+        .auto-resultado__etiqueta {
+            display: inline-block;
+            margin: 0;
+            padding: var(--espacio-4) calc(var(--sesgo) + 0.5rem);
+            color: #fff;
+            background: #3a3a44;
+            font-size: var(--texto-xs);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 800;
+            text-transform: uppercase;
+            clip-path: var(--corte);
+        }
+
+        .auto-resultado--correcto .auto-resultado__etiqueta {
+            background: var(--color-correcto);
+        }
+
+        .auto-resultado h2 {
+            margin: var(--espacio-6) 0 0;
+            padding: 0.1em calc(var(--sesgo) + 0.4em);
+            color: var(--tinta);
+            background: var(--blanco);
+            font-size: var(--texto-xl);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 900;
+            line-height: 1.05;
+            text-transform: uppercase;
+            clip-path: var(--corte);
+        }
+
+        .auto-resultado__detalle {
+            margin: var(--espacio-16) 0 0;
+            color: #c7c8d0;
+            font-size: var(--texto-m);
+        }
+
+        .auto-resultado__bonus {
+            margin: var(--espacio-12) 0 0;
+            padding: var(--espacio-10) var(--espacio-12);
+            border: 0.0625rem solid var(--linea);
+            color: #d4d4da;
+            font-size: var(--texto-s);
+        }
+
+        .auto-resultado__bonus--correcto {
+            border-color: var(--color-correcto);
+        }
+
+        /* La cuenta y los botones van al pie del panel, a la altura del borde de abajo de la foto. */
+        .auto-resultado__regreso {
+            display: flex;
+            width: 100%;
+            margin: auto 0 0;
+            padding-top: var(--espacio-14);
+            border-top: 0.0625rem solid var(--color-borde);
+            color: var(--color-texto-suave);
+            font-family: var(--fuente-titulos);
+            font-size: var(--texto-m);
+            font-stretch: var(--ancho-zocalo);
+            font-style: italic;
+            font-weight: 700;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* La hora en un zócalo blanco, como en el resultado del piloto. */
+        .auto-resultado__regreso strong {
+            padding: var(--espacio-4) calc(var(--sesgo) + 0.375rem);
+            color: var(--tinta);
+            background: var(--blanco);
+            font-size: var(--texto-m);
+            font-variant-numeric: tabular-nums;
+            font-weight: 900;
+            clip-path: var(--corte);
+        }
+
+        /* En el panel angosto va el nombre corto del juego que sigue y sin el contador. */
+        .auto-resultado .siguiente-juego__largo {
+            position: absolute;
+            width: 0.0625rem;
+            height: 0.0625rem;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+        }
+
+        .auto-resultado .siguiente-juego__corto {
+            display: inline;
+        }
+
+        .auto-resultado .siguiente-juego__extra {
+            display: none;
+        }
+    }
 }

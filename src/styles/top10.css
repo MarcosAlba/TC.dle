@@ -807,6 +807,17 @@
             align-items: center;
         }
 
+        /* La hora en un zócalo blanco, como en el resultado del piloto. */
+        .top10-resultado__regreso strong {
+            padding: var(--espacio-4) calc(var(--sesgo) + 0.375rem);
+            color: var(--tinta);
+            background: var(--blanco);
+            font-size: var(--texto-m);
+            font-variant-numeric: tabular-nums;
+            font-weight: 900;
+            clip-path: var(--corte);
+        }
+
         /* El cronómetro sube al lado del título (a la altura del zócalo blanco). */
         .top10-reloj {
             display: block;
