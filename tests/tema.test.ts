@@ -1,6 +1,8 @@
 // Tema de Halloween: se activa solo del 20/10 al 2/11 y se puede forzar con ?halloween=1/0.
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { aplicarContrasteInicial, aplicarTemaInicial, CLAVE_CONTRASTE } from "../src/lib/inicio-pagina";
+import { pilotos } from "../src/data";
+import { copaDeOro } from "../src/data/copa-de-oro";
+import { aplicarContrasteInicial, aplicarTemaCopaInicial, aplicarTemaInicial, CLAVE_CONTRASTE } from "../src/lib/inicio-pagina";
 
 function ejecutar(fecha: Date, busqueda = "", sesion = new Map<string, string>()) {
     vi.useFakeTimers();
@@ -97,5 +99,48 @@ describe("alto contraste", () => {
     it("la clave que lee antes del primer pintado es la que guarda el botón", () => {
         // aplicarContrasteInicial se inserta como texto y no puede usar la constante.
         expect(aplicarContrasteInicial.toString()).toContain(JSON.stringify(CLAVE_CONTRASTE));
+    });
+});
+
+describe("tema de la Copa de Oro", () => {
+    function copa(fecha: Date, busqueda = "", temaPrevio?: string) {
+        vi.useFakeTimers();
+        vi.setSystemTime(fecha);
+        const documentElement = { dataset: (temaPrevio ? { tema: temaPrevio } : {}) as Record<string, string> };
+        const sesion = new Map<string, string>();
+        vi.stubGlobal("window", { location: { search: busqueda } });
+        vi.stubGlobal("document", { documentElement });
+        vi.stubGlobal("sessionStorage", {
+            getItem: (clave: string) => sesion.get(clave) ?? null,
+            setItem: (clave: string, valor: string) => sesion.set(clave, valor),
+        });
+        aplicarTemaCopaInicial("2026-11-03", "2026-12-06");
+        return documentElement.dataset.tema;
+    }
+
+    it.each([
+        [new Date(2026, 10, 2), undefined],
+        [new Date(2026, 10, 3), "copa-oro"],
+        [new Date(2026, 11, 6, 23, 0), "copa-oro"],
+        [new Date(2026, 11, 7), undefined],
+    ])("el %s el tema es %s", (fecha, esperado) => {
+        expect(copa(fecha)).toBe(esperado);
+    });
+
+    it("Halloween le gana si los dos caen el mismo día", () => {
+        expect(copa(new Date(2026, 10, 10), "", "halloween")).toBe("halloween");
+    });
+
+    it("?copa=1 lo prende fuera de fecha y ?copa=0 lo apaga", () => {
+        expect(copa(new Date(2026, 5, 1), "?copa=1")).toBe("copa-oro");
+        expect(copa(new Date(2026, 10, 20), "?copa=0")).toBeUndefined();
+    });
+
+    it("las fechas y los pilotos de la temporada están bien cargados", () => {
+        expect(copaDeOro.desde < copaDeOro.hasta).toBe(true);
+        expect(new Set(copaDeOro.pilotos).size).toBe(copaDeOro.pilotos.length);
+        for (const id of copaDeOro.pilotos) {
+            expect(pilotos.find((piloto) => piloto.id === id && !piloto.retirado), "piloto " + id).toBeDefined();
+        }
     });
 });

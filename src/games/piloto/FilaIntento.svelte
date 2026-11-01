@@ -1,5 +1,6 @@
 <script lang="ts">
     // Una fila de la tabla de intentos: las celdas se revelan de a una.
+    import { copaDeOro, juegaCopaDeOro } from "../../data/copa-de-oro";
     import { LOGOS_MARCAS, obtenerImagenMiniPiloto, type CeldaNumerica } from "../../lib/pilotos";
     import { urlImagen } from "../../lib/rutas";
     import type { FilaPiloto } from "./tipos";
@@ -43,6 +44,9 @@
     <td class={"celda-piloto " + estadoBooleano(comparacion.acerto)}>
         <img class="foto-piloto" src={urlImagen(obtenerImagenMiniPiloto(piloto))} alt={"Foto de " + piloto.nombre} title={piloto.nombre} />
         <span class="celda-piloto__nombre" aria-hidden="true">{piloto.nombre}</span>
+        {#if juegaCopaDeOro(piloto.id)}
+            <span class="distintivo-copa distintivo-copa--foto" title={"Juega la Copa de Oro " + copaDeOro.temporada}>Copa</span>
+        {/if}
     </td>
     <td class={"celda-marca " + clase(0, estadoBooleano(comparacion.marca))}>
         <span class="celda-icono" aria-hidden="true">{ICONOS[estadoBooleano(comparacion.marca)]}</span>

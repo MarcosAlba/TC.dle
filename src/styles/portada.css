@@ -813,4 +813,38 @@
             font-weight: 700;
         }
     }
+
+    /* Franja de la Copa de Oro arriba de los juegos: solo con el tema dorado. */
+    .franja-copa {
+        display: none;
+        width: min(73.75rem, calc(100% - 2rem));
+        margin: 0 auto var(--espacio-20);
+        padding: var(--espacio-14) var(--espacio-24);
+        background: linear-gradient(90deg, #2a1f05, var(--asfalto-claro) 65%);
+        --borde-caja: #6b5212;
+        gap: var(--espacio-8) var(--espacio-24);
+        align-items: center;
+    }
+
+    :root[data-tema="copa-oro"] .franja-copa {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .franja-copa__titulo {
+        color: var(--dorado);
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-3xl);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 900;
+        line-height: 1;
+        text-transform: uppercase;
+    }
+
+    .franja-copa__texto {
+        margin: 0;
+        color: #e9dcb8;
+        font-size: var(--texto-m);
+    }
 }

@@ -1,5 +1,6 @@
 ---
 import ProximaCarrera from "../components/ProximaCarrera.astro";
+import { copaDeOro } from "../data/copa-de-oro";
 import TarjetaJuego from "../components/TarjetaJuego.astro";
 import Pagina from "../layouts/Pagina.astro";
 import { dejarLogoQuieto } from "../lib/inicio-pagina";
@@ -16,6 +17,12 @@ import "../styles/portada.css";
     <script is:inline set:html={`(${dejarLogoQuieto})();`} />
 
     <main class="inicio">
+        <!-- Solo con el tema de la Copa de Oro (tokens.css): el script completa cuántas fechas quedan. -->
+        <aside id="franja-copa" class="franja-copa caja-chaflan" aria-label="Copa de Oro">
+            <span class="franja-copa__titulo">Copa de Oro {copaDeOro.temporada}</span>
+            <p id="franja-copa-texto" class="franja-copa__texto">{copaDeOro.pilotos.length} pilotos pelean el título.</p>
+        </aside>
+
         <section class="selector-juegos" aria-labelledby="titulo-selector">
             <!-- En PC el título va a la izquierda con la fecha y, a la derecha, cuántos juegos se completaron hoy. -->
             <div class="selector-juegos__cabecera">

@@ -115,6 +115,10 @@
     --letra-correcta: #14864f;
     --letra-cerca: #c68a05;
 
+    /* Distintivo de los pilotos de la Copa de Oro: lo prende el tema dorado. */
+    --copa-display: none;
+    --dorado: #f3d27a;
+
     /* Adorno de la pantalla de resultado (el tema lo completa). */
     --mascota-display: none;
     --mascota-ganada: none;
@@ -160,6 +164,23 @@
 
 :root[data-tema="halloween"] body {
     --resplandor: rgb(232 84 0 / 9%);
+}
+
+/*
+ * ---------- Tema de la Copa de Oro (<html data-tema="copa-oro">) ----------
+ * Dorado en vez de rojo mientras se definen los playoffs (fechas en
+ * data/copa-de-oro.ts). Las pistas de los juegos no cambian de color. El
+ * distintivo de los pilotos que juegan la Copa solo se ve con este tema.
+ */
+:root[data-tema="copa-oro"] {
+    --rojo: #b8860b;
+    --rojo-oscuro: #8a6408;
+    --dorado: #f3d27a;
+    --copa-display: inline-grid;
+}
+
+:root[data-tema="copa-oro"] body {
+    --resplandor: rgb(217 165 32 / 12%);
 }
 
 /*

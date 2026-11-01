@@ -2,6 +2,7 @@
 // progreso del día, y la cuenta regresiva a la próxima carrera. No usa Svelte:
 // es DOM mínimo y la portada queda liviana.
 import { calendarioTC } from "../data/calendario";
+import { copaDeOro } from "../data/copa-de-oro";
 import { obtenerAlmacenamiento } from "../lib/almacenamiento";
 import { describirTiempoRestante, obtenerProximaCarrera, obtenerTiempoRestante, type CarreraConInicio } from "../lib/calendario";
 import { compartirTexto } from "../lib/compartir";
@@ -173,6 +174,40 @@ function iniciarCuentaRegresiva(): void {
     }
 }
 
+// Copa de Oro: cuántas fechas le quedan (la franja solo se ve con el tema dorado).
+function mostrarCopaDeOro(): void {
+    const texto = document.getElementById("franja-copa-texto");
+    if (!texto || document.documentElement.dataset.tema !== "copa-oro") {
+        return;
+    }
+
+    const ahora = Date.now();
+    const limite = new Date(copaDeOro.hasta + "T23:59:59-03:00").getTime();
+    const restantes = calendarioTC.filter((carrera) => {
+        const largada = new Date(carrera.largada).getTime();
+        return largada > ahora && largada <= limite;
+    });
+    const fechaCorta = (iso: string) => {
+        const dia = new Date(iso);
+        return dosDigitos(dia.getDate()) + "/" + dosDigitos(dia.getMonth() + 1);
+    };
+
+    if (restantes.length === 0) {
+        texto.textContent = "Terminó la Copa de Oro " + copaDeOro.temporada + ".";
+        return;
+    }
+
+    const final = restantes[restantes.length - 1];
+    const proxima = restantes[0];
+    texto.textContent =
+        copaDeOro.pilotos.length +
+        " pilotos pelean el título. " +
+        (restantes.length === 1
+            ? "Queda la final: " + final.lugar + ", el " + fechaCorta(final.largada) + "."
+            : "Quedan " + restantes.length + " fechas: " + proxima.lugar + " (" + fechaCorta(proxima.largada) + ") y la final en " + final.lugar + " (" + fechaCorta(final.largada) + ").");
+}
+
 mostrarRachas();
 mostrarEstados();
+mostrarCopaDeOro();
 iniciarCuentaRegresiva();

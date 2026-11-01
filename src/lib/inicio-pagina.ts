@@ -54,6 +54,36 @@ export function aplicarTemaInicial(): void {
 }
 
 /**
+ * Tema dorado de la Copa de Oro: <html data-tema="copa-oro"> de `desde` a `hasta`
+ * ("AAAA-MM-DD", hora local; salen de data/copa-de-oro.ts). Halloween le gana si
+ * coinciden. Para probarlo fuera de fecha: ?copa=1 (queda en la pestaña) y ?copa=0.
+ */
+export function aplicarTemaCopaInicial(desde: string, hasta: string): void {
+    const clave = "tcdleCopa";
+    const parametro = new URLSearchParams(window.location.search).get("copa");
+    let forzado: string | null = parametro;
+
+    try {
+        if (parametro === "1" || parametro === "0") {
+            sessionStorage.setItem(clave, parametro);
+        } else {
+            forzado = sessionStorage.getItem(clave);
+        }
+    } catch {
+        // Sin sessionStorage vale solo el parámetro de esta página.
+    }
+
+    const hoy = new Date();
+    const fecha =
+        hoy.getFullYear() + "-" + String(hoy.getMonth() + 1).padStart(2, "0") + "-" + String(hoy.getDate()).padStart(2, "0");
+    const activo = forzado === null ? fecha >= desde && fecha <= hasta : forzado === "1";
+
+    if (activo && !document.documentElement.dataset.tema) {
+        document.documentElement.dataset.tema = "copa-oro";
+    }
+}
+
+/**
  * Logo de la portada: la primera vez en la sesión hace la frenada completa y las siguientes lo
  * muestra ya terminado (pidiendo el SVG con #visto), así no se repite cada vez que se vuelve
  * de un juego. Va justo después del logo para correr antes del primer pintado.
