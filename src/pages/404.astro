@@ -1,0 +1,26 @@
+---
+// Página para los links rotos. Vercel la sirve sola para cualquier dirección
+// que no existe (sale de dist/404.html).
+import EncabezadoJuego from "../components/EncabezadoJuego.astro";
+import Pagina from "../layouts/Pagina.astro";
+import { urlInicio, urlJuego } from "../lib/rutas";
+import "../styles/juego.css";
+import "../styles/no-encontrada.css";
+---
+
+<Pagina titulo="TCdle | Página no encontrada" descripcion="Esta página de TCdle no existe.">
+    <EncabezadoJuego />
+
+    <main class="no-encontrada">
+        <p class="no-encontrada__numero" aria-hidden="true">4<b>0</b>4</p>
+        <section class="presentacion-juego" aria-labelledby="titulo-404">
+            <p class="modo-juego">Error 404</p>
+            <h1 id="titulo-404">Esta fecha no está en el calendario</h1>
+        </section>
+        <p class="no-encontrada__texto">La página que buscás no existe. Puede que el link esté mal copiado o que la hayamos movido.</p>
+        <div class="no-encontrada__botones">
+            <a class="no-encontrada__boton" href={urlInicio()}>Volver al inicio</a>
+            <a class="no-encontrada__boton no-encontrada__boton--claro" href={urlJuego("adivinar-el-piloto.html")}>Jugar el piloto de hoy</a>
+        </div>
+    </main>
+</Pagina>
