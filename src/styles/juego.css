@@ -125,7 +125,72 @@
         display: none;
     }
 
+    /* Pestañas y botones del encabezado. En el celular los botones van a la derecha del logo centrado. */
+    .encabezado-juego__acciones {
+        position: absolute;
+        top: 50%;
+        right: var(--espacio-16);
+        display: flex;
+        gap: var(--espacio-6);
+        align-items: center;
+        transform: translateY(-50%);
+    }
+
+    .boton-encabezado {
+        display: grid;
+        width: 2.5rem;
+        height: 2.25rem;
+        padding: 0;
+        border: 0;
+        color: var(--color-texto-suave);
+        background: #16161b;
+        place-items: center;
+        clip-path: var(--corte);
+        transition: color 160ms ease, background-color 160ms ease;
+    }
+
+    .boton-encabezado[aria-pressed="true"] {
+        color: var(--tinta);
+        background: var(--blanco);
+    }
+
+    .boton-encabezado:focus-visible {
+        color: var(--blanco);
+        outline: none;
+        box-shadow: inset 0 -0.1875rem 0 var(--blanco);
+    }
+
+    @media (hover: hover) {
+        .boton-encabezado:not([aria-pressed="true"]):hover {
+            color: var(--blanco);
+            background: #22222a;
+        }
+    }
+
+    .boton-encabezado .icono {
+        width: 1.125rem;
+        height: 1.125rem;
+        transform: none;
+    }
+
+    /* El "?" de los atajos de teclado: solo tiene sentido con teclado, en PC. */
+    .boton-encabezado--ayuda {
+        display: none;
+        font-size: var(--texto-l);
+        font-style: italic;
+        font-weight: 900;
+    }
+
     @media (min-width: 64rem) {
+        .encabezado-juego__acciones {
+            position: static;
+            transform: none;
+        }
+
+        .boton-encabezado--ayuda {
+            display: grid;
+        }
+
         .encabezado-juego {
             padding-inline: var(--espacio-48);
             justify-content: space-between;

@@ -28,30 +28,37 @@ const { juegoActual } = Astro.props;
         <!-- Solo se ve con el tema de Halloween: cae sobre la T del logo. -->
         <img class="logo-juego__calabaza" src={calabaza.src} width={calabaza.width} height={calabaza.height} alt="" />
     </a>
-    {
-        juegoActual && (
-            <nav class="pestanas-juegos" aria-label="Juegos de hoy">
-                {JUEGOS.map((juego) => (
-                    <a
-                        class="pestanas-juegos__pestana"
-                        href={urlJuego(juego.archivo)}
-                        data-juego={juego.id}
-                        aria-current={juego.id === juegoActual ? "page" : undefined}
-                    >
-                        <span class="pestanas-juegos__punto" aria-hidden="true" />
-                        {juego.corto}
-                        <span class="solo-lectores" data-estado-lector />
-                    </a>
-                ))}
-            </nav>
-        )
-    }
+    <div class="encabezado-juego__acciones">
+        {
+            juegoActual && (
+                <nav class="pestanas-juegos" aria-label="Juegos de hoy">
+                    {JUEGOS.map((juego) => (
+                        <a
+                            class="pestanas-juegos__pestana"
+                            href={urlJuego(juego.archivo)}
+                            data-juego={juego.id}
+                            aria-current={juego.id === juegoActual ? "page" : undefined}
+                        >
+                            <span class="pestanas-juegos__punto" aria-hidden="true" />
+                            {juego.corto}
+                            <span class="solo-lectores" data-estado-lector />
+                        </a>
+                    ))}
+                </nav>
+            )
+        }
+        <button type="button" class="boton-encabezado" data-boton-contraste aria-pressed="false" title="Alto contraste: naranja y celeste en vez de verde y amarillo">
+            <svg class="icono" aria-hidden="true"><use href="#icono-contraste" /></svg>
+            <span class="solo-lectores">Alto contraste</span>
+        </button>
+    </div>
 </header>
 
 <script>
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import { JUEGOS } from "../lib/juegos";
     import { obtenerProgresoJuego } from "../lib/rachas";
+    import { CLAVE_CONTRASTE } from "../lib/inicio-pagina";
 
     const NOMBRES = { acertado: "resuelto", fallado: "terminado", "en-curso": "en curso", pendiente: "sin jugar" };
     const almacenamiento = obtenerAlmacenamiento();
@@ -65,5 +72,30 @@ const { juegoActual } = Astro.props;
         const progreso = obtenerProgresoJuego(almacenamiento, juego);
         pestana.dataset.estado = progreso;
         pestana.querySelector("[data-estado-lector]")!.textContent = ", " + NOMBRES[progreso];
+    }
+
+    // Alto contraste: lo pone antes del primer pintado aplicarContrasteInicial; acá solo se cambia.
+    const botonContraste = document.querySelector<HTMLButtonElement>("[data-boton-contraste]");
+    if (botonContraste) {
+        const raiz = document.documentElement;
+        botonContraste.setAttribute("aria-pressed", String(raiz.dataset.contraste === "alto"));
+        botonContraste.addEventListener("click", () => {
+            const prender = raiz.dataset.contraste !== "alto";
+            if (prender) {
+                raiz.dataset.contraste = "alto";
+            } else {
+                delete raiz.dataset.contraste;
+            }
+            botonContraste.setAttribute("aria-pressed", String(prender));
+            try {
+                if (prender) {
+                    localStorage.setItem(CLAVE_CONTRASTE, "alto");
+                } else {
+                    localStorage.removeItem(CLAVE_CONTRASTE);
+                }
+            } catch {
+                // Sin localStorage vale hasta recargar.
+            }
+        });
     }
 </script>

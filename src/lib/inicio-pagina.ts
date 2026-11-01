@@ -77,3 +77,17 @@ export function dejarLogoQuieto(): void {
         logo.src = logo.src.split("#")[0] + "#visto";
     });
 }
+
+/** Clave de localStorage del modo alto contraste ("alto" si está prendido). */
+export const CLAVE_CONTRASTE = "tcdleContraste";
+
+/** Modo alto contraste elegido por la persona: <html data-contraste="alto">. */
+export function aplicarContrasteInicial(): void {
+    try {
+        if (localStorage.getItem("tcdleContraste") === "alto") {
+            document.documentElement.dataset.contraste = "alto";
+        }
+    } catch {
+        // Sin localStorage se ve con los colores de siempre.
+    }
+}

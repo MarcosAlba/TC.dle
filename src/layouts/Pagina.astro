@@ -1,12 +1,12 @@
 ---
-// Página base: <head>, fuentes, tokens y los dos scripts que corren antes del
-// primer pintado (tema de Halloween e introducción del juego ya vista).
+// Página base: <head>, fuentes, tokens y los scripts que corren antes del
+// primer pintado (tema de Halloween, alto contraste e introducción ya vista).
 import "../styles/fuentes.css";
 import "../styles/tokens.css";
 import "../styles/base.css";
 import fuenteNormal from "../assets/fonts/archivo-normal.woff2?url";
 import fuenteCursiva from "../assets/fonts/archivo-italic.woff2?url";
-import { aplicarIntroInicial, aplicarTemaInicial } from "../lib/inicio-pagina";
+import { aplicarContrasteInicial, aplicarIntroInicial, aplicarTemaInicial } from "../lib/inicio-pagina";
 import { urlImagen } from "../lib/rutas";
 import Analytics from "@vercel/analytics/astro";
 import Iconos from "../components/Iconos.astro";
@@ -29,7 +29,7 @@ const urlPagina = urlCompleta(Astro.url.pathname.replace(/index\.html$/, ""));
 const esError = Astro.url.pathname.endsWith("404.html");
 const urlImagenOg = urlCompleta(urlImagen(`og/${imagenOg}.jpg`));
 const scriptInicial =
-    `(${aplicarTemaInicial})();` + (claveIntro ? `(${aplicarIntroInicial})(${JSON.stringify(claveIntro)});` : "");
+    `(${aplicarTemaInicial})();(${aplicarContrasteInicial})();` + (claveIntro ? `(${aplicarIntroInicial})(${JSON.stringify(claveIntro)});` : "");
 ---
 
 <!doctype html>

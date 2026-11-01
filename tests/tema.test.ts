@@ -1,6 +1,6 @@
 // Tema de Halloween: se activa solo del 20/10 al 2/11 y se puede forzar con ?halloween=1/0.
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { aplicarTemaInicial } from "../src/lib/inicio-pagina";
+import { aplicarContrasteInicial, aplicarTemaInicial, CLAVE_CONTRASTE } from "../src/lib/inicio-pagina";
 
 function ejecutar(fecha: Date, busqueda = "", sesion = new Map<string, string>()) {
     vi.useFakeTimers();
@@ -66,5 +66,36 @@ describe("tema de Halloween", () => {
         aplicarTemaInicial();
 
         expect(documentElement.dataset.tema).toBe("halloween");
+    });
+});
+
+describe("alto contraste", () => {
+    function contraste(guardado: string | null | Error) {
+        const documentElement = { dataset: {} as Record<string, string> };
+        vi.stubGlobal("document", { documentElement });
+        vi.stubGlobal("localStorage", {
+            getItem: (clave: string) => {
+                if (guardado instanceof Error) {
+                    throw guardado;
+                }
+                return clave === CLAVE_CONTRASTE ? guardado : null;
+            },
+        });
+        aplicarContrasteInicial();
+        return documentElement.dataset.contraste;
+    }
+
+    it("se prende solo si la persona lo eligió", () => {
+        expect(contraste("alto")).toBe("alto");
+        expect(contraste(null)).toBeUndefined();
+    });
+
+    it("sin localStorage se ve con los colores de siempre", () => {
+        expect(contraste(new Error("bloqueado"))).toBeUndefined();
+    });
+
+    it("la clave que lee antes del primer pintado es la que guarda el botón", () => {
+        // aplicarContrasteInicial se inserta como texto y no puede usar la constante.
+        expect(aplicarContrasteInicial.toString()).toContain(JSON.stringify(CLAVE_CONTRASTE));
     });
 });

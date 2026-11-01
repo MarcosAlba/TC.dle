@@ -15,6 +15,9 @@
 
     const estadoBooleano = (coincide: boolean) => (coincide ? "coincide" : "no-coincide");
 
+    // Ícono de la pista: lo muestra solo el modo alto contraste (tokens.css).
+    const ICONOS: Record<string, string> = { coincide: "✓", cerca: "≈", "no-coincide": "✕" };
+
     function claseNumerica(celda: CeldaNumerica, indice: number): string {
         return (
             clase(indice, celda.estado) +
@@ -42,18 +45,22 @@
         <span class="celda-piloto__nombre" aria-hidden="true">{piloto.nombre}</span>
     </td>
     <td class={"celda-marca " + clase(0, estadoBooleano(comparacion.marca))}>
+        <span class="celda-icono" aria-hidden="true">{ICONOS[estadoBooleano(comparacion.marca)]}</span>
         <span class="celda-etiqueta" aria-hidden="true">Modelo</span>
         <img class="logo-marca" src={urlImagen("marcas/" + LOGOS_MARCAS[piloto.marca])} alt={"Logo de " + piloto.marca} title={piloto.marca} />
     </td>
     <td class={clase(1, estadoBooleano(comparacion.equipo))} title={piloto.equipo}>
+        <span class="celda-icono" aria-hidden="true">{ICONOS[estadoBooleano(comparacion.equipo)]}</span>
         <span class="celda-etiqueta" aria-hidden="true">Equipo</span>
         <span class="celda-valor">{piloto.equipo}</span>
     </td>
     <td class={clase(2, comparacion.localidad)} title={piloto.localidad}>
+        <span class="celda-icono" aria-hidden="true">{ICONOS[comparacion.localidad]}</span>
         <span class="celda-etiqueta" aria-hidden="true">Localidad</span>
         <span class="celda-valor">{piloto.localidad}</span>
     </td>
     <td class={clase(3, estadoBooleano(comparacion.campeon))}>
+        <span class="celda-icono" aria-hidden="true">{ICONOS[estadoBooleano(comparacion.campeon)]}</span>
         <span class="celda-etiqueta" aria-hidden="true">Campeón</span>
         <span class="celda-valor">{piloto.campeonTC ? "Sí" : "No"}</span>
     </td>

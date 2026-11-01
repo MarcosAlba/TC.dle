@@ -103,6 +103,11 @@
     --celda-correcta-brillo: none;
     --celda-cerca-borde: #f0b52a;
     --celda-cerca-fondo: rgb(212 155 11 / 82%);
+    --celda-cerca-texto: inherit;
+    --celda-incorrecta-borde: #d04a5a;
+    --celda-incorrecta-fondo: rgb(140 26 42 / 85%);
+    /* Ícono en la esquina de cada pista: solo se ve en alto contraste. */
+    --celda-icono-display: none;
     --wordle-correcta-borde: var(--color-correcto);
     --wordle-correcta-sombra: inset 0 -0.1875rem 0 rgb(0 0 0 / 18%);
 
@@ -155,4 +160,32 @@
 
 :root[data-tema="halloween"] body {
     --resplandor: rgb(232 84 0 / 9%);
+}
+
+/*
+ * ---------- Alto contraste (<html data-contraste="alto">) ----------
+ * Para quien no distingue bien verde y rojo: coincide en naranja, cerca en
+ * celeste y no coincide en gris (los colores que usa Wordle), más un ícono en
+ * cada pista. Va después del tema de Halloween para ganarle si están los dos.
+ */
+:root[data-contraste="alto"] {
+    --color-correcto: #e8711c;
+    --color-cerca: #85c0f9;
+    --color-incorrecto: #4a4a55;
+    --color-texto-exito: #ffa860;
+
+    --celda-correcta-borde: #ffa860;
+    --celda-correcta-fondo: rgb(232 113 28 / 92%);
+    --celda-correcta-brillo: none;
+    --celda-cerca-borde: #c4e1ff;
+    --celda-cerca-fondo: rgb(133 192 249 / 92%);
+    --celda-cerca-texto: #0b1a2b;
+    --celda-incorrecta-borde: #5d5d69;
+    --celda-incorrecta-fondo: #2b2b33;
+    --celda-icono-display: block;
+    --wordle-correcta-borde: #ffa860;
+    --wordle-correcta-sombra: inset 0 -0.1875rem 0 rgb(0 0 0 / 18%);
+
+    --letra-correcta: #e8711c;
+    --letra-cerca: #85c0f9;
 }

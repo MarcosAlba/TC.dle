@@ -78,12 +78,25 @@
 
     td.cerca {
         border-color: var(--celda-cerca-borde);
+        color: var(--celda-cerca-texto);
         background: var(--celda-cerca-fondo);
     }
 
     td.no-coincide {
-        border-color: #d04a5a;
-        background: rgb(140 26 42 / 85%);
+        border-color: var(--celda-incorrecta-borde);
+        background: var(--celda-incorrecta-fondo);
+    }
+
+    /* Alto contraste: además del color, un ícono en la esquina (las numéricas ya tienen su flecha). */
+    .celda-icono {
+        position: absolute;
+        top: var(--espacio-4);
+        left: var(--espacio-6);
+        display: var(--celda-icono-display);
+        font-size: var(--texto-s);
+        font-weight: 900;
+        line-height: 1;
+        opacity: 0.9;
     }
 
     .celda-pendiente {
