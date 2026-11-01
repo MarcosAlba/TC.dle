@@ -9,6 +9,7 @@
     import type { Circuito } from "../data/tipos";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import {
+        calcularPistaUbicacion,
         obtenerDetalleCircuito,
         obtenerEtiquetaCircuito,
         obtenerTextoBusquedaCircuito,
@@ -99,7 +100,12 @@
             juego.mostrarMensaje("Se terminaron los intentos.", "error");
             abrirModal();
         } else {
-            juego.mostrarMensaje("No es ese circuito. La silueta permanece igual de nítida.");
+            const pista = calcularPistaUbicacion(elegido, secreto);
+            juego.mostrarMensaje(
+                pista.mismaSede
+                    ? "Es ese autódromo, pero con otro trazado."
+                    : "No es ese circuito. El del día está a " + pista.km.toLocaleString("es-AR") + " km hacia el " + pista.direccion + "."
+            );
         }
 
         if (!juego.estado.terminada) {
@@ -129,8 +135,11 @@
             tabindex="-1"
             hidden={!estado.terminada}
         >
-            <span>{estado.acerto ? "¡Correcto!" : "El circuito era"}</span>
-            <strong>{etiqueta(secreto)}</strong>
+            <!-- La respuesta entra a la página recién al terminar: antes se podía leer con "Inspeccionar". -->
+            {#if estado.terminada}
+                <span>{estado.acerto ? "¡Correcto!" : "El circuito era"}</span>
+                <strong>{etiqueta(secreto)}</strong>
+            {/if}
         </div>
         <!-- Al acertar, el contador sube a la fila de "Intentos". -->
         {#if !estado.acerto}
@@ -194,9 +203,21 @@
             {#each historial as circuito (circuito.id)}
                 {@const acerto = circuito.id === secreto.id}
                 <article class={"intento intento--circuito" + (acerto ? " intento--correcto" : "")} aria-label={etiqueta(circuito) + ": " + (acerto ? "correcto" : "incorrecto")}>
-                    <strong>{circuito.nombre}</strong>
-                    {#if tieneVariantes(circuito, circuitos)}
-                        <span>{circuito.variante}</span>
+                    <div class="intento__nombre">
+                        <strong>{circuito.nombre}</strong>
+                        {#if tieneVariantes(circuito, circuitos)}
+                            <span>{circuito.variante}</span>
+                        {/if}
+                    </div>
+                    {#if !acerto}
+                        {@const pista = calcularPistaUbicacion(circuito, secreto)}
+                        <div class="intento__ubicacion" aria-label={pista.mismaSede ? "mismo autódromo, otro trazado" : pista.km.toLocaleString("es-AR") + " km hacia el " + pista.direccion}>
+                            <b class="intento__km">{pista.mismaSede ? "Mismo lugar" : pista.km.toLocaleString("es-AR") + " km"}</b>
+                            {#if !pista.mismaSede}
+                                <span class="intento__flecha" title={"Hacia el " + pista.direccion}><i style:rotate={pista.grados + "deg"}>↑</i></span>
+                            {/if}
+                            <span class="intento__cercania" style:--cercania={pista.cercania + "%"}>{pista.cercania}%</span>
+                        </div>
                     {/if}
                 </article>
             {/each}

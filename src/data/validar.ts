@@ -85,6 +85,10 @@ export function validarCircuitos(circuitos: Circuito[]): void {
         exigir(circuito.aliases.length > 0, `${donde}: faltan respuestas alternativas`);
         exigir(circuito.aliases.every(esTextoNoVacio), `${donde}: alias vacío`);
         exigir(circuito.imagen.endsWith(".svg"), `${donde}: la silueta es un SVG`);
+        // Argentina continental: si no, las coordenadas están cargadas al revés o mal.
+        const { lat, lon } = circuito.coordenadas ?? {};
+        exigir(typeof lat === "number" && lat < -21 && lat > -56, `${donde}: latitud fuera de Argentina`);
+        exigir(typeof lon === "number" && lon < -53 && lon > -74, `${donde}: longitud fuera de Argentina`);
         exigir(URL.canParse(circuito.fuente), `${donde}: fuente inválida`);
     }
 }

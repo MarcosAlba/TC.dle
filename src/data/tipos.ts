@@ -77,6 +77,8 @@ export interface Circuito {
     aliases: string[];
     ciudad: string;
     provincia: string;
+    /** Ubicación aproximada del autódromo (grados decimales): la distancia y la dirección de cada intento. */
+    coordenadas: { lat: number; lon: number };
     longitud: string;
     participacionTC: string;
     /** SVG dentro de public/assets/images/circuitos. */

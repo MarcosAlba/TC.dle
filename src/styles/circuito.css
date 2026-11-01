@@ -45,7 +45,14 @@
 
     .intento--circuito {
         display: grid;
-        align-content: center;
+        gap: var(--espacio-12);
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+    }
+
+    .intento__nombre {
+        display: grid;
+        min-width: 0;
     }
 
     .intento--circuito strong {
@@ -65,6 +72,83 @@
 
     .intento--circuito.intento--correcto span {
         color: #4a5366;
+    }
+
+    /* Distancia, dirección y cercanía al circuito del día (como Worldle). */
+    .intento__ubicacion {
+        display: grid;
+        gap: var(--espacio-4) var(--espacio-6);
+        grid-template-columns: auto auto;
+        align-items: center;
+        justify-items: end;
+    }
+
+    .intento__km {
+        padding: var(--espacio-6) calc(var(--sesgo) + 0.5rem);
+        color: var(--tinta);
+        background: var(--blanco);
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-xl);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-variant-numeric: tabular-nums;
+        font-weight: 900;
+        line-height: 1;
+        white-space: nowrap;
+        clip-path: var(--corte);
+    }
+
+    .intento--circuito .intento__flecha {
+        display: grid;
+        width: 2.25rem;
+        height: 2.25rem;
+        color: #fff;
+        background: var(--rojo);
+        font-family: var(--fuente-texto);
+        font-size: var(--texto-xl);
+        font-stretch: 100%;
+        font-weight: 900;
+        line-height: 1;
+        place-items: center;
+        clip-path: var(--corte);
+    }
+
+    /* La flecha gira dentro de su cuadro, que queda derecho. */
+    .intento__flecha i {
+        display: block;
+        font-style: normal;
+    }
+
+    .intento--circuito .intento__cercania {
+        position: relative;
+        grid-column: 1 / -1;
+        width: 100%;
+        padding-top: 0.375rem;
+        color: var(--color-texto-suave);
+        font-size: var(--texto-xs);
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+        text-align: right;
+    }
+
+    .intento__cercania::before,
+    .intento__cercania::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 0.25rem;
+        transform: skewX(-20deg);
+        content: "";
+    }
+
+    .intento__cercania::before {
+        right: 0;
+        background: #2a2a33;
+    }
+
+    .intento__cercania::after {
+        width: var(--cercania);
+        background: var(--color-cerca);
     }
 
     .resultado-circuito-modal__silueta {
