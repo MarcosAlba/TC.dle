@@ -63,6 +63,8 @@
     );
     const urlSilueta = urlImagen("circuitos/" + secreto.imagen);
 
+    const marcador = $derived({ puntaje: estado.acerto ? estado.intentosUsados : null, maximo: MAXIMO_INTENTOS, gano: estado.acerto });
+
     const armarTexto = (racha: number) =>
         construirTextoCompartir({
             juego: "circuito",
@@ -234,6 +236,7 @@
     titulo={estado.acerto ? "¡Adivinaste!" : "No lo adivinaste"}
     resumen={estado.acerto ? "Ganaste en " + estado.intentosUsados : "Abandono"}
     {armarTexto}
+    {marcador}
     etiquetaRegreso="Nuevo circuito en:"
     clase="resultado-circuito-modal"
     focoRetorno={() => estadoFinal}

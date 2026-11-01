@@ -223,6 +223,8 @@
     // Resumen del resultado en la ventana final (sin letras, para compartir el recorrido).
     const resumen = $derived(estado.idsIntentados.map((palabra) => evaluarIntento(palabra, palabraDelDia)));
 
+    const marcador = $derived({ puntaje: estado.acerto ? estado.intentosUsados : null, maximo: maximoIntentos, gano: estado.acerto });
+
     const armarTexto = (racha: number) =>
         construirTextoCompartir({
             juego: "wordle",
@@ -317,6 +319,7 @@
     titulo={estado.acerto ? "¡Adivinaste!" : "No la adivinaste"}
     resumen={estado.acerto ? "Ganaste en " + estado.intentosUsados : "Abandono"}
     {armarTexto}
+    {marcador}
     etiquetaRegreso="Nueva palabra en:"
     clase="resultado-wordle-modal"
     focoRetorno={() => elementoTablero}

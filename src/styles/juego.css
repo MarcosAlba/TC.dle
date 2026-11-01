@@ -1444,6 +1444,79 @@
         display: none;
     }
 
+    /* "Día completo": los cinco marcadores y un botón para compartirlos juntos. */
+    .dia-completo {
+        display: grid;
+        width: 100%;
+        margin-top: var(--espacio-16);
+        padding: var(--espacio-14) var(--espacio-16) var(--espacio-16);
+        border-top: 0.25rem solid var(--celda-correcta-borde);
+        background: #16161b;
+        gap: var(--espacio-12);
+    }
+
+    .dia-completo__titulo {
+        display: flex;
+        margin: 0;
+        font-family: var(--fuente-titulos);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 900;
+        text-transform: uppercase;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    .dia-completo__titulo span {
+        font-size: var(--texto-xl);
+    }
+
+    .dia-completo__titulo b {
+        color: var(--color-texto-suave);
+        font-size: var(--texto-s);
+    }
+
+    .dia-completo__lista {
+        display: grid;
+        margin: 0;
+        padding: 0;
+        gap: var(--espacio-4);
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        list-style: none;
+    }
+
+    .dia-completo__lista li {
+        display: grid;
+        padding: var(--espacio-6) var(--espacio-4);
+        border-top: 0.1875rem solid #55555e;
+        background: var(--asfalto-profundo);
+        justify-items: center;
+        gap: 0.125rem;
+    }
+
+    .dia-completo__lista li.dia-completo__gano {
+        border-top-color: var(--celda-correcta-borde);
+    }
+
+    .dia-completo__lista span {
+        color: var(--color-texto-suave);
+        font-size: var(--texto-xs);
+        font-weight: 700;
+    }
+
+    .dia-completo__lista b {
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-xl);
+        font-stretch: var(--ancho-display);
+        font-style: italic;
+        font-variant-numeric: tabular-nums;
+        font-weight: 900;
+    }
+
+    .boton-compartir--dia {
+        width: 100%;
+    }
+
     .resultado-acciones {
         display: flex;
         width: 100%;

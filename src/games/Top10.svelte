@@ -173,6 +173,8 @@
     }
 
     // El marcador es cuántos puestos se descubrieron, se haya completado el Top 10 o no.
+    const marcador = $derived({ puntaje: estado.acertados.length, maximo: PUESTOS, gano: estado.gano });
+
     const armarTexto = (racha: number) =>
         construirTextoCompartir({
             juego: "top10",
@@ -332,7 +334,7 @@
         <h2 id="titulo-top10-resultado">{estado.gano ? "¡Top 10 completo!" : estado.sinTiempo ? "Se terminó el tiempo" : "Te rendiste"}</h2>
         <p class="top10-resultado__marcador"><strong>{estado.acertados.length}</strong> de {PUESTOS}</p>
         <CuentaRegresiva clase="top10-resultado__regreso" etiqueta="Nueva carrera en:" activa={estado.terminada} {fecha} />
-        <AccionesResultado juego="top10" {fecha} terminada={estado.terminada} {armarTexto} />
+        <AccionesResultado juego="top10" {fecha} terminada={estado.terminada} {armarTexto} {marcador} />
     </section>
 {/if}
 
@@ -361,6 +363,7 @@
     titulo={estado.gano ? "¡Top 10 completo!" : estado.sinTiempo ? "Se terminó el tiempo" : "Te rendiste"}
     resumen={estado.acertados.length + " de " + PUESTOS}
     {armarTexto}
+    {marcador}
     etiquetaRegreso="Nueva carrera en:"
     clase="resultado-top10-modal"
     focoRetorno={() => tablero}

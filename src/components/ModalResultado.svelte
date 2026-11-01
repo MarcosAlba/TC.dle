@@ -5,6 +5,7 @@
     import type { Snippet } from "svelte";
     import { onMount } from "svelte";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
+    import type { MarcadorJuego } from "../lib/dia";
     import type { JuegoId } from "../lib/juegos";
     import { obtenerRacha } from "../lib/rachas";
     import AccionesResultado from "./AccionesResultado.svelte";
@@ -21,6 +22,8 @@
         resumen: string;
         /** Arma el texto a compartir; recibe la racha de hoy para sumarla. */
         armarTexto: (racha: number) => string;
+        /** Cómo terminó, para el resumen del día. */
+        marcador: MarcadorJuego;
         /** "Nuevo auto en:" */
         etiquetaRegreso: string;
         clase?: string;
@@ -39,6 +42,7 @@
         titulo,
         resumen,
         armarTexto,
+        marcador,
         etiquetaRegreso,
         clase = "",
         pendiente = false,
@@ -111,7 +115,7 @@
             {/if}
         </div>
         <CuentaRegresiva clase="resultado-modal__regreso" etiqueta={etiquetaRegreso} activa={terminada} {fecha} />
-        <AccionesResultado {juego} {fecha} {terminada} {armarTexto} />
+        <AccionesResultado {juego} {fecha} {terminada} {armarTexto} {marcador} />
     </div>
 </dialog>
 

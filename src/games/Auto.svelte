@@ -156,6 +156,8 @@
 
     const intentosUsados = $derived(estado.intentosUsados);
 
+    const marcador = $derived({ puntaje: estado.acerto ? estado.intentosUsados : null, maximo: MAXIMO_INTENTOS_AUTO, gano: estado.acerto });
+
     const armarTexto = (racha: number) =>
         construirTextoCompartir({
             juego: "auto",
@@ -336,7 +338,7 @@
             </p>
         {/if}
         <CuentaRegresiva clase="auto-resultado__regreso" etiqueta="Nuevo auto en:" activa={estado.terminada} {fecha} />
-        <AccionesResultado juego="auto" {fecha} terminada={estado.terminada} {armarTexto} />
+        <AccionesResultado juego="auto" {fecha} terminada={estado.terminada} {armarTexto} {marcador} />
     </section>
 {/if}
 
@@ -349,6 +351,7 @@
     titulo={estado.acerto ? "¡Adivinaste!" : "No lo adivinaste"}
     resumen={estado.acerto ? "Ganaste en " + estado.intentosUsados : "Abandono"}
     {armarTexto}
+    {marcador}
     pendiente={rondaAnioPendiente}
     etiquetaRegreso="Nuevo auto en:"
     clase="resultado-auto-modal"

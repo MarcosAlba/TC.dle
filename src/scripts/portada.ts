@@ -4,9 +4,12 @@
 import { calendarioTC } from "../data/calendario";
 import { obtenerAlmacenamiento } from "../lib/almacenamiento";
 import { describirTiempoRestante, obtenerProximaCarrera, obtenerTiempoRestante, type CarreraConInicio } from "../lib/calendario";
+import { compartirTexto } from "../lib/compartir";
+import { construirTextoDia, obtenerDiaCompleto } from "../lib/dia";
+import { obtenerFechaLocal } from "../lib/fechas";
 import { JUEGOS } from "../lib/juegos";
 import { obtenerProgresoJuego, obtenerRacha } from "../lib/rachas";
-import { urlImagen } from "../lib/rutas";
+import { urlImagen, urlSitio } from "../lib/rutas";
 
 // Racha sobre la tarjeta: suma un día por cada acierto seguido y desaparece
 // al perder o al saltear un día.
@@ -68,6 +71,25 @@ function mostrarEstados(): void {
     document.getElementById("progreso-dia-cuenta")!.textContent = completados + " de " + JUEGOS.length;
     bloque.querySelectorAll("i").forEach((tramo, indice) => tramo.classList.toggle("lleno", indice < completados));
     bloque.hidden = false;
+
+    const diaCompleto = obtenerDiaCompleto(almacenamiento, obtenerFechaLocal());
+    const boton = document.getElementById("compartir-dia") as HTMLButtonElement;
+    if (diaCompleto) {
+        boton.hidden = false;
+        boton.addEventListener("click", async () => {
+            const resultado = await compartirTexto(construirTextoDia(obtenerFechaLocal(), diaCompleto, urlSitio()), {
+                compartir:
+                    typeof navigator.share === "function" && window.matchMedia("(pointer: coarse)").matches
+                        ? (datos) => navigator.share(datos)
+                        : undefined,
+                copiar: navigator.clipboard ? (texto) => navigator.clipboard.writeText(texto) : undefined,
+            });
+            if (resultado === "copiado" || resultado === "error") {
+                boton.textContent = resultado === "copiado" ? "¡Copiado!" : "No se pudo copiar";
+                setTimeout(() => (boton.textContent = "Compartir el día"), 2500);
+            }
+        });
+    }
 }
 
 function iniciarCuentaRegresiva(): void {

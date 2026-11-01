@@ -149,6 +149,8 @@
     }
 
     // Una fila de colores por intento, del primero al último, igual que la tabla pero sin nombres.
+    const marcador = $derived({ puntaje: estado.acerto ? estado.intentosUsados : null, maximo: MAXIMO_INTENTOS, gano: estado.acerto });
+
     const armarTexto = (racha: number) =>
         construirTextoCompartir({
             juego: "piloto",
@@ -266,7 +268,7 @@
             </div>
         </section>
         <div class="resultado-final__acciones">
-            <AccionesResultado juego="piloto" {fecha} terminada={estado.terminada} {armarTexto} />
+            <AccionesResultado juego="piloto" {fecha} terminada={estado.terminada} {armarTexto} {marcador} />
         </div>
     </div>
 {/if}

@@ -8,9 +8,11 @@
         clase?: string;
         /** Solo el ícono (el aviso de "¡Copiado!" igual aparece con texto). */
         icono?: boolean;
+        /** Texto del botón ("Compartir" si no se pasa). */
+        etiqueta?: string;
     }
 
-    let { texto, clase = "", icono = false }: Props = $props();
+    let { texto, clase = "", icono = false, etiqueta = "Compartir" }: Props = $props();
     let aviso = $state("");
     let temporizador: ReturnType<typeof setTimeout> | undefined;
 
@@ -41,7 +43,7 @@
         <svg class="icono" viewBox="0 0 20 20" aria-hidden="true"><use href="#icono-compartir"></use></svg>
         <span class="boton-compartir__etiqueta" aria-hidden="true">Compartir</span>
     {:else}
-        <span aria-hidden="true">{aviso || "Compartir"}</span>
+        <span aria-hidden="true">{aviso || etiqueta}</span>
     {/if}
     <span class="solo-lectores">Compartir resultado</span>
 </button>
