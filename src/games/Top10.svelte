@@ -15,7 +15,7 @@
     import { carreras, fotosCarreras, pilotos } from "../data";
     import type { ResultadoCarrera } from "../data/tipos";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
-    import { obtenerFechaLocal } from "../lib/fechas";
+    import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";
     import { construirTextoCompartir, filaTop10 } from "../lib/compartir";
     import { mensajesDeBusqueda } from "../lib/mensajes";
     import { urlImagen, urlSitio } from "../lib/rutas";
@@ -38,8 +38,10 @@
         type PilotoCarrera,
     } from "../lib/top10";
 
-    const fecha = obtenerFechaLocal();
-    const carrera = obtenerSeleccionDiaria(obtenerCarrerasJugables(carreras), "top10")!;
+    // Hoy, o un día anterior del archivo (?dia=AAAA-MM-DD): ver lib/dia-juego.ts.
+    const dia = leerDiaJuego(location.search);
+    const fecha = dia.fecha;
+    const carrera = obtenerSeleccionDiaria(obtenerCarrerasJugables(carreras), "top10", dia.fechaSeleccion)!;
     const top10 = obtenerTop10(carrera);
     const podio = [top10[1], top10[0], top10[2]];
     const resto = top10.slice(3);
@@ -50,7 +52,7 @@
     const almacenamiento = obtenerAlmacenamiento();
     const partida = crearPartidaTop10({
         almacenamiento,
-        clave: "partidaTCdleTop10",
+        clave: claveDelDia("partidaTCdleTop10", dia),
         carrera,
         idsValidos: candidatos.map((piloto) => piloto.id),
         fecha,

@@ -18,7 +18,7 @@
         obtenerNivelDesenfoque,
     } from "../lib/autos";
     import { crearDatoDiario } from "../lib/dato-diario";
-    import { obtenerFechaLocal } from "../lib/fechas";
+    import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";
     import { describirContador, palabraIntentos } from "../lib/intentos";
     import { mensajesDeBusqueda } from "../lib/mensajes";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
@@ -29,17 +29,19 @@
     import { crearJuegoAdivinanza } from "./compartido/juego-adivinanza.svelte";
 
     const almacenamiento = obtenerAlmacenamiento();
-    const fecha = obtenerFechaLocal();
-    const autoDelDia = obtenerSeleccionDiaria(autos, "autos")!;
+    // Hoy, o un día anterior del archivo (?dia=AAAA-MM-DD): ver lib/dia-juego.ts.
+    const dia = leerDiaJuego(location.search);
+    const fecha = dia.fecha;
+    const autoDelDia = obtenerSeleccionDiaria(autos, "autos", dia.fechaSeleccion)!;
     const secreto = pilotos.find((piloto) => piloto.id === autoDelDia.pilotoId)!;
     const anioDelAuto = autoDelDia.anio !== null && Number.isFinite(Number(autoDelDia.anio)) ? Number(autoDelDia.anio) : null;
-    const datoAnio = crearDatoDiario<number>({ almacenamiento, clave: "partidaTCdleAutoAnio", fecha });
+    const datoAnio = crearDatoDiario<number>({ almacenamiento, clave: claveDelDia("partidaTCdleAutoAnio", dia), fecha });
     const anioGuardado = datoAnio.leer();
 
     const juego = crearJuegoAdivinanza<Piloto, number>({
         partida: crearPartidaDiaria<number>({
             almacenamiento,
-            clave: "partidaTCdleAuto",
+            clave: claveDelDia("partidaTCdleAuto", dia),
             fecha,
             objetivoId: secreto.id,
             idsValidos: pilotos.map((piloto) => piloto.id),

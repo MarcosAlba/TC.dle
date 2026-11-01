@@ -4,7 +4,7 @@ import { copaDeOro } from "../data/copa-de-oro";
 import TarjetaJuego from "../components/TarjetaJuego.astro";
 import Pagina from "../layouts/Pagina.astro";
 import { dejarLogoQuieto } from "../lib/inicio-pagina";
-import { urlImagen } from "../lib/rutas";
+import { ruta, urlImagen } from "../lib/rutas";
 import "../styles/portada.css";
 ---
 
@@ -90,6 +90,8 @@ import "../styles/portada.css";
         </section>
 
         <ProximaCarrera />
+
+        <a class="enlace-archivo" href={ruta("archivo.html")}>Jugar días anteriores</a>
     </main>
 
     <script>

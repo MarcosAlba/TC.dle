@@ -13,9 +13,11 @@
 
     let { etiqueta, activa, fecha, clase = "cuenta-regresiva" }: Props = $props();
     let tiempo = $state("--:--:--");
+    // Un día del archivo no tiene cuenta regresiva (y recargaría la página sin parar).
+    const esHoy = fecha === obtenerFechaLocal();
 
     $effect(() => {
-        if (!activa) {
+        if (!activa || !esHoy) {
             return;
         }
 
@@ -36,7 +38,7 @@
     });
 </script>
 
-<p class={clase} hidden={!activa}>
+<p class={clase} hidden={!activa || !esHoy}>
     <span>{etiqueta}</span>
     <strong>{tiempo}</strong>
 </p>

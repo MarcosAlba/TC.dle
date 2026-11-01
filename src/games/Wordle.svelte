@@ -6,7 +6,7 @@
     import { palabras } from "../data";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import { construirTextoCompartir, filaWordle } from "../lib/compartir";
-    import { obtenerFechaLocal } from "../lib/fechas";
+    import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";
     import { describirContador, palabraIntentos } from "../lib/intentos";
     import { crearPartidaDiaria } from "../lib/partida";
     import { urlSitio } from "../lib/rutas";
@@ -32,8 +32,10 @@
         salto: boolean[];
     }
 
-    const fecha = obtenerFechaLocal();
-    const palabraDelDia = obtenerSeleccionDiaria(filtrarPalabrasJugables(palabras), "wordle")!;
+    // Hoy, o un día anterior del archivo (?dia=AAAA-MM-DD): ver lib/dia-juego.ts.
+    const dia = leerDiaJuego(location.search);
+    const fecha = dia.fecha;
+    const palabraDelDia = obtenerSeleccionDiaria(filtrarPalabrasJugables(palabras), "wordle", dia.fechaSeleccion)!;
     const largo = palabraDelDia.length;
     const maximoIntentos = largo + 1;
 
@@ -42,7 +44,7 @@
     // del día. El catálogo solo se usa para elegir la palabra secreta.
     const partida = crearPartidaDiaria<string>({
         almacenamiento: obtenerAlmacenamiento(),
-        clave: "partidaTCdleWordle",
+        clave: claveDelDia("partidaTCdleWordle", dia),
         fecha,
         objetivoId: palabraDelDia,
         maximoIntentos,

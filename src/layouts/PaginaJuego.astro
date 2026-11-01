@@ -6,6 +6,7 @@ import EncabezadoJuego from "../components/EncabezadoJuego.astro";
 import { obtenerJuego, type JuegoId } from "../lib/juegos";
 import "../styles/juego.css";
 import Pagina from "./Pagina.astro";
+import { ruta, urlJuego } from "../lib/rutas";
 
 interface Props {
     juego: JuegoId;
@@ -42,6 +43,12 @@ const juego = obtenerJuego(id);
         </div>
 
         <div class="contenido-juego">
+            <!-- Solo en un día del archivo (?dia=): lo completa el script de abajo. -->
+            <p class="aviso-archivo" data-aviso-archivo hidden>
+                <span>Estás jugando el <b data-aviso-archivo-fecha></b>. No suma a la racha.</span>
+                <a href={ruta("archivo.html")}>Archivo</a>
+                <a href={urlJuego(juego.archivo)}>Volver a hoy</a>
+            </p>
             <slot name="presentacion" />
             <slot />
         </div>
@@ -50,6 +57,19 @@ const juego = obtenerJuego(id);
     <script>
         import { obtenerAlmacenamiento } from "../lib/almacenamiento";
         import { marcarIntroVista } from "../lib/intro";
+        import { leerDiaJuego } from "../lib/dia-juego";
+
+        const dia = leerDiaJuego(location.search);
+        const aviso = document.querySelector<HTMLElement>("[data-aviso-archivo]");
+        if (dia.esArchivo && aviso) {
+            const [anio, mes, numero] = dia.fecha.split("-").map(Number);
+            aviso.querySelector("[data-aviso-archivo-fecha]")!.textContent = new Date(anio, mes - 1, numero).toLocaleDateString("es-AR", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+            });
+            aviso.hidden = false;
+        }
 
         // "Empezar" recuerda que hoy ya se vio la introducción y muestra el juego.
         document.querySelector<HTMLButtonElement>("[data-intro-clave]")?.addEventListener("click", (evento) => {

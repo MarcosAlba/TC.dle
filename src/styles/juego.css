@@ -1872,4 +1872,34 @@
         outline: none;
         box-shadow: inset 0 -0.1875rem 0 var(--blanco);
     }
+
+    /* Día del archivo: aviso arriba del juego. */
+    .aviso-archivo {
+        display: flex;
+        width: min(47.5rem, 100%);
+        margin: 0 auto var(--espacio-20);
+        padding: var(--espacio-10) var(--espacio-16);
+        border-left: 0.25rem solid var(--color-cerca);
+        background: var(--color-superficie);
+        font-size: var(--texto-s);
+        gap: var(--espacio-8) var(--espacio-16);
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .aviso-archivo span {
+        margin-right: auto;
+        color: var(--color-texto-suave);
+    }
+
+    .aviso-archivo b {
+        color: var(--blanco);
+    }
+
+    .aviso-archivo a {
+        color: var(--blanco);
+        font-weight: 700;
+        text-decoration-color: var(--rojo);
+        text-underline-offset: 0.1875rem;
+    }
 }

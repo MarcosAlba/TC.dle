@@ -16,7 +16,7 @@
         obtenerValoresExactosCircuito,
         tieneVariantes,
     } from "../lib/circuitos";
-    import { obtenerFechaLocal } from "../lib/fechas";
+    import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";
     import { describirContador, palabraIntentos } from "../lib/intentos";
     import { mensajesDeBusqueda } from "../lib/mensajes";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
@@ -26,14 +26,16 @@
     import { crearJuegoAdivinanza } from "./compartido/juego-adivinanza.svelte";
 
     const MAXIMO_INTENTOS = 8;
-    const fecha = obtenerFechaLocal();
-    const secreto = obtenerSeleccionDiaria(circuitos, "circuitos")!;
+    // Hoy, o un día anterior del archivo (?dia=AAAA-MM-DD): ver lib/dia-juego.ts.
+    const dia = leerDiaJuego(location.search);
+    const fecha = dia.fecha;
+    const secreto = obtenerSeleccionDiaria(circuitos, "circuitos", dia.fechaSeleccion)!;
     const etiqueta = (circuito: Circuito) => obtenerEtiquetaCircuito(circuito, circuitos);
 
     const juego = crearJuegoAdivinanza<Circuito, string>({
         partida: crearPartidaDiaria<string>({
             almacenamiento: obtenerAlmacenamiento(),
-            clave: "partidaTCdleCircuito",
+            clave: claveDelDia("partidaTCdleCircuito", dia),
             fecha,
             objetivoId: secreto.id,
             idsValidos: circuitos.map((circuito) => circuito.id),

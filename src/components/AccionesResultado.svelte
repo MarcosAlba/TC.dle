@@ -4,10 +4,12 @@
     // se muestra acá: va en el texto que se comparte. Con los cinco juegos terminados
     // suma "Día completo", para compartir todo el día en un solo mensaje.
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
+    import { registrarHistorial } from "../lib/dia-juego";
+    import { obtenerFechaLocal } from "../lib/fechas";
     import { construirTextoDia, obtenerDiaCompleto, obtenerNumeroTCdle, registrarMarcadorDia, type MarcadorJuego } from "../lib/dia";
     import { JUEGOS, type JuegoId } from "../lib/juegos";
     import { obtenerRacha } from "../lib/rachas";
-    import { urlSitio } from "../lib/rutas";
+    import { ruta, urlSitio } from "../lib/rutas";
     import BotonCompartir from "./BotonCompartir.svelte";
     import SiguienteJuego from "./SiguienteJuego.svelte";
 
@@ -27,14 +29,19 @@
     const racha = $derived(terminada ? obtenerRacha(obtenerAlmacenamiento(), juego, fecha) : 0);
 
     let dia: ReturnType<typeof obtenerDiaCompleto> = $state(null);
+    const esHoy = fecha === obtenerFechaLocal();
 
     $effect(() => {
         if (!terminada) {
             return;
         }
         const almacenamiento = obtenerAlmacenamiento();
-        registrarMarcadorDia(almacenamiento, fecha, juego, marcador);
-        dia = obtenerDiaCompleto(almacenamiento, fecha);
+        registrarHistorial(almacenamiento, fecha, juego, marcador.gano);
+        // Un día del archivo no entra en el resumen de hoy.
+        if (esHoy) {
+            registrarMarcadorDia(almacenamiento, fecha, juego, marcador);
+            dia = obtenerDiaCompleto(almacenamiento, fecha);
+        }
     });
 </script>
 
@@ -58,6 +65,17 @@
     {/if}
     <div class="resultado-acciones">
         <BotonCompartir texto={armarTexto(racha)} icono />
-        <SiguienteJuego juegoActual={juego} {terminada} />
+        {#if esHoy}
+            <SiguienteJuego juegoActual={juego} {terminada} />
+        {:else}
+            <div class="siguiente-juego-contenedor">
+                <a class="siguiente-juego" href={ruta("archivo.html")}>
+                    <strong>
+                        <span class="siguiente-juego__largo">Volver al archivo</span><span class="siguiente-juego__corto" aria-hidden="true">Archivo</span>
+                    </strong>
+                    <svg class="icono" viewBox="0 0 22 16" aria-hidden="true"><use href="#icono-avanzar"></use></svg>
+                </a>
+            </div>
+        {/if}
     </div>
 {/if}

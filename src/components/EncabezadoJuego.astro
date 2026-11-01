@@ -94,10 +94,13 @@ const { juegoActual } = Astro.props;
     import { obtenerProgresoJuego } from "../lib/rachas";
     import { CLAVE_CONTRASTE } from "../lib/inicio-pagina";
     import { accionDeTecla } from "../lib/atajos";
+    import { claveDelDia, conDia, leerDiaJuego } from "../lib/dia-juego";
     import { urlJuego } from "../lib/rutas";
 
     const NOMBRES = { acertado: "resuelto", fallado: "terminado", "en-curso": "en curso", pendiente: "sin jugar" };
     const almacenamiento = obtenerAlmacenamiento();
+    // En un día del archivo las pestañas siguen en ese día y muestran cómo va cada juego ahí.
+    const dia = leerDiaJuego(location.search);
 
     for (const juego of JUEGOS) {
         const pestana = document.querySelector<HTMLElement>(`.pestanas-juegos__pestana[data-juego="${juego.id}"]`);
@@ -105,7 +108,10 @@ const { juegoActual } = Astro.props;
             continue;
         }
 
-        const progreso = obtenerProgresoJuego(almacenamiento, juego);
+        if (dia.esArchivo) {
+            pestana.setAttribute("href", conDia(pestana.getAttribute("href")!, dia));
+        }
+        const progreso = obtenerProgresoJuego(almacenamiento, { ...juego, clavePartida: claveDelDia(juego.clavePartida, dia) }, dia.fecha);
         pestana.dataset.estado = progreso;
         pestana.querySelector("[data-estado-lector]")!.textContent = ", " + NOMBRES[progreso];
     }
@@ -146,7 +152,7 @@ const { juegoActual } = Astro.props;
                 [...document.querySelectorAll<HTMLButtonElement>(".boton-compartir")].find(visible)?.click();
             } else {
                 const juego = JUEGOS.find((item) => item.id === accion.juego)!;
-                location.href = urlJuego(juego.archivo);
+                location.href = conDia(urlJuego(juego.archivo), dia);
             }
         });
     }

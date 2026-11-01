@@ -1,0 +1,271 @@
+@layer base, juego, desafio, pagina;
+
+/* Archivo: calendario del mes a la izquierda y el día elegido a la derecha (en el celular, uno abajo del otro). */
+@layer pagina {
+    .archivo {
+        width: min(70rem, calc(100% - 2rem));
+        margin: 2.25rem auto var(--espacio-48);
+    }
+
+    .archivo__cuerpo {
+        display: grid;
+        gap: var(--espacio-28);
+        grid-template-columns: minmax(0, 1fr) 19rem;
+        align-items: start;
+    }
+
+    .archivo__meses {
+        display: flex;
+        margin-bottom: var(--espacio-12);
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .archivo__mes {
+        margin: 0;
+        padding: var(--espacio-6) calc(var(--sesgo) + 1rem);
+        color: var(--tinta);
+        background: var(--blanco);
+        font-size: var(--texto-xl);
+        font-style: italic;
+        font-weight: 900;
+        text-transform: uppercase;
+        clip-path: var(--corte);
+    }
+
+    .archivo__mes-boton {
+        width: 3rem;
+        height: 2.25rem;
+        border: 0;
+        color: var(--tinta);
+        background: var(--blanco);
+        font-size: var(--texto-2xl);
+        font-weight: 900;
+        line-height: 1;
+        clip-path: var(--corte);
+    }
+
+    .archivo__mes-boton:disabled {
+        opacity: 0.3;
+        cursor: default;
+    }
+
+    .archivo__dias-semana,
+    .archivo__grilla {
+        display: grid;
+        gap: var(--espacio-6);
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+
+    .archivo__dias-semana {
+        margin-bottom: var(--espacio-6);
+        color: var(--color-texto-suave);
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-s);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 900;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .archivo__dia {
+        position: relative;
+        display: grid;
+        min-height: 5.5rem;
+        padding: var(--espacio-10);
+        border: 0.0625rem solid transparent;
+        color: var(--color-texto);
+        background: var(--color-superficie);
+        text-align: left;
+        text-decoration: none;
+        align-content: space-between;
+    }
+
+    .archivo__dia b {
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-2xl);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    button.archivo__dia {
+        font: inherit;
+        transition: border-color 160ms ease, background-color 160ms ease;
+    }
+
+    @media (hover: hover) {
+        button.archivo__dia:hover {
+            border-color: #4a4a55;
+        }
+    }
+
+    .archivo__dia[aria-pressed="true"] {
+        border-color: var(--blanco);
+        background: #1d1d24;
+    }
+
+    .archivo__dia:focus-visible {
+        outline: none;
+        border-color: var(--blanco);
+        box-shadow: inset 0 -0.1875rem 0 var(--rojo);
+    }
+
+    .archivo__dia--vacio {
+        background: transparent;
+    }
+
+    .archivo__dia--fuera {
+        opacity: 0.3;
+    }
+
+    .archivo__dia--hoy {
+        border-color: var(--rojo);
+    }
+
+    .archivo__hoy {
+        position: absolute;
+        top: var(--espacio-10);
+        right: var(--espacio-10);
+        padding: 0.125rem calc(var(--sesgo) * 0.5 + 0.375rem);
+        color: #fff;
+        background: var(--rojo);
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-xs);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 800;
+        text-transform: uppercase;
+        clip-path: var(--corte);
+    }
+
+    /* Una rayita por juego, inclinada como los cortes de los zócalos. */
+    .archivo__marcas {
+        display: flex;
+        gap: 0.1875rem;
+    }
+
+    .archivo__marcas i {
+        width: 0.875rem;
+        height: 0.375rem;
+        background: #26262e;
+        transform: skewX(-20deg);
+    }
+
+    .archivo__marcas i.archivo__marca--acertado {
+        background: var(--celda-correcta-borde);
+    }
+
+    .archivo__marcas i.archivo__marca--fallado {
+        background: #6a6a74;
+    }
+
+    .archivo__panel {
+        position: sticky;
+        top: var(--espacio-20);
+        display: grid;
+        padding: var(--espacio-20) var(--espacio-20) var(--espacio-24);
+        background: var(--color-superficie);
+        gap: var(--espacio-14);
+    }
+
+    .archivo__panel-titulo {
+        margin: 0;
+        font-size: var(--texto-xl);
+        font-style: italic;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .archivo__juegos {
+        display: grid;
+        margin: 0;
+        padding: 0;
+        gap: var(--espacio-6);
+        list-style: none;
+    }
+
+    .archivo__juego {
+        display: flex;
+        padding: var(--espacio-12) var(--espacio-14);
+        border-left: 0.25rem solid var(--rojo);
+        color: var(--color-texto);
+        background: #16161b;
+        text-decoration: none;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .archivo__juego span {
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-l);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 800;
+        text-transform: uppercase;
+    }
+
+    .archivo__juego small {
+        color: var(--color-texto-suave);
+        font-size: var(--texto-xs);
+        font-weight: 700;
+    }
+
+    .archivo__juego--acertado {
+        border-left-color: var(--celda-correcta-borde);
+    }
+
+    .archivo__juego--fallado {
+        border-left-color: #6a6a74;
+    }
+
+    .archivo__juego:focus-visible {
+        outline: none;
+        box-shadow: inset 0 -0.1875rem 0 var(--blanco);
+    }
+
+    @media (hover: hover) {
+        .archivo__juego:hover {
+            background: #1d1d24;
+        }
+    }
+
+    .archivo__nota {
+        margin: 0;
+        color: var(--color-texto-suave);
+        font-size: var(--texto-s);
+    }
+
+    .archivo__nota b {
+        color: var(--blanco);
+    }
+
+    @media (max-width: 800px) {
+        .archivo__cuerpo {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .archivo__panel {
+            position: static;
+        }
+
+        .archivo__dia {
+            min-height: 3.75rem;
+            padding: var(--espacio-6);
+        }
+
+        .archivo__dia b {
+            font-size: var(--texto-l);
+        }
+
+        .archivo__marcas i {
+            width: 0.375rem;
+        }
+
+        .archivo__hoy {
+            display: none;
+        }
+    }
+}

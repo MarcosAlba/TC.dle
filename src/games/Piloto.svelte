@@ -9,7 +9,7 @@
     import type { Piloto } from "../data/tipos";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import { construirTextoCompartir, filaPiloto } from "../lib/compartir";
-    import { obtenerFechaLocal } from "../lib/fechas";
+    import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";
     import { describirContador, palabraIntentos } from "../lib/intentos";
     import { mensajesDeBusqueda } from "../lib/mensajes";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
@@ -32,12 +32,14 @@
     const DURACION_CELDA = 300;
     const CELDAS_CON_PISTA = 6;
 
-    const secreto = obtenerSeleccionDiaria(pilotos, "pilotos")!;
-    const fecha = obtenerFechaLocal();
+    // Hoy, o un día anterior del archivo (?dia=AAAA-MM-DD): ver lib/dia-juego.ts.
+    const dia = leerDiaJuego(location.search);
+    const fecha = dia.fecha;
+    const secreto = obtenerSeleccionDiaria(pilotos, "pilotos", dia.fechaSeleccion)!;
     const juego = crearJuegoAdivinanza<Piloto, number>({
         partida: crearPartidaDiaria<number>({
             almacenamiento: obtenerAlmacenamiento(),
-            clave: "partidaTCdle",
+            clave: claveDelDia("partidaTCdle", dia),
             fecha,
             objetivoId: secreto.id,
             idsValidos: pilotos.map((piloto) => piloto.id),

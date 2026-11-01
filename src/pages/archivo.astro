@@ -1,0 +1,44 @@
+---
+// Archivo: un calendario con lo que se jugó cada día y la opción de jugar un
+// día anterior (los juegos lo reciben como ?dia=AAAA-MM-DD). Los días viejos no
+// suman a la racha. Todo lo arma scripts/archivo.ts con lo guardado en el navegador.
+import EncabezadoJuego from "../components/EncabezadoJuego.astro";
+import Pagina from "../layouts/Pagina.astro";
+import "../styles/juego.css";
+import "../styles/archivo.css";
+---
+
+<Pagina titulo="TCdle | Días anteriores" descripcion="Jugá los desafíos de TCdle de días anteriores.">
+    <EncabezadoJuego />
+
+    <main class="archivo">
+        <section class="presentacion-juego" aria-labelledby="titulo-archivo">
+            <p class="modo-juego">Archivo</p>
+            <h1 id="titulo-archivo">Días anteriores</h1>
+        </section>
+
+        <div class="archivo__cuerpo">
+            <section class="archivo__calendario" aria-labelledby="archivo-mes">
+                <div class="archivo__meses">
+                    <button type="button" class="archivo__mes-boton" data-mes="-1" aria-label="Mes anterior">‹</button>
+                    <h2 id="archivo-mes" class="archivo__mes" aria-live="polite"></h2>
+                    <button type="button" class="archivo__mes-boton" data-mes="1" aria-label="Mes siguiente">›</button>
+                </div>
+                <div class="archivo__dias-semana" aria-hidden="true">
+                    <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+                </div>
+                <div class="archivo__grilla" data-grilla></div>
+            </section>
+
+            <aside class="archivo__panel caja-chaflan" aria-live="polite">
+                <h2 class="archivo__panel-titulo" data-panel-titulo>Elegí un día</h2>
+                <ul class="archivo__juegos" data-panel-juegos></ul>
+                <p class="archivo__nota">Los días anteriores <b>no suman a la racha</b>. Cada rayita es un juego: verde si lo sacaste, gris si no, vacía si no lo jugaste.</p>
+            </aside>
+        </div>
+    </main>
+
+    <script>
+        import "../scripts/archivo";
+    </script>
+</Pagina>
