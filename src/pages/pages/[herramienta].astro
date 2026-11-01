@@ -6,16 +6,22 @@ import EncabezadoJuego from "../../components/EncabezadoJuego.astro";
 import Pagina from "../../layouts/Pagina.astro";
 import VistaPreviaAutos from "../../herramientas/VistaPreviaAutos.svelte";
 import VistaPreviaPilotos from "../../herramientas/VistaPreviaPilotos.astro";
+import TarjetasOg from "../../herramientas/TarjetasOg.astro";
 import "../../styles/juego.css";
 import "../../styles/desafio.css";
 import "../../styles/auto.css";
 import "../../styles/top10.css";
 import "../../styles/vista-previa-autos.css";
 import "../../styles/vista-previa-pilotos.css";
+import "../../styles/tarjetas-og.css";
 
 export function getStaticPaths() {
     return import.meta.env.DEV
-        ? [{ params: { herramienta: "vista-previa-autos" } }, { params: { herramienta: "vista-previa-pilotos" } }]
+        ? [
+              { params: { herramienta: "vista-previa-autos" } },
+              { params: { herramienta: "vista-previa-pilotos" } },
+              { params: { herramienta: "tarjetas-og" } },
+          ]
         : [];
 }
 
@@ -23,7 +29,11 @@ const { herramienta } = Astro.params;
 ---
 
 {
-    herramienta === "vista-previa-pilotos" ? (
+    herramienta === "tarjetas-og" ? (
+        <Pagina titulo="TCdle | Tarjetas para compartir" descripcion="Herramienta interna para generar las imágenes de vista previa de los links.">
+            <TarjetasOg />
+        </Pagina>
+    ) : herramienta === "vista-previa-pilotos" ? (
         <Pagina titulo="TCdle | Vista previa de pilotos" descripcion="Herramienta interna para revisar las fotos de pilotos que trajo el scraper.">
             <EncabezadoJuego />
 

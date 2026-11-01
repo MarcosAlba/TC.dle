@@ -17,9 +17,17 @@ interface Props {
     /** Clave de localStorage de la introducción del juego (solo en páginas de juego). */
     claveIntro?: string;
     claseBody?: string;
+    /** Tarjeta de vista previa al compartir el link, dentro de public/assets/images/og (ver herramientas/TarjetasOg.astro). */
+    imagenOg?: string;
 }
 
-const { titulo, descripcion, claveIntro, claseBody } = Astro.props;
+const { titulo, descripcion, claveIntro, claseBody, imagenOg = "portada" } = Astro.props;
+// Las redes piden direcciones completas, con dominio.
+const urlCompleta = (relativa: string) => new URL(relativa, Astro.site).href;
+// La portada se comparte como la raíz, no como /index.html; la 404 no tiene dirección propia.
+const urlPagina = urlCompleta(Astro.url.pathname.replace(/index\.html$/, ""));
+const esError = Astro.url.pathname.endsWith("404.html");
+const urlImagenOg = urlCompleta(urlImagen(`og/${imagenOg}.jpg`));
 const scriptInicial =
     `(${aplicarTemaInicial})();` + (claveIntro ? `(${aplicarIntroInicial})(${JSON.stringify(claveIntro)});` : "");
 ---
@@ -32,6 +40,18 @@ const scriptInicial =
         <meta name="theme-color" content="#090a0c" />
         <meta name="description" content={descripcion} />
         <title>{titulo}</title>
+        {!esError && <link rel="canonical" href={urlPagina} />}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="TCdle" />
+        <meta property="og:locale" content="es_AR" />
+        <meta property="og:title" content={titulo} />
+        <meta property="og:description" content={descripcion} />
+        {!esError && <meta property="og:url" content={urlPagina} />}
+        <meta property="og:image" content={urlImagenOg} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={titulo} />
+        <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" type="image/png" sizes="32x32" href={urlImagen("icono-32.png")} />
         <link rel="icon" type="image/png" sizes="64x64" href={urlImagen("icono-64.png")} />
         <link rel="preload" as="font" type="font/woff2" href={fuenteNormal} crossorigin />

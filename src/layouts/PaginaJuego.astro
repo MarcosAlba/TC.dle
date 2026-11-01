@@ -19,7 +19,7 @@ const { juego: id, titulo, descripcion, tituloIntro } = Astro.props;
 const juego = obtenerJuego(id);
 ---
 
-<Pagina titulo={titulo} descripcion={descripcion} claveIntro={juego.claveIntro}>
+<Pagina titulo={titulo} descripcion={descripcion} claveIntro={juego.claveIntro} imagenOg={id}>
     <EncabezadoJuego juegoActual={id} />
 
     <main class={`juego juego--${id}`}>

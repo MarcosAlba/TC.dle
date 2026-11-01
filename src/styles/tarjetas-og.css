@@ -1,0 +1,213 @@
+@layer base, juego, desafio, pagina;
+
+/*
+ * Tarjetas de Open Graph (herramienta interna). Medidas en px a propósito:
+ * la captura tiene que salir de 1200x630 sin importar la escala por rem.
+ */
+@layer pagina {
+    .tarjetas-og {
+        display: grid;
+        width: 1200px;
+        margin: 0 auto;
+        gap: 40px;
+        padding-block: 40px;
+    }
+
+    .tarjeta-og {
+        position: relative;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background:
+            linear-gradient(var(--angulo-corte), transparent 60%, var(--rojo) 60% 75%, transparent 75%),
+            repeating-linear-gradient(var(--angulo-corte), rgb(255 255 255 / 4%) 0 1px, transparent 1px 10px),
+            var(--asfalto-profundo);
+        font-family: var(--fuente-titulos);
+    }
+
+    .tarjeta-og__logo {
+        position: absolute;
+        top: 70px;
+        left: 72px;
+        width: 330px;
+        height: auto;
+    }
+
+    .tarjeta-og__texto {
+        position: absolute;
+        top: 220px;
+        left: 72px;
+        z-index: 2;
+        display: grid;
+        gap: 16px;
+        justify-items: start;
+    }
+
+    .tarjeta-og__etiqueta {
+        padding: 8px 34px;
+        color: #fff;
+        background: var(--rojo);
+        font-size: 30px;
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 800;
+        line-height: 1;
+        text-transform: uppercase;
+        clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+    }
+
+    .tarjeta-og__titulo {
+        max-width: 640px;
+        padding: 16px 52px 12px 38px;
+        color: var(--tinta);
+        background: var(--blanco);
+        font-size: 68px;
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 900;
+        line-height: 1;
+        text-transform: uppercase;
+        clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+    }
+
+    .tarjeta-og__bajada {
+        max-width: 640px;
+        margin-top: 6px;
+        color: #d8d8dc;
+        font-size: 28px;
+        font-stretch: 80%;
+        font-style: italic;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .tarjeta-og__url {
+        position: absolute;
+        bottom: 52px;
+        left: 72px;
+        color: var(--color-texto-suave);
+        font-size: 24px;
+        font-stretch: 75%;
+        font-style: italic;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .tarjeta-og__arte {
+        position: absolute;
+        inset: 0 0 0 auto;
+        display: grid;
+        width: 430px;
+        place-items: center;
+    }
+
+    .tarjeta-og__piloto {
+        align-self: end;
+        width: auto;
+        height: 520px;
+        margin-right: -120px;
+    }
+
+    .tarjeta-og__auto {
+        width: 520px;
+        height: 340px;
+        margin-right: 60px;
+        object-fit: cover;
+        filter: blur(10px);
+        clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+    }
+
+    .tarjeta-og__circuito {
+        width: 340px;
+        height: auto;
+        margin-right: 40px;
+        filter: invert(1) drop-shadow(0 0 30px rgb(0 0 0 / 60%));
+    }
+
+    .tarjeta-og__letras {
+        display: grid;
+        width: 360px;
+        margin-right: 60px;
+        gap: 12px;
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .tarjeta-og__letras span {
+        display: grid;
+        aspect-ratio: 1 / 1;
+        color: #fff;
+        font-size: 44px;
+        font-stretch: var(--ancho-zocalo);
+        font-weight: 900;
+        place-items: center;
+        background: var(--letra-correcta);
+        box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
+    }
+
+    .tarjeta-og__letras span:nth-child(2),
+    .tarjeta-og__letras span:nth-child(5) {
+        color: #1c1400;
+        background: var(--letra-cerca);
+    }
+
+    .tarjeta-og__letras span:nth-child(3) {
+        color: #dfe4ec;
+        background: #232329;
+    }
+
+    .tarjeta-og__podio {
+        display: grid;
+        width: 360px;
+        margin-right: 60px;
+        gap: 14px;
+        grid-template-columns: 1fr 1.12fr 1fr;
+        align-items: end;
+    }
+
+    .tarjeta-og__podio > span {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tarjeta-og__podio img {
+        width: 76px;
+        height: 76px;
+        margin-bottom: 12px;
+        padding: 14px;
+        border-radius: 50%;
+        background: var(--asfalto-profundo);
+        box-shadow: inset 0 0 0 4px var(--blanco);
+        object-fit: contain;
+    }
+
+    .tarjeta-og__podio b {
+        display: flex;
+        width: 100%;
+        height: 110px;
+        overflow: hidden;
+        border-top: 6px solid var(--blanco);
+        color: transparent;
+        background: #19191f;
+        font-size: 104px;
+        font-stretch: var(--ancho-display);
+        font-style: italic;
+        font-weight: 900;
+        line-height: 0.85;
+        justify-content: center;
+        -webkit-text-stroke: 3px var(--blanco);
+    }
+
+    .tarjeta-og__podio > span:nth-child(2) b {
+        height: 160px;
+        border-top-color: var(--rojo);
+        font-size: 140px;
+        -webkit-text-stroke-color: var(--rojo);
+    }
+
+    .tarjeta-og__podio > span:nth-child(3) b {
+        height: 76px;
+        font-size: 76px;
+    }
+}

@@ -1,0 +1,49 @@
+---
+// Las imágenes que aparecen al pegar un link de TCdle en WhatsApp, X o Discord
+// (Open Graph). Cada tarjeta mide 1200x630: se abre esta herramienta con
+// `npm run dev`, se saca una captura de cada [data-og] y se guarda como JPG en
+// public/assets/images/og/<id>.jpg. Ninguna muestra la respuesta del día.
+import { urlImagen } from "../lib/rutas";
+
+const TARJETAS = [
+    { id: "portada", titulo: "Juego diario del TC", bajada: "Cinco desafíos nuevos cada día." },
+    { id: "piloto", titulo: "Adiviná el piloto", bajada: "Un piloto nuevo cada día. ¿Lo sacás en menos de 8?" },
+    { id: "auto", titulo: "¿Quién maneja este TC?", bajada: "Un auto borroso que se aclara con cada error." },
+    { id: "circuito", titulo: "¿Qué circuito es este?", bajada: "Una silueta de autódromo argentino por día." },
+    { id: "wordle", titulo: "Wordle del TC", bajada: "Una palabra del TC: pilotos, circuitos y marcas." },
+    { id: "top10", titulo: "¿Cómo terminó la carrera?", bajada: "Completá el Top 10 de una final del TC." },
+];
+---
+
+<div class="tarjetas-og">
+    {
+        TARJETAS.map((tarjeta) => (
+            <section class={`tarjeta-og tarjeta-og--${tarjeta.id}`} data-og={tarjeta.id}>
+                <img class="tarjeta-og__logo" src={urlImagen("tcdle-logo.webp")} alt="TCdle" width="800" height="196" />
+                <div class="tarjeta-og__texto">
+                    <span class="tarjeta-og__etiqueta">{tarjeta.id === "portada" ? "TCdle" : "Juego diario del TC"}</span>
+                    <span class="tarjeta-og__titulo">{tarjeta.titulo}</span>
+                    <span class="tarjeta-og__bajada">{tarjeta.bajada}</span>
+                </div>
+                <div class="tarjeta-og__arte" aria-hidden="true">
+                    {tarjeta.id === "piloto" && <img class="tarjeta-og__piloto" src={urlImagen("ejemplos/ejemplo-piloto.webp")} alt="" />}
+                    {tarjeta.id === "auto" && <img class="tarjeta-og__auto" src={urlImagen("ejemplos/ejemplo-auto.webp")} alt="" />}
+                    {tarjeta.id === "circuito" && <img class="tarjeta-og__circuito" src={urlImagen("circuitos/buenos-aires-12-sin-chicana.svg")} alt="" />}
+                    {(tarjeta.id === "wordle" || tarjeta.id === "portada") && (
+                        <span class="tarjeta-og__letras">
+                            <span>T</span><span>C</span><span>D</span><span>L</span><span>E</span>
+                        </span>
+                    )}
+                    {tarjeta.id === "top10" && (
+                        <span class="tarjeta-og__podio">
+                            <span><img src={urlImagen("marcas/chevrolet-clasico.png")} alt="" /><b>2</b></span>
+                            <span><img src={urlImagen("marcas/ford-clasico.png")} alt="" /><b>1</b></span>
+                            <span><img src={urlImagen("marcas/torino-clasico.png")} alt="" /><b>3</b></span>
+                        </span>
+                    )}
+                </div>
+                <span class="tarjeta-og__url">tc-dle.vercel.app</span>
+            </section>
+        ))
+    }
+</div>
