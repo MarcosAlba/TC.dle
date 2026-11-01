@@ -55,6 +55,10 @@ const juego = obtenerJuego(id);
         document.querySelector<HTMLButtonElement>("[data-intro-clave]")?.addEventListener("click", (evento) => {
             marcarIntroVista(obtenerAlmacenamiento(), (evento.currentTarget as HTMLElement).dataset.introClave!);
             document.documentElement.classList.add("intro-vista");
+            // Con mouse y teclado se puede escribir enseguida; en el celular abriría el teclado sin pedirlo.
+            if (window.matchMedia("(pointer: fine)").matches) {
+                requestAnimationFrame(() => document.querySelector<HTMLInputElement>(".buscador input:not(:disabled)")?.focus());
+            }
         });
     </script>
 </Pagina>

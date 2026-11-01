@@ -2,6 +2,7 @@
 // Encabezado de las páginas de juego. En PC lleva el logo a la izquierda y, a la
 // derecha, una pestaña por juego para pasar de uno a otro; el punto de cada
 // pestaña muestra cómo va hoy (lo completa el script de abajo con lo guardado).
+// Al costado van el "?" de los atajos de teclado (solo PC) y el alto contraste.
 import { JUEGOS, type JuegoId } from "../lib/juegos";
 import { urlImagen, urlInicio, urlJuego } from "../lib/rutas";
 import calabaza from "../assets/halloween/calabaza.webp";
@@ -47,6 +48,14 @@ const { juegoActual } = Astro.props;
                 </nav>
             )
         }
+        {
+            juegoActual && (
+                <button type="button" class="boton-encabezado boton-encabezado--ayuda" data-boton-atajos title="Atajos de teclado (?)">
+                    <span aria-hidden="true">?</span>
+                    <span class="solo-lectores">Atajos de teclado</span>
+                </button>
+            )
+        }
         <button type="button" class="boton-encabezado" data-boton-contraste aria-pressed="false" title="Alto contraste: naranja y celeste en vez de verde y amarillo">
             <svg class="icono" aria-hidden="true"><use href="#icono-contraste" /></svg>
             <span class="solo-lectores">Alto contraste</span>
@@ -54,11 +63,38 @@ const { juegoActual } = Astro.props;
     </div>
 </header>
 
+{
+    juegoActual && (
+        <dialog class="atajos" aria-labelledby="titulo-atajos" data-dialogo-atajos>
+            <h2 id="titulo-atajos" class="atajos__titulo">Atajos de teclado</h2>
+            <dl class="atajos__lista">
+                <dt><kbd>/</kbd></dt>
+                <dd>Ir al buscador</dd>
+                <dt><kbd>↑</kbd> <kbd>↓</kbd></dt>
+                <dd>Moverse por las sugerencias</dd>
+                <dt><kbd>Enter</kbd></dt>
+                <dd>Confirmar el intento</dd>
+                <dt><kbd>1</kbd> … <kbd>5</kbd></dt>
+                <dd>{JUEGOS.map((juego) => juego.corto).join(", ")}</dd>
+                <dt><kbd>C</kbd></dt>
+                <dd>Copiar el resultado, cuando terminaste</dd>
+                <dt><kbd>?</kbd></dt>
+                <dd>Mostrar u ocultar esta ayuda</dd>
+            </dl>
+            <form method="dialog">
+                <button class="atajos__cerrar" type="submit">Cerrar</button>
+            </form>
+        </dialog>
+    )
+}
+
 <script>
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import { JUEGOS } from "../lib/juegos";
     import { obtenerProgresoJuego } from "../lib/rachas";
     import { CLAVE_CONTRASTE } from "../lib/inicio-pagina";
+    import { accionDeTecla } from "../lib/atajos";
+    import { urlJuego } from "../lib/rutas";
 
     const NOMBRES = { acertado: "resuelto", fallado: "terminado", "en-curso": "en curso", pendiente: "sin jugar" };
     const almacenamiento = obtenerAlmacenamiento();
@@ -72,6 +108,47 @@ const { juegoActual } = Astro.props;
         const progreso = obtenerProgresoJuego(almacenamiento, juego);
         pestana.dataset.estado = progreso;
         pestana.querySelector("[data-estado-lector]")!.textContent = ", " + NOMBRES[progreso];
+    }
+
+    // Atajos de teclado (ver lib/atajos.ts). Solo en las páginas de juego, que tienen el diálogo.
+    const dialogoAtajos = document.querySelector<HTMLDialogElement>("[data-dialogo-atajos]");
+    if (dialogoAtajos) {
+        const alternarAyuda = () => (dialogoAtajos.open ? dialogoAtajos.close() : dialogoAtajos.showModal());
+        document.querySelector("[data-boton-atajos]")?.addEventListener("click", alternarAyuda);
+        dialogoAtajos.addEventListener("click", (evento) => evento.target === dialogoAtajos && dialogoAtajos.close());
+
+        const visible = (elemento: HTMLElement) => elemento.offsetParent !== null || elemento.getClientRects().length > 0;
+
+        document.addEventListener("keydown", (evento) => {
+            const destino = evento.target as HTMLElement;
+            const accion = accionDeTecla({
+                key: evento.key,
+                ctrlKey: evento.ctrlKey,
+                metaKey: evento.metaKey,
+                altKey: evento.altKey,
+                escribiendo: destino.matches?.("input, textarea, select, [contenteditable]") ?? false,
+            });
+            // Con la ayuda abierta solo vale cerrarla con "?" (Escape ya la cierra solo).
+            if (!accion || (dialogoAtajos.open && accion.tipo !== "ayuda")) {
+                return;
+            }
+
+            if (accion.tipo === "ayuda") {
+                evento.preventDefault();
+                alternarAyuda();
+            } else if (accion.tipo === "buscar") {
+                const campo = [...document.querySelectorAll<HTMLInputElement>(".buscador input")].find((input) => !input.disabled && visible(input));
+                if (campo) {
+                    evento.preventDefault();
+                    campo.focus();
+                }
+            } else if (accion.tipo === "copiar") {
+                [...document.querySelectorAll<HTMLButtonElement>(".boton-compartir")].find(visible)?.click();
+            } else {
+                const juego = JUEGOS.find((item) => item.id === accion.juego)!;
+                location.href = urlJuego(juego.archivo);
+            }
+        });
     }
 
     // Alto contraste: lo pone antes del primer pintado aplicarContrasteInicial; acá solo se cambia.
