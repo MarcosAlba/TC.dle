@@ -8,7 +8,7 @@ import { ruta, urlImagen } from "../lib/rutas";
 import "../styles/portada.css";
 ---
 
-<Pagina titulo="TCdle" descripcion="Elegí uno de los cinco desafíos diarios de TCdle." claseBody="portada">
+<Pagina titulo="TCdle" descripcion="Elegí uno de los ocho desafíos diarios de TCdle." claseBody="portada">
     <header class="encabezado-inicio">
         <img class="logo-inicio logo-inicio--normal" src={urlImagen("tcdle-logo-frenada.svg")} alt="TCdle" width="1570" height="384" />
         <img class="logo-inicio logo-inicio--halloween" src={urlImagen("tcdle-logo-frenada-halloween.svg")} alt="TCdle" width="1570" height="549" />
@@ -86,32 +86,42 @@ import "../styles/portada.css";
                         <span><img src={urlImagen("marcas/torino-clasico.png")} alt="" /><b>3</b></span>
                     </span>
                 </TarjetaJuego>
+
+                <!-- Los tres de /juegos: todavía no suman al progreso ni a la racha del día (no están en JUEGOS). -->
+                <TarjetaJuego id="trayectoria" nombre="Adiviná la campaña" href={ruta("juegos/trayectoria.html")}>
+                    <img class="tarjeta-juego__silueta" src={urlImagen("silueta-piloto.webp")} alt="" />
+                    <span class="tarjeta-juego__anios" aria-hidden="true">
+                        <span><small>2010</small><img src={urlImagen("marcas/ford-clasico.png")} alt="" /><b>#14</b></span>
+                        <span><small>2011</small><img src={urlImagen("marcas/chevrolet-clasico.png")} alt="" /><b>#7</b></span>
+                        <span class="tarjeta-juego__anio-oculto"><small>2012</small><i>?</i><b>#?</b></span>
+                    </span>
+                </TarjetaJuego>
+
+                <TarjetaJuego id="grilla" nombre="Grilla TC" href={ruta("juegos/grilla.html")}>
+                    <span class="tarjeta-juego__tablero" aria-hidden="true">
+                        <i><img src={urlImagen("pilotos/mini/julian_santero.webp")} alt="" /></i><i>+</i><i>+</i>
+                        <i>+</i><i><img src={urlImagen("pilotos/mini/agustin_canapino.webp")} alt="" /></i><i>+</i>
+                        <i>+</i><i>+</i><i><img src={urlImagen("pilotos/mini/mariano_werner.webp")} alt="" /></i>
+                    </span>
+                </TarjetaJuego>
+
+                <TarjetaJuego id="conexiones" nombre="Conexiones TC" href={ruta("juegos/conexiones.html")}>
+                    <span class="tarjeta-juego__conexiones" aria-hidden="true">
+                        <span class="tarjeta-juego__grupo">¿Qué tienen en común?</span>
+                        <i><img src={urlImagen("pilotos/mini/matias_rossi.webp")} alt="" /></i>
+                        <i><img src={urlImagen("pilotos/mini/guillermo_ortelli.webp")} alt="" /></i>
+                        <i><img src={urlImagen("pilotos/mini/facundo_ardusso.webp")} alt="" /></i>
+                        <i><img src={urlImagen("pilotos/mini/christian_ledesma.webp")} alt="" /></i>
+                        <i><img src={urlImagen("pilotos/mini/jose_manuel_urcera.webp")} alt="" /></i>
+                        <i><img src={urlImagen("pilotos/mini/juan_martin_trucco.webp")} alt="" /></i>
+                        <i><img src={urlImagen("pilotos/mini/diego_de_carlo.webp")} alt="" /></i>
+                        <i><img src={urlImagen("pilotos/mini/german_todino.webp")} alt="" /></i>
+                    </span>
+                </TarjetaJuego>
             </div>
         </section>
 
         <ProximaCarrera />
-
-        <!-- Juegos aparte de los cinco del día: no suman al progreso ni a la racha. -->
-        <section class="mas-juegos" aria-labelledby="titulo-mas-juegos">
-            <h2 id="titulo-mas-juegos" class="mas-juegos__titulo">Más juegos</h2>
-            <div class="mas-juegos__lista">
-                <a class="mas-juegos__juego caja-chaflan" href={ruta("juegos/trayectoria.html")}>
-                    <span class="mas-juegos__icono mas-juegos__icono--trayectoria" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-                    <strong>¿De quién es esta campaña?</strong>
-                    <small>Marca y número año por año</small>
-                </a>
-                <a class="mas-juegos__juego caja-chaflan" href={ruta("juegos/grilla.html")}>
-                    <span class="mas-juegos__icono mas-juegos__icono--grilla" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-                    <strong>Grilla TC</strong>
-                    <small>Nueve casilleros, nueve pilotos</small>
-                </a>
-                <a class="mas-juegos__juego caja-chaflan" href={ruta("juegos/conexiones.html")}>
-                    <span class="mas-juegos__icono mas-juegos__icono--conexiones" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-                    <strong>Conexiones TC</strong>
-                    <small>Cuatro grupos de cuatro</small>
-                </a>
-            </div>
-        </section>
 
         <a class="enlace-archivo" href={ruta("archivo.html")}>Jugar días anteriores</a>
     </main>

@@ -1,22 +1,24 @@
 ---
 // Tarjeta de un juego en la portada. La imagen va en el slot; la insignia de
 // racha y el estado del día (en PC, el color de la franja del zócalo) los completa
-// src/scripts/portada.ts con lo guardado.
+// src/scripts/portada.ts con lo guardado. Los juegos de /juegos todavía no están en
+// JUEGOS: pasan su id, nombre y dirección a mano.
 import { obtenerJuego, type JuegoId } from "../lib/juegos";
 import { urlJuego } from "../lib/rutas";
 
-interface Props {
-    juego: JuegoId;
-}
+type Props = { juego: JuegoId } | { id: string; nombre: string; href: string };
 
-const { juego: id } = Astro.props;
-const juego = obtenerJuego(id);
+const props = Astro.props;
+const { id, nombre, href } =
+    "juego" in props
+        ? { id: props.juego, nombre: obtenerJuego(props.juego).nombre, href: urlJuego(obtenerJuego(props.juego).archivo) }
+        : props;
 ---
 
-<a class={`tarjeta-juego tarjeta-juego--${id} caja-chaflan`} href={urlJuego(juego.archivo)} data-juego={id}>
+<a class={`tarjeta-juego tarjeta-juego--${id} caja-chaflan`} href={href} data-juego={id}>
     <span class="tarjeta-juego__imagen"><slot /></span>
     <span class="tarjeta-juego__contenido">
-        <strong class="tarjeta-juego__nombre">{juego.nombre}</strong>
+        <strong class="tarjeta-juego__nombre">{nombre}</strong>
         <span class="tarjeta-juego__jugar" aria-hidden="true">Jugar</span>
         <span class="solo-lectores" data-estado-lector></span>
     </span>
