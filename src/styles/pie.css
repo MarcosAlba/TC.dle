@@ -1,0 +1,62 @@
+@layer base, juego, desafio, pagina;
+
+/* Pie del sitio: una línea fina arriba, el aviso a la izquierda y los links a la derecha. */
+@layer pagina {
+    .pie-sitio {
+        display: flex;
+        width: min(82.5rem, calc(100% - 2rem));
+        margin: var(--espacio-48) auto 0;
+        padding: var(--espacio-16) 0 calc(var(--espacio-24) + env(safe-area-inset-bottom, 0px));
+        border-top: 0.0625rem solid var(--linea);
+        color: var(--color-texto-suave);
+        font-size: var(--texto-s);
+        gap: var(--espacio-12) var(--espacio-24);
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .pie-sitio__aviso {
+        margin: 0;
+    }
+
+    .pie-sitio__links {
+        display: flex;
+        gap: var(--espacio-8) var(--espacio-20);
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .pie-sitio a {
+        color: var(--blanco);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .pie-sitio a:focus-visible {
+        outline: none;
+        box-shadow: 0 0.125rem 0 var(--rojo);
+    }
+
+    @media (hover: hover) {
+        .pie-sitio a:hover {
+            text-decoration: underline;
+            text-decoration-color: var(--rojo);
+            text-underline-offset: 0.1875rem;
+        }
+    }
+
+    .pie-sitio .pie-sitio__cafecito {
+        padding: 0.125rem calc(var(--sesgo) + 0.75rem);
+        color: #fff;
+        background: var(--rojo);
+        font-style: italic;
+        font-weight: 800;
+        clip-path: var(--corte);
+    }
+
+    /* En el celular el resultado deja una barra fija abajo: el pie no queda tapado. */
+    body:has(.resultado-barra) .pie-sitio {
+        padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+    }
+}

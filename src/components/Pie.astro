@@ -1,0 +1,22 @@
+---
+// Pie de todas las páginas: que TCdle es de fans y no de la ACTC, de quién son las
+// fotos y los links a "Acerca de", el archivo y (si está configurado) cafecito.
+import { ruta } from "../lib/rutas";
+import { urlCafecito } from "../lib/sitio";
+import "../styles/pie.css";
+
+const cafecito = urlCafecito();
+---
+
+<footer class="pie-sitio">
+    <p class="pie-sitio__aviso">TCdle es un juego hecho por fans. Sin relación con la ACTC. Fotos: ACTC y sus autores.</p>
+    <nav class="pie-sitio__links" aria-label="Más de TCdle">
+        <a href={ruta("acerca.html")}>Acerca de</a>
+        <a href={ruta("archivo.html")}>Días anteriores</a>
+        {cafecito && (
+            <a class="pie-sitio__cafecito" href={cafecito} target="_blank" rel="noopener">
+                Invitame un cafecito
+            </a>
+        )}
+    </nav>
+</footer>

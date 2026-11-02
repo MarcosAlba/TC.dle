@@ -11,6 +11,7 @@ import { aplicarContrasteInicial, aplicarIntroInicial, aplicarTemaCopaInicial, a
 import { urlImagen } from "../lib/rutas";
 import Analytics from "@vercel/analytics/astro";
 import Iconos from "../components/Iconos.astro";
+import Pie from "../components/Pie.astro";
 
 interface Props {
     titulo: string;
@@ -20,9 +21,11 @@ interface Props {
     claseBody?: string;
     /** Tarjeta de vista previa al compartir el link, dentro de public/assets/images/og (ver herramientas/TarjetasOg.astro). */
     imagenOg?: string;
+    /** Sin el pie del sitio (herramientas internas). */
+    sinPie?: boolean;
 }
 
-const { titulo, descripcion, claveIntro, claseBody, imagenOg = "portada" } = Astro.props;
+const { titulo, descripcion, claveIntro, claseBody, imagenOg = "portada", sinPie = false } = Astro.props;
 // Las redes piden direcciones completas, con dominio.
 const urlCompleta = (relativa: string) => new URL(relativa, Astro.site).href;
 // La portada se comparte como la raíz, no como /index.html; la 404 no tiene dirección propia.
@@ -65,5 +68,6 @@ const scriptInicial =
     <body class={claseBody}>
         <Iconos />
         <slot />
+        {!sinPie && <Pie />}
     </body>
 </html>

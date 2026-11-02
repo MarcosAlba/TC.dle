@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tc-dle.vercel.app/sitemap.xml

@@ -49,8 +49,10 @@ export type ResultadoHistorial = "acertado" | "fallado";
 
 type Historial = Record<string, Partial<Record<JuegoId, ResultadoHistorial>>>;
 
-export function registrarHistorial(almacenamiento: Almacenamiento, fecha: string, juego: JuegoId, gano: boolean): void {
+/** true si es la primera vez que se registra ese juego ese día (la partida se terminó recién). */
+export function registrarHistorial(almacenamiento: Almacenamiento, fecha: string, juego: JuegoId, gano: boolean): boolean {
     const historial = leerJson<Historial>(almacenamiento, CLAVE_HISTORIAL) ?? {};
+    const nuevo = !historial[fecha]?.[juego];
     historial[fecha] = { ...historial[fecha], [juego]: gano ? "acertado" : "fallado" };
 
     try {
@@ -58,6 +60,8 @@ export function registrarHistorial(almacenamiento: Almacenamiento, fecha: string
     } catch {
         // Sin almacenamiento el calendario queda sin marcas.
     }
+
+    return nuevo;
 }
 
 export function leerHistorial(almacenamiento: Almacenamiento): Historial {

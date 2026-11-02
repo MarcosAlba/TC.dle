@@ -1,0 +1,70 @@
+---
+// "Acerca de": qué es TCdle, de dónde salen los datos y las fotos, qué se guarda
+// en el navegador y cómo avisar algo (incluido pedir que se baje una foto).
+import EncabezadoJuego from "../components/EncabezadoJuego.astro";
+import Pagina from "../layouts/Pagina.astro";
+import { JUEGOS } from "../lib/juegos";
+import { urlJuego } from "../lib/rutas";
+import { SITIO, urlCafecito } from "../lib/sitio";
+import "../styles/juego.css";
+import "../styles/acerca.css";
+
+const cafecito = urlCafecito();
+---
+
+<Pagina titulo="TCdle | Acerca de" descripcion="Qué es TCdle, de dónde salen los datos y cómo avisar un error.">
+    <EncabezadoJuego />
+
+    <main class="acerca">
+        <section class="presentacion-juego" aria-labelledby="titulo-acerca">
+            <p class="modo-juego">TCdle</p>
+            <h1 id="titulo-acerca">Acerca de</h1>
+        </section>
+
+        <div class="acerca__texto">
+            <h2>Qué es</h2>
+            <p>
+                TCdle es un juego diario sobre el Turismo Carretera, hecho por fans. Todos ven los mismos desafíos el mismo día y cambian a la
+                medianoche:{" "}{JUEGOS.map((juego, indice) => (
+                    <>
+                        <a href={urlJuego(juego.archivo)}>{juego.corto}</a>
+                        {indice < JUEGOS.length - 2 ? ", " : indice === JUEGOS.length - 2 ? " y " : "."}
+                    </>
+                ))}
+            </p>
+
+            <h2>No somos la ACTC</h2>
+            <p>
+                TCdle no tiene relación con la Asociación Corredores Turismo Carretera ni con los equipos, pilotos o marcas que aparecen.
+                Las fotos de pilotos y autos son de la ACTC y de sus autores; los logos, de cada marca. Si sos autor de una foto y querés
+                que la saquemos, avisanos y la bajamos.
+            </p>
+
+            <h2>De dónde salen los datos</h2>
+            <p>
+                Los resultados de las finales salen de los tiempos oficiales de la ACTC; los campeones, las fechas y los datos de cada piloto,
+                de la ACTC, de Wikipedia y de la prensa especializada. Si ves un dato mal, avisanos.
+            </p>
+
+            <h2>Qué se guarda</h2>
+            <p>
+                Tus partidas, rachas y preferencias se guardan solo en tu navegador: no hay cuentas ni cookies. Contamos visitas y partidas
+                terminadas con Vercel Analytics, que no identifica a nadie.
+            </p>
+
+            <h2>Avisar algo</h2>
+            <p>
+                Errores, datos mal cargados o fotos para bajar: abrí un aviso en{" "}
+                <a href={SITIO.repositorio + "/issues"} target="_blank" rel="noopener">el repositorio de TCdle en GitHub</a>.
+            </p>
+
+            {
+                cafecito && (
+                    <p>
+                        Si te gusta y querés ayudar a pagar el dominio, <a href={cafecito} target="_blank" rel="noopener">invitame un cafecito</a>.
+                    </p>
+                )
+            }
+        </div>
+    </main>
+</Pagina>

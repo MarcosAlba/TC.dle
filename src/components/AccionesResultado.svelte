@@ -3,6 +3,7 @@
     // y compartir el resultado. Lo usan el panel de resultado y el piloto. La racha no
     // se muestra acá: va en el texto que se comparte. Con los cinco juegos terminados
     // suma "Día completo", para compartir todo el día en un solo mensaje.
+    import { track } from "@vercel/analytics";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import { registrarHistorial } from "../lib/dia-juego";
     import { obtenerFechaLocal } from "../lib/fechas";
@@ -36,7 +37,10 @@
             return;
         }
         const almacenamiento = obtenerAlmacenamiento();
-        registrarHistorial(almacenamiento, fecha, juego, marcador.gano);
+        // Un evento por partida terminada (no al volver a abrirla): cuánta gente termina cada juego y cuánta lo saca.
+        if (registrarHistorial(almacenamiento, fecha, juego, marcador.gano)) {
+            track("partida", { juego, gano: marcador.gano, puntaje: marcador.puntaje ?? "X", archivo: !esHoy });
+        }
         // Un día del archivo no entra en el resumen de hoy.
         if (esHoy) {
             registrarMarcadorDia(almacenamiento, fecha, juego, marcador);

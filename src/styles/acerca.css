@@ -1,0 +1,37 @@
+@layer base, juego, desafio, pagina;
+
+/* "Acerca de": texto corrido en una columna de lectura. */
+@layer pagina {
+    .acerca {
+        width: min(42rem, calc(100% - 2rem));
+        margin: 2.25rem auto var(--espacio-32);
+    }
+
+    .acerca__texto {
+        display: grid;
+        gap: var(--espacio-12);
+        color: #d6d6d3;
+        font-size: var(--texto-m);
+        line-height: 1.6;
+    }
+
+    .acerca__texto h2 {
+        margin: var(--espacio-16) 0 0;
+        color: var(--blanco);
+        font-size: var(--texto-xl);
+        font-style: italic;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .acerca__texto p {
+        margin: 0;
+    }
+
+    .acerca__texto a {
+        color: var(--blanco);
+        font-weight: 700;
+        text-decoration-color: var(--rojo);
+        text-underline-offset: 0.1875rem;
+    }
+}
