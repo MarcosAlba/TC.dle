@@ -5,6 +5,7 @@
     // suma "Día completo", para compartir todo el día en un solo mensaje.
     import { track } from "@vercel/analytics";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
+    import { describirConteo, leerConteo, sumarPartida } from "../lib/contador";
     import { registrarHistorial } from "../lib/dia-juego";
     import { obtenerFechaLocal } from "../lib/fechas";
     import { construirTextoDia, obtenerDiaCompleto, obtenerNumeroTCdle, registrarMarcadorDia, type MarcadorJuego } from "../lib/dia";
@@ -30,6 +31,12 @@
     const racha = $derived(terminada ? obtenerRacha(obtenerAlmacenamiento(), juego, fecha) : 0);
 
     let dia: ReturnType<typeof obtenerDiaCompleto> = $state(null);
+    // Cuántos jugaron hoy en todo el sitio (contador global); null mientras no haya datos.
+    let conteo: string | null = $state(null);
+
+    async function mostrarConteo() {
+        conteo = describirConteo((await leerConteo(fecha))?.[juego]);
+    }
     const esHoy = fecha === obtenerFechaLocal();
 
     $effect(() => {
@@ -40,6 +47,11 @@
         // Un evento por partida terminada (no al volver a abrirla): cuánta gente termina cada juego y cuánta lo saca.
         if (registrarHistorial(almacenamiento, fecha, juego, marcador.gano)) {
             track("partida", { juego, gano: marcador.gano, puntaje: marcador.puntaje ?? "X", archivo: !esHoy });
+            if (esHoy) {
+                sumarPartida(juego, fecha, marcador.gano).then(mostrarConteo);
+            }
+        } else if (esHoy) {
+            mostrarConteo();
         }
         // Un día del archivo no entra en el resumen de hoy.
         if (esHoy) {
@@ -50,6 +62,9 @@
 </script>
 
 {#if terminada}
+    {#if conteo}
+        <p class="conteo-global">{conteo}</p>
+    {/if}
     {#if dia}
         <div class="dia-completo">
             <p class="dia-completo__titulo">

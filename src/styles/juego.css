@@ -1471,6 +1471,15 @@
         display: none;
     }
 
+    /* Contador global: cuántos terminaron el juego hoy en todo el sitio. */
+    .conteo-global {
+        width: 100%;
+        margin: var(--espacio-12) 0 0;
+        color: var(--color-texto-suave);
+        font-size: var(--texto-s);
+        text-align: center;
+    }
+
     /* "Día completo": los cinco marcadores y un botón para compartirlos juntos. */
     .dia-completo {
         display: grid;
