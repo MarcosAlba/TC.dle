@@ -880,4 +880,113 @@
             background: #22222a;
         }
     }
+
+    /* Más juegos: tres accesos chicos debajo de la próxima carrera. */
+    .mas-juegos {
+        width: 100%;
+        margin: var(--espacio-32) auto 0;
+    }
+
+    .mas-juegos__titulo {
+        display: inline-block;
+        margin: 0 0 var(--espacio-12);
+        padding: var(--espacio-4) calc(var(--sesgo) + 0.875rem);
+        color: var(--tinta);
+        background: var(--blanco);
+        font-size: var(--texto-xl);
+        font-style: italic;
+        font-weight: 900;
+        text-transform: uppercase;
+        clip-path: var(--corte);
+    }
+
+    .mas-juegos__lista {
+        display: grid;
+        gap: var(--espacio-16);
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    }
+
+    .mas-juegos__juego {
+        display: grid;
+        padding: var(--espacio-16) var(--espacio-20);
+        color: var(--blanco);
+        background: var(--color-superficie);
+        text-decoration: none;
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-rows: auto auto;
+        column-gap: var(--espacio-16);
+        align-items: center;
+    }
+
+    .mas-juegos__juego strong {
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-l);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 900;
+        line-height: 1.1;
+        text-transform: uppercase;
+    }
+
+    .mas-juegos__juego small {
+        color: var(--color-texto-suave);
+        font-size: var(--texto-s);
+        grid-column: 2;
+    }
+
+    .mas-juegos__juego:focus-visible {
+        outline: none;
+        --borde-caja: var(--blanco);
+    }
+
+    @media (hover: hover) {
+        .mas-juegos__juego:hover {
+            --borde-caja: #4a4a55;
+        }
+    }
+
+    .mas-juegos__icono {
+        display: grid;
+        width: 3rem;
+        height: 3rem;
+        gap: 0.1875rem;
+        grid-row: 1 / span 2;
+    }
+
+    .mas-juegos__icono i {
+        background: #2a2a33;
+    }
+
+    .mas-juegos__icono--trayectoria {
+        grid-template-columns: repeat(5, 1fr);
+        align-items: end;
+    }
+
+    .mas-juegos__icono--trayectoria i {
+        height: 60%;
+        border-top: 0.1875rem solid var(--rojo);
+    }
+
+    .mas-juegos__icono--trayectoria i:nth-child(n + 4) {
+        border-top-color: #3a3a44;
+    }
+
+    .mas-juegos__icono--grilla {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .mas-juegos__icono--grilla i:nth-child(1),
+    .mas-juegos__icono--grilla i:nth-child(5),
+    .mas-juegos__icono--grilla i:nth-child(9) {
+        background: var(--celda-correcta-borde);
+    }
+
+    .mas-juegos__icono--conexiones {
+        grid-template-rows: repeat(4, 1fr);
+    }
+
+    .mas-juegos__icono--conexiones i:nth-child(1) { background: #f0c94a; }
+    .mas-juegos__icono--conexiones i:nth-child(2) { background: #8fd18a; }
+    .mas-juegos__icono--conexiones i:nth-child(3) { background: #9cc3f2; }
+    .mas-juegos__icono--conexiones i:nth-child(4) { background: #c6a3e8; }
 }

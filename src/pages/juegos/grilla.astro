@@ -1,0 +1,35 @@
+---
+// "Más juegos": Grilla TC. Las fichas de los pilotos (con victorias y temporadas
+// desde las finales) se arman al construir, así la página no baja carreras.json.
+import EncabezadoJuego from "../../components/EncabezadoJuego.astro";
+import CargandoJuego from "../../components/CargandoJuego.astro";
+import Grilla from "../../games/extra/Grilla.svelte";
+import Pagina from "../../layouts/Pagina.astro";
+import { carreras, pilotos } from "../../data";
+import { construirFichas } from "../../lib/extra";
+import "../../styles/juego.css";
+import "../../styles/desafio.css";
+import "../../styles/extra.css";
+
+const fichas = construirFichas(pilotos, carreras);
+---
+
+<Pagina titulo="TCdle | Grilla TC" descripcion="Nueve casilleros: cada uno pide un piloto que cumpla su fila y su columna.">
+    <EncabezadoJuego />
+
+    <main class="juego juego--extra">
+        <div class="contenido-juego contenido-juego--siempre">
+            <section class="presentacion-juego" aria-labelledby="titulo-grilla">
+                <p class="modo-juego">Más juegos · Grilla TC</p>
+                <h1 id="titulo-grilla">Grilla TC</h1>
+                <p>Nueve casilleros: cada uno pide un piloto que cumpla su fila y su columna.</p>
+            </section>
+
+            <Grilla client:only="svelte" fichas={fichas}>
+                <Fragment slot="fallback">
+                    <CargandoJuego forma="foto" />
+                </Fragment>
+            </Grilla>
+        </div>
+    </main>
+</Pagina>
