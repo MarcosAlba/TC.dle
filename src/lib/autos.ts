@@ -48,3 +48,21 @@ export function generarOpcionesAnio(
 
     return opciones.sort((a, b) => a - b);
 }
+
+/** Modo detalle: zoom sobre un punto de la foto que se aleja con cada error. */
+export const NIVELES_ZOOM = [2.6, 2.25, 1.95, 1.7, 1.5, 1.32, 1.18, 1.06, 1];
+
+/** Variables CSS del marco en modo detalle; el punto del zoom sale de la semilla del día. */
+export function obtenerEstiloDetalle(
+    intentosUsados: number,
+    terminada: boolean,
+    semilla: string
+): { desenfoque: string; brillo: string; escala: string; origen: string } {
+    const aleatorio = crearGenerador(crearSemilla(semilla));
+    // Cerca del centro: en las fotos el auto casi siempre está ahí (los bordes suelen ser tribuna o pista).
+    const x = Math.round(40 + aleatorio() * 20);
+    const y = Math.round(45 + aleatorio() * 20);
+    const escala = terminada ? 1 : NIVELES_ZOOM[Math.min(intentosUsados, NIVELES_ZOOM.length - 1)];
+
+    return { desenfoque: "0rem", brillo: "1", escala: String(escala), origen: x + "% " + y + "%" };
+}

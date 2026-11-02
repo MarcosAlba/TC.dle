@@ -44,6 +44,7 @@
         opacity: 0;
         filter: blur(var(--desenfoque-auto)) brightness(var(--brillo-auto));
         transform: scale(var(--escala-auto));
+        transform-origin: var(--origen-auto, 50% 50%);
         transition: filter 500ms ease, transform 500ms ease, opacity 220ms ease;
         will-change: filter, transform;
     }
@@ -106,122 +107,6 @@
         box-shadow: 0 0 0 0.1875rem var(--color-correcto);
     }
 
-    /* ---------- Ronda extra: el año del auto ---------- */
-
-    .ronda-anio {
-        display: grid;
-        width: min(47.5rem, 100%);
-        margin: 0 auto var(--espacio-28);
-        gap: var(--espacio-10);
-    }
-
-    .ronda-anio__cabecera {
-        display: flex;
-        gap: var(--espacio-4);
-        align-items: stretch;
-    }
-
-    .ronda-anio__etiqueta,
-    .ronda-anio__cabecera h2 {
-        display: flex;
-        font-family: var(--fuente-titulos);
-        font-stretch: var(--ancho-zocalo);
-        font-style: italic;
-        align-items: center;
-        clip-path: var(--corte);
-    }
-
-    .ronda-anio__etiqueta {
-        padding: 0 calc(var(--sesgo) + 0.625rem);
-        color: #fff;
-        background: var(--color-correcto);
-        font-size: var(--texto-m);
-        font-weight: 800;
-    }
-
-    .ronda-anio__cabecera h2 {
-        margin: 0;
-        padding: var(--espacio-6) calc(var(--sesgo) + 0.875rem);
-        color: var(--tinta);
-        background: var(--blanco);
-        font-size: var(--texto-xl);
-        font-weight: 900;
-        line-height: 1.1;
-        text-transform: uppercase;
-    }
-
-    .ronda-anio__opciones {
-        display: flex;
-        gap: var(--espacio-6);
-        flex-wrap: wrap;
-    }
-
-    .ronda-anio__opcion {
-        flex: 1 1 6.875rem;
-        min-height: 4rem;
-        border: 0;
-        color: var(--blanco);
-        background: var(--color-superficie-clara);
-        font-size: var(--texto-4xl);
-        font-stretch: var(--ancho-zocalo);
-        font-style: italic;
-        font-variant-numeric: tabular-nums;
-        font-weight: 900;
-        clip-path: var(--corte);
-        transition: background-color 150ms ease, color 150ms ease;
-    }
-
-    .ronda-anio__opcion:focus-visible {
-        color: var(--tinta);
-        background: var(--blanco);
-        outline: none;
-    }
-
-    @media (hover: hover) {
-        .ronda-anio__opcion:hover {
-            color: var(--tinta);
-            background: var(--blanco);
-        }
-    }
-
-    .ronda-anio__opcion:focus-visible {
-        box-shadow: inset 0 -0.3125rem 0 var(--rojo);
-    }
-
-    .ronda-anio__ayuda {
-        margin: 0;
-        color: var(--color-texto-suave);
-        font-size: var(--texto-s);
-    }
-
-    .ronda-anio__opcion:disabled {
-        cursor: default;
-    }
-
-    /* Revelado: la correcta en verde, la elegida tachada en rojo, el resto apagado. */
-    .ronda-anio__opciones--respondida .ronda-anio__opcion {
-        color: var(--blanco);
-        background: var(--color-superficie-clara);
-        box-shadow: none;
-        opacity: 0.35;
-    }
-
-    .ronda-anio__opciones--respondida .ronda-anio__opcion--correcta,
-    .ronda-anio__opciones--respondida .ronda-anio__opcion--error {
-        color: #fff;
-        opacity: 1;
-        animation: zocalo-entrada 340ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-    }
-
-    .ronda-anio__opciones--respondida .ronda-anio__opcion--correcta {
-        background: var(--color-correcto);
-    }
-
-    .ronda-anio__opciones--respondida .ronda-anio__opcion--error {
-        background: var(--color-incorrecto);
-        text-decoration: line-through;
-        text-decoration-thickness: 0.1875rem;
-    }
 
     .resultado-modal__bonus {
         color: var(--color-texto-error);
@@ -476,5 +361,42 @@
         .auto-resultado .siguiente-juego__extra {
             display: none;
         }
+    }
+
+    /* Borroso o detalle: se elige antes del primer intento. */
+    .modo-auto {
+        display: flex;
+        width: min(40rem, 100%);
+        margin: 0 auto var(--espacio-12);
+        gap: var(--espacio-6) var(--espacio-12);
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .modo-auto button {
+        padding: var(--espacio-6) calc(var(--sesgo) + 0.75rem);
+        border: 0;
+        color: var(--color-texto-suave);
+        background: #16161b;
+        font-size: var(--texto-s);
+        font-style: italic;
+        font-weight: 900;
+        text-transform: uppercase;
+        clip-path: var(--corte);
+    }
+
+    .modo-auto button[aria-pressed="true"] {
+        color: var(--tinta);
+        background: var(--blanco);
+    }
+
+    .modo-auto button:focus-visible {
+        outline: none;
+        box-shadow: inset 0 -0.1875rem 0 var(--rojo);
+    }
+
+    .modo-auto span {
+        color: var(--color-texto-suave);
+        font-size: var(--texto-xs);
     }
 }

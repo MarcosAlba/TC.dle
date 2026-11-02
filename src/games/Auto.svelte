@@ -16,6 +16,7 @@
         MAXIMO_INTENTOS_AUTO,
         generarOpcionesAnio,
         obtenerEstiloDesenfoque,
+        obtenerEstiloDetalle,
         obtenerNivelDesenfoque,
     } from "../lib/autos";
     import { crearDatoDiario } from "../lib/dato-diario";
@@ -75,7 +76,22 @@
     const rondaAnioPendiente = $derived(hayRondaAnio && respuestaAnio === null);
     // En PC el resultado queda al costado del auto cuando ya no falta nada por jugar (ni la ronda extra).
     const resultadoVisible = $derived(estado.terminada && !(rondaAnioVisible && rondaAnioPendiente));
-    const estiloFoto = $derived(obtenerEstiloDesenfoque(obtenerNivelDesenfoque(estado.intentosUsados, estado.terminada)));
+    // Modo detalle: la foto arranca con zoom en vez de borrosa. Se elige antes del primer intento y vale todo el día.
+    const datoModo = crearDatoDiario<"borroso" | "detalle">({ almacenamiento, clave: claveDelDia("partidaTCdleAutoModo", dia), fecha });
+    let modo = $state<"borroso" | "detalle">(datoModo.leer() ?? "borroso");
+    const puedeCambiarModo = $derived(estado.intentosUsados === 0 && !estado.terminada);
+    const estiloFoto = $derived(
+        modo === "detalle"
+            ? obtenerEstiloDetalle(estado.intentosUsados, estado.terminada, "detalle:" + fecha + ":" + autoDelDia.archivo)
+            : { ...obtenerEstiloDesenfoque(obtenerNivelDesenfoque(estado.intentosUsados, estado.terminada)), origen: "50% 50%" }
+    );
+
+    function elegirModo(nuevo: "borroso" | "detalle") {
+        if (puedeCambiarModo) {
+            modo = nuevo;
+            datoModo.guardar(nuevo);
+        }
+    }
     // La respuesta más antigua puede no estar entre las opciones sorteadas: se suma para poder marcarla.
     const opciones = $derived.by(() => {
         if (anioDelAuto === null) {
@@ -173,19 +189,28 @@
         });
 </script>
 
+{#if puedeCambiarModo}
+    <div class="modo-auto" role="group" aria-label="Cómo se muestra el auto">
+        <button type="button" aria-pressed={modo === "borroso"} onclick={() => elegirModo("borroso")}>Borroso</button>
+        <button type="button" aria-pressed={modo === "detalle"} onclick={() => elegirModo("detalle")}>Detalle</button>
+        <span>{modo === "detalle" ? "Arranca con zoom en un detalle y se aleja con cada error." : "Arranca borroso y se aclara con cada error."}</span>
+    </div>
+{/if}
+
 <section class="tarjeta-desafio tarjeta-desafio--suelta tarjeta-desafio--foto" aria-label="Auto del día">
     <div
         class="marco-auto"
         style:--desenfoque-auto={estiloFoto.desenfoque}
         style:--brillo-auto={estiloFoto.brillo}
         style:--escala-auto={estiloFoto.escala}
+        style:--origen-auto={estiloFoto.origen}
     >
         <img
             bind:this={foto}
             class="foto-auto"
             class:foto-auto--preparada={fotoPreparada}
             src={urlFoto}
-            alt="Auto de Turismo Carretera desenfocado"
+            alt={modo === "detalle" ? "Detalle de un auto de Turismo Carretera" : "Auto de Turismo Carretera desenfocado"}
             onload={prepararFoto}
         />
     </div>

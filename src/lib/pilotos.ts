@@ -1,4 +1,5 @@
 import type { Piloto } from "../data/tipos";
+import { crearGenerador, crearSemilla } from "./seleccion-diaria";
 import { normalizarTexto } from "./texto";
 
 /** Los pilotos tienen un único campo "nombre": el apellido es la última palabra. */
@@ -142,4 +143,20 @@ export function obtenerPistasPiloto(piloto: Piloto): PistaPiloto[] {
                 : null,
         },
     ];
+}
+
+/**
+ * Ronda extra del modo piloto: el número real y cuatro de otros pilotos, ordenados.
+ * El sorteo tiene semilla, así las opciones son las mismas todo el día.
+ */
+export function generarOpcionesNumero(numeroReal: number, otrosNumeros: readonly number[], semilla: string): number[] {
+    const aleatorio = crearGenerador(crearSemilla(semilla));
+    const candidatos = [...new Set(otrosNumeros)].filter((numero) => numero !== numeroReal);
+    const opciones = [numeroReal];
+
+    while (opciones.length < 5 && candidatos.length > 0) {
+        opciones.push(candidatos.splice(Math.floor(aleatorio() * candidatos.length), 1)[0]);
+    }
+
+    return opciones.sort((a, b) => a - b);
 }
