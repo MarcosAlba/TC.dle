@@ -5,7 +5,7 @@
     import CuentaRegresiva from "../components/CuentaRegresiva.svelte";
     import ModalResultado from "../components/ModalResultado.svelte";
     import PanelIntento from "../components/PanelIntento.svelte";
-    import { circuitos } from "../data";
+    import { circuitos } from "../data/catalogo/circuitos";
     import type { Circuito } from "../data/tipos";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import {

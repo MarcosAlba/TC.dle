@@ -8,7 +8,8 @@
     import ModalResultado from "../components/ModalResultado.svelte";
     import OpcionPiloto from "../components/OpcionPiloto.svelte";
     import PanelIntento from "../components/PanelIntento.svelte";
-    import { autos, pilotos } from "../data";
+    import { autos } from "../data/catalogo/autos";
+    import { pilotos } from "../data/catalogo/pilotos";
     import type { Piloto } from "../data/tipos";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import {

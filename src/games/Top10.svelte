@@ -12,7 +12,9 @@
     import ModalResultado from "../components/ModalResultado.svelte";
     import OpcionPiloto from "../components/OpcionPiloto.svelte";
     import PanelIntento from "../components/PanelIntento.svelte";
-    import { carreras, fotosCarreras, pilotos } from "../data";
+    import { carreras } from "../data/catalogo/carreras";
+    import { fotosCarreras } from "../data/catalogo/fotos-carreras";
+    import { pilotos } from "../data/catalogo/pilotos";
     import type { ResultadoCarrera } from "../data/tipos";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";

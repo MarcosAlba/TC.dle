@@ -1,17 +1,17 @@
-import autosJson from "./autos.json";
-import carrerasJson from "./carreras.json";
-import circuitosJson from "./circuitos.json";
-import fotosCarrerasJson from "./fotos-carreras.json";
-import palabrasJson from "./palabras.json";
-import pilotosJson from "./pilotos.json";
-import type { Auto, Carrera, Circuito, FotoCarrera, Palabra, Piloto } from "./tipos";
-
-export const pilotos = pilotosJson as Piloto[];
-export const autos = autosJson as Auto[];
-export const circuitos = circuitosJson as Circuito[];
-export const palabras: Palabra[] = palabrasJson;
-export const carreras = carrerasJson as Carrera[];
-export const fotosCarreras = fotosCarrerasJson as FotoCarrera[];
+// Todos los catálogos juntos: para el build (que los valida acá abajo), los tests y las
+// herramientas. Los juegos importan cada uno de data/catalogo/ para no bajar los ajenos.
+export { autos } from "./catalogo/autos";
+export { carreras } from "./catalogo/carreras";
+export { circuitos } from "./catalogo/circuitos";
+export { fotosCarreras } from "./catalogo/fotos-carreras";
+export { palabras } from "./catalogo/palabras";
+export { pilotos } from "./catalogo/pilotos";
+import { autos } from "./catalogo/autos";
+import { carreras } from "./catalogo/carreras";
+import { circuitos } from "./catalogo/circuitos";
+import { fotosCarreras } from "./catalogo/fotos-carreras";
+import { palabras } from "./catalogo/palabras";
+import { pilotos } from "./catalogo/pilotos";
 
 export type { Auto, Carrera, Circuito, FotoCarrera, Palabra, Piloto } from "./tipos";
 

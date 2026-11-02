@@ -3,7 +3,7 @@
     import { tick } from "svelte";
     import CuentaRegresiva from "../components/CuentaRegresiva.svelte";
     import ModalResultado from "../components/ModalResultado.svelte";
-    import { palabras } from "../data";
+    import { palabras } from "../data/catalogo/palabras";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import { construirTextoCompartir, filaWordle } from "../lib/compartir";
     import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";
