@@ -1,17 +1,31 @@
 <script lang="ts">
     // Grilla TC: nueve casilleros, cada uno pide un piloto que cumpla su fila y su
-    // columna. Nueve intentos en total y cada piloto vale una sola vez.
-    import BotonCompartir from "../../components/BotonCompartir.svelte";
+    // columna. Se escribe un piloto y se ubica solo en el casillero libre donde
+    // encaja; si encaja en más de uno, se elige dónde ponerlo. Se juega contra
+    // reloj (o sin tiempo, según lo elegido en la introducción) y cada piloto vale
+    // una sola vez. Errar no termina la partida.
+    import { onMount, tick } from "svelte";
+    import Cronometro from "../../components/Cronometro.svelte";
     import Buscador from "../../components/Buscador.svelte";
-    import CuentaRegresiva from "../../components/CuentaRegresiva.svelte";
+    import ResultadoEnLinea from "../../components/ResultadoEnLinea.svelte";
     import OpcionPiloto from "../../components/OpcionPiloto.svelte";
     import PanelIntento from "../../components/PanelIntento.svelte";
     import { pilotos } from "../../data/catalogo/pilotos";
     import type { Piloto } from "../../data/tipos";
     import { obtenerAlmacenamiento } from "../../lib/almacenamiento";
-    import { crearDatoDiario } from "../../lib/dato-diario";
+    import { construirTextoCompartir } from "../../lib/compartir";
     import { leerDiaJuego } from "../../lib/dia-juego";
-    import { generarGrilla, MAXIMO_INTENTOS_GRILLA, respuestasCasillero, type FichaPiloto } from "../../lib/extra";
+    import {
+        casillerosPosibles,
+        EVENTO_TIEMPO_GRILLA,
+        generarGrilla,
+        normalizarTiempoGrilla,
+        respuestasCasillero,
+        type Condicion,
+        type FichaPiloto,
+        type TiempoGrilla,
+    } from "../../lib/extra";
+    import { crearPartidaExtra } from "../../lib/partida-extra";
     import { obtenerApellidoPiloto, obtenerImagenMiniPiloto, obtenerTextoBusquedaPiloto } from "../../lib/pilotos";
     import { urlImagen, urlSitio } from "../../lib/rutas";
 
@@ -20,142 +34,180 @@
     interface EstadoGrilla {
         /** Piloto puesto en cada casillero (0 a 8, por filas). */
         respuestas: Record<number, number>;
-        intentosUsados: number;
+        /** Cada piloto probado, en orden (los que entraron y los que no). */
+        probados: number[];
         rendido: boolean;
+        /** Segundos elegidos en la introducción (null: sin tiempo) y cuándo se tocó "Empezar". */
+        limiteSegundos?: TiempoGrilla;
+        inicio?: number;
+        /** Se terminó el tiempo. */
+        agotado?: boolean;
     }
 
     const dia = leerDiaJuego(location.search);
     const fecha = dia.fecha;
     const grilla = generarGrilla(fichas, "grilla:" + fecha);
-    const guardado = crearDatoDiario<EstadoGrilla>({
-        almacenamiento: obtenerAlmacenamiento(),
-        clave: dia.esArchivo ? "tcdleGrillaArchivo" : "tcdleGrilla",
-        fecha,
-    });
+    const partida = crearPartidaExtra<EstadoGrilla>(obtenerAlmacenamiento(), "grilla", dia);
 
-    let estado = $state<EstadoGrilla>(guardado.leer() ?? { respuestas: {}, intentosUsados: 0, rendido: false });
-    let elegido = $state<number | null>(null);
-    let mensaje = $state("");
+    let estado = $state<EstadoGrilla>(partida.leer() ?? { respuestas: {}, probados: [], rendido: false });
+    /** Piloto que encaja en más de un casillero libre, esperando que se elija dónde va. */
+    let pendiente = $state<{ id: number; casilleros: number[] } | null>(null);
+    let mensaje = $state<{ texto: string; tipo: "" | "error" | "exito" }>({ texto: "", tipo: "" });
     let campoBuscador: ReturnType<typeof Buscador<Piloto>> | undefined = $state();
+    let modal: ReturnType<typeof ResultadoEnLinea> | undefined = $state();
+    /** Al completarla en vivo, los nueve casilleros laten en diagonal antes del resultado. */
+    let festejar = $state(false);
+    let tablero: HTMLElement | undefined = $state();
 
     const aciertos = $derived(Object.keys(estado.respuestas).length);
-    const terminada = $derived(estado.rendido || aciertos === 9 || estado.intentosUsados >= MAXIMO_INTENTOS_GRILLA);
+    const gano = $derived(aciertos === 9);
+    const terminada = $derived(estado.rendido || gano || Boolean(estado.agotado));
+    const empezada = $derived(estado.inicio !== undefined);
+    const opcionesReloj = $derived({ marcas: true, limiteSegundos: estado.limiteSegundos ?? null, inicio: estado.inicio ?? 0 });
     const usados = $derived(new Set(Object.values(estado.respuestas)));
-    const casillero = (indice: number) => ({ fila: grilla.filas[Math.floor(indice / 3)], columna: grilla.columnas[indice % 3] });
+    const libres = $derived([0, 1, 2, 3, 4, 5, 6, 7, 8].filter((indice) => estado.respuestas[indice] === undefined));
     const fotoDe = (id: number) => urlImagen(obtenerImagenMiniPiloto(pilotos.find((piloto) => piloto.id === id)!));
     const nombreDe = (id: number) => pilotos.find((piloto) => piloto.id === id)!.nombre;
-
-    const textoCompartir = $derived(
-        [
-            "TCdle · Grilla · " + fecha.slice(8, 10) + "/" + fecha.slice(5, 7),
-            "🏁 " + aciertos + "/9",
-            ...[0, 1, 2].map((fila) => [0, 1, 2].map((columna) => (estado.respuestas[fila * 3 + columna] ? "🟩" : "⬛")).join("")),
-            urlSitio(),
-        ].join("\n")
-    );
+    const apellidoDe = (id: number) => obtenerApellidoPiloto(pilotos.find((piloto) => piloto.id === id)!);
+    /** El marcador son los casilleros completados: con reloj, no siempre se llega a los nueve. */
+    const marcador = $derived({ puntaje: aciertos, maximo: 9, gano });
+    const armarTexto = (racha: number) =>
+        construirTextoCompartir({
+            juego: "grilla",
+            fecha,
+            puntaje: marcador.puntaje,
+            maximo: 9,
+            racha,
+            filas: [0, 1, 2].map((fila) => [0, 1, 2].map((columna) => (estado.respuestas[fila * 3 + columna] !== undefined ? "verde" : "negro"))),
+            url: urlSitio(),
+        });
 
     function guardar() {
-        guardado.guardar($state.snapshot(estado));
+        partida.guardar($state.snapshot(estado), { terminada, gano, intentos: estado.probados });
     }
 
-    function elegirCasillero(indice: number) {
-        if (terminada || estado.respuestas[indice] !== undefined) {
+    if (terminada) {
+        guardar();
+    }
+
+    /** Arranca la partida con el tiempo elegido. Solo la primera vez: recargar no reinicia el reloj. */
+    function empezar(segundos: TiempoGrilla) {
+        if (empezada || terminada) {
             return;
         }
-        elegido = indice;
-        mensaje = "";
-        requestAnimationFrame(() => campoBuscador?.enfocar());
+        estado.limiteSegundos = segundos;
+        estado.inicio = Date.now();
+        guardar();
+    }
+
+    onMount(() => {
+        const alElegir = (evento: Event) => empezar(normalizarTiempoGrilla((evento as CustomEvent).detail));
+        document.addEventListener(EVENTO_TIEMPO_GRILLA, alElegir);
+        // Si la introducción ya se vio hoy y no quedó guardado el inicio, se juega sin tiempo.
+        if (document.documentElement.classList.contains("intro-vista")) {
+            empezar(null);
+        }
+        return () => document.removeEventListener(EVENTO_TIEMPO_GRILLA, alElegir);
+    });
+
+    function agotarTiempo() {
+        if (terminada) {
+            return;
+        }
+        estado.agotado = true;
+        mensaje = { texto: "Se terminó el tiempo.", tipo: "error" };
+        guardar();
+        alTerminar();
+    }
+
+    async function alTerminar() {
+        if (terminada) {
+            pendiente = null;
+            festejar = gano;
+            await tick();
+            modal?.abrir();
+        }
+    }
+
+    function ubicar(id: number, indice: number) {
+        estado.respuestas[indice] = id;
+        estado.probados.push(id);
+        pendiente = null;
+        mensaje = { texto: "", tipo: "" };
+        guardar();
+        alTerminar();
     }
 
     function intentar() {
-        if (elegido === null) {
+        if (terminada || pendiente) {
             return;
         }
         const { elemento } = campoBuscador!.resolver();
         if (!elemento) {
-            mensaje = "Elegí un piloto de la lista.";
+            mensaje = { texto: "Elegí un piloto de la lista.", tipo: "error" };
             campoBuscador!.sacudir();
             return;
         }
         if (usados.has(elemento.id)) {
-            mensaje = elemento.nombre + " ya está en otro casillero.";
+            mensaje = { texto: elemento.nombre + " ya está en la grilla.", tipo: "error" };
+            return;
+        }
+        if (estado.probados.includes(elemento.id)) {
+            mensaje = { texto: "Ya probaste con " + elemento.nombre + ".", tipo: "error" };
             return;
         }
 
-        const { fila, columna } = casillero(elegido);
-        const ficha = fichas.find((item) => item.id === elemento.id)!;
-        estado.intentosUsados++;
-        if (fila.cumple(ficha) && columna.cumple(ficha)) {
-            estado.respuestas[elegido] = elemento.id;
-            mensaje = "¡Bien! " + elemento.nombre + " va ahí.";
-            elegido = null;
-        } else {
-            const faltan = [fila, columna].filter((condicion) => !condicion.cumple(ficha)).map((condicion) => "«" + condicion.texto + "»");
-            mensaje = elemento.nombre + " no cumple " + faltan.join(" ni ") + ".";
-        }
         campoBuscador!.limpiar();
-        guardar();
+        const ficha = fichas.find((item) => item.id === elemento.id)!;
+        const posibles = casillerosPosibles(grilla, ficha).filter((indice) => libres.includes(indice));
+
+        if (posibles.length === 1) {
+            ubicar(elemento.id, posibles[0]);
+        } else if (posibles.length > 1) {
+            pendiente = { id: elemento.id, casilleros: posibles };
+            mensaje = { texto: "", tipo: "" };
+        } else {
+            estado.probados.push(elemento.id);
+            const ocupado = casillerosPosibles(grilla, ficha).length > 0;
+            mensaje = {
+                texto: elemento.nombre + (ocupado ? " solo encaja en casilleros que ya completaste." : " no encaja en ningún casillero."),
+                tipo: "error",
+            };
+            guardar();
+            alTerminar();
+        }
     }
 
     function rendirse() {
         estado.rendido = true;
-        elegido = null;
         guardar();
+        alTerminar();
     }
 </script>
 
+<!--
+    Una sola columna, como Formudle: arriba el buscador; abajo la grilla de 4 × 4 cuadrados
+    iguales, donde las consignas también son casilleros con el logo o un símbolo y un rótulo
+    corto. En la esquina, los aciertos y el reloj.
+-->
 <div class="grilla-extra">
-    <div class="grilla" role="grid" aria-label="Grilla TC">
-        <div class="grilla__esquina" aria-hidden="true">
-            <b>{aciertos}/9</b>
-            <small>{terminada ? "Final" : MAXIMO_INTENTOS_GRILLA - estado.intentosUsados + " intentos"}</small>
-        </div>
-        {#each grilla.columnas as columna (columna.id)}
-            <div class="grilla__cabecera" role="columnheader">{columna.texto}</div>
-        {/each}
-        {#each grilla.filas as fila, f (fila.id)}
-            <div class="grilla__cabecera grilla__cabecera--fila" role="rowheader">{fila.texto}</div>
-            {#each grilla.columnas as columna, c (columna.id)}
-                {@const indice = f * 3 + c}
-                {@const respuesta = estado.respuestas[indice]}
-                {#if respuesta !== undefined}
-                    <div class="grilla__celda grilla__celda--ok" role="gridcell">
-                        <img src={fotoDe(respuesta)} alt="" />
-                        <b>{nombreDe(respuesta)}</b>
-                    </div>
-                {:else if terminada}
-                    {@const ejemplo = respuestasCasillero(fichas, fila, columna).find((ficha) => !usados.has(ficha.id))}
-                    <div class="grilla__celda grilla__celda--vacia" role="gridcell">
-                        {#if ejemplo}<small>Valía, por ejemplo:</small><b>{ejemplo.nombre}</b>{/if}
-                    </div>
-                {:else}
-                    <button
-                        type="button"
-                        class="grilla__celda"
-                        class:grilla__celda--elegida={elegido === indice}
-                        role="gridcell"
-                        aria-label={fila.texto + " y " + columna.texto}
-                        onclick={() => elegirCasillero(indice)}>+</button
-                    >
-                {/if}
-            {/each}
-        {/each}
-    </div>
-
-    <aside class="grilla-extra__lado">
-        {#if terminada}
-            <section class="extra-resultado extra-resultado--compacto" class:extra-resultado--correcto={aciertos === 9} aria-live="polite">
-                <div class="extra-resultado__texto">
-                    <p class="extra-resultado__etiqueta">{aciertos === 9 ? "Grilla completa" : "Final"}</p>
-                    <h2>{aciertos} de 9</h2>
-                    <CuentaRegresiva etiqueta="Nueva grilla en:" activa={true} {fecha} />
-                </div>
-                <BotonCompartir texto={textoCompartir} />
-            </section>
-        {:else if elegido !== null}
-            {@const { fila, columna } = casillero(elegido)}
-            <p class="grilla-extra__pedido"><b>{fila.texto}</b> y <b>{columna.texto}</b></p>
-            <PanelIntento titulo="Elegí un piloto para el casillero" alIntentar={intentar}>
+    <ResultadoEnLinea
+        bind:this={modal}
+        juego="grilla"
+        {fecha}
+        {terminada}
+        correcto={gano}
+        nombre={gano ? "Grilla completa" : estado.agotado ? "Se terminó el tiempo" : aciertos + " de 9"}
+        detalle={gano
+            ? "La completaste con " + estado.probados.length + " " + (estado.probados.length === 1 ? "piloto probado" : "pilotos probados") + "."
+            : "Los casilleros vacíos muestran un piloto que valía."}
+        {armarTexto}
+        {marcador}
+        espera={festejar ? 800 : 0}
+    />
+    {#if !terminada}
+        <div class="grilla-extra__barra">
+            <PanelIntento titulo="Elegí un piloto" deshabilitado={terminada || pendiente !== null} alIntentar={intentar}>
                 {#snippet buscador()}
                     <Buscador
                         bind:this={campoBuscador}
@@ -163,15 +215,16 @@
                         idLista="sugerencias-grilla"
                         etiquetaCampo="Nombre del piloto"
                         consejoVacio="Probá con el apellido."
-                        placeholder="Escribí un piloto"
+                        placeholder="Nombre del piloto"
                         elementos={pilotos}
                         obtenerEtiqueta={(piloto: Piloto) => piloto.nombre}
                         obtenerTextoBusqueda={obtenerTextoBusquedaPiloto}
                         obtenerTextoCorto={obtenerApellidoPiloto}
                         minimoCaracteres={1}
-                        estaExcluido={(piloto: Piloto) => usados.has(piloto.id)}
+                        deshabilitado={terminada || pendiente !== null}
+                        estaExcluido={(piloto: Piloto) => usados.has(piloto.id) || estado.probados.includes(piloto.id)}
                         alEnviar={intentar}
-                        alCambiar={() => (mensaje = "")}
+                        alCambiar={() => (mensaje = { texto: "", tipo: "" })}
                     >
                         {#snippet opcion(piloto: Piloto)}
                             <OpcionPiloto {piloto} />
@@ -179,12 +232,74 @@
                     </Buscador>
                 {/snippet}
             </PanelIntento>
-        {:else}
-            <p class="extra__ayuda">Tocá un casillero y elegí un piloto que cumpla la fila y la columna. Cada piloto va una sola vez y tenés {MAXIMO_INTENTOS_GRILLA} intentos.</p>
+        </div>
+    {/if}
+
+    <div class="grilla-extra__aviso" aria-live="polite">
+        {#if pendiente}
+            <p class="mensaje-juego">Tocá dónde va <b>{apellidoDe(pendiente.id)}</b></p>
+            <button type="button" class="extra-boton extra-boton--texto" onclick={() => ((pendiente = null), (mensaje = { texto: "", tipo: "" }))}>
+                Cancelar
+            </button>
+        {:else if mensaje.texto}
+            <p class={"mensaje-juego" + (mensaje.tipo ? " mensaje-juego--" + mensaje.tipo : "")}>{mensaje.texto}</p>
         {/if}
-        <p class="mensaje-juego" aria-live="polite">{mensaje}</p>
-        {#if !terminada}
-            <button type="button" class="extra-boton extra-boton--claro" onclick={rendirse}>Rendirse</button>
-        {/if}
-    </aside>
+    </div>
+
+    <div class="grilla" role="grid" aria-label="Grilla TC" bind:this={tablero} tabindex="-1">
+        <div class="grilla__esquina">
+            <b aria-label={aciertos + " de 9 casilleros"}>{aciertos}<small>/9</small></b>
+            <!-- Fuera de cualquier {#if} del buscador: el reloj sigue mientras se elige el casillero. -->
+            <Cronometro opciones={opcionesReloj} activo={empezada && !terminada} alTerminar={agotarTiempo} />
+        </div>
+        {#each grilla.columnas as columna (columna.id)}
+            {@render consigna(columna, "columnheader")}
+        {/each}
+        {#each grilla.filas as fila, f (fila.id)}
+            {@render consigna(fila, "rowheader")}
+            {#each grilla.columnas as columna, c (columna.id)}
+                {@const indice = f * 3 + c}
+                {@const respuesta = estado.respuestas[indice]}
+                {#if respuesta !== undefined}
+                    <div class="grilla__celda grilla__celda--ok" class:grilla__celda--festeja={festejar} style:--d={f + c} role="gridcell">
+                        <img src={fotoDe(respuesta)} alt="" />
+                        <b>{apellidoDe(respuesta)}</b>
+                    </div>
+                {:else if pendiente?.casilleros.includes(indice)}
+                    <button
+                        type="button"
+                        class="grilla__celda grilla__celda--opcion"
+                        role="gridcell"
+                        aria-label={"Poner a " + nombreDe(pendiente.id) + " en " + fila.texto + " y " + columna.texto}
+                        onclick={() => ubicar(pendiente!.id, indice)}
+                    >
+                        <img src={fotoDe(pendiente.id)} alt="" />
+                        <b>Acá</b>
+                    </button>
+                {:else if terminada}
+                    {@const ejemplo = respuestasCasillero(fichas, fila, columna).find((ficha) => !usados.has(ficha.id))}
+                    <div class="grilla__celda grilla__celda--vacia" role="gridcell">
+                        {#if ejemplo}<small>Valía</small><b>{ejemplo.nombre}</b>{/if}
+                    </div>
+                {:else}
+                    <div class="grilla__celda" role="gridcell" aria-label={fila.texto + " y " + columna.texto + ": libre"}></div>
+                {/if}
+            {/each}
+        {/each}
+    </div>
+
+    {#if !terminada}
+        <button type="button" class="extra-boton extra-boton--texto grilla-extra__rendirse" onclick={rendirse}>Rendirse</button>
+    {/if}
 </div>
+
+{#snippet consigna(condicion: Condicion, rol: "columnheader" | "rowheader")}
+    <div class="grilla__consigna" role={rol} aria-label={condicion.texto} title={condicion.texto}>
+        {#if condicion.logo}
+            <img class="grilla__logo" src={urlImagen(condicion.logo)} alt="" />
+        {:else}
+            <span class="grilla__simbolo" aria-hidden="true">{condicion.simbolo}</span>
+        {/if}
+        <small aria-hidden="true">{condicion.rotulo}</small>
+    </div>
+{/snippet}

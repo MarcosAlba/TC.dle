@@ -16,5 +16,16 @@ export default defineConfig({
     build: { format: "file" },
     trailingSlash: "ignore",
     integrations: [svelte()],
+    // Política de contenido en cada página (<meta>): solo corren los scripts del
+    // propio sitio cuya huella calcula Astro al construir, y el de Vercel
+    // Analytics. Un script colado en la página no tendría huella y no correría.
+    // Los estilos en línea siguen permitidos (Svelte los usa en atributos style).
+    // El resto de la política (frame-ancestors, img-src...) va en vercel.json.
+    security: {
+        csp: {
+            scriptDirective: { resources: ["'self'", "https://va.vercel-scripts.com"] },
+            styleDirective: { resources: ["'self'", "'unsafe-inline'"] },
+        },
+    },
     devToolbar: { enabled: false },
 });

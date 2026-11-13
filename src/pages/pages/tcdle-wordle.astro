@@ -11,7 +11,7 @@ import "../../styles/wordle.css";
     juego="wordle"
     titulo="TCdle | Wordle del TC"
     descripcion="Adiviná la palabra de Turismo Carretera del día, estilo Wordle."
-    tituloIntro="Wordle TC"
+    tituloIntro="Wordle del TC"
 >
     <img
         slot="intro-imagen"
@@ -24,32 +24,25 @@ import "../../styles/wordle.css";
     />
 
     <Fragment slot="intro">
-        <p class="intro-juego__texto">
-            En el Wordle TC tenés que encontrar la palabra relacionada al TC. Puede ser un piloto o un circuito. Tenés
-            <strong>6 intentos</strong> para descubrirla.
-        </p>
-
+        <p class="intro-juego__texto">Encontrá la palabra del TC, un piloto o un circuito, en <strong>6 intentos</strong>.</p>
         <ul class="intro-juego__leyenda">
             <li>
                 <span class="intro-juego__chip intro-juego__chip--correcta" aria-hidden="true"></span>
-                <span><strong>Verde:</strong> letra correcta en el lugar correcto.</span>
+                <span><strong>Verde:</strong> letra en su lugar.</span>
             </li>
             <li>
                 <span class="intro-juego__chip intro-juego__chip--presente" aria-hidden="true"></span>
-                <span><strong>Amarillo:</strong> letra correcta, pero en el lugar incorrecto.</span>
+                <span><strong>Amarillo:</strong> está, pero en otro lugar.</span>
             </li>
             <li>
                 <span class="intro-juego__chip intro-juego__chip--ausente" aria-hidden="true"></span>
-                <span><strong>Gris:</strong> la letra no está en la palabra.</span>
+                <span><strong>Gris:</strong> no está.</span>
             </li>
         </ul>
-
-        <p class="intro-juego__texto">El teclado marcará las letras que ya utilizaste para ayudarte a descubrir la palabra.</p>
     </Fragment>
 
     <section slot="presentacion" class="presentacion-juego" aria-labelledby="titulo-wordle">
-        <p class="modo-juego">Wordle del TC</p>
-        <h1 id="titulo-wordle">Adiviná la palabra de hoy</h1>
+        <h1 id="titulo-wordle">Wordle del TC</h1>
     </section>
 
     <Wordle client:only="svelte">

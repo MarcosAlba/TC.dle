@@ -1,13 +1,19 @@
 @layer base, juego, desafio, pagina;
 
 @layer pagina {
+    /* Terminada la partida el teclado se va y el resultado ocupa su lugar (doble clase: le gana a .teclado-virtual de más abajo). */
+    .teclado-virtual.teclado-virtual--final {
+        display: none;
+    }
+
+
     .juego--wordle {
         margin-top: var(--espacio-16);
         margin-bottom: var(--espacio-24);
     }
 
     .juego--wordle .presentacion-juego {
-        margin-bottom: var(--espacio-12);
+        margin-bottom: var(--espacio-16);
     }
 
     .juego--wordle .modo-juego {
@@ -64,7 +70,7 @@
         border: 0.125rem solid var(--color-borde);
         border-radius: 0.1875rem;
         color: var(--color-texto);
-        background: #0c0c10;
+        background: var(--gris-fondo);
         font-family: var(--fuente-titulos);
         font-size: clamp(1rem, 3.6vw, 1.4rem);
         font-weight: 800;
@@ -75,7 +81,7 @@
     }
 
     .celda-wordle--llena {
-        border-color: #8d8e99;
+        border-color: var(--gris-4);
         animation: aparecer-letra 110ms ease-out;
     }
 
@@ -141,7 +147,7 @@
         border: 0;
         border-radius: 0.1875rem;
         color: var(--color-texto);
-        background: #3a3b44;
+        background: var(--gris-3);
         font-family: var(--fuente-titulos);
         font-size: var(--texto-s);
         font-weight: 700;
@@ -154,7 +160,7 @@
     /* Solo con mouse: en el celular el hover queda pegado y tapaba el verde o el amarillo de la letra. */
     @media (hover: hover) {
         .tecla:hover:not(:disabled, .tecla--correcta, .tecla--presente, .tecla--ausente) {
-            background: #46474f;
+            background: var(--gris-3);
         }
     }
 
@@ -194,7 +200,7 @@
     }
 
     .tecla--ausente {
-        background: #232329;
+        background: var(--gris-2);
         color: var(--color-texto-suave);
         box-shadow: none;
     }
@@ -338,10 +344,6 @@
             margin-bottom: auto;
         }
 
-        /* Terminada la partida el teclado ya no se usa: el resultado ocupa su lugar. */
-        .teclado-virtual--final {
-            display: none;
-        }
 
         .resumen-wordle-modal {
             margin-top: var(--espacio-12);

@@ -1,0 +1,57 @@
+---
+// Adiviná la campaña. Las fichas de los pilotos (temporadas y marcas desde las
+// finales) se arman al construir, así la página no baja carreras.json.
+import Trayectoria from "../../games/extra/Trayectoria.svelte";
+import CargandoJuego from "../../components/CargandoJuego.astro";
+import PaginaJuego from "../../layouts/PaginaJuego.astro";
+import { carreras, pilotos } from "../../data";
+import { construirFichas, MAXIMO_INTENTOS_TRAYECTORIA } from "../../lib/extra";
+import { urlImagen } from "../../lib/rutas";
+import "../../styles/desafio.css";
+import "../../styles/extra.css";
+
+const fichas = construirFichas(pilotos, carreras);
+// Muestra de la introducción: tres temporadas a la vista y una tapada.
+const muestra = [
+    { anio: 2010, logo: "marcas/ford-clasico.png", numero: 14 },
+    { anio: 2011, logo: "marcas/chevrolet-clasico.png", numero: 7 },
+    { anio: 2012, logo: "marcas/chevrolet-clasico.png", numero: 3 },
+    { anio: 2013, logo: null, numero: null },
+];
+---
+
+<PaginaJuego
+    juego="trayectoria"
+    titulo="TCdle | Adiviná la campaña"
+    descripcion="Mirá con qué marca y número corrió cada temporada y adiviná de qué piloto es la campaña."
+    tituloIntro="¿De quién es esta campaña?"
+>
+    <ol slot="intro-imagen" class="intro-juego__imagen intro-extra intro-extra--campana" aria-hidden="true">
+        {
+            muestra.map(({ anio, logo, numero }) => (
+                <li class:list={["intro-extra__anio", { "intro-extra__anio--oculto": !logo }]}>
+                    <small>{anio}</small>
+                    {logo ? <img src={urlImagen(logo)} alt="" /> : <i>?</i>}
+                    <b>#{numero ?? "?"}</b>
+                </li>
+            ))
+        }
+    </ol>
+
+    <Fragment slot="intro">
+        <p class="intro-juego__texto">
+            <strong>Marca</strong> y <strong>número</strong> de un piloto en cada año desde 2010. Adiviná quién es en
+            <strong>{MAXIMO_INTENTOS_TRAYECTORIA} intentos</strong>: cada error destapa dos años más.
+        </p>
+    </Fragment>
+
+    <section slot="presentacion" class="presentacion-juego" aria-labelledby="titulo-trayectoria">
+        <h1 id="titulo-trayectoria">¿De quién es esta campaña?</h1>
+    </section>
+
+    <Trayectoria client:only="svelte" fichas={fichas}>
+        <Fragment slot="fallback">
+            <CargandoJuego forma="foto" />
+        </Fragment>
+    </Trayectoria>
+</PaginaJuego>

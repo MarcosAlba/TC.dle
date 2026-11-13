@@ -1,7 +1,7 @@
 // Contador global: la función de Vercel y el texto que se muestra.
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { describirConteo } from "../src/lib/contador";
-import handler from "../api/contador.js";
+import handler, { LIMITE_POR_DIA } from "../api/contador.js";
 
 function respuesta() {
     const res = { codigo: 0, cuerpo: undefined as unknown, setHeader: vi.fn() };
@@ -48,7 +48,11 @@ describe("contador global", () => {
         const bien = respuesta();
         await handler({ method: "POST", body: { juego: "piloto", fecha: "2026-11-01", gano: false } }, bien);
         expect(bien.codigo).toBe(204);
-        expect(JSON.parse(String(fetch.mock.calls[0][1].body))).toEqual([
+        // Primero el límite diario de la conexión (una huella, no la IP) y después la partida.
+        const [limite] = JSON.parse(String(fetch.mock.calls[0][1].body));
+        expect(limite[0]).toBe("INCR");
+        expect(limite[1]).toMatch(/^tcdle:limite:2026-11-01:[0-9a-f]{16}$/);
+        expect(JSON.parse(String(fetch.mock.calls[1][1].body))).toEqual([
             ["INCR", "tcdle:2026-11-01:piloto:jugaron"],
             ["EXPIRE", "tcdle:2026-11-01:piloto:jugaron", 40 * 24 * 60 * 60],
         ]);
@@ -62,5 +66,26 @@ describe("contador global", () => {
             await handler({ method: "POST", body: cuerpo }, mal);
             expect(mal.codigo).toBe(400);
         }
+    });
+
+    it("no suma desde otro sitio ni más de la cuenta desde una misma conexión", async () => {
+        vi.stubEnv("KV_REST_API_URL", "https://redis.ejemplo");
+        vi.stubEnv("KV_REST_API_TOKEN", "token");
+        vi.useFakeTimers();
+        vi.setSystemTime(new Date("2026-11-01T15:00:00-03:00"));
+        let usadas = LIMITE_POR_DIA;
+        const fetch = vi.fn(async () => new Response(JSON.stringify([{ result: ++usadas }, { result: 1 }])));
+        vi.stubGlobal("fetch", fetch);
+        const partida = { juego: "grilla", fecha: "2026-11-01", gano: true };
+
+        const ajeno = respuesta();
+        await handler({ method: "POST", headers: { origin: "https://otro-sitio.com" }, body: partida }, ajeno);
+        expect(ajeno.codigo).toBe(403);
+        expect(fetch).not.toHaveBeenCalled();
+
+        const pasado = respuesta();
+        await handler({ method: "POST", headers: { origin: "https://tc-dle.vercel.app", "x-real-ip": "1.2.3.4" }, body: partida }, pasado);
+        expect(pasado.codigo).toBe(429);
+        expect(fetch).toHaveBeenCalledTimes(1);
     });
 });

@@ -2,10 +2,8 @@
     // Adiviná el piloto por su auto: la foto se vuelve más nítida con cada
     // error y, al acertar, hay una ronda extra para adivinar el año del auto.
     import { onMount, tick } from "svelte";
-    import AccionesResultado from "../components/AccionesResultado.svelte";
     import Buscador from "../components/Buscador.svelte";
-    import CuentaRegresiva from "../components/CuentaRegresiva.svelte";
-    import ModalResultado from "../components/ModalResultado.svelte";
+    import ResultadoEnLinea from "../components/ResultadoEnLinea.svelte";
     import OpcionPiloto from "../components/OpcionPiloto.svelte";
     import PanelIntento from "../components/PanelIntento.svelte";
     import { autos } from "../data/catalogo/autos";
@@ -21,7 +19,7 @@
     } from "../lib/autos";
     import { crearDatoDiario } from "../lib/dato-diario";
     import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";
-    import { describirContador, palabraIntentos } from "../lib/intentos";
+    import { palabraIntentos } from "../lib/intentos";
     import { mensajesDeBusqueda } from "../lib/mensajes";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
     import { obtenerApellidoPiloto, obtenerImagenMiniPiloto } from "../lib/pilotos";
@@ -65,12 +63,11 @@
     let fotoPreparada = $state(false);
     let foto: HTMLImageElement;
     let campoBuscador: ReturnType<typeof Buscador<Piloto>> | undefined = $state();
-    let modal: ReturnType<typeof ModalResultado> | undefined = $state();
+    let modal: ReturnType<typeof ResultadoEnLinea> | undefined = $state();
     let estadoFinal: HTMLElement | undefined = $state();
     let opcionesAnio: HTMLElement | undefined = $state();
 
     const estado = $derived(juego.estado);
-    const contador = $derived(describirContador(estado));
     const hayRondaAnio = anioDelAuto !== null;
     const rondaAnioVisible = $derived(estado.acerto && hayRondaAnio);
     const rondaAnioPendiente = $derived(hayRondaAnio && respuestaAnio === null);
@@ -193,7 +190,6 @@
     <div class="modo-auto" role="group" aria-label="Cómo se muestra el auto">
         <button type="button" aria-pressed={modo === "borroso"} onclick={() => elegirModo("borroso")}>Borroso</button>
         <button type="button" aria-pressed={modo === "detalle"} onclick={() => elegirModo("detalle")}>Detalle</button>
-        <span>{modo === "detalle" ? "Arranca con zoom en un detalle y se aleja con cada error." : "Arranca borroso y se aclara con cada error."}</span>
     </div>
 {/if}
 
@@ -215,30 +211,24 @@
         />
     </div>
     <div class="estado-diario">
-        <p class="contador-intentos" class:contador-intentos--ultimo={contador.ultimo} aria-live="polite" hidden={estado.terminada}>
-            {contador.texto}
-        </p>
         <div
             bind:this={estadoFinal}
             class="estado-final"
             class:estado-final--correcto={estado.acerto}
-            class:solo-lectores={estado.acerto}
+            class:solo-lectores={true}
             tabindex="-1"
             hidden={!estado.terminada}
         >
             <span>{estado.acerto ? "¡Correcto!" : "Incorrecto"}</span>
             <strong>{secreto.nombre}</strong>
         </div>
-        {#if !rondaAnioVisible}
-            <CuentaRegresiva etiqueta="Próximo piloto en:" activa={estado.terminada} {fecha} />
-        {/if}
     </div>
 </section>
 
 <PanelIntento
     id="panel-intento-auto"
     titulo="Elegí un piloto"
-    oculto={rondaAnioVisible}
+    oculto={rondaAnioVisible || estado.terminada}
     deshabilitado={estado.terminada}
     alIntentar={intentar}
 >
@@ -247,7 +237,7 @@
             bind:this={campoBuscador}
             id="nombre-piloto-auto"
             idLista="sugerencias-auto"
-            placeholder="Adiviná el piloto del auto"
+            placeholder="Nombre del piloto"
             etiquetaCampo="Nombre del piloto"
             consejoVacio="Probá con el apellido."
             deshabilitado={estado.terminada}
@@ -278,7 +268,6 @@
         <div class="ronda-anio__cabecera">
             <span class="ronda-anio__etiqueta">Ronda extra</span>
             <h2 id="titulo-anio-auto">¿De qué año es este auto?</h2>
-            <CuentaRegresiva etiqueta="Próximo piloto en:" activa={estado.terminada} {fecha} />
         </div>
 
         <div
@@ -316,7 +305,24 @@
     </section>
 {/if}
 
-{#if historial.length > 0}
+<!-- El resultado, en el lugar del buscador (o debajo de la ronda extra del año, cuando se responde). -->
+<ResultadoEnLinea
+    bind:this={modal}
+    juego="auto"
+    {fecha}
+    terminada={resultadoVisible}
+    correcto={estado.acerto}
+    nombre={secreto.nombre}
+    detalle={(estado.acerto
+        ? "Lo resolviste en " + intentosUsados + " " + palabraIntentos(intentosUsados) + "."
+        : "No lo adivinaste en los " + MAXIMO_INTENTOS_AUTO + " intentos.") +
+        (respuestaAnio === null ? "" : respuestaAnio === anioDelAuto ? " Y le acertaste al año: " + anioDelAuto + "." : " El diseño era de " + anioDelAuto + ".")}
+    {armarTexto}
+    {marcador}
+/>
+
+<!-- Al terminar la lista de intentos se va: la página queda con el auto y el resultado. -->
+{#if historial.length > 0 && !estado.terminada}
     <section id="historial-auto" class="historial-intentos" aria-labelledby="titulo-historial-auto">
         <div class="titulo-seccion">
             <span></span>
@@ -333,71 +339,3 @@
         </div>
     </section>
 {/if}
-
-<!--
-    Solo en PC: el resultado en un panel al costado del auto (el buscador ya no hace falta),
-    así el auto y los intentos quedan a la vista. En celular está la ventana y la barra.
--->
-{#if resultadoVisible}
-    <section class="auto-resultado" class:auto-resultado--correcto={estado.acerto} aria-labelledby="titulo-auto-resultado">
-        <div class="auto-resultado__cabecera">
-            <img class="auto-resultado__foto" src={urlImagen(secreto.foto)} alt="" />
-            <div>
-                <p class="auto-resultado__etiqueta">
-                    {estado.acerto ? "Bandera a cuadros · " + intentosUsados + "/" + MAXIMO_INTENTOS_AUTO : "Abandono"}
-                </p>
-                <h2 id="titulo-auto-resultado">{secreto.nombre}</h2>
-            </div>
-        </div>
-        <p class="auto-resultado__detalle">
-            {estado.acerto
-                ? "Lo resolviste en " + intentosUsados + " " + palabraIntentos(intentosUsados) + "."
-                : "No lo adivinaste en los " + MAXIMO_INTENTOS_AUTO + " intentos."}
-        </p>
-        {#if respuestaAnio !== null}
-            {@const acertoAnio = respuestaAnio === anioDelAuto}
-            <p class="auto-resultado__bonus" class:auto-resultado__bonus--correcto={acertoAnio}>
-                Ronda extra:
-                {#if acertoAnio}
-                    le acertaste al año, <strong>{anioDelAuto}</strong>.
-                {:else}
-                    el diseño era de <strong>{anioDelAuto}</strong> (dijiste {respuestaAnio}).
-                {/if}
-            </p>
-        {/if}
-        <CuentaRegresiva clase="auto-resultado__regreso" etiqueta="Nuevo auto en:" activa={estado.terminada} {fecha} />
-        <AccionesResultado juego="auto" {fecha} terminada={estado.terminada} {armarTexto} {marcador} />
-    </section>
-{/if}
-
-<ModalResultado
-    bind:this={modal}
-    juego="auto"
-    {fecha}
-    terminada={estado.terminada}
-    correcto={estado.acerto}
-    titulo={estado.acerto ? "¡Adivinaste!" : "No lo adivinaste"}
-    resumen={estado.acerto ? "Ganaste en " + estado.intentosUsados : "Abandono"}
-    {armarTexto}
-    {marcador}
-    pendiente={rondaAnioPendiente}
-    etiquetaRegreso="Nuevo auto en:"
-    clase="resultado-auto-modal"
-    focoRetorno={() => estadoFinal}
->
-    <img class="resultado-auto-modal__foto" src={urlImagen(secreto.foto)} alt={"Foto de " + secreto.nombre} />
-    <strong class="resultado-modal__nombre">{secreto.nombre}</strong>
-    <p class="resultado-modal__detalle">
-        {estado.acerto
-            ? "Lo resolviste en " + intentosUsados + " " + palabraIntentos(intentosUsados) + "."
-            : "No lo adivinaste en los " + MAXIMO_INTENTOS_AUTO + " intentos."}
-    </p>
-    {#if respuestaAnio !== null}
-        {@const acertoAnio = respuestaAnio === anioDelAuto}
-        <p class="resultado-modal__detalle resultado-modal__bonus" class:resultado-modal__bonus--correcto={acertoAnio}>
-            {acertoAnio
-                ? "Y le acertaste al año: " + anioDelAuto + "."
-                : "El diseño era de " + anioDelAuto + ", vos dijiste " + respuestaAnio + "."}
-        </p>
-    {/if}
-</ModalResultado>

@@ -46,9 +46,9 @@
 
     .panel-intentos th {
         padding: var(--espacio-10) var(--espacio-6);
-        border: 0.0625rem solid #34353d;
-        color: #f0f0f3;
-        background: #08090b;
+        border: 0.0625rem solid var(--gris-3);
+        color: var(--texto-claro);
+        background: var(--gris-fondo);
         font-family: var(--fuente-titulos);
         font-size: var(--texto-m);
         font-stretch: var(--ancho-zocalo);
@@ -63,6 +63,8 @@
         padding: var(--espacio-10);
         border: 0.0625rem solid transparent;
         border-radius: 0.125rem;
+        /* Las pistas son de color en los dos modos: el texto va siempre en blanco. */
+        color: #fff;
         font-family: var(--fuente-texto);
         font-size: var(--texto-s);
         font-weight: 600;
@@ -120,8 +122,8 @@
 
     td.celda-piloto {
         padding: 0;
-        border-color: #050506 !important;
-        background: #050506 !important;
+        border-color: var(--gris-fondo) !important;
+        background: var(--gris-fondo) !important;
         overflow: hidden;
     }
 
@@ -129,7 +131,7 @@
         display: block;
         width: 100%;
         height: 4.875rem;
-        background: #050506;
+        background: var(--gris-fondo);
         object-fit: contain;
         object-position: center bottom;
     }
@@ -163,7 +165,7 @@
         left: 50%;
         width: 2.5rem;
         height: 3.375rem;
-        background: rgb(255 255 255 / 22%);
+        background: rgb(var(--luz) / 22%);
         clip-path: polygon(29% 0,
                 71% 0,
                 71% 38%,
@@ -234,14 +236,23 @@
         text-transform: uppercase;
     }
 
+    /* Candado y cuántos intentos faltan: la pista se abre sola al llegar. */
     .pista__detalle {
-        font-family: var(--fuente-texto);
-        font-size: var(--texto-xs);
-        font-stretch: var(--ancho-texto);
+        display: inline-flex;
+        font-size: var(--texto-s);
+        font-variant-numeric: tabular-nums;
+        font-weight: 800;
+        align-items: center;
+        gap: var(--espacio-4);
+    }
+
+    .pista__detalle .icono {
+        width: 0.75rem;
+        height: 0.75rem;
     }
 
     .pista--disponible {
-        color: #3a4357;
+        color: var(--tinta);
         background: var(--blanco);
         cursor: pointer;
         opacity: 1;
@@ -252,13 +263,13 @@
     }
 
     .pista--disponible:focus-visible {
-        background: #dfe5ee;
+        background: color-mix(in srgb, var(--blanco) 86%, var(--asfalto));
         outline: none;
     }
 
     @media (hover: hover) {
         .pista--disponible:hover {
-            background: #dfe5ee;
+            background: color-mix(in srgb, var(--blanco) 86%, var(--asfalto));
         }
     }
 
@@ -281,7 +292,7 @@
     .pistas__texto {
         margin: var(--espacio-6) 0 0;
         padding: var(--espacio-12) calc(var(--sesgo) + 1.125rem);
-        color: #fff;
+        color: var(--color-texto);
         background: linear-gradient(90deg, var(--rojo) 0 calc(var(--sesgo) + 0.5rem), var(--color-superficie-clara) 0);
         font-size: var(--texto-m);
         font-weight: 600;
@@ -583,7 +594,7 @@
 
     .resultado-final #detalle-resultado-final {
         margin: var(--espacio-14) 0 0;
-        color: #c7c8d0;
+        color: var(--texto-claro);
         font-size: var(--texto-m);
     }
 
@@ -822,6 +833,37 @@
         .celda-numerica__valor {
             font-size: var(--texto-l);
             font-weight: 800;
+        }
+    }
+
+    /*
+     * Botones del final: "Compartir" y "Jugar más juegos" debajo del bloque, uno al lado del
+     * otro y centrados, como en el resto de los juegos. Pisa el armado viejo de PC (dos
+     * cuadrados apilados al costado), que no entraba con el texto nuevo.
+     */
+    .resultado-final__acciones {
+        justify-content: center;
+    }
+
+    @media (min-width: 64rem) {
+        .resultado-final__acciones {
+            position: static;
+            margin-top: var(--espacio-12);
+            transform: none;
+        }
+
+        .resultado-final__acciones .resultado-acciones {
+            width: auto;
+            flex-direction: row;
+        }
+
+        .resultado-final__acciones .boton-compartir {
+            width: auto;
+            height: auto;
+            min-height: 3.25rem;
+            padding: 0 var(--espacio-20);
+            flex-direction: row;
+            clip-path: none;
         }
     }
 }

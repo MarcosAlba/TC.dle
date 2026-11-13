@@ -73,14 +73,14 @@ describe("piezas compartidas", () => {
         expect(fuente).toMatch(/mensaje-juego/);
     });
 
-    it("todos los juegos con resultado final usan el modal y la cuenta regresiva compartidos", () => {
-        for (const juego of ["Auto", "Circuito", "Wordle"]) {
-            expect(leer(`src/games/${juego}.svelte`)).toMatch(/import ModalResultado from "..\/components\/ModalResultado.svelte"/);
+    it("todos los juegos con resultado final usan el resultado en la página y el pop up de estadísticas", () => {
+        expect(leer("src/layouts/PaginaJuego.astro")).toMatch(/EstadisticasJuego/);
+        for (const juego of ["Auto", "Circuito", "Wordle", "extra/Trayectoria", "extra/Grilla", "extra/Conexiones"]) {
+            expect(leer(`src/games/${juego}.svelte`)).toMatch(/import ResultadoEnLinea from "(\.\.\/)+components\/ResultadoEnLinea.svelte"/);
         }
-        expect(leer("src/components/ModalResultado.svelte")).toMatch(/CuentaRegresiva/);
-        // El modal ofrece racha, compartir y el siguiente juego a través de AccionesResultado.
-        expect(leer("src/components/ModalResultado.svelte")).toMatch(/AccionesResultado/);
-        expect(leer("src/components/AccionesResultado.svelte")).toMatch(/SiguienteJuego/);
+        expect(leer("src/components/ResultadoEnLinea.svelte")).toMatch(/AccionesResultado/);
+        // Al terminar: compartir y volver a la portada a elegir otro juego.
+        expect(leer("src/components/AccionesResultado.svelte")).toMatch(/Jugar más juegos/);
         expect(leer("src/components/AccionesResultado.svelte")).toMatch(/BotonCompartir/);
     });
 
@@ -184,8 +184,9 @@ describe("acciones al terminar", () => {
 describe("encabezado de los juegos", () => {
     const lee = (ruta: string) => readFileSync(ruta, "utf8");
 
-    it("cada página de juego marca su pestaña", () => {
+    it("cada página de juego tiene el encabezado limpio, con estadísticas y sin pestañas", () => {
         expect(lee("src/layouts/PaginaJuego.astro")).toContain("<EncabezadoJuego juegoActual={id} />");
-        expect(lee("src/components/EncabezadoJuego.astro")).toContain("aria-current");
+        expect(lee("src/components/EncabezadoJuego.astro")).toContain("data-boton-estadisticas");
+        expect(lee("src/components/EncabezadoJuego.astro")).not.toContain("pestanas-juegos");
     });
 });

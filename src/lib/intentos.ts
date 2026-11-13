@@ -8,13 +8,15 @@ export interface ContadorIntentos {
     texto: string;
     /** Número del intento en curso (o el último jugado si la partida terminó). */
     numero: number;
+    /** Cantidad total de intentos de la partida. */
+    maximo: number;
     /** Queda un solo intento: es el único momento en que el contador se ve. */
     ultimo: boolean;
 }
 
 /**
- * Texto del contador de intentos. Solo se muestra cuando queda el último; el
- * resto del tiempo lo lee solo el lector de pantalla.
+ * Contador de intentos: el texto es para el lector de pantalla; a la vista se
+ * muestra como una fila de marcas (components/MarcasIntentos.svelte).
  */
 export function describirContador(partida: ResumenIntentos): ContadorIntentos {
     const numero = Math.min(
@@ -26,6 +28,7 @@ export function describirContador(partida: ResumenIntentos): ContadorIntentos {
     return {
         texto: ultimo ? "Último intento" : "Intento " + numero + " de " + partida.maximoIntentos,
         numero,
+        maximo: partida.maximoIntentos,
         ultimo,
     };
 }

@@ -2,7 +2,7 @@
 // partida y los ids son parte del formato guardado en el navegador de quien
 // ya jugó (tests/almacenamiento-contrato.test.ts): no se renombran.
 
-export type JuegoId = "piloto" | "auto" | "circuito" | "wordle" | "top10";
+export type JuegoId = "piloto" | "auto" | "circuito" | "wordle" | "top10" | "trayectoria" | "grilla" | "conexiones";
 
 export interface Juego {
     id: JuegoId;
@@ -55,6 +55,30 @@ export const JUEGOS: readonly Juego[] = [
         archivo: "top-10-de-la-carrera.html",
         clavePartida: "partidaTCdleTop10",
         claveIntro: "tcdleIntroTop10Vista",
+    },
+    {
+        id: "trayectoria",
+        nombre: "Adiviná la campaña",
+        corto: "Campaña",
+        archivo: "adivinar-la-campana.html",
+        clavePartida: "partidaTCdleTrayectoria",
+        claveIntro: "tcdleIntroTrayectoriaVista",
+    },
+    {
+        id: "grilla",
+        nombre: "Grilla TC",
+        corto: "Grilla",
+        archivo: "grilla-tc.html",
+        clavePartida: "partidaTCdleGrilla",
+        claveIntro: "tcdleIntroGrillaVista",
+    },
+    {
+        id: "conexiones",
+        nombre: "Conexiones TC",
+        corto: "Conexiones",
+        archivo: "conexiones-tc.html",
+        clavePartida: "partidaTCdleConexiones",
+        claveIntro: "tcdleIntroConexionesVista",
     },
 ];
 

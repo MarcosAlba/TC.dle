@@ -3,10 +3,12 @@
 // contenido del juego. La introducción y el juego se alternan con la clase
 // html.intro-vista, que pone el script del <head> antes del primer pintado.
 import EncabezadoJuego from "../components/EncabezadoJuego.astro";
+import EstadisticasJuego from "../components/EstadisticasJuego.svelte";
 import { obtenerJuego, type JuegoId } from "../lib/juegos";
 import "../styles/juego.css";
 import Pagina from "./Pagina.astro";
 import { ruta, urlJuego } from "../lib/rutas";
+import { existsSync } from "node:fs";
 
 interface Props {
     juego: JuegoId;
@@ -18,9 +20,11 @@ interface Props {
 
 const { juego: id, titulo, descripcion, tituloIntro } = Astro.props;
 const juego = obtenerJuego(id);
+// Los juegos sin tarjeta propia para redes (public/assets/images/og) usan la de la portada.
+const imagenOg = existsSync(new URL(`../../public/assets/images/og/${id}.jpg`, import.meta.url)) ? id : "portada";
 ---
 
-<Pagina titulo={titulo} descripcion={descripcion} claveIntro={juego.claveIntro} imagenOg={id}>
+<Pagina titulo={titulo} descripcion={descripcion} claveIntro={juego.claveIntro} {imagenOg} pieCompacto>
     <EncabezadoJuego juegoActual={id} />
 
     <main class={`juego juego--${id}`}>
@@ -53,6 +57,8 @@ const juego = obtenerJuego(id);
             <slot />
         </div>
     </main>
+    <!-- Pop up de estadísticas: se abre solo al terminar y desde el botón del encabezado. -->
+    <EstadisticasJuego client:only="svelte" juego={id} />
 
     <script>
         import { obtenerAlmacenamiento } from "../lib/almacenamiento";

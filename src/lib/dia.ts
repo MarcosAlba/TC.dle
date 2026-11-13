@@ -1,5 +1,5 @@
 // Resumen del día: el marcador de cada juego terminado hoy, para compartir los
-// cinco en un solo mensaje. Se guarda aparte ("tcdleResumenDia") para no tocar
+// ocho en un solo mensaje. Se guarda aparte ("tcdleResumenDia") para no tocar
 // el formato de las partidas, que fija tests/almacenamiento-contrato.test.ts.
 import { leerJson, type Almacenamiento } from "./almacenamiento";
 import { MILISEGUNDOS_POR_DIA } from "./fechas";
@@ -22,7 +22,7 @@ interface ResumenDia {
     juegos: Partial<Record<JuegoId, MarcadorJuego>>;
 }
 
-const ICONOS: Record<JuegoId, string> = { piloto: "👤", auto: "🚗", circuito: "🗺️", wordle: "🔤", top10: "🏆" };
+const ICONOS: Record<JuegoId, string> = { piloto: "👤", auto: "🚗", circuito: "🗺️", wordle: "🔤", top10: "🏆", trayectoria: "📅", grilla: "🔢", conexiones: "🔗" };
 
 /** Número de TCdle de una fecha "AAAA-MM-DD": el día del lanzamiento es el 1. */
 export function obtenerNumeroTCdle(fecha: string): number {

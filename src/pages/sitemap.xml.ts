@@ -9,7 +9,6 @@ export const GET: APIRoute = ({ site }) => {
         "archivo.html",
         "acerca.html",
         ...JUEGOS.map((juego) => "pages/" + juego.archivo),
-        ...["trayectoria", "grilla", "conexiones"].map((juego) => "juegos/" + juego + ".html"),
     ];
     const urls = paginas.map((pagina) => `    <url><loc>${new URL(base + pagina, site).href}</loc></url>`).join("\n");
 

@@ -145,8 +145,8 @@
     }
 
     .podio__puesto--revelado .podio__apellido {
-        color: #d6d6dc;
-        background: #3b3b44;
+        color: var(--texto-claro);
+        background: var(--gris-3);
     }
 
     .podio__bloque {
@@ -274,8 +274,8 @@
     }
 
     .torre__zocalo--revelado {
-        color: #d6d6dc;
-        background: #3b3b44;
+        color: var(--texto-claro);
+        background: var(--gris-3);
     }
 
     /* La única animación: el zócalo entra barriendo cuando acertás. */
@@ -415,85 +415,6 @@
 
     .torre__logo.sin-marca {
         background: var(--color-superficie-clara);
-    }
-
-    /* ---------- Cronómetro de 2 minutos ---------- */
-
-    .cronometro {
-        margin: 0;
-        padding: 0.125rem calc(var(--sesgo) + 0.25rem);
-        color: var(--tinta);
-        background: var(--blanco);
-        font-size: var(--texto-l);
-        font-stretch: var(--ancho-zocalo);
-        font-style: italic;
-        font-variant-numeric: tabular-nums;
-        font-weight: 900;
-        clip-path: var(--corte);
-    }
-
-    .cronometro--final {
-        color: #fff;
-        background: var(--rojo);
-    }
-
-    /* ---------- Opciones de la introducción ---------- */
-
-    .opciones-top10 {
-        display: flex;
-        margin: 0 0 var(--espacio-14);
-        padding: 0;
-        border: 0;
-        gap: var(--espacio-6);
-        flex-wrap: wrap;
-    }
-
-    .intro-juego__texto + .opciones-top10 {
-        margin-top: var(--espacio-18);
-    }
-
-    .opciones-top10 legend {
-        margin-bottom: var(--espacio-6);
-        padding: 0;
-        color: var(--color-texto-suave);
-        font-size: var(--texto-s);
-    }
-
-    .opciones-top10 label {
-        position: relative;
-        cursor: pointer;
-    }
-
-    /* El radio queda accesible por teclado; se ve la etiqueta como botón. */
-    .opciones-top10 input {
-        position: absolute;
-        opacity: 0;
-        inset: 0;
-        margin: 0;
-        cursor: pointer;
-    }
-
-    .opciones-top10 span {
-        display: flex;
-        min-height: 2.75rem;
-        padding: var(--espacio-6) calc(var(--sesgo) + 0.5rem);
-        align-items: center;
-        color: var(--blanco);
-        background: var(--color-superficie-clara);
-        font-size: var(--texto-s);
-        font-style: italic;
-        font-weight: 800;
-        clip-path: var(--corte);
-    }
-
-    .opciones-top10 input:checked + span {
-        color: var(--tinta);
-        background: var(--blanco);
-    }
-
-    .opciones-top10 input:focus-visible + span {
-        outline: 0.125rem solid var(--rojo);
-        outline-offset: -0.125rem;
     }
 
     /* ---------- Podio de muestra de la introducción ---------- */
@@ -712,7 +633,7 @@
         }
 
         .juego--top10 .contenido-juego .presentacion-juego h1 {
-            font-size: var(--texto-3xl);
+            font-size: var(--texto-2xl);
         }
 
         .juego--top10 .presentacion-juego > .presentacion-juego__ayuda {
@@ -726,7 +647,8 @@
 
         /* Mientras se juega va el buscador; al terminar, el resultado en el mismo lugar. */
         .juego--top10 .panel-intento,
-        .top10-resultado {
+        .top10-resultado,
+        .juego--top10 .top10-resultado-linea {
             width: 100%;
             margin: 0;
             grid-column: 2;
@@ -750,8 +672,8 @@
         .top10-resultado__etiqueta {
             margin: 0;
             padding: var(--espacio-4) calc(var(--sesgo) + 0.625rem);
-            color: #fff;
-            background: #3a3a44;
+            color: var(--color-texto);
+            background: var(--gris-3);
             font-size: var(--texto-s);
             font-stretch: var(--ancho-zocalo);
             font-style: italic;
@@ -818,14 +740,14 @@
             clip-path: var(--corte);
         }
 
-        /* El cronómetro sube al lado del título (a la altura del zócalo blanco). */
+        /* El cronómetro va al lado del título, centrado con el zócalo blanco. */
         .top10-reloj {
             display: block;
-            margin-top: 1.75rem;
             grid-column: 2;
             grid-row: 1;
+            margin-bottom: var(--espacio-20);
             justify-self: end;
-            align-self: start;
+            align-self: center;
         }
 
         .top10-reloj .cronometro {
@@ -913,9 +835,9 @@
         .top10-ultimos li {
             display: flex;
             padding: var(--espacio-10) var(--espacio-14);
-            border-left: 0.1875rem solid #55555e;
+            border-left: 0.1875rem solid var(--gris-4);
             color: var(--color-texto-suave);
-            background: #16161b;
+            background: var(--gris-1);
             font-size: var(--texto-m);
             font-stretch: var(--ancho-zocalo);
             font-style: italic;
@@ -933,5 +855,21 @@
         .top10-ultimos__acierto span {
             color: var(--celda-correcta-borde);
         }
+    }
+}
+
+/* Si no baja la carrera del día: aviso y botón para reintentar, en el lugar del juego. */
+@layer pagina {
+    .mensaje-carga {
+        display: grid;
+        margin: var(--espacio-24) auto;
+        justify-items: center;
+        gap: var(--espacio-12);
+        text-align: center;
+    }
+
+    .mensaje-carga p {
+        margin: 0;
+        color: var(--color-texto-suave);
     }
 }

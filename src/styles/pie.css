@@ -1,36 +1,44 @@
 @layer base, juego, desafio, pagina;
 
-/* Pie del sitio: una línea fina arriba, el aviso a la izquierda y los links a la derecha. */
+/*
+ * Pie del sitio: una línea fina arriba, el logo chico, los links y el aviso a la
+ * derecha. Sin fondo ni carteles de color: tiene que pasar desapercibido.
+ */
 @layer pagina {
     .pie-sitio {
         display: flex;
-        width: min(82.5rem, calc(100% - 2rem));
+        width: min(75rem, calc(100% - 2rem));
         margin: var(--espacio-48) auto 0;
-        padding: var(--espacio-16) 0 calc(var(--espacio-24) + env(safe-area-inset-bottom, 0px));
+        padding: var(--espacio-16) 0 calc(var(--espacio-20) + env(safe-area-inset-bottom, 0px));
         border-top: 0.0625rem solid var(--linea);
         color: var(--color-texto-suave);
         font-size: var(--texto-s);
-        gap: var(--espacio-12) var(--espacio-24);
+        gap: var(--espacio-10) var(--espacio-32);
         flex-wrap: wrap;
         align-items: center;
-        justify-content: space-between;
     }
 
-    .pie-sitio__aviso {
-        margin: 0;
+    .pie-sitio__logo img {
+        display: block;
+        width: 4.5rem;
+        height: auto;
     }
 
     .pie-sitio__links {
         display: flex;
-        gap: var(--espacio-8) var(--espacio-20);
+        gap: var(--espacio-8) var(--espacio-24);
         flex-wrap: wrap;
         align-items: center;
     }
 
-    .pie-sitio a {
+    .pie-sitio__links a {
         color: var(--blanco);
-        font-weight: 700;
+        font-family: var(--fuente-titulos);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 800;
         text-decoration: none;
+        text-transform: uppercase;
     }
 
     .pie-sitio a:focus-visible {
@@ -39,20 +47,39 @@
     }
 
     @media (hover: hover) {
-        .pie-sitio a:hover {
-            text-decoration: underline;
-            text-decoration-color: var(--rojo);
-            text-underline-offset: 0.1875rem;
+        .pie-sitio__links a:hover {
+            color: var(--rojo);
         }
     }
 
-    .pie-sitio .pie-sitio__cafecito {
-        padding: 0.125rem calc(var(--sesgo) + 0.75rem);
-        color: #fff;
-        background: var(--rojo);
-        font-style: italic;
-        font-weight: 800;
-        clip-path: var(--corte);
+    .pie-sitio__aviso {
+        margin: 0 0 0 auto;
+        font-size: var(--texto-xs);
+    }
+
+    /*
+     * Páginas de juego: sin el aviso y al fondo de la pantalla. El aviso queda en la
+     * portada y en Acerca de; acá aparecía pegado al buscador, donde caen los intentos.
+     */
+    body:has(.pie-sitio--compacto) {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pie-sitio--compacto {
+        margin-top: auto;
+        justify-content: center;
+    }
+
+    @media (max-width: 700px) {
+        .pie-sitio {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .pie-sitio__aviso {
+            margin: 0;
+        }
     }
 
     /* En el celular el resultado deja una barra fija abajo: el pie no queda tapado. */

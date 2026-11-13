@@ -6,9 +6,41 @@
 //
 // POST /api/contador  { juego, fecha, gano }  suma una partida terminada.
 // GET  /api/contador?fecha=AAAA-MM-DD          { piloto: { jugaron, ganaron }, ... }
+//
+// Para que no se puedan inflar los números con un script: el POST solo se acepta
+// desde el propio sitio (cabecera Origin) y cada conexión suma como mucho
+// LIMITE_POR_DIA partidas por día. La IP no se guarda: se usa una huella que
+// cambia cada día y vence sola.
+import { createHash } from "node:crypto";
 
-const JUEGOS = ["piloto", "auto", "circuito", "wordle", "top10"];
+const JUEGOS = ["piloto", "auto", "circuito", "wordle", "top10", "trayectoria", "grilla", "conexiones"];
 const DIAS_GUARDADOS = 40 * 24 * 60 * 60;
+// Ocho juegos por persona y margen para varias personas detrás de la misma conexión (una casa, un trabajo).
+export const LIMITE_POR_DIA = 40;
+const UN_DIA = 24 * 60 * 60;
+
+/** El sitio publicado, sus versiones de prueba en Vercel y el servidor local. */
+function origenPermitido(origen) {
+    try {
+        const { hostname } = new URL(origen);
+        return (
+            hostname === "tc-dle.vercel.app" ||
+            hostname === process.env.VERCEL_URL ||
+            hostname === process.env.VERCEL_BRANCH_URL ||
+            hostname === "localhost" ||
+            hostname === "127.0.0.1"
+        );
+    } catch {
+        return false;
+    }
+}
+
+/** Huella de la conexión para el límite diario: no permite recuperar la IP y cambia con la fecha. */
+function huella(req, fecha) {
+    const encabezados = req.headers ?? {};
+    const ip = String(encabezados["x-real-ip"] ?? encabezados["x-forwarded-for"] ?? "").split(",")[0].trim() || "desconocida";
+    return createHash("sha256").update(fecha + ":" + ip).digest("hex").slice(0, 16);
+}
 
 /** Fecha de hoy en Argentina: el único día que se puede sumar (más ayer, por quien juega pasada la medianoche). */
 function fechasValidas() {
@@ -45,6 +77,21 @@ export default async function handler(req, res) {
             const { juego, fecha, gano } = datos;
             if (!JUEGOS.includes(juego) || !fechasValidas().includes(fecha) || typeof gano !== "boolean") {
                 res.status(400).json({ error: "Partida inválida" });
+                return;
+            }
+            const origen = req.headers?.origin;
+            if (origen && !origenPermitido(origen)) {
+                res.status(403).json({ error: "Origen no permitido" });
+                return;
+            }
+
+            const claveLimite = `tcdle:limite:${fecha}:${huella(req, fecha)}`;
+            const [usadas] = await redis([
+                ["INCR", claveLimite],
+                ["EXPIRE", claveLimite, UN_DIA],
+            ]);
+            if (Number(usadas) > LIMITE_POR_DIA) {
+                res.status(429).json({ error: "Demasiadas partidas desde esta conexión" });
                 return;
             }
 

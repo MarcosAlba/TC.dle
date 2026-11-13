@@ -2,10 +2,17 @@ import type { Piloto } from "../data/tipos";
 import { crearGenerador, crearSemilla } from "./seleccion-diaria";
 import { normalizarTexto } from "./texto";
 
-/** Los pilotos tienen un único campo "nombre": el apellido es la última palabra. */
+/** Partículas que van con el apellido: "Di Palma", "De Benedictis", "De Carlo". */
+const PARTICULAS_APELLIDO = new Set(["de", "di", "del", "la", "van", "von"]);
+
+/** Los pilotos tienen un único campo "nombre": el apellido es la última palabra, con su partícula si la tiene. */
 export function obtenerApellidoPiloto(piloto: Pick<Piloto, "nombre">): string {
     const partes = String(piloto.nombre || "").trim().split(/\s+/);
-    return partes[partes.length - 1] || "";
+    let inicio = partes.length - 1;
+    while (inicio > 1 && PARTICULAS_APELLIDO.has(partes[inicio - 1].toLowerCase())) {
+        inicio--;
+    }
+    return partes.slice(inicio).join(" ");
 }
 
 /**

@@ -8,7 +8,7 @@
  * de componente, solo pisa estos valores.
  */
 :root {
-    --asfalto: #09090b;
+    --asfalto: #000000;
     --asfalto-profundo: #090a0c;
     --asfalto-tarjeta: #0e0f12;
     --asfalto-claro: #121216;
@@ -125,12 +125,81 @@
     --mascota-perdida: none;
     --mascota-brillo: none;
     --mascota-animacion-ganada: none;
+
+    /*
+     * Grises de las piezas (paneles, botones secundarios, teclas, marcas). Antes
+     * estaban escritos a mano en cada archivo; acá el modo claro los puede cambiar.
+     */
+    --gris-fondo: #08090b;
+    --gris-1: #16161b;
+    --gris-2: #23232a;
+    --gris-3: #3a3a44;
+    --gris-4: #5f5f69;
+    --texto-claro: #cfd0d7;
+    /* Brillos y rayados del fondo: blanco sobre oscuro, negro sobre claro. */
+    --luz: 255 255 255;
+    /* El logo es rojo; durante la Copa de Oro se tiñe de dorado con un filtro. */
+    --filtro-logo: none;
+    /* Siluetas de circuitos (SVG negros): blancas sobre oscuro, negras sobre claro. */
+    --filtro-silueta: brightness(0) invert(1);
+    --esquema: dark;
+    --copa-franja-fondo: #2a1f05;
+    --copa-franja-borde: #6b5212;
+    --copa-franja-texto: #e9dcb8;
 }
 
 @media (max-width: 620px) {
     :root {
         --sesgo: 0.6875rem;
     }
+}
+
+/*
+ * ---------- Modo claro (<html data-modo="claro">) ----------
+ * El mismo sistema en negativo: fondo gris cemento, paneles blancos y zócalos
+ * negros con letra blanca (--blanco y --tinta se cruzan). Las pistas de color
+ * de los juegos no cambian. Lo pone aplicarModoInicial antes del primer pintado.
+ */
+:root[data-modo="claro"] {
+    --asfalto: #e7e9ed;
+    --asfalto-profundo: #dcdfe5;
+    --asfalto-tarjeta: #f7f8fa;
+    --asfalto-claro: #ffffff;
+    --linea: #c3c7cf;
+    --blanco: #121318;
+    --tinta: #ffffff;
+    --rojo: #d50b1e;
+    --rojo-oscuro: #a3061a;
+    --dorado: #7d5a06;
+
+    --fondo-retrato:
+        linear-gradient(180deg, transparent 60%, rgb(0 0 0 / 18%)),
+        linear-gradient(var(--angulo-corte), transparent 36%, var(--rojo) 36% 62%, transparent 62%),
+        repeating-linear-gradient(var(--angulo-corte), rgb(0 0 0 / 5%) 0 0.0625rem, transparent 0.0625rem 0.5rem),
+        #d3d7de;
+
+    --color-superficie-clara: #eef0f3;
+    --color-texto-suave: #4b4e58;
+    --color-texto-error: #b8142a;
+    --color-texto-exito: #0b7342;
+    --rejilla: 4%;
+
+    --gris-fondo: #eef0f3;
+    --gris-1: #ffffff;
+    --gris-2: #e3e6eb;
+    --gris-3: #cdd1d8;
+    --gris-4: #8a8d97;
+    --texto-claro: #2a2c34;
+    --luz: 0 0 0;
+    --filtro-silueta: brightness(0);
+    --esquema: light;
+    --copa-franja-fondo: #f3e2b0;
+    --copa-franja-borde: #c49a2c;
+    --copa-franja-texto: #4a3a10;
+}
+
+:root[data-modo="claro"] body {
+    --resplandor: transparent;
 }
 
 /* ---------- Tema de Halloween (<html data-tema="halloween">) ---------- */
@@ -173,6 +242,8 @@
  * distintivo de los pilotos que juegan la Copa solo se ve con este tema.
  */
 :root[data-tema="copa-oro"] {
+    /* De cualquier color a dorado (#b2810b): primero a negro y después al tono. */
+    --filtro-logo: brightness(0) saturate(100%) invert(76%) sepia(28%) saturate(5245%) hue-rotate(3deg) brightness(75%) contrast(91%);
     --rojo: #b8860b;
     --rojo-oscuro: #8a6408;
     --dorado: #f3d27a;
@@ -181,6 +252,18 @@
 
 :root[data-tema="copa-oro"] body {
     --resplandor: rgb(217 165 32 / 12%);
+}
+
+/* Con fondo claro el naranja y el dorado necesitan un paso más de oscuridad para la letra blanca. */
+:root[data-modo="claro"][data-tema="halloween"] {
+    --rojo: #c04500;
+    --rojo-oscuro: #8f3300;
+}
+
+:root[data-modo="claro"][data-tema="copa-oro"] {
+    --rojo: #8a6408;
+    --rojo-oscuro: #6a4c05;
+    --dorado: #6a4c05;
 }
 
 /*

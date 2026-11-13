@@ -1,28 +1,28 @@
 ---
+import MenuApariencia from "../components/MenuApariencia.astro";
 import ProximaCarrera from "../components/ProximaCarrera.astro";
-import { copaDeOro } from "../data/copa-de-oro";
 import TarjetaJuego from "../components/TarjetaJuego.astro";
 import Pagina from "../layouts/Pagina.astro";
 import { dejarLogoQuieto } from "../lib/inicio-pagina";
 import { ruta, urlImagen } from "../lib/rutas";
 import "../styles/portada.css";
+import { huellaScript } from "../lib/huella-script";
+
+const scriptLogo = `(${dejarLogoQuieto})();`;
+// Astro no calcula la huella de los scripts is:inline: sin esto la política de contenido lo bloquearía.
+Astro.csp?.insertScriptHash(huellaScript(scriptLogo));
 ---
 
 <Pagina titulo="TCdle" descripcion="Elegí uno de los ocho desafíos diarios de TCdle." claseBody="portada">
     <header class="encabezado-inicio">
         <img class="logo-inicio logo-inicio--normal" src={urlImagen("tcdle-logo-frenada.svg")} alt="TCdle" width="1570" height="384" />
         <img class="logo-inicio logo-inicio--halloween" src={urlImagen("tcdle-logo-frenada-halloween.svg")} alt="TCdle" width="1570" height="549" />
+        <MenuApariencia />
     </header>
     <!-- Corre antes del primer pintado: desde la segunda vez en la sesión el logo ya aparece terminado. -->
-    <script is:inline set:html={`(${dejarLogoQuieto})();`} />
+    <script is:inline set:html={scriptLogo} />
 
     <main class="inicio">
-        <!-- Solo con el tema de la Copa de Oro (tokens.css): el script completa cuántas fechas quedan. -->
-        <aside id="franja-copa" class="franja-copa caja-chaflan" aria-label="Copa de Oro">
-            <span class="franja-copa__titulo">Copa de Oro {copaDeOro.temporada}</span>
-            <p id="franja-copa-texto" class="franja-copa__texto">{copaDeOro.pilotos.length} pilotos pelean el título.</p>
-        </aside>
-
         <section class="selector-juegos" aria-labelledby="titulo-selector">
             <!-- En PC el título va a la izquierda con la fecha y, a la derecha, cuántos juegos se completaron hoy. -->
             <div class="selector-juegos__cabecera">
@@ -36,9 +36,9 @@ import "../styles/portada.css";
                 <div id="progreso-dia" class="progreso-dia" hidden>
                     <p class="progreso-dia__texto"><span>Completados</span> <b id="progreso-dia-cuenta"></b></p>
                     <span class="progreso-dia__barra" aria-hidden="true">
-                        <i></i><i></i><i></i><i></i><i></i>
+                        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
                     </span>
-                    <!-- Con los cinco terminados: el resumen del día en un solo mensaje. -->
+                    <!-- Con los ocho terminados: el resumen del día en un solo mensaje. -->
                     <button id="compartir-dia" class="progreso-dia__compartir" type="button" hidden>Compartir el día</button>
                 </div>
             </div>
@@ -87,8 +87,7 @@ import "../styles/portada.css";
                     </span>
                 </TarjetaJuego>
 
-                <!-- Los tres de /juegos: todavía no suman al progreso ni a la racha del día (no están en JUEGOS). -->
-                <TarjetaJuego id="trayectoria" nombre="Adiviná la campaña" href={ruta("juegos/trayectoria.html")}>
+                <TarjetaJuego juego="trayectoria">
                     <img class="tarjeta-juego__silueta" src={urlImagen("silueta-piloto.webp")} alt="" />
                     <span class="tarjeta-juego__anios" aria-hidden="true">
                         <span><small>2010</small><img src={urlImagen("marcas/ford-clasico.png")} alt="" /><b>#14</b></span>
@@ -97,7 +96,7 @@ import "../styles/portada.css";
                     </span>
                 </TarjetaJuego>
 
-                <TarjetaJuego id="grilla" nombre="Grilla TC" href={ruta("juegos/grilla.html")}>
+                <TarjetaJuego juego="grilla">
                     <span class="tarjeta-juego__tablero" aria-hidden="true">
                         <i><img src={urlImagen("pilotos/mini/julian_santero.webp")} alt="" /></i><i>+</i><i>+</i>
                         <i>+</i><i><img src={urlImagen("pilotos/mini/agustin_canapino.webp")} alt="" /></i><i>+</i>
@@ -105,7 +104,7 @@ import "../styles/portada.css";
                     </span>
                 </TarjetaJuego>
 
-                <TarjetaJuego id="conexiones" nombre="Conexiones TC" href={ruta("juegos/conexiones.html")}>
+                <TarjetaJuego juego="conexiones">
                     <span class="tarjeta-juego__conexiones" aria-hidden="true">
                         <span class="tarjeta-juego__grupo">¿Qué tienen en común?</span>
                         <i><img src={urlImagen("pilotos/mini/matias_rossi.webp")} alt="" /></i>
@@ -125,6 +124,7 @@ import "../styles/portada.css";
 
         <a class="enlace-archivo" href={ruta("archivo.html")}>Jugar días anteriores</a>
     </main>
+
 
     <script>
         import "../scripts/portada";

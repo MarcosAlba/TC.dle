@@ -2,8 +2,7 @@
     // Adiviná el circuito: reconocer el trazado por su silueta.
     import { tick } from "svelte";
     import Buscador from "../components/Buscador.svelte";
-    import CuentaRegresiva from "../components/CuentaRegresiva.svelte";
-    import ModalResultado from "../components/ModalResultado.svelte";
+    import ResultadoEnLinea from "../components/ResultadoEnLinea.svelte";
     import PanelIntento from "../components/PanelIntento.svelte";
     import { circuitos } from "../data/catalogo/circuitos";
     import type { Circuito } from "../data/tipos";
@@ -17,7 +16,7 @@
         tieneVariantes,
     } from "../lib/circuitos";
     import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";
-    import { describirContador, palabraIntentos } from "../lib/intentos";
+    import { palabraIntentos } from "../lib/intentos";
     import { mensajesDeBusqueda } from "../lib/mensajes";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
     import { construirTextoCompartir, filaIntentos } from "../lib/compartir";
@@ -52,11 +51,13 @@
     });
 
     let campoBuscador: ReturnType<typeof Buscador<Circuito>> | undefined = $state();
-    let modal: ReturnType<typeof ModalResultado> | undefined = $state();
+    let modal: ReturnType<typeof ResultadoEnLinea> | undefined = $state();
+    /** Al acertar, una línea del color del tema da una vuelta al trazado (el SVG de la silueta, como contorno). */
+    let vuelta = $state("");
+    const DURACION_VUELTA = 1100;
     let estadoFinal: HTMLElement | undefined = $state();
 
     const estado = $derived(juego.estado);
-    const contador = $derived(describirContador(estado));
     const historial = $derived(
         estado.idsIntentados
             .map((id) => circuitos.find((circuito) => circuito.id === id))
@@ -78,7 +79,33 @@
             url: urlSitio(),
         });
 
+    /** Baja el SVG de la silueta y lo deja como contorno animado encima de la imagen. */
+    async function dibujarVuelta() {
+        try {
+            const texto = await (await fetch(urlSilueta)).text();
+            const svg = new DOMParser().parseFromString(texto, "image/svg+xml").querySelector("svg");
+            if (!svg) {
+                return;
+            }
+            if (!svg.getAttribute("viewBox")) {
+                svg.setAttribute("viewBox", "0 0 " + svg.getAttribute("width") + " " + svg.getAttribute("height"));
+            }
+            svg.removeAttribute("width");
+            svg.removeAttribute("height");
+            svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+            svg.setAttribute("aria-hidden", "true");
+            svg.setAttribute("class", "vuelta-circuito");
+            svg.querySelectorAll("path").forEach((camino) => camino.setAttribute("pathLength", "100"));
+            vuelta = svg.outerHTML;
+        } catch {
+            // Sin la vuelta, el resultado aparece igual.
+        }
+    }
+
     async function abrirModal() {
+        if (juego.estado.acerto && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            await dibujarVuelta();
+        }
         await tick();
         modal?.abrir();
     }
@@ -120,22 +147,25 @@
 
 <section class="tarjeta-desafio tarjeta-desafio--suelta tarjeta-desafio--foto" aria-label="Circuito del día">
     <div class="marco-circuito">
-        <img
-            class="foto-circuito"
-            src={urlSilueta}
-            alt={estado.terminada ? "Silueta de " + etiqueta(secreto) : "Silueta del circuito del día"}
-        />
+        <div class="marco-circuito__silueta">
+            <img
+                class="foto-circuito"
+                src={urlSilueta}
+                alt={estado.terminada ? "Silueta de " + etiqueta(secreto) : "Silueta del circuito del día"}
+            />
+            {#if vuelta}
+                <!-- El SVG es un archivo propio del sitio (public/assets/images/circuitos). -->
+                {@html vuelta}
+            {/if}
+        </div>
     </div>
 
     <div class="estado-diario">
-        <p class="contador-intentos" class:contador-intentos--ultimo={contador.ultimo} aria-live="polite" hidden={estado.terminada}>
-            {contador.texto}
-        </p>
         <div
             bind:this={estadoFinal}
             class="estado-final"
             class:estado-final--correcto={estado.acerto}
-            class:solo-lectores={estado.acerto}
+            class:solo-lectores={true}
             tabindex="-1"
             hidden={!estado.terminada}
         >
@@ -145,17 +175,13 @@
                 <strong>{etiqueta(secreto)}</strong>
             {/if}
         </div>
-        <!-- Al acertar, el contador sube a la fila de "Intentos". -->
-        {#if !estado.acerto}
-            <CuentaRegresiva etiqueta="Nuevo circuito en:" activa={estado.terminada} {fecha} />
-        {/if}
     </div>
 </section>
 
 <PanelIntento
     id="panel-intento-circuito"
     titulo="Elegí un trazado"
-    oculto={estado.acerto}
+    oculto={estado.terminada}
     deshabilitado={estado.terminada}
     alIntentar={intentar}
 >
@@ -164,7 +190,7 @@
             bind:this={campoBuscador}
             id="nombre-circuito"
             idLista="sugerencias-circuitos"
-            placeholder="Escribí el nombre del circuito"
+            placeholder="Nombre del circuito"
             etiquetaCampo="Nombre del circuito"
             consejoVacio="Probá con la ciudad o el autódromo."
             deshabilitado={estado.terminada}
@@ -194,14 +220,27 @@
     {/snippet}
 </PanelIntento>
 
-{#if historial.length > 0}
+<ResultadoEnLinea
+    bind:this={modal}
+    juego="circuito"
+    {fecha}
+    terminada={estado.terminada}
+    correcto={estado.acerto}
+    nombre={etiqueta(secreto)}
+    detalle={estado.acerto
+        ? "Lo reconociste en " + estado.intentosUsados + " " + palabraIntentos(estado.intentosUsados) + "."
+        : "No lo reconociste en los " + MAXIMO_INTENTOS + " intentos."}
+    {armarTexto}
+    {marcador}
+    espera={vuelta ? DURACION_VUELTA : 0}
+/>
+
+<!-- Al terminar la lista de intentos se va: la página queda con el trazado y el resultado. -->
+{#if historial.length > 0 && !estado.terminada}
     <section id="historial-circuito" class="historial-intentos" aria-labelledby="titulo-historial-circuito">
         <div class="titulo-seccion">
             <span></span>
             <h2 id="titulo-historial-circuito">Intentos</h2>
-            {#if estado.acerto}
-                <CuentaRegresiva etiqueta="Nuevo circuito en:" activa={estado.terminada} {fecha} />
-            {/if}
         </div>
         <div class="lista-intentos">
             {#each historial as circuito (circuito.id)}
@@ -228,28 +267,3 @@
         </div>
     </section>
 {/if}
-
-<ModalResultado
-    bind:this={modal}
-    juego="circuito"
-    {fecha}
-    terminada={estado.terminada}
-    correcto={estado.acerto}
-    titulo={estado.acerto ? "¡Adivinaste!" : "No lo adivinaste"}
-    resumen={estado.acerto ? "Ganaste en " + estado.intentosUsados : "Abandono"}
-    {armarTexto}
-    {marcador}
-    etiquetaRegreso="Nuevo circuito en:"
-    clase="resultado-circuito-modal"
-    focoRetorno={() => estadoFinal}
->
-    <div class="resultado-circuito-modal__silueta">
-        <img src={urlSilueta} alt={"Silueta de " + etiqueta(secreto)} />
-    </div>
-    <strong class="resultado-modal__nombre">{etiqueta(secreto)}</strong>
-    <p class="resultado-modal__detalle">
-        {estado.acerto
-            ? "Lo resolviste en " + estado.intentosUsados + " " + palabraIntentos(estado.intentosUsados) + "."
-            : "No lo adivinaste en los " + MAXIMO_INTENTOS + " intentos."}
-    </p>
-</ModalResultado>

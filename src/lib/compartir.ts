@@ -14,6 +14,9 @@ const NOMBRES_JUEGO: Record<JuegoId, string> = {
     circuito: "Circuito",
     wordle: "Wordle",
     top10: "Top 10",
+    trayectoria: "Campaña",
+    grilla: "Grilla",
+    conexiones: "Conexiones",
 };
 
 export interface DatosCompartir {

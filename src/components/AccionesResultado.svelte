@@ -1,19 +1,18 @@
 <script lang="ts">
-    // Lo que se puede hacer al terminar la partida: pasar al próximo juego (lo principal)
-    // y compartir el resultado. Lo usan el panel de resultado y el piloto. La racha no
-    // se muestra acá: va en el texto que se comparte. Con los cinco juegos terminados
-    // suma "Día completo", para compartir todo el día en un solo mensaje.
+    // Lo que se puede hacer al terminar la partida: compartir el resultado y volver a la
+    // portada a elegir otro juego. Lo usan el panel de resultado y el piloto. La racha no
+    // se muestra acá: va en el texto que se comparte.
     import { track } from "@vercel/analytics";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import { describirConteo, leerConteo, sumarPartida } from "../lib/contador";
     import { registrarHistorial } from "../lib/dia-juego";
+    import { registrarDistribucion } from "../lib/estadisticas";
     import { obtenerFechaLocal } from "../lib/fechas";
-    import { construirTextoDia, obtenerDiaCompleto, obtenerNumeroTCdle, registrarMarcadorDia, type MarcadorJuego } from "../lib/dia";
-    import { JUEGOS, type JuegoId } from "../lib/juegos";
+    import { registrarMarcadorDia, type MarcadorJuego } from "../lib/dia";
+    import type { JuegoId } from "../lib/juegos";
     import { obtenerRacha } from "../lib/rachas";
-    import { ruta, urlSitio } from "../lib/rutas";
+    import { ruta, urlInicio } from "../lib/rutas";
     import BotonCompartir from "./BotonCompartir.svelte";
-    import SiguienteJuego from "./SiguienteJuego.svelte";
 
     interface Props {
         juego: JuegoId;
@@ -30,7 +29,6 @@
     // La racha se registra al terminar la partida, antes de que este bloque se muestre; se suma al texto compartido.
     const racha = $derived(terminada ? obtenerRacha(obtenerAlmacenamiento(), juego, fecha) : 0);
 
-    let dia: ReturnType<typeof obtenerDiaCompleto> = $state(null);
     // Cuántos jugaron hoy en todo el sitio (contador global); null mientras no haya datos.
     let conteo: string | null = $state(null);
 
@@ -45,7 +43,9 @@
         }
         const almacenamiento = obtenerAlmacenamiento();
         // Un evento por partida terminada (no al volver a abrirla): cuánta gente termina cada juego y cuánta lo saca.
-        if (registrarHistorial(almacenamiento, fecha, juego, marcador.gano)) {
+        const recien = registrarHistorial(almacenamiento, fecha, juego, marcador.gano);
+        if (recien) {
+            registrarDistribucion(almacenamiento, juego, marcador);
             track("partida", { juego, gano: marcador.gano, puntaje: marcador.puntaje ?? "X", archivo: !esHoy });
             if (esHoy) {
                 sumarPartida(juego, fecha, marcador.gano).then(mostrarConteo);
@@ -53,48 +53,30 @@
         } else if (esHoy) {
             mostrarConteo();
         }
-        // Un día del archivo no entra en el resumen de hoy.
+        // El pop up de estadísticas (EstadisticasJuego) se abre solo cuando la partida se terminó recién.
+        // Si el pop up carga después que esto, lo pide con "tcdle:pedir-resultado".
+        const avisar = (abrirSolo: boolean) =>
+            document.dispatchEvent(
+                new CustomEvent("tcdle:resultado", { detail: { juego, fecha, texto: armarTexto(racha), marcador: { ...marcador }, recien: abrirSolo } })
+            );
+        avisar(recien && esHoy);
+        const alPedir = () => avisar(false);
+        document.addEventListener("tcdle:pedir-resultado", alPedir);
+        // Un día del archivo no entra en el resumen de hoy (lo usa la portada).
         if (esHoy) {
             registrarMarcadorDia(almacenamiento, fecha, juego, marcador);
-            dia = obtenerDiaCompleto(almacenamiento, fecha);
         }
+        return () => document.removeEventListener("tcdle:pedir-resultado", alPedir);
     });
 </script>
 
 {#if terminada}
-    {#if conteo}
-        <p class="conteo-global">{conteo}</p>
-    {/if}
-    {#if dia}
-        <div class="dia-completo">
-            <p class="dia-completo__titulo">
-                <span>Día completo</span>
-                <b>TCdle #{obtenerNumeroTCdle(fecha)}</b>
-            </p>
-            <ul class="dia-completo__lista">
-                {#each dia as { juego: id, marcador: resultado } (id)}
-                    <li class:dia-completo__gano={resultado.gano}>
-                        <span>{JUEGOS.find((item) => item.id === id)?.corto}</span>
-                        <b>{resultado.puntaje === null ? "X" : resultado.puntaje}/{resultado.maximo}</b>
-                    </li>
-                {/each}
-            </ul>
-            <BotonCompartir texto={construirTextoDia(fecha, dia, urlSitio())} etiqueta="Compartir el día" clase="boton-compartir--dia" />
-        </div>
-    {/if}
+    <!-- Dos botones cuadrados: compartir y volver a la portada a elegir otro juego (como Formudle). -->
     <div class="resultado-acciones">
-        <BotonCompartir texto={armarTexto(racha)} icono />
-        {#if esHoy}
-            <SiguienteJuego juegoActual={juego} {terminada} />
-        {:else}
-            <div class="siguiente-juego-contenedor">
-                <a class="siguiente-juego" href={ruta("archivo.html")}>
-                    <strong>
-                        <span class="siguiente-juego__largo">Volver al archivo</span><span class="siguiente-juego__corto" aria-hidden="true">Archivo</span>
-                    </strong>
-                    <svg class="icono" viewBox="0 0 22 16" aria-hidden="true"><use href="#icono-avanzar"></use></svg>
-                </a>
-            </div>
-        {/if}
+        <BotonCompartir texto={armarTexto(racha)} etiqueta="Compartir" clase="boton-compartir--resultado" />
+        <a class="jugar-mas" href={esHoy ? urlInicio() : ruta("archivo.html")}>
+            {esHoy ? "Jugar más juegos" : "Volver al archivo"}
+            <svg class="icono" viewBox="0 0 22 16" aria-hidden="true"><use href="#icono-avanzar"></use></svg>
+        </a>
     </div>
 {/if}

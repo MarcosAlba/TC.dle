@@ -6,9 +6,10 @@ import { describe, expect, it } from "vitest";
 import { crearAlmacenamientoEnMemoria } from "../src/lib/almacenamiento";
 import { crearDatoDiario } from "../src/lib/dato-diario";
 import { MILISEGUNDOS_POR_DIA, obtenerFechaLocal } from "../src/lib/fechas";
-import { JUEGOS } from "../src/lib/juegos";
+import { JUEGOS, obtenerJuego } from "../src/lib/juegos";
 import { crearPartidaDiaria } from "../src/lib/partida";
-import { obtenerEstadoJuegos } from "../src/lib/rachas";
+import { obtenerEstadoJuego, obtenerEstadoJuegos, obtenerProgresoJuego } from "../src/lib/rachas";
+import { crearPartidaExtra } from "../src/lib/partida-extra";
 import { aplicarIntroInicial } from "../src/lib/inicio-pagina";
 import { introVista, marcarIntroVista } from "../src/lib/intro";
 
@@ -23,6 +24,9 @@ describe("contrato de localStorage", () => {
             ["circuito", "partidaTCdleCircuito"],
             ["wordle", "partidaTCdleWordle"],
             ["top10", "partidaTCdleTop10"],
+            ["trayectoria", "partidaTCdleTrayectoria"],
+            ["grilla", "partidaTCdleGrilla"],
+            ["conexiones", "partidaTCdleConexiones"],
         ]);
         expect(JUEGOS.map(({ claveIntro }) => claveIntro)).toEqual([
             "tcdleIntroPilotoVista",
@@ -30,6 +34,9 @@ describe("contrato de localStorage", () => {
             "tcdleIntroCircuitoVista",
             "tcdleIntroWordleVista",
             "tcdleIntroTop10Vista",
+            "tcdleIntroTrayectoriaVista",
+            "tcdleIntroGrillaVista",
+            "tcdleIntroConexionesVista",
         ]);
     });
 
@@ -112,7 +119,26 @@ describe("contrato de localStorage", () => {
             circuito: { estado: "pendiente", racha: 0 },
             wordle: { estado: "pendiente", racha: 0 },
             top10: { estado: "pendiente", racha: 0 },
+            trayectoria: { estado: "pendiente", racha: 0 },
+            grilla: { estado: "pendiente", racha: 0 },
+            conexiones: { estado: "pendiente", racha: 0 },
         });
+    });
+
+    it("Campaña, Grilla y Conexiones guardan los campos que leen la portada y las rachas", () => {
+        const almacenamiento = crearAlmacenamientoEnMemoria();
+        const grilla = crearPartidaExtra<{ probados: number[] }>(almacenamiento, "grilla", { fecha: "2026-11-10", fechaSeleccion: new Date(2026, 10, 10), esArchivo: false });
+
+        grilla.guardar({ probados: [4] }, { terminada: false, gano: false, intentos: [4] });
+        expect(almacenamiento.getItem("partidaTCdleGrilla")).toBe(
+            '{"version":1,"fecha":"2026-11-10","terminada":false,"gano":false,"intentos":[4],"estado":{"probados":[4]}}'
+        );
+        expect(obtenerProgresoJuego(almacenamiento, obtenerJuego("grilla"), "2026-11-10")).toBe("en-curso");
+        expect(grilla.leer()).toEqual({ probados: [4] });
+
+        grilla.guardar({ probados: [4, 9] }, { terminada: true, gano: true, intentos: [4, 9] });
+        expect(obtenerEstadoJuego(almacenamiento, obtenerJuego("grilla"), "2026-11-10")).toBe("acertado");
+        expect(almacenamiento.getItem("rachasTCdle")).toBe('{"grilla":{"fecha":"2026-11-10","racha":1}}');
     });
 
     describe("la introducción de cada modo recuerda con la fecha en texto si ya se vio", () => {

@@ -2,7 +2,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { pilotos } from "../src/data";
 import { copaDeOro } from "../src/data/copa-de-oro";
-import { aplicarContrasteInicial, aplicarTemaCopaInicial, aplicarTemaInicial, CLAVE_CONTRASTE } from "../src/lib/inicio-pagina";
+import {
+    aplicarContrasteInicial,
+    aplicarModoInicial,
+    aplicarTemaCopaInicial,
+    aplicarTemaInicial,
+    CLAVE_CONTRASTE,
+    CLAVE_MODO,
+    CLAVE_SIN_COPA,
+} from "../src/lib/inicio-pagina";
 
 function ejecutar(fecha: Date, busqueda = "", sesion = new Map<string, string>()) {
     vi.useFakeTimers();
@@ -127,6 +135,12 @@ describe("tema de la Copa de Oro", () => {
         expect(copa(fecha)).toBe(esperado);
     });
 
+    it("si la persona lo apagó en Apariencia se ve rojo, salvo que lo fuerce ?copa=1", () => {
+        vi.stubGlobal("localStorage", { getItem: (clave: string) => (clave === CLAVE_SIN_COPA ? "1" : null) });
+        expect(copa(new Date(2026, 10, 20))).toBeUndefined();
+        expect(copa(new Date(2026, 10, 20), "?copa=1")).toBe("copa-oro");
+    });
+
     it("Halloween le gana si los dos caen el mismo día", () => {
         expect(copa(new Date(2026, 10, 10), "", "halloween")).toBe("halloween");
     });
@@ -142,5 +156,35 @@ describe("tema de la Copa de Oro", () => {
         for (const id of copaDeOro.pilotos) {
             expect(pilotos.find((piloto) => piloto.id === id && !piloto.retirado), "piloto " + id).toBeDefined();
         }
+    });
+});
+
+describe("modo claro u oscuro", () => {
+    function modo(guardado: string | null, sistemaClaro: boolean) {
+        const documentElement = { dataset: {} as Record<string, string> };
+        vi.stubGlobal("document", { documentElement });
+        vi.stubGlobal("localStorage", { getItem: (clave: string) => (clave === CLAVE_MODO ? guardado : null) });
+        vi.stubGlobal("window", { matchMedia: () => ({ matches: sistemaClaro, addEventListener: () => {} }) });
+        aplicarModoInicial();
+        return documentElement.dataset.modo;
+    }
+
+    it("sin elección sigue al sistema", () => {
+        expect(modo(null, true)).toBe("claro");
+        expect(modo(null, false)).toBe("oscuro");
+    });
+
+    it("lo elegido le gana al sistema", () => {
+        expect(modo("oscuro", true)).toBe("oscuro");
+        expect(modo("claro", false)).toBe("claro");
+    });
+
+    it("un valor guardado raro cuenta como automático", () => {
+        expect(modo("rosa", true)).toBe("claro");
+    });
+
+    it("las claves que leen los scripts del primer pintado son las que guarda el menú", () => {
+        expect(aplicarModoInicial.toString()).toContain(JSON.stringify(CLAVE_MODO));
+        expect(aplicarTemaCopaInicial.toString()).toContain(JSON.stringify(CLAVE_SIN_COPA));
     });
 });

@@ -1,0 +1,106 @@
+---
+// Menú Apariencia del encabezado: modo claro u oscuro (o el del sistema), alto
+// contraste y, durante la Copa de Oro, volver a los colores rojos de siempre.
+// Lo que se elige se aplica antes del primer pintado en la próxima página
+// (lib/inicio-pagina.ts); acá solo se cambia en vivo y se guarda.
+import { copaDeOro } from "../data/copa-de-oro";
+import "../styles/apariencia.css";
+---
+
+<div class="apariencia" data-apariencia data-copa-desde={copaDeOro.desde} data-copa-hasta={copaDeOro.hasta}>
+    <button type="button" class="boton-encabezado" data-boton-apariencia popovertarget="menu-apariencia" title="Apariencia">
+        <svg class="icono" aria-hidden="true"><use href="#icono-contraste"></use></svg>
+        <span class="solo-lectores">Apariencia</span>
+    </button>
+    <div id="menu-apariencia" class="apariencia__menu" popover>
+        <fieldset class="apariencia__grupo">
+            <legend>Modo</legend>
+            <label><input type="radio" name="modo" value="auto" /> Automático</label>
+            <label><input type="radio" name="modo" value="claro" /> Claro</label>
+            <label><input type="radio" name="modo" value="oscuro" /> Oscuro</label>
+        </fieldset>
+        <label class="apariencia__opcion">
+            <input type="checkbox" data-opcion-contraste />
+            <span>Alto contraste<small>Naranja y celeste en vez de verde y amarillo</small></span>
+        </label>
+        <label class="apariencia__opcion" data-opcion-copa-fila hidden>
+            <input type="checkbox" data-opcion-copa />
+            <span>Colores de la Copa de Oro<small>Apagado, se ve en rojo como siempre</small></span>
+        </label>
+    </div>
+</div>
+
+<script>
+    import { CLAVE_CONTRASTE, CLAVE_MODO, CLAVE_SIN_COPA } from "../lib/inicio-pagina";
+
+    const guardar = (clave: string, valor: string | null) => {
+        try {
+            if (valor === null) {
+                localStorage.removeItem(clave);
+            } else {
+                localStorage.setItem(clave, valor);
+            }
+        } catch {
+            // Sin localStorage vale hasta recargar.
+        }
+    };
+    const leer = (clave: string) => {
+        try {
+            return localStorage.getItem(clave);
+        } catch {
+            return null;
+        }
+    };
+
+    const raiz = document.documentElement;
+    const sistemaClaro = window.matchMedia("(prefers-color-scheme: light)");
+
+    for (const caja of document.querySelectorAll<HTMLElement>("[data-apariencia]")) {
+        const modoGuardado = leer(CLAVE_MODO);
+        const radios = caja.querySelectorAll<HTMLInputElement>('input[name="modo"]');
+        for (const radio of radios) {
+            radio.checked = radio.value === (modoGuardado === "claro" || modoGuardado === "oscuro" ? modoGuardado : "auto");
+            radio.addEventListener("change", () => {
+                if (radio.value === "auto") {
+                    delete raiz.dataset.modoElegido;
+                    raiz.dataset.modo = sistemaClaro.matches ? "claro" : "oscuro";
+                    guardar(CLAVE_MODO, null);
+                } else {
+                    raiz.dataset.modoElegido = "1";
+                    raiz.dataset.modo = radio.value;
+                    guardar(CLAVE_MODO, radio.value);
+                }
+            });
+        }
+
+        const contraste = caja.querySelector<HTMLInputElement>("[data-opcion-contraste]")!;
+        contraste.checked = raiz.dataset.contraste === "alto";
+        contraste.addEventListener("change", () => {
+            if (contraste.checked) {
+                raiz.dataset.contraste = "alto";
+            } else {
+                delete raiz.dataset.contraste;
+            }
+            guardar(CLAVE_CONTRASTE, contraste.checked ? "alto" : null);
+        });
+
+        // La opción de la Copa solo aparece mientras dura (y no si es Halloween, que le gana).
+        const hoy = new Date();
+        const fecha = hoy.getFullYear() + "-" + String(hoy.getMonth() + 1).padStart(2, "0") + "-" + String(hoy.getDate()).padStart(2, "0");
+        const enCopa = fecha >= caja.dataset.copaDesde! && fecha <= caja.dataset.copaHasta!;
+        if (enCopa && raiz.dataset.tema !== "halloween") {
+            const fila = caja.querySelector<HTMLElement>("[data-opcion-copa-fila]")!;
+            const copa = caja.querySelector<HTMLInputElement>("[data-opcion-copa]")!;
+            fila.hidden = false;
+            copa.checked = raiz.dataset.tema === "copa-oro";
+            copa.addEventListener("change", () => {
+                if (copa.checked) {
+                    raiz.dataset.tema = "copa-oro";
+                } else {
+                    delete raiz.dataset.tema;
+                }
+                guardar(CLAVE_SIN_COPA, copa.checked ? null : "1");
+            });
+        }
+    }
+</script>

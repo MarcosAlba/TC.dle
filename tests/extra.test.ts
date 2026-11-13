@@ -1,8 +1,12 @@
 // Juegos de "Más juegos": trayectoria, grilla y conexiones.
+import { describirContador } from "../src/lib/intentos";
 import { describe, expect, it } from "vitest";
 import { carreras, pilotos } from "../src/data";
 import {
+    CONDICIONES,
+    casillerosPosibles,
     candidatosTrayectoria,
+    gruposPosibles,
     construirFichas,
     contarTemporadasVisibles,
     elegirTrayectoria,
@@ -10,6 +14,7 @@ import {
     generarGrilla,
     probarConexion,
     respuestasCasillero,
+    normalizarTiempoGrilla,
 } from "../src/lib/extra";
 
 const fichas = construirFichas(pilotos, carreras);
@@ -43,6 +48,23 @@ describe("trayectoria", () => {
 });
 
 describe("grilla", () => {
+    it("«Corre o corrió con» cuenta las marcas de todas sus finales, no solo la de hoy", () => {
+        const rossi = fichas.find((ficha) => ficha.nombre === "Matias Rossi")!;
+        const chevrolet = CONDICIONES.find((condicion) => condicion.id === "marca-Chevrolet")!;
+
+        expect(rossi.marca).toBe("Toyota");
+        expect(chevrolet.cumple(rossi)).toBe(true);
+    });
+
+    it("un piloto se ubica solo en los casilleros cuya fila y columna cumple", () => {
+        const grilla = generarGrilla(fichas, "grilla:2026-11-10");
+        for (const ficha of fichas) {
+            for (const indice of casillerosPosibles(grilla, ficha)) {
+                expect(grilla.filas[Math.floor(indice / 3)].cumple(ficha) && grilla.columnas[indice % 3].cumple(ficha)).toBe(true);
+            }
+        }
+    });
+
     it("cada día se arma, sin repetir condición y con al menos dos respuestas por casillero", () => {
         for (const dia of DIAS) {
             const { filas, columnas } = generarGrilla(fichas, "grilla:" + texto(dia));
@@ -63,6 +85,19 @@ describe("grilla", () => {
 });
 
 describe("conexiones", () => {
+    it("solo usa pilotos que corren hoy y grupos con al menos cuatro de ellos", () => {
+        for (const grupo of gruposPosibles(fichas)) {
+            expect(fichas.filter((ficha) => !ficha.retirado && grupo.cumple(ficha)).length, grupo.texto).toBeGreaterThanOrEqual(4);
+        }
+        for (const dia of DIAS) {
+            const { grupos, orden } = generarConexiones(fichas, "conexiones:" + texto(dia));
+            expect(orden.every((id) => !fichas.find((ficha) => ficha.id === id)!.retirado)).toBe(true);
+            // Nunca dos grupos del mismo tipo (dos marcas, dos circuitos...), y del más fácil al más difícil.
+            expect(new Set(grupos.map(({ grupo }) => grupo.id.split("-")[0])).size).toBe(4);
+            expect(grupos.map(({ grupo }) => grupo.dificultad)).toEqual([...grupos.map(({ grupo }) => grupo.dificultad)].sort((a, b) => a - b));
+        }
+    });
+
     it("cada día son 16 pilotos distintos y cada uno encaja en un solo grupo de los cuatro", () => {
         for (const dia of DIAS) {
             const { grupos, orden } = generarConexiones(fichas, "conexiones:" + texto(dia));
@@ -81,5 +116,25 @@ describe("conexiones", () => {
         expect(probarConexion(conexiones, primero.pilotos)).toEqual({ grupo: primero.grupo.id, aUno: false });
         expect(probarConexion(conexiones, [...primero.pilotos.slice(0, 3), segundo.pilotos[0]])).toEqual({ grupo: null, aUno: true });
         expect(probarConexion(conexiones, [...primero.pilotos.slice(0, 2), ...segundo.pilotos.slice(0, 2)])).toEqual({ grupo: null, aUno: false });
+    });
+});
+
+describe("tiempo de la grilla y marcas de intentos", () => {
+    it("solo valen los tiempos ofrecidos; cualquier otro es sin tiempo", () => {
+        expect(normalizarTiempoGrilla(30)).toBe(30);
+        expect(normalizarTiempoGrilla(120)).toBe(120);
+        expect(normalizarTiempoGrilla(45)).toBeNull();
+        expect(normalizarTiempoGrilla("60")).toBeNull();
+        expect(normalizarTiempoGrilla(undefined)).toBeNull();
+    });
+
+    it("el contador sabe cuántas marcas dibujar y cuál es la del intento en curso", () => {
+        expect(describirContador({ terminada: false, intentosUsados: 2, maximoIntentos: 8 })).toEqual({
+            texto: "Intento 3 de 8",
+            numero: 3,
+            maximo: 8,
+            ultimo: false,
+        });
+        expect(describirContador({ terminada: false, intentosUsados: 7, maximoIntentos: 8 }).ultimo).toBe(true);
     });
 });

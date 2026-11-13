@@ -7,11 +7,12 @@ import "../styles/base.css";
 import fuenteNormal from "../assets/fonts/archivo-normal.woff2?url";
 import fuenteCursiva from "../assets/fonts/archivo-italic.woff2?url";
 import { copaDeOro } from "../data/copa-de-oro";
-import { aplicarContrasteInicial, aplicarIntroInicial, aplicarTemaCopaInicial, aplicarTemaInicial } from "../lib/inicio-pagina";
+import { aplicarContrasteInicial, aplicarIntroInicial, aplicarModoInicial, aplicarTemaCopaInicial, aplicarTemaInicial } from "../lib/inicio-pagina";
 import { urlImagen } from "../lib/rutas";
 import Analytics from "@vercel/analytics/astro";
 import Iconos from "../components/Iconos.astro";
 import Pie from "../components/Pie.astro";
+import { huellaScript } from "../lib/huella-script";
 
 interface Props {
     titulo: string;
@@ -23,9 +24,11 @@ interface Props {
     imagenOg?: string;
     /** Sin el pie del sitio (herramientas internas). */
     sinPie?: boolean;
+    /** Pie con solo los links, para las páginas de juego. */
+    pieCompacto?: boolean;
 }
 
-const { titulo, descripcion, claveIntro, claseBody, imagenOg = "portada", sinPie = false } = Astro.props;
+const { titulo, descripcion, claveIntro, claseBody, imagenOg = "portada", sinPie = false, pieCompacto = false } = Astro.props;
 // Las redes piden direcciones completas, con dominio.
 const urlCompleta = (relativa: string) => new URL(relativa, Astro.site).href;
 // La portada se comparte como la raíz, no como /index.html; la 404 no tiene dirección propia.
@@ -35,15 +38,25 @@ const urlImagenOg = urlCompleta(urlImagen(`og/${imagenOg}.jpg`));
 const scriptInicial =
     `(${aplicarTemaInicial})();` +
     `(${aplicarTemaCopaInicial})(${JSON.stringify(copaDeOro.desde)},${JSON.stringify(copaDeOro.hasta)});` +
+    `(${aplicarModoInicial})();` +
     `(${aplicarContrasteInicial})();` + (claveIntro ? `(${aplicarIntroInicial})(${JSON.stringify(claveIntro)});` : "");
+// Astro no calcula la huella de los scripts is:inline: sin esto la política de contenido lo bloquearía.
+Astro.csp?.insertScriptHash(huellaScript(scriptInicial));
 ---
 
 <!doctype html>
 <html lang="es">
     <head>
         <meta charset="UTF-8" />
+        <!--
+            Orden de las capas de CSS, antes que cualquier hoja: si no, lo fija la primera hoja que
+            carga (cambia según la página y lo que Astro decide incrustar) y "pagina" podía quedar
+            por debajo de "base".
+        -->
+        <style is:inline>@layer base, juego, desafio, pagina;</style>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-        <meta name="theme-color" content="#090a0c" />
+        <meta name="theme-color" content="#090a0c" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#e7e9ed" media="(prefers-color-scheme: light)" />
         <meta name="description" content={descripcion} />
         <title>{titulo}</title>
         {!esError && <link rel="canonical" href={urlPagina} />}
@@ -63,11 +76,16 @@ const scriptInicial =
         <link rel="preload" as="font" type="font/woff2" href={fuenteNormal} crossorigin />
         <link rel="preload" as="font" type="font/woff2" href={fuenteCursiva} crossorigin />
         <script is:inline set:html={scriptInicial} />
-        <Analytics />
     </head>
     <body class={claseBody}>
         <Iconos />
         <slot />
-        {!sinPie && <Pie />}
+        {!sinPie && <Pie compacto={pieCompacto} />}
+        <!--
+            Al final del body: es un elemento propio (<vercel-analytics>) y dentro del <head> el
+            navegador lo toma como el comienzo del body, y la política de contenido que Astro
+            agrega al final del <head> quedaría afuera e ignorada.
+        -->
+        <Analytics />
     </body>
 </html>

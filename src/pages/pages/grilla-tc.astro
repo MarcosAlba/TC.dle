@@ -1,0 +1,99 @@
+---
+// Grilla TC. Las fichas de los pilotos (marcas, victorias y temporadas desde las
+// finales) se arman al construir, así la página no baja carreras.json.
+import Grilla from "../../games/extra/Grilla.svelte";
+import CargandoJuego from "../../components/CargandoJuego.astro";
+import PaginaJuego from "../../layouts/PaginaJuego.astro";
+import { carreras, pilotos } from "../../data";
+import { construirFichas } from "../../lib/extra";
+import { urlImagen } from "../../lib/rutas";
+import "../../styles/desafio.css";
+import "../../styles/extra.css";
+
+const fichas = construirFichas(pilotos, carreras);
+// Muestra de la introducción: la grilla de 4 × 4 con sus consignas y tres casilleros completos.
+const consignasArriba = [
+    { simbolo: "SF", rotulo: "De Santa Fe" },
+    { simbolo: "CBA", rotulo: "De Córdoba" },
+    { simbolo: "5+", rotulo: "5 finales" },
+];
+const consignasCostado = [{ logo: "marcas/torino-logo.jpg", rotulo: "Torino" }, { simbolo: "-2010", rotulo: "Debut" }, { simbolo: "2015+", rotulo: "Debut" }];
+const fotos = ["julian_santero", null, null, null, "agustin_canapino", null, null, null, "mariano_werner"];
+---
+
+<PaginaJuego
+    juego="grilla"
+    titulo="TCdle | Grilla TC"
+    descripcion="Nueve casilleros: cada uno pide un piloto de TC que cumpla la consigna de su fila y la de su columna."
+    tituloIntro="Grilla TC"
+>
+    <div slot="intro-imagen" class="intro-juego__imagen intro-extra intro-extra--grilla" aria-hidden="true">
+        <span class="intro-grilla__esquina">3<small>/9</small></span>
+        {consignasArriba.map((c) => <span class="intro-grilla__consigna"><b>{c.simbolo}</b><small>{c.rotulo}</small></span>)}
+        {consignasCostado.map((c, fila) => (
+            <>
+                <span class="intro-grilla__consigna">
+                    {c.logo ? <img src={urlImagen(c.logo)} alt="" /> : <b>{c.simbolo}</b>}
+                    <small>{c.rotulo}</small>
+                </span>
+                {fotos.slice(fila * 3, fila * 3 + 3).map((foto) =>
+                    foto ? <img class="intro-grilla__piloto" src={urlImagen("pilotos/mini/" + foto + ".webp")} alt="" /> : <i />
+                )}
+            </>
+        ))}
+    </div>
+
+    <Fragment slot="intro">
+        <p class="intro-juego__texto">
+            Completá los nueve casilleros con pilotos que cumplan la consigna de su <strong>fila</strong> y de su <strong>columna</strong>. Escribí
+            un piloto y se ubica solo. Cada piloto vale una vez.
+        </p>
+
+        <fieldset class="opciones-juego">
+            <legend>Tiempo</legend>
+            <label><input type="radio" name="grilla-tiempo" value="" checked /><span>Libre</span></label>
+            <label><input type="radio" name="grilla-tiempo" value="30" /><span>30 s</span></label>
+            <label><input type="radio" name="grilla-tiempo" value="60" /><span>60 s</span></label>
+            <label><input type="radio" name="grilla-tiempo" value="120" /><span>120 s</span></label>
+        </fieldset>
+    </Fragment>
+
+    <section slot="presentacion" class="presentacion-juego" aria-labelledby="titulo-grilla">
+        <h1 id="titulo-grilla">Grilla TC</h1>
+    </section>
+
+    <Grilla client:only="svelte" fichas={fichas}>
+        <Fragment slot="fallback">
+            <CargandoJuego forma="foto" />
+        </Fragment>
+    </Grilla>
+</PaginaJuego>
+
+<script>
+    import { CLAVE_TIEMPO_GRILLA, EVENTO_TIEMPO_GRILLA, normalizarTiempoGrilla } from "../../lib/extra";
+
+    // La introducción arranca con el último tiempo elegido. "Empezar" lo recuerda y se
+    // lo pasa al juego, que ya está montado detrás y larga el reloj.
+    const opciones = document.querySelectorAll<HTMLInputElement>('input[name="grilla-tiempo"]');
+    try {
+        const anterior = String(normalizarTiempoGrilla(Number(localStorage.getItem(CLAVE_TIEMPO_GRILLA))) ?? "");
+        opciones.forEach((opcion) => (opcion.checked = opcion.value === anterior));
+    } catch {
+        // Sin localStorage queda "Sin tiempo".
+    }
+
+    document.querySelector<HTMLButtonElement>("[data-intro-clave]")?.addEventListener("click", () => {
+        const elegido = [...opciones].find((opcion) => opcion.checked)?.value ?? "";
+        const segundos = normalizarTiempoGrilla(elegido === "" ? null : Number(elegido));
+        try {
+            if (segundos === null) {
+                localStorage.removeItem(CLAVE_TIEMPO_GRILLA);
+            } else {
+                localStorage.setItem(CLAVE_TIEMPO_GRILLA, String(segundos));
+            }
+        } catch {
+            // Sin localStorage vale solo para hoy.
+        }
+        document.dispatchEvent(new CustomEvent(EVENTO_TIEMPO_GRILLA, { detail: segundos }));
+    });
+</script>

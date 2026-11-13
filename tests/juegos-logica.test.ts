@@ -163,12 +163,22 @@ describe("conexión entre juegos", () => {
         expect(obtenerSiguienteJuego("piloto", lista)?.id).toBe("auto");
         expect(obtenerSiguienteJuego("auto", lista)?.id).toBe("wordle");
         expect(obtenerSiguienteJuego("wordle", lista)?.id).toBe("top10");
-        expect(obtenerSiguienteJuego("top10", lista)?.id).toBe("piloto");
-        expect(contarPendientes("piloto", lista)).toBe(3);
+        expect(obtenerSiguienteJuego("top10", lista)?.id).toBe("trayectoria");
+        expect(obtenerSiguienteJuego("conexiones", lista)?.id).toBe("piloto");
+        expect(contarPendientes("piloto", lista)).toBe(6);
     });
 
     it("sin pendientes no hay siguiente", () => {
-        const lista = juegos({ piloto: "acertado", auto: "fallado", circuito: "acertado", wordle: "acertado", top10: "fallado" });
+        const lista = juegos({
+            piloto: "acertado",
+            auto: "fallado",
+            circuito: "acertado",
+            wordle: "acertado",
+            top10: "fallado",
+            trayectoria: "acertado",
+            grilla: "fallado",
+            conexiones: "acertado",
+        });
 
         expect(obtenerSiguienteJuego("piloto", lista)).toBeNull();
         expect(contarPendientes("piloto", lista)).toBe(0);

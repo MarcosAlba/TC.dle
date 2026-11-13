@@ -1,9 +1,17 @@
 ---
-import Top10 from "../../games/Top10.svelte";
+import CargadorTop10 from "../../games/CargadorTop10.svelte";
 import CargandoJuego from "../../components/CargandoJuego.astro";
 import PaginaJuego from "../../layouts/PaginaJuego.astro";
 import { urlImagen } from "../../lib/rutas";
+import { carreras } from "../../data";
+import { obtenerCarrerasJugables, obtenerPilotosDeCarreras } from "../../lib/top10";
 import "../../styles/top10.css";
+
+// Al construir: los ids de las finales que se pueden jugar (en orden, para la
+// selección del día) y todos los pilotos que corrieron alguna, para el buscador.
+// La final del día se baja aparte.
+const idsJugables = obtenerCarrerasJugables(carreras).map((carrera) => carrera.id);
+const candidatos = obtenerPilotosDeCarreras(carreras);
 
 // Podio de muestra de la introducción: la pista de cada puesto es el logo.
 const muestra = [
@@ -36,17 +44,16 @@ const muestra = [
 
     <Fragment slot="intro">
         <p class="intro-juego__texto">
-            Te mostramos una final del TC desde 2010 y tenés que completar quiénes llegaron entre los diez primeros. Escribí un piloto:
-            si terminó en el top 10, se acomoda solo en su lugar.
+            Completá el top 10 de una final del TC desde 2010. Escribí un piloto: si llegó entre los diez, se ubica solo.
         </p>
 
-        <fieldset class="opciones-top10">
+        <fieldset class="opciones-juego">
             <legend>Marcas</legend>
             <label><input type="radio" name="top10-marcas" value="si" checked /><span>Con marcas</span></label>
             <label><input type="radio" name="top10-marcas" value="no" /><span>Sin marcas</span></label>
         </fieldset>
 
-        <fieldset class="opciones-top10">
+        <fieldset class="opciones-juego">
             <legend>Tiempo</legend>
             <label><input type="radio" name="top10-tiempo" value="libre" checked /><span>Ilimitado</span></label>
             <label><input type="radio" name="top10-tiempo" value="cronometro" /><span>2 minutos</span></label>
@@ -54,16 +61,14 @@ const muestra = [
     </Fragment>
 
     <section slot="presentacion" class="presentacion-juego" aria-labelledby="titulo-top10">
-        <p class="modo-juego">Modo top 10</p>
         <h1 id="titulo-top10">¿Cómo terminó la carrera?</h1>
-        <p class="presentacion-juego__ayuda">Nombrá a los diez primeros de la final. Cada acierto se ubica en su posición.</p>
     </section>
 
-    <Top10 client:only="svelte">
+    <CargadorTop10 client:only="svelte" {idsJugables} {candidatos}>
         <Fragment slot="fallback">
             <CargandoJuego forma="top10" />
         </Fragment>
-    </Top10>
+    </CargadorTop10>
 </PaginaJuego>
 
 <script>

@@ -13,13 +13,13 @@ describe("resumen del día", () => {
         expect(obtenerNumeroTCdle(FECHA)).toBe(96);
     });
 
-    it("está completo recién con los cinco juegos de hoy", () => {
+    it("está completo recién con los ocho juegos de hoy", () => {
         const almacenamiento = crearAlmacenamientoEnMemoria();
 
         JUEGOS.slice(0, -1).forEach((juego) => registrarMarcadorDia(almacenamiento, FECHA, juego.id, { puntaje: 2, maximo: 8, gano: true }));
         expect(obtenerDiaCompleto(almacenamiento, FECHA)).toBeNull();
 
-        registrarMarcadorDia(almacenamiento, FECHA, "top10", { puntaje: 7, maximo: 10, gano: false });
+        registrarMarcadorDia(almacenamiento, FECHA, "conexiones", { puntaje: null, maximo: 7, gano: false });
         expect(obtenerDiaCompleto(almacenamiento, FECHA)?.map((item) => item.juego)).toEqual(JUEGOS.map((juego) => juego.id));
     });
 

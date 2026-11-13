@@ -177,7 +177,9 @@ function iniciarCuentaRegresiva(): void {
 // Copa de Oro: cuántas fechas le quedan (la franja solo se ve con el tema dorado).
 function mostrarCopaDeOro(): void {
     const texto = document.getElementById("franja-copa-texto");
-    if (!texto || document.documentElement.dataset.tema !== "copa-oro") {
+    const corto = document.getElementById("franja-copa-corto");
+    // Se completa aunque el tema esté apagado: el menú Apariencia lo puede prender sin recargar.
+    if (!texto || !corto) {
         return;
     }
 
@@ -194,6 +196,7 @@ function mostrarCopaDeOro(): void {
 
     if (restantes.length === 0) {
         texto.textContent = "Terminó la Copa de Oro " + copaDeOro.temporada + ".";
+        corto.textContent = "Terminó";
         return;
     }
 
@@ -205,6 +208,10 @@ function mostrarCopaDeOro(): void {
         (restantes.length === 1
             ? "Queda la final: " + final.lugar + ", el " + fechaCorta(final.largada) + "."
             : "Quedan " + restantes.length + " fechas: " + proxima.lugar + " (" + fechaCorta(proxima.largada) + ") y la final en " + final.lugar + " (" + fechaCorta(final.largada) + ").");
+    corto.textContent =
+        restantes.length === 1
+            ? "Final · " + final.lugar + " " + fechaCorta(final.largada)
+            : restantes.length + " fechas · " + proxima.lugar + " " + fechaCorta(proxima.largada);
 }
 
 mostrarRachas();

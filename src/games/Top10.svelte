@@ -4,35 +4,30 @@
     // la marca de cada puesto, si se eligió jugar con marcas. Las opciones se
     // eligen en la introducción. La partida vive en src/lib/top10.ts.
     import { tick } from "svelte";
-    import AccionesResultado from "../components/AccionesResultado.svelte";
     import BotonMantener from "../components/BotonMantener.svelte";
     import Buscador from "../components/Buscador.svelte";
     import Cronometro from "../components/Cronometro.svelte";
     import CuentaRegresiva from "../components/CuentaRegresiva.svelte";
-    import ModalResultado from "../components/ModalResultado.svelte";
+    import ResultadoEnLinea from "../components/ResultadoEnLinea.svelte";
     import OpcionPiloto from "../components/OpcionPiloto.svelte";
     import PanelIntento from "../components/PanelIntento.svelte";
-    import { carreras } from "../data/catalogo/carreras";
     import { fotosCarreras } from "../data/catalogo/fotos-carreras";
     import { pilotos } from "../data/catalogo/pilotos";
-    import type { ResultadoCarrera } from "../data/tipos";
+    import type { Carrera, ResultadoCarrera } from "../data/tipos";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";
     import { construirTextoCompartir, filaTop10 } from "../lib/compartir";
     import { mensajesDeBusqueda } from "../lib/mensajes";
     import { urlImagen, urlSitio } from "../lib/rutas";
-    import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import {
         buscarPilotoCatalogo,
         crearPartidaTop10,
         EVENTO_OPCIONES_TOP10,
         leerOpcionesTop10,
-        obtenerCarrerasJugables,
         obtenerFotoPilotoCarrera,
         obtenerIdPilotoCarrera,
         obtenerLogoMarca,
         obtenerNombreMarca,
-        obtenerPilotosDeCarreras,
         obtenerTop10,
         PUESTOS,
         separarNombre,
@@ -40,14 +35,15 @@
         type PilotoCarrera,
     } from "../lib/top10";
 
+    // La final del día y los pilotos del buscador llegan de CargadorTop10.svelte.
+    let { carrera, candidatos }: { carrera: Carrera; candidatos: PilotoCarrera[] } = $props();
+
     // Hoy, o un día anterior del archivo (?dia=AAAA-MM-DD): ver lib/dia-juego.ts.
     const dia = leerDiaJuego(location.search);
     const fecha = dia.fecha;
-    const carrera = obtenerSeleccionDiaria(obtenerCarrerasJugables(carreras), "top10", dia.fechaSeleccion)!;
     const top10 = obtenerTop10(carrera);
     const podio = [top10[1], top10[0], top10[2]];
     const resto = top10.slice(3);
-    const candidatos = obtenerPilotosDeCarreras(carreras);
     const nombrePorId = new Map(candidatos.map((piloto) => [piloto.id, piloto.nombre]));
     const llegadaPorId = new Map(carrera.resultados.map((resultado) => [obtenerIdPilotoCarrera(resultado.piloto), resultado.posicion]));
 
@@ -67,7 +63,7 @@
     let ultimoAcierto = $state<number | null>(null);
     let entradaInvalida = $state(false);
     let campoBuscador: ReturnType<typeof Buscador<PilotoCarrera>> | undefined = $state();
-    let modal: ReturnType<typeof ModalResultado> | undefined = $state();
+    let modal: ReturnType<typeof ResultadoEnLinea> | undefined = $state();
     let tablero: HTMLElement | undefined = $state();
 
     // En PC, al costado del buscador: los pilotos probados (el último arriba) y dónde llegaron.
@@ -286,7 +282,7 @@
             bind:this={campoBuscador}
             id="nombre-piloto-top10"
             idLista="sugerencias-top10"
-            placeholder="Escribí un piloto"
+            placeholder="Nombre del piloto"
             etiquetaCampo="Nombre del piloto"
             consejoVacio="Probá con el apellido."
             deshabilitado={estado.terminada}
@@ -322,25 +318,26 @@
         <div class="rendirse">
             <BotonMantener clase="rendirse__boton" alCompletar={rendirse} ayuda="Mantené apretado para rendirte y ver el resultado.">
                 <span class="rendirse__texto">Mantené para rendirte</span>
-                <small>Soltá para seguir jugando</small>
             </BotonMantener>
         </div>
     {/snippet}
 </PanelIntento>
 
-<!--
-    Solo en PC: al terminar, el resultado ocupa el lugar del buscador (en celular está la
-    ventana y la barra de abajo). Es lo mismo que la ventana, sin tapar el tablero.
--->
-{#if estado.terminada}
-    <section class="top10-resultado" class:top10-resultado--correcto={estado.gano} aria-labelledby="titulo-top10-resultado">
-        <p class="top10-resultado__etiqueta">{estado.gano ? "Bandera a cuadros" : "Abandono"}</p>
-        <h2 id="titulo-top10-resultado">{estado.gano ? "¡Top 10 completo!" : estado.sinTiempo ? "Se terminó el tiempo" : "Te rendiste"}</h2>
-        <p class="top10-resultado__marcador"><strong>{estado.acertados.length}</strong> de {PUESTOS}</p>
-        <CuentaRegresiva clase="top10-resultado__regreso" etiqueta="Nueva carrera en:" activa={estado.terminada} {fecha} />
-        <AccionesResultado juego="top10" {fecha} terminada={estado.terminada} {armarTexto} {marcador} />
-    </section>
-{/if}
+<!-- Al terminar, el resultado ocupa el lugar del buscador (sin pop up). -->
+<ResultadoEnLinea
+    bind:this={modal}
+    juego="top10"
+    {fecha}
+    terminada={estado.terminada}
+    correcto={estado.gano}
+    nombre={carrera.nombre + " " + carrera.anio}
+    detalle={estado.gano
+        ? "Completaste los " + PUESTOS + " puestos."
+        : (estado.sinTiempo ? "Se terminó el tiempo: " : "Te rendiste: ") + "sacaste " + estado.acertados.length + " de " + PUESTOS + "."}
+    {armarTexto}
+    {marcador}
+    clase="top10-resultado-linea"
+/>
 
 <!-- Solo en PC: los pilotos probados (el tablero ya lo dice para los lectores). Queda también al terminar. -->
 {#if ultimosIntentos.length > 0}
@@ -357,21 +354,3 @@
         </ol>
     </div>
 {/if}
-
-<ModalResultado
-    bind:this={modal}
-    juego="top10"
-    {fecha}
-    terminada={estado.terminada}
-    correcto={estado.gano}
-    titulo={estado.gano ? "¡Top 10 completo!" : estado.sinTiempo ? "Se terminó el tiempo" : "Te rendiste"}
-    resumen={estado.acertados.length + " de " + PUESTOS}
-    {armarTexto}
-    {marcador}
-    etiquetaRegreso="Nueva carrera en:"
-    clase="resultado-top10-modal"
-    focoRetorno={() => tablero}
->
-    <strong class="resultado-modal__nombre">{carrera.nombre} {carrera.anio}</strong>
-    <p class="resultado-top10-modal__marcador"><strong>{estado.acertados.length}</strong> de {PUESTOS}</p>
-</ModalResultado>

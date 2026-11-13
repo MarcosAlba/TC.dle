@@ -76,7 +76,14 @@ export function aplicarTemaCopaInicial(desde: string, hasta: string): void {
     const hoy = new Date();
     const fecha =
         hoy.getFullYear() + "-" + String(hoy.getMonth() + 1).padStart(2, "0") + "-" + String(hoy.getDate()).padStart(2, "0");
-    const activo = forzado === null ? fecha >= desde && fecha <= hasta : forzado === "1";
+    let apagada = false;
+    try {
+        // La persona puede elegir ver la página roja de siempre (menú Apariencia).
+        apagada = localStorage.getItem("tcdleSinCopa") === "1";
+    } catch {
+        // Sin localStorage se ve el tema de la temporada.
+    }
+    const activo = forzado === null ? !apagada && fecha >= desde && fecha <= hasta : forzado === "1";
 
     if (activo && !document.documentElement.dataset.tema) {
         document.documentElement.dataset.tema = "copa-oro";
@@ -120,4 +127,34 @@ export function aplicarContrasteInicial(): void {
     } catch {
         // Sin localStorage se ve con los colores de siempre.
     }
+}
+
+/** Claves de localStorage del menú Apariencia. */
+export const CLAVE_MODO = "tcdleModo";
+export const CLAVE_SIN_COPA = "tcdleSinCopa";
+
+/**
+ * Modo claro u oscuro: <html data-modo="claro"> o "oscuro". Sin elección guardada
+ * ("automático") sigue al sistema y cambia si el sistema cambia.
+ */
+export function aplicarModoInicial(): void {
+    const raiz = document.documentElement;
+    let elegido: string | null = null;
+    try {
+        elegido = localStorage.getItem("tcdleModo");
+    } catch {
+        // Sin localStorage, automático.
+    }
+    if (elegido === "claro" || elegido === "oscuro") {
+        raiz.dataset.modo = elegido;
+        return;
+    }
+    const consulta = window.matchMedia("(prefers-color-scheme: light)");
+    const seguir = () => {
+        if (!raiz.dataset.modoElegido) {
+            raiz.dataset.modo = consulta.matches ? "claro" : "oscuro";
+        }
+    };
+    seguir();
+    consulta.addEventListener?.("change", seguir);
 }

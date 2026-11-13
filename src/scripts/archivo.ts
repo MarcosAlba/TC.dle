@@ -1,5 +1,5 @@
 // Calendario del archivo: un mes a la vez, con una rayita por juego según el
-// historial guardado, y un panel con los cinco juegos del día elegido.
+// historial guardado, y un panel con los ocho juegos del día elegido.
 import { obtenerAlmacenamiento } from "../lib/almacenamiento";
 import { FECHA_LANZAMIENTO } from "../lib/dia";
 import { leerHistorial } from "../lib/dia-juego";

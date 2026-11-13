@@ -22,7 +22,7 @@
      */
     html {
         font-size: clamp(100%, min(0.8333vw, 1.4815vh), 200%);
-        color-scheme: dark;
+        color-scheme: var(--esquema, dark);
         /* Sin el recuadro gris o azul que el navegador del celular dibuja al tocar: cada control tiene su propio feedback. */
         -webkit-tap-highlight-color: transparent;
         /* iOS agranda el texto al girar el teléfono si no se le dice que no. */
@@ -39,16 +39,8 @@
         padding-right: env(safe-area-inset-right, 0px);
         padding-left: env(safe-area-inset-left, 0px);
         color: var(--color-texto);
-        background-color: var(--asfalto);
-        /*
-         * Líneas de barrido de TV muy finas y diagonales con la inclinación del corte de los zócalos.
-         * Antes era una cuadrícula de 2 rem, que parecía papel milimetrado y no decía nada de TV ni de autos.
-         */
-        background-image:
-            radial-gradient(circle at 50% 7rem, var(--resplandor), transparent 30rem),
-            repeating-linear-gradient(0deg, rgb(255 255 255 / 1.5%) 0 0.0625rem, transparent 0.0625rem 0.25rem),
-            repeating-linear-gradient(var(--angulo-corte), transparent 0 3rem, rgb(255 255 255 / var(--rejilla)) 3rem calc(3rem + 0.0625rem));
-        background-size: auto;
+        /* Fondo liso, sin líneas ni resplandor: lo que se destaca son los juegos. */
+        background: var(--asfalto);
         font-family: var(--fuente-texto);
     }
 
@@ -91,6 +83,13 @@
 
     [hidden] {
         display: none !important;
+    }
+
+    /* Logo en el color del tema: rojo, o dorado durante la Copa de Oro (--filtro-logo en tokens.css). */
+    .logo-juego,
+    .logo-inicio,
+    .pie-sitio__logo img {
+        filter: var(--filtro-logo);
     }
 
     /*

@@ -1,0 +1,43 @@
+---
+// Conexiones TC. Las fichas de los pilotos (marcas, victorias y temporadas desde
+// las finales) se arman al construir, así la página no baja carreras.json.
+import Conexiones from "../../games/extra/Conexiones.svelte";
+import CargandoJuego from "../../components/CargandoJuego.astro";
+import PaginaJuego from "../../layouts/PaginaJuego.astro";
+import { carreras, pilotos } from "../../data";
+import { construirFichas, MAXIMO_ERRORES_CONEXIONES } from "../../lib/extra";
+import { urlImagen } from "../../lib/rutas";
+import "../../styles/desafio.css";
+import "../../styles/extra.css";
+
+const fichas = construirFichas(pilotos, carreras);
+const fotos = ["matias_rossi", "guillermo_ortelli", "facundo_ardusso", "christian_ledesma", "jose_manuel_urcera", "juan_martin_trucco", "diego_de_carlo", "german_todino"];
+---
+
+<PaginaJuego
+    juego="conexiones"
+    titulo="TCdle | Conexiones TC"
+    descripcion="Dieciséis pilotos de TC, cuatro grupos ocultos de cuatro. Encontrá qué tienen en común."
+    tituloIntro="Conexiones TC"
+>
+    <div slot="intro-imagen" class="intro-juego__imagen intro-extra intro-extra--conexiones" aria-hidden="true">
+        {fotos.map((foto) => <img src={urlImagen("pilotos/mini/" + foto + ".webp")} alt="" />)}
+    </div>
+
+    <Fragment slot="intro">
+        <p class="intro-juego__texto">
+            Dieciséis pilotos, cuatro grupos ocultos de cuatro con algo en común. Elegí cuatro y tocá <strong>Probar</strong>. Tenés
+            <strong>{MAXIMO_ERRORES_CONEXIONES} errores</strong>.
+        </p>
+    </Fragment>
+
+    <section slot="presentacion" class="presentacion-juego" aria-labelledby="titulo-conexiones">
+        <h1 id="titulo-conexiones">Conexiones TC</h1>
+    </section>
+
+    <Conexiones client:only="svelte" fichas={fichas}>
+        <Fragment slot="fallback">
+            <CargandoJuego forma="foto" />
+        </Fragment>
+    </Conexiones>
+</PaginaJuego>

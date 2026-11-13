@@ -10,7 +10,7 @@
     .acerca__texto {
         display: grid;
         gap: var(--espacio-12);
-        color: #d6d6d3;
+        color: var(--texto-claro);
         font-size: var(--texto-m);
         line-height: 1.6;
     }

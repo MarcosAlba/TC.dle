@@ -1,26 +1,22 @@
 @layer base, juego, desafio, pagina;
 
-/* "Más juegos": trayectoria, grilla y conexiones. Mismas piezas que los cinco del día. */
+/* Campaña, Grilla y Conexiones: mismas piezas que los otros juegos del día. */
 @layer pagina {
-    .juego--extra {
-        width: min(72rem, calc(100% - 2rem));
-    }
-
-    /* No tienen introducción aparte: el juego se ve siempre. */
-    .juego--extra .contenido-juego--siempre {
-        display: block;
-    }
-
-    .juego--extra .panel-intento {
+    :is(.juego--trayectoria, .juego--grilla, .juego--conexiones) .panel-intento {
         width: min(47.5rem, 100%);
         margin-inline: auto;
     }
 
     .extra__ayuda {
-        margin: var(--espacio-12) 0 0;
+        margin: var(--espacio-10) 0 0;
         color: var(--color-texto-suave);
         font-size: var(--texto-s);
         text-align: center;
+    }
+
+    .extra__ayuda b {
+        color: var(--blanco);
+        font-weight: 700;
     }
 
     .extra-boton {
@@ -40,6 +36,17 @@
         background: var(--blanco);
     }
 
+    /* Acción secundaria (rendirse, cancelar): sin fondo, para que no compita con "Intentar". */
+    .extra-boton--texto {
+        padding-inline: var(--espacio-8);
+        color: var(--color-texto-suave);
+        background: transparent;
+        font-size: var(--texto-s);
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+        clip-path: none;
+    }
+
     .extra-boton:disabled {
         opacity: 0.4;
         cursor: default;
@@ -50,139 +57,287 @@
         box-shadow: inset 0 -0.1875rem 0 var(--rojo);
     }
 
+    .extra-boton--texto:focus-visible {
+        box-shadow: none;
+        outline: 0.125rem solid var(--blanco);
+    }
+
     .extra-fallados {
         display: flex;
         width: min(47.5rem, 100%);
-        margin: var(--espacio-16) auto 0;
+        margin: var(--espacio-12) auto 0;
         padding: 0;
         gap: var(--espacio-6);
         flex-wrap: wrap;
+        justify-content: center;
         list-style: none;
     }
 
     .extra-fallados li {
-        padding: var(--espacio-6) calc(var(--sesgo) + 0.75rem);
+        padding: var(--espacio-4) calc(var(--sesgo) + 0.5rem);
+        border-left: 0.1875rem solid var(--color-incorrecto);
         color: var(--color-texto-suave);
         background: var(--color-superficie);
         font-size: var(--texto-s);
-        text-decoration: line-through;
-        text-decoration-color: var(--color-incorrecto);
-        clip-path: var(--corte);
     }
 
-    /* Resultado: foto (si hay), texto y compartir. */
-    .extra-resultado {
-        display: grid;
-        width: min(47.5rem, 100%);
-        margin: var(--espacio-24) auto 0;
-        border-top: 0.25rem solid #55555e;
-        background: var(--color-superficie);
-        grid-template-columns: auto minmax(0, 1fr) auto;
-        align-items: center;
-        gap: var(--espacio-20);
-        padding-right: var(--espacio-20);
-    }
+    /* ---------- Resultado (dentro del panel compartido) ---------- */
 
-    .extra-resultado--correcto {
-        border-top-color: var(--celda-correcta-borde);
-    }
-
-    .extra-resultado--compacto {
-        grid-template-columns: minmax(0, 1fr) auto;
-        padding: var(--espacio-16) var(--espacio-20);
-    }
-
-    .extra-resultado__foto {
-        width: 9rem;
-        height: 9rem;
+    /* Bloque propio: dentro del resultado (display: contents) quedaba en línea con el nombre. */
+    .resultado-extra-modal__foto {
+        display: block;
+        width: 7.5rem;
+        height: 7.5rem;
+        margin-inline: auto;
         object-fit: cover;
         object-position: top;
         background: var(--fondo-retrato);
     }
 
-    .extra-resultado__texto {
-        display: grid;
-        gap: var(--espacio-6);
-        padding-block: var(--espacio-12);
+    .resultado-extra-modal__marcador {
+        margin: 0;
+        color: var(--color-texto-suave);
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-2xl);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 900;
+        text-align: center;
+        text-transform: uppercase;
     }
 
-    .extra-resultado__texto h2 {
-        margin: 0;
-        font-size: var(--texto-3xl);
+    .resultado-extra-modal__marcador strong {
+        color: var(--blanco);
+        font-size: 3rem;
+        font-stretch: var(--ancho-display);
+    }
+
+    /* ---------- Introducción: muestras chicas de cada juego ---------- */
+
+    .intro-extra {
+        display: grid;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+        gap: var(--espacio-6);
+    }
+
+    .intro-extra--campana {
+        width: min(20rem, 100%);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .intro-extra__anio {
+        display: grid;
+        padding: var(--espacio-8) var(--espacio-4);
+        border-top: 0.1875rem solid var(--rojo);
+        background: var(--asfalto-tarjeta);
+        justify-items: center;
+        gap: var(--espacio-6);
+    }
+
+    .intro-extra__anio small,
+    .intro-extra__anio b {
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-m);
+        font-stretch: var(--ancho-zocalo);
         font-style: italic;
         font-weight: 900;
         line-height: 1;
-        text-transform: uppercase;
     }
 
-    .extra-resultado__texto p {
-        margin: 0;
-        color: var(--color-texto-suave);
-        font-size: var(--texto-s);
+    .intro-extra__anio img,
+    .intro-extra__anio i {
+        display: grid;
+        width: 2.5rem;
+        height: 2.5rem;
+        padding: var(--espacio-6);
+        border-radius: 50%;
+        background: var(--gris-1);
+        object-fit: contain;
+        place-items: center;
     }
 
-    .extra-resultado .extra-resultado__etiqueta {
-        justify-self: start;
-        padding: 0.125rem calc(var(--sesgo) + 0.5rem);
-        color: #fff;
-        background: #55555e;
+    .intro-extra__anio--oculto {
+        border-top-color: var(--gris-2);
+        color: var(--gris-4);
+    }
+
+    .intro-extra__anio i {
+        border: 0.125rem dashed var(--gris-3);
+        background: transparent;
         font-family: var(--fuente-titulos);
+        font-weight: 900;
+    }
+
+    /* Muestra de la Grilla: el mismo 4 × 4 del juego, con consignas arriba y al costado. */
+    .intro-extra--grilla {
+        width: 13rem;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.1875rem;
+    }
+
+    .intro-extra--grilla > * {
+        position: relative;
+        display: grid;
+        aspect-ratio: 1;
+        width: 100%;
+        overflow: hidden;
+        place-items: center;
+    }
+
+    .intro-extra--grilla > i {
+        border: 0.0625rem solid var(--linea);
+        background: var(--asfalto-tarjeta);
+    }
+
+    .intro-grilla__esquina {
+        color: var(--blanco);
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-xl);
+        font-stretch: var(--ancho-display);
+        font-style: italic;
+        font-weight: 900;
+    }
+
+    .intro-grilla__esquina small {
+        color: var(--color-texto-suave);
+        font-size: 0.6em;
+    }
+
+    .intro-grilla__consigna {
+        padding-bottom: 0.8rem;
+        border: 0.0625rem solid var(--linea);
+        background: var(--gris-1);
+    }
+
+    .intro-grilla__consigna b {
+        color: var(--blanco);
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-m);
+        font-stretch: var(--ancho-display);
+        font-style: italic;
+        font-weight: 900;
+    }
+
+    .intro-grilla__consigna img {
+        width: 60%;
+        height: 60%;
+        object-fit: contain;
+        border-radius: 0.125rem;
+    }
+
+    .intro-grilla__consigna small {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 0.0625rem;
+        color: #fff;
+        background: var(--rojo);
+        font-family: var(--fuente-titulos);
+        font-size: 0.5rem;
         font-stretch: var(--ancho-zocalo);
         font-style: italic;
-        font-weight: 800;
+        font-weight: 900;
+        line-height: 1.2;
+        text-align: center;
         text-transform: uppercase;
-        clip-path: var(--corte);
+        white-space: nowrap;
     }
 
-    .extra-resultado--correcto .extra-resultado__etiqueta {
-        background: var(--color-correcto);
+    .intro-grilla__piloto {
+        border: 0.0625rem solid var(--celda-correcta-borde);
+        background: var(--fondo-retrato);
+        object-fit: cover;
+        object-position: top;
     }
 
-    /* ---------- Trayectoria ---------- */
+    /* Las cuatro opciones de tiempo entran en una fila. */
+    .juego--grilla .opciones-juego {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .juego--grilla .opciones-juego legend {
+        grid-column: 1 / -1;
+    }
+
+    .juego--grilla .opciones-juego span {
+        justify-content: center;
+        padding-inline: var(--sesgo);
+        white-space: nowrap;
+    }
+
+    .intro-extra--conexiones {
+        width: min(16rem, 100%);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .intro-extra--conexiones img {
+        aspect-ratio: 1;
+        width: 100%;
+        border: 0.0625rem solid var(--linea);
+        background: var(--fondo-retrato);
+        object-fit: cover;
+        object-position: top;
+    }
+
+    /* ---------- Campaña: tira compacta de años ---------- */
+
+    .trayectoria {
+        width: min(47.5rem, 100%);
+        margin: 0 auto;
+    }
+
+    .trayectoria:focus {
+        outline: none;
+    }
 
     .trayectoria__anios {
         display: grid;
         margin: 0;
         padding: 0;
         gap: var(--espacio-6);
-        grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(5.25rem, 1fr));
         list-style: none;
     }
 
     .trayectoria__anio {
         display: grid;
-        padding: var(--espacio-12) var(--espacio-6) var(--espacio-10);
-        border-top: 0.25rem solid var(--rojo);
+        padding: var(--espacio-8) var(--espacio-4);
+        border-top: 0.1875rem solid var(--rojo);
         background: var(--color-superficie);
         justify-items: center;
-        gap: var(--espacio-8);
+        gap: var(--espacio-6);
     }
 
     .trayectoria__anio--oculto {
-        border-top-color: #2a2a33;
+        border-top-color: var(--gris-2);
     }
 
     .trayectoria__numero-anio,
     .trayectoria__anio b {
         font-family: var(--fuente-titulos);
-        font-size: var(--texto-xl);
+        font-size: var(--texto-l);
         font-stretch: var(--ancho-zocalo);
         font-style: italic;
         font-weight: 900;
         line-height: 1;
     }
 
-    .trayectoria__anio--oculto b {
-        color: #4a4a55;
+    .trayectoria__anio--oculto b,
+    .trayectoria__anio--oculto .trayectoria__numero-anio {
+        color: var(--gris-4);
     }
 
     .trayectoria__logo {
         display: grid;
-        width: 4rem;
-        height: 4rem;
-        padding: var(--espacio-8);
+        width: 2.75rem;
+        height: 2.75rem;
+        padding: var(--espacio-6);
         border-radius: 50%;
-        background: #1d1d24;
+        background: var(--gris-1);
         object-fit: contain;
         place-items: center;
     }
@@ -194,61 +349,184 @@
     }
 
     .trayectoria__logo--oculto {
-        border: 0.125rem dashed #3a3a44;
-        color: #4a4a55;
+        border: 0.125rem dashed var(--gris-3);
+        color: var(--gris-4);
         background: transparent;
         font-family: var(--fuente-titulos);
-        font-size: var(--texto-2xl);
+        font-size: var(--texto-l);
         font-style: italic;
         font-weight: 900;
     }
 
-    .juego--extra .trayectoria + .panel-intento,
-    .juego--extra .trayectoria + .extra-resultado {
-        margin-top: var(--espacio-24);
+    /* Años sin finales entre dos temporadas: ocupa toda la fila para cortar la secuencia. */
+    .trayectoria__salto {
+        padding: var(--espacio-4) var(--espacio-8);
+        color: var(--color-texto-suave);
+        font-size: var(--texto-xs);
+        text-align: center;
+        grid-column: 1 / -1;
+    }
+
+    .juego--trayectoria .trayectoria + .panel-intento {
+        margin-top: var(--espacio-16);
+    }
+
+    /* Al terminar, la tira de años pierde las marcas de intentos: el resultado necesita su propio aire. */
+    .juego--trayectoria .resultado-linea {
+        margin-top: var(--espacio-28);
+    }
+
+    /* Al terminar, las temporadas que seguían tapadas se dan vuelta en fila. */
+    @media (prefers-reduced-motion: no-preference) {
+        .trayectoria__anio--revela {
+            animation: trayectoria-revela 340ms cubic-bezier(0.77, 0, 0.175, 1) calc(var(--i) * 60ms) both;
+        }
+    }
+
+    @keyframes trayectoria-revela {
+        0% {
+            transform: rotateY(90deg);
+        }
+
+        100% {
+            transform: none;
+        }
     }
 
     /* ---------- Grilla ---------- */
 
+    /*
+     * Una columna, como Formudle: el buscador arriba y la grilla de 4 × 4 cuadrados
+     * iguales. Las consignas son casilleros con el logo o un símbolo y el rótulo en
+     * un zócalo, igual que el nombre del piloto en los casilleros completos.
+     */
+    .juego--grilla {
+        width: min(32rem, calc(100% - 2rem));
+    }
+
     .grilla-extra {
         display: grid;
-        gap: var(--espacio-28);
-        grid-template-columns: auto minmax(0, 1fr);
-        align-items: start;
+        gap: var(--espacio-12);
+    }
+
+    .grilla-extra__barra {
+        display: grid;
+    }
+
+    .grilla-extra__barra .panel-intento {
+        width: 100%;
+        margin: 0;
+    }
+
+    .grilla-extra__rendirse {
+        justify-self: center;
+    }
+
+    /* Una línea fija para los avisos: no empuja la grilla cuando aparece o desaparece. */
+    .grilla-extra__aviso {
+        display: flex;
+        min-height: 1.75rem;
+        gap: var(--espacio-12);
+        align-items: center;
+        justify-content: center;
+    }
+
+    .grilla-extra__aviso .mensaje-juego {
+        margin: 0;
+        text-align: center;
     }
 
     .grilla {
         display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: var(--espacio-6);
-        grid-template-columns: 9rem repeat(3, 10rem);
-        grid-auto-rows: 10rem;
-        grid-template-rows: 6rem;
     }
 
-    .grilla__esquina,
-    .grilla__cabecera {
+    .grilla:focus {
+        outline: none;
+    }
+
+    .grilla > * {
+        aspect-ratio: 1;
+        min-width: 0;
+    }
+
+    /* Esquina: aciertos grandes y, debajo, el reloj. */
+    .grilla__esquina {
         display: grid;
-        padding: var(--espacio-8);
+        align-content: center;
+        justify-items: center;
+        gap: var(--espacio-6);
+    }
+
+    .grilla__esquina b {
         color: var(--blanco);
         font-family: var(--fuente-titulos);
-        font-size: var(--texto-m);
+        font-size: 2.5rem;
+        font-stretch: var(--ancho-display);
+        font-style: italic;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    .grilla__esquina b small {
+        color: var(--color-texto-suave);
+        font-size: var(--texto-xl);
+    }
+
+    .grilla__consigna {
+        position: relative;
+        display: grid;
+        overflow: hidden;
+        padding-bottom: 1.5rem;
+        border: 0.0625rem solid var(--linea);
+        background: var(--gris-1);
+        place-items: center;
+    }
+
+    .grilla__logo {
+        width: 62%;
+        height: 62%;
+        object-fit: contain;
+        border-radius: 0.25rem;
+    }
+
+    .grilla__simbolo {
+        color: var(--blanco);
+        font-family: var(--fuente-titulos);
+        font-size: 2.25rem;
+        font-stretch: var(--ancho-display);
+        font-style: italic;
+        font-weight: 900;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    .grilla__consigna small,
+    .grilla__celda b {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: var(--espacio-4) var(--espacio-4);
+        overflow: hidden;
+        color: var(--tinta);
+        background: var(--blanco);
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-xs);
         font-stretch: var(--ancho-zocalo);
         font-style: italic;
         font-weight: 900;
         line-height: 1.1;
         text-align: center;
         text-transform: uppercase;
-        place-items: center;
+        text-wrap: balance;
     }
 
-    .grilla__esquina b {
-        font-size: var(--texto-3xl);
-        font-stretch: var(--ancho-display);
-    }
-
-    .grilla__esquina small {
-        color: var(--color-texto-suave);
-        font-size: var(--texto-xs);
+    /* El rótulo de la consigna en el color del tema, para separarla de los casilleros a completar. */
+    .grilla__consigna small {
+        color: #fff;
+        background: var(--rojo);
     }
 
     .grilla__celda {
@@ -256,30 +534,8 @@
         display: grid;
         overflow: hidden;
         border: 0.0625rem solid var(--linea);
-        color: #4a4a55;
         background: var(--color-superficie);
-        font-family: var(--fuente-titulos);
-        font-size: var(--texto-4xl);
-        font-style: italic;
-        font-weight: 900;
         place-items: center;
-    }
-
-    button.grilla__celda {
-        transition: border-color 160ms ease;
-    }
-
-    @media (hover: hover) {
-        button.grilla__celda:hover {
-            border-color: #4a4a55;
-        }
-    }
-
-    .grilla__celda--elegida,
-    button.grilla__celda:focus-visible {
-        outline: none;
-        border-color: var(--blanco);
-        box-shadow: inset 0 0 0 0.125rem var(--blanco);
     }
 
     .grilla__celda--ok {
@@ -287,7 +543,8 @@
         background: var(--fondo-retrato);
     }
 
-    .grilla__celda--ok img {
+    .grilla__celda--ok img,
+    .grilla__celda--opcion img {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -296,100 +553,170 @@
         object-position: top;
     }
 
-    .grilla__celda--ok b,
-    .grilla__celda--vacia b {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        padding: var(--espacio-6) var(--espacio-8);
-        color: var(--tinta);
-        background: var(--blanco);
-        font-size: var(--texto-s);
-        font-stretch: var(--ancho-zocalo);
-        line-height: 1.1;
-        text-transform: uppercase;
+    /* Casillero donde se puede poner el piloto que encaja en varios: la foto en transparencia invita a tocar. */
+    .grilla__celda--opcion {
+        padding: 0;
+        border: 0.125rem dashed var(--blanco);
+        background: var(--fondo-retrato);
+        cursor: pointer;
+        animation: grilla-opcion 1.2s ease-in-out infinite alternate;
+    }
+
+    .grilla__celda--opcion img {
+        opacity: 0.45;
+    }
+
+    .grilla__celda--opcion:focus-visible {
+        outline: none;
+        box-shadow: inset 0 0 0 0.1875rem var(--blanco);
+    }
+
+    @media (hover: hover) {
+        .grilla__celda--opcion:hover img {
+            opacity: 0.8;
+        }
+    }
+
+    @keyframes grilla-opcion {
+        to {
+            border-color: var(--rojo);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .grilla__celda--opcion {
+            animation: none;
+        }
     }
 
     .grilla__celda--vacia {
         align-content: center;
+        padding: var(--espacio-6);
         gap: var(--espacio-4);
-        font-size: var(--texto-xs);
+        text-align: center;
     }
 
     .grilla__celda--vacia small {
         color: var(--color-texto-suave);
-        font-family: var(--fuente-texto);
-        font-style: normal;
-        font-weight: 600;
+        font-size: var(--texto-xs);
     }
 
     .grilla__celda--vacia b {
         position: static;
-        color: var(--color-texto-suave);
+        color: var(--texto-claro);
         background: transparent;
-        text-align: center;
+        white-space: normal;
     }
 
-    .grilla-extra__lado {
-        display: grid;
-        gap: var(--espacio-12);
-        align-content: start;
+    @media (max-width: 620px) {
+        .grilla__simbolo {
+            font-size: var(--texto-2xl);
+        }
+
+        .grilla__esquina b {
+            font-size: var(--texto-3xl);
+        }
+
+        .grilla__consigna {
+            padding-bottom: 1.75rem;
+        }
+
+        .grilla__logo {
+            width: 56%;
+            height: 56%;
+        }
+
+        .grilla__consigna small,
+        .grilla__celda b {
+            padding-inline: 0.125rem;
+        }
     }
 
-    .grilla-extra__lado .panel-intento {
-        width: 100%;
+    /* Al completar la grilla, los casilleros laten en diagonal, de una esquina a la otra. */
+    @media (prefers-reduced-motion: no-preference) {
+        .grilla__celda--festeja {
+            animation: grilla-festeja 420ms cubic-bezier(0.23, 1, 0.32, 1) calc(var(--d) * 90ms) both;
+        }
+
     }
 
-    .grilla-extra__lado .extra-resultado,
-    .grilla-extra__lado .extra__ayuda {
-        width: 100%;
-        margin: 0;
-        text-align: left;
+    @keyframes grilla-festeja {
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 0.1875rem var(--celda-correcta-borde);
+        }
     }
 
-    .grilla-extra__lado .extra-boton {
-        justify-self: start;
-    }
-
-    .grilla-extra__pedido {
-        margin: 0;
-        color: var(--color-texto-suave);
-    }
-
-    .grilla-extra__pedido b {
-        color: var(--blanco);
-    }
-
-    /* ---------- Conexiones ---------- */
-
+    /*
+     * ---------- Conexiones: tablero de 4 × 4 ----------
+     * Como Formudle: casilleros chicos con la cara y el apellido; cada grupo resuelto es
+     * una barra con dos caras a cada lado y la consigna en el medio. Al perder, todas las
+     * barras en rojo. Errores como círculos.
+     */
     .conexiones {
         display: grid;
-        width: min(52rem, 100%);
+        width: min(32rem, 100%);
         margin: 0 auto;
         gap: var(--espacio-8);
     }
 
+    .conexiones:focus {
+        outline: none;
+    }
+
     .conexiones__grupo {
+        position: relative;
         display: grid;
-        padding: var(--espacio-14) var(--espacio-16);
+        min-height: 6.25rem;
+        overflow: hidden;
         color: #1c1400;
+        grid-template-columns: 7rem minmax(0, 1fr) 7rem;
+        align-items: end;
+        clip-path: var(--corte-caja);
+    }
+
+    .conexiones__consigna {
+        display: grid;
+        align-self: center;
+        padding: var(--espacio-8) var(--espacio-4);
         text-align: center;
         gap: var(--espacio-4);
     }
 
-    .conexiones__grupo b {
+    .conexiones__consigna b {
         font-family: var(--fuente-titulos);
         font-size: var(--texto-l);
         font-stretch: var(--ancho-zocalo);
         font-style: italic;
         font-weight: 900;
+        line-height: 1.05;
         text-transform: uppercase;
+        text-wrap: balance;
     }
 
-    .conexiones__grupo span {
+    .conexiones__consigna span {
         font-size: var(--texto-s);
         font-weight: 600;
+        line-height: 1.25;
+    }
+
+    /* Dos caras pegadas al borde de abajo, una montada sobre la otra. */
+    .conexiones__caras {
+        display: flex;
+        align-self: end;
+        justify-content: center;
+    }
+
+    /* Caras grandes y recortadas cerca de la cara, para reconocer a cada piloto. */
+    .conexiones__caras img {
+        width: 4rem;
+        height: 5rem;
+        object-fit: cover;
+        object-position: 50% 8%;
+    }
+
+    .conexiones__caras img + img {
+        margin-left: -0.75rem;
     }
 
     .conexiones__grupo--amarillo {
@@ -408,6 +735,12 @@
         background: #c6a3e8;
     }
 
+    /* Perdiste: las cuatro barras en rojo, como en Formudle. */
+    .conexiones--perdio .conexiones__grupo {
+        color: #fff;
+        background: var(--color-incorrecto);
+    }
+
     .conexiones__tablero {
         display: grid;
         gap: var(--espacio-8);
@@ -416,105 +749,201 @@
 
     .conexiones__piloto {
         display: grid;
-        min-height: 5.5rem;
-        padding: var(--espacio-8);
+        overflow: hidden;
+        padding: var(--espacio-8) 0 0;
         border: 0.0625rem solid var(--linea);
         color: var(--blanco);
         background: var(--color-superficie);
-        grid-template-columns: 3rem minmax(0, 1fr);
-        align-items: center;
-        gap: var(--espacio-8);
-        text-align: left;
-        transition: background-color 120ms ease, color 120ms ease;
+        cursor: pointer;
+        grid-template-rows: auto auto;
+        justify-items: center;
+        text-align: center;
+        transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease, transform 120ms ease;
     }
 
     .conexiones__piloto img {
-        width: 3rem;
-        height: 3rem;
+        display: block;
+        width: 72%;
+        aspect-ratio: 1;
         object-fit: cover;
         object-position: top;
-        background: var(--fondo-retrato);
     }
 
     .conexiones__piloto span {
+        width: 100%;
+        overflow: hidden;
+        padding: var(--espacio-4) var(--espacio-4) var(--espacio-8);
         font-family: var(--fuente-titulos);
-        font-size: var(--texto-m);
+        font-size: var(--texto-s);
         font-stretch: var(--ancho-zocalo);
         font-style: italic;
         font-weight: 900;
         line-height: 1.1;
+        text-overflow: ellipsis;
         text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .conexiones__piloto:active {
+        transform: scale(0.96);
     }
 
     .conexiones__piloto[aria-pressed="true"] {
+        border-color: var(--blanco);
         color: var(--tinta);
         background: var(--blanco);
     }
 
     .conexiones__piloto:focus-visible {
         outline: none;
-        box-shadow: inset 0 0 0 0.125rem var(--rojo);
+        box-shadow: inset 0 0 0 0.1875rem var(--rojo);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .conexiones__piloto:not([aria-pressed="true"]):hover {
+            border-color: var(--gris-4);
+        }
+    }
+
+    .conexiones__errores {
+        display: flex;
+        margin: var(--espacio-6) 0 0;
+        align-items: center;
+        justify-content: center;
+        gap: var(--espacio-8);
+    }
+
+    .conexiones__errores i {
+        width: 1rem;
+        height: 1rem;
+        border: 0.125rem solid var(--blanco);
+        border-radius: 50%;
+        transition: background-color 200ms ease;
+    }
+
+    .conexiones__errores i.usado {
+        background: var(--blanco);
     }
 
     .conexiones__controles {
         display: flex;
-        margin-top: var(--espacio-8);
         gap: var(--espacio-8);
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
     }
 
-    .conexiones__errores {
-        display: flex;
-        margin: 0 var(--espacio-12) 0 0;
-        color: var(--color-texto-suave);
-        font-size: var(--texto-s);
-        align-items: center;
-        gap: var(--espacio-6);
-    }
-
-    .conexiones__errores i {
-        width: 0.75rem;
-        height: 0.75rem;
-        border-radius: 50%;
-        background: var(--blanco);
-    }
-
-    .conexiones__errores i.usado {
-        background: #3a3a44;
-    }
-
     .conexiones .mensaje-juego {
         text-align: center;
     }
 
-    @media (max-width: 900px) {
-        .grilla-extra {
-            grid-template-columns: minmax(0, 1fr);
+    /*
+     * Animaciones: los cuatro que acertaste saltan uno tras otro; después la barra se arma
+     * (crece desde arriba) y las caras entran desde los costados. Si erraste, tiemblan.
+     */
+    @media (prefers-reduced-motion: no-preference) {
+        .conexiones__piloto--salta {
+            animation: conexiones-salta 420ms cubic-bezier(0.23, 1, 0.32, 1) calc(var(--i) * 70ms) both;
         }
 
-        .grilla {
-            grid-template-columns: 5.5rem repeat(3, minmax(0, 1fr));
-            grid-auto-rows: 6.5rem;
-            grid-template-rows: 5rem;
+        .conexiones__piloto--tiembla {
+            animation: conexiones-tiembla 340ms ease-in-out both;
         }
 
-        .grilla__cabecera {
+        .conexiones__grupo--nuevo {
+            transform-origin: top;
+            animation: conexiones-arma 360ms cubic-bezier(0.23, 1, 0.32, 1) calc(var(--i) * 160ms) both;
+        }
+
+        .conexiones__grupo--nuevo .conexiones__caras--izquierda img {
+            animation: conexiones-cara-izquierda 420ms cubic-bezier(0.23, 1, 0.32, 1) calc(var(--i) * 160ms + 200ms) both;
+        }
+
+        .conexiones__grupo--nuevo .conexiones__caras--derecha img {
+            animation: conexiones-cara-derecha 420ms cubic-bezier(0.23, 1, 0.32, 1) calc(var(--i) * 160ms + 200ms) both;
+        }
+
+        .conexiones__grupo--nuevo .conexiones__caras img + img {
+            animation-delay: calc(var(--i) * 160ms + 270ms);
+        }
+
+        .conexiones__grupo--nuevo .conexiones__consigna {
+            animation: conexiones-consigna 320ms cubic-bezier(0.23, 1, 0.32, 1) calc(var(--i) * 160ms + 160ms) both;
+        }
+    }
+
+    @keyframes conexiones-salta {
+        40% {
+            transform: translateY(-0.5rem);
+        }
+    }
+
+    @keyframes conexiones-tiembla {
+        20%,
+        60% {
+            transform: translateX(-0.25rem);
+        }
+
+        40%,
+        80% {
+            transform: translateX(0.25rem);
+        }
+    }
+
+    @keyframes conexiones-arma {
+        from {
+            opacity: 0;
+            transform: scaleY(0.5);
+        }
+    }
+
+    @keyframes conexiones-cara-izquierda {
+        from {
+            opacity: 0;
+            transform: translateX(-1.5rem);
+        }
+    }
+
+    @keyframes conexiones-cara-derecha {
+        from {
+            opacity: 0;
+            transform: translateX(1.5rem);
+        }
+    }
+
+    @keyframes conexiones-consigna {
+        from {
+            opacity: 0;
+            transform: translateY(0.5rem);
+        }
+    }
+
+    @media (max-width: 620px) {
+        .conexiones__piloto span {
             font-size: var(--texto-xs);
         }
 
-        .conexiones__tablero {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+        .conexiones__grupo {
+            min-height: 5.25rem;
+            grid-template-columns: 4.75rem minmax(0, 1fr) 4.75rem;
         }
 
-        .extra-resultado {
-            grid-template-columns: minmax(0, 1fr);
-            padding: var(--espacio-16);
+        .conexiones__caras img {
+            width: 2.875rem;
+            height: 3.75rem;
         }
 
-        .extra-resultado__foto {
-            display: none;
+        .conexiones__consigna b {
+            font-size: var(--texto-m);
+        }
+
+        .conexiones__consigna span {
+            font-size: var(--texto-xs);
+        }
+
+        .conexiones__controles .extra-boton {
+            padding-inline: calc(var(--sesgo) + 0.75rem);
+            font-size: var(--texto-s);
         }
     }
 }

@@ -24,18 +24,13 @@ import "../../styles/piloto.css";
 
     <Fragment slot="intro">
         <p class="intro-juego__texto">
-            Tenés que adivinar quién es el piloto secreto de TC. Vas a tener una cantidad de <strong>8 intentos</strong>, y en cada uno vas a elegir un piloto para comparar sus datos con los del piloto correcto.
-        </p>
-
-        <p class="intro-juego__texto">
-            Después de cada intento, vas a recibir pistas de color que te dicen qué tan cerca estuviste en cada categoría. Usá esa
-            información para ir descartando opciones y acercarte cada vez más a la respuesta correcta.
+            Adiviná el piloto secreto en <strong>8 intentos</strong>. Cada intento compara sus datos con los del piloto del día: verde coincide,
+            amarillo está cerca, rojo no.
         </p>
     </Fragment>
 
     <section slot="presentacion" class="presentacion-juego" aria-labelledby="titulo-clasico">
-        <p class="modo-juego">Modo clásico</p>
-        <h1 id="titulo-clasico">Adiviná el piloto de hoy</h1>
+        <h1 id="titulo-clasico">Adiviná el piloto</h1>
     </section>
 
     <Piloto client:only="svelte">

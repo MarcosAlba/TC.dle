@@ -1,0 +1,289 @@
+/*
+ * Pop up de estadísticas (components/EstadisticasJuego.svelte): chico y centrado, como
+ * el de Formudle, con el lenguaje del sitio. Arriba el título como zócalo; cinco números;
+ * el gráfico de barras con la partida de hoy en el color del tema; compartir y siguiente.
+ */
+@layer base, juego, desafio, pagina;
+
+@layer juego {
+    .estadisticas {
+        width: min(27rem, calc(100% - 2rem));
+        max-height: calc(100dvh - 2rem);
+        padding: 0;
+        border: 0;
+        color: var(--color-texto);
+        background: transparent;
+        overflow: visible;
+    }
+
+    .estadisticas::backdrop {
+        background: rgb(0 0 0 / 60%);
+    }
+
+    .estadisticas__contenido {
+        position: relative;
+        display: grid;
+        padding: var(--espacio-24) var(--espacio-20) var(--espacio-20);
+        border-top: 0.25rem solid var(--rojo);
+        background: var(--color-superficie-clara);
+        gap: var(--espacio-14);
+        justify-items: center;
+        clip-path: var(--corte-caja);
+        box-shadow: 0 1.5rem 3rem rgb(0 0 0 / 50%);
+    }
+
+    .estadisticas__cerrar {
+        position: absolute;
+        top: var(--espacio-14);
+        right: var(--espacio-24);
+        display: grid;
+        width: 2.25rem;
+        height: 2.25rem;
+        padding: 0;
+        border: 0;
+        color: #fff;
+        background: var(--rojo);
+        cursor: pointer;
+        place-items: center;
+    }
+
+    .estadisticas__cerrar .icono {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .estadisticas__titulo {
+        margin: 0;
+        padding: 0.1em calc(var(--sesgo) + 0.6em);
+        color: var(--tinta);
+        background: var(--blanco);
+        font-size: var(--texto-2xl);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 900;
+        line-height: 1.15;
+        text-transform: uppercase;
+        clip-path: var(--corte);
+    }
+
+    .estadisticas__juego {
+        margin: calc(var(--espacio-8) * -1) 0 0;
+        color: var(--rojo);
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-s);
+        font-stretch: var(--ancho-zocalo);
+        font-style: italic;
+        font-weight: 800;
+        text-transform: uppercase;
+    }
+
+    .estadisticas__numeros {
+        display: grid;
+        width: 100%;
+        margin: 0;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: var(--espacio-6);
+    }
+
+    .estadisticas__numeros div {
+        display: flex;
+        padding: var(--espacio-10) var(--espacio-4);
+        background: var(--gris-1);
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: var(--espacio-4);
+        text-align: center;
+    }
+
+    .estadisticas__numeros dd {
+        margin: 0;
+        color: var(--blanco);
+        font-family: var(--fuente-titulos);
+        font-size: var(--texto-3xl);
+        font-stretch: var(--ancho-display);
+        font-style: italic;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    .estadisticas__numeros dt {
+        color: var(--color-texto-suave);
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        line-height: 1.15;
+        text-transform: uppercase;
+    }
+
+    .estadisticas__subtitulo {
+        margin: var(--espacio-4) 0 0;
+        color: var(--color-texto-suave);
+        font-size: var(--texto-xs);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    /* Barras verticales, una por resultado; la de hoy en el color del tema. */
+    .estadisticas__barras {
+        display: grid;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        grid-template-columns: repeat(var(--columnas), minmax(0, 1fr));
+        gap: var(--espacio-4);
+    }
+
+    .estadisticas__barras li {
+        display: grid;
+        grid-template-rows: auto 6.5rem auto;
+        gap: var(--espacio-4);
+        justify-items: center;
+    }
+
+    .estadisticas__cantidad,
+    .estadisticas__etiqueta {
+        min-height: 1em;
+        color: var(--color-texto-suave);
+        font-size: var(--texto-xs);
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .estadisticas__pista {
+        position: relative;
+        width: 100%;
+        background: var(--gris-1);
+    }
+
+    .estadisticas__pista i {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: calc(var(--alto) * 100%);
+        min-height: 0.25rem;
+        background: var(--gris-3);
+        transform-origin: bottom;
+    }
+
+    .estadisticas__barras li.actual .estadisticas__pista i {
+        background: var(--rojo);
+    }
+
+    .estadisticas__barras li.actual .estadisticas__etiqueta,
+    .estadisticas__barras li.actual .estadisticas__cantidad {
+        color: var(--blanco);
+    }
+
+    .estadisticas__acciones {
+        display: grid;
+        width: 100%;
+        margin-top: var(--espacio-4);
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: var(--espacio-8);
+        align-items: stretch;
+    }
+
+    .estadisticas__acciones .siguiente-juego {
+        margin-top: 0;
+        padding: 0 calc(var(--sesgo) + 0.5rem);
+        gap: var(--espacio-8);
+    }
+
+    /* Nombre corto del juego y sin el contador, como en el resultado de la página. */
+    .estadisticas .siguiente-juego__largo {
+        position: absolute;
+        width: 0.0625rem;
+        height: 0.0625rem;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+    }
+
+    .estadisticas .siguiente-juego__corto {
+        display: inline;
+    }
+
+    .estadisticas .siguiente-juego__extra {
+        display: none;
+    }
+
+    .estadisticas .siguiente-juego strong {
+        font-size: var(--texto-s);
+    }
+
+    .estadisticas__acciones .siguiente-juego-contenedor {
+        display: flex;
+        min-width: 0;
+    }
+
+    .estadisticas__nota {
+        margin: 0;
+        color: var(--color-texto-suave);
+        font-size: var(--texto-s);
+        text-align: center;
+    }
+
+    /* Entra como un cartel que sube un poco; las barras crecen desde abajo una tras otra. */
+    @media (prefers-reduced-motion: no-preference) {
+        .estadisticas[open] .estadisticas__contenido {
+            animation: estadisticas-entra 260ms cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
+
+        .estadisticas[open]::backdrop {
+            animation: estadisticas-velo 200ms ease-out both;
+        }
+
+        .estadisticas[open] .estadisticas__pista i {
+            animation: estadisticas-barra 420ms cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
+
+        .estadisticas[open] li:nth-child(2) i { animation-delay: 40ms; }
+        .estadisticas[open] li:nth-child(3) i { animation-delay: 80ms; }
+        .estadisticas[open] li:nth-child(4) i { animation-delay: 120ms; }
+        .estadisticas[open] li:nth-child(5) i { animation-delay: 160ms; }
+        .estadisticas[open] li:nth-child(6) i { animation-delay: 200ms; }
+        .estadisticas[open] li:nth-child(n + 7) i { animation-delay: 240ms; }
+    }
+
+    @keyframes estadisticas-entra {
+        from {
+            opacity: 0;
+            transform: translateY(0.75rem) scale(0.97);
+        }
+    }
+
+    @keyframes estadisticas-velo {
+        from {
+            opacity: 0;
+        }
+    }
+
+    @keyframes estadisticas-barra {
+        from {
+            transform: scaleY(0);
+        }
+    }
+
+    @media (max-width: 420px) {
+        .estadisticas__contenido {
+            padding-inline: var(--espacio-12);
+        }
+
+        .estadisticas__numeros dd {
+            font-size: var(--texto-2xl);
+        }
+
+        .estadisticas__numeros dt {
+            font-size: 0.625rem;
+        }
+
+        /* En el celular, compartir y siguiente uno arriba del otro: así "Siguiente" no se corta. */
+        .estadisticas__acciones {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}

@@ -1,13 +1,12 @@
 <script lang="ts">
     // Wordle del TC: adivinar la palabra del día en largo + 1 intentos.
     import { tick } from "svelte";
-    import CuentaRegresiva from "../components/CuentaRegresiva.svelte";
-    import ModalResultado from "../components/ModalResultado.svelte";
+    import ResultadoEnLinea from "../components/ResultadoEnLinea.svelte";
     import { palabras } from "../data/catalogo/palabras";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import { construirTextoCompartir, filaWordle } from "../lib/compartir";
     import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";
-    import { describirContador, palabraIntentos } from "../lib/intentos";
+    import { palabraIntentos } from "../lib/intentos";
     import { crearPartidaDiaria } from "../lib/partida";
     import { urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
@@ -70,9 +69,8 @@
     // El resultado espera a que termine la animación de la última fila.
     let finalizada = $state(estadoInicial.terminada);
     let elementoTablero: HTMLElement | undefined = $state();
-    let modal: ReturnType<typeof ModalResultado> | undefined = $state();
+    let modal: ReturnType<typeof ResultadoEnLinea> | undefined = $state();
 
-    const contador = $derived(describirContador(estado));
 
     const esperar = (milisegundos: number) => new Promise<void>((resolver) => setTimeout(resolver, milisegundos));
 
@@ -223,8 +221,8 @@
     }
 
     // Resumen del resultado en la ventana final (sin letras, para compartir el recorrido).
-    const resumen = $derived(estado.idsIntentados.map((palabra) => evaluarIntento(palabra, palabraDelDia)));
 
+    const resumen = $derived(estado.idsIntentados.map((palabra) => evaluarIntento(palabra, palabraDelDia)));
     const marcador = $derived({ puntaje: estado.acerto ? estado.intentosUsados : null, maximo: maximoIntentos, gano: estado.acerto });
 
     const armarTexto = (racha: number) =>
@@ -268,10 +266,6 @@
         {/each}
     </div>
     <div class="estado-diario">
-        <p class="contador-intentos" class:contador-intentos--ultimo={contador.ultimo} aria-live="polite" hidden={estado.terminada}>
-            {contador.texto}
-        </p>
-        <CuentaRegresiva etiqueta="Nueva palabra en:" activa={finalizada} {fecha} />
     </div>
 </section>
 
@@ -312,37 +306,18 @@
     {/each}
 </section>
 
-<ModalResultado
+<!-- Terminada la partida el teclado se va y el resultado queda en su lugar. -->
+<ResultadoEnLinea
     bind:this={modal}
     juego="wordle"
     {fecha}
     terminada={finalizada}
     correcto={estado.acerto}
-    titulo={estado.acerto ? "¡Adivinaste!" : "No la adivinaste"}
-    resumen={estado.acerto ? "Ganaste en " + estado.intentosUsados : "Abandono"}
+    nombre={palabraDelDia}
+    detalle={estado.acerto
+        ? "La sacaste en " + estado.intentosUsados + " " + palabraIntentos(estado.intentosUsados) + "."
+        : "La palabra era " + palabraDelDia + "."}
     {armarTexto}
     {marcador}
-    etiquetaRegreso="Nueva palabra en:"
-    clase="resultado-wordle-modal"
-    focoRetorno={() => elementoTablero}
->
-    <strong class="resultado-modal__nombre">{palabraDelDia}</strong>
-    <p class="resultado-modal__detalle">
-        {estado.acerto
-            ? "Lo resolviste en " + estado.intentosUsados + " " + palabraIntentos(estado.intentosUsados) + "."
-            : 'La palabra era "' + palabraDelDia + '".'}
-    </p>
-    <div class="resumen-wordle-modal" aria-hidden="true" style:--largo-palabra={largo}>
-        {#each resumen as estados}
-            <div class="resumen-wordle-modal__fila">
-                {#each estados as estadoLetra}
-                    <span
-                        class="resumen-wordle-modal__celda"
-                        class:resumen-wordle-modal__celda--correcta={estadoLetra === "correcta"}
-                        class:resumen-wordle-modal__celda--presente={estadoLetra === "presente"}
-                    ></span>
-                {/each}
-            </div>
-        {/each}
-    </div>
-</ModalResultado>
+    clase="resultado-linea--wordle"
+/>

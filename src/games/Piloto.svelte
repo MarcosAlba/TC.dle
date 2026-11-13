@@ -8,17 +8,15 @@
     import { pilotos } from "../data/catalogo/pilotos";
     import type { Piloto } from "../data/tipos";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
-    import { crearDatoDiario } from "../lib/dato-diario";
     import { construirTextoCompartir, filaPiloto } from "../lib/compartir";
     import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";
-    import { describirContador, palabraIntentos } from "../lib/intentos";
+    import { palabraIntentos } from "../lib/intentos";
     import { mensajesDeBusqueda } from "../lib/mensajes";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
     import {
         compararPiloto,
         obtenerApellidoPiloto,
         obtenerPistasPiloto,
-        generarOpcionesNumero,
         obtenerTextoBusquedaPiloto,
     } from "../lib/pilotos";
     import { urlImagen, urlSitio } from "../lib/rutas";
@@ -39,24 +37,6 @@
     const fecha = dia.fecha;
     const secreto = obtenerSeleccionDiaria(pilotos, "pilotos", dia.fechaSeleccion)!;
 
-    // Ronda extra al acertar: ¿con qué número corre? (solo si se conoce el número).
-    const datoNumero = crearDatoDiario<number>({ almacenamiento: obtenerAlmacenamiento(), clave: claveDelDia("partidaTCdleNumero", dia), fecha });
-    let respuestaNumero = $state<number | null>(datoNumero.leer());
-    const opcionesNumero =
-        secreto.numeroAuto === null
-            ? []
-            : generarOpcionesNumero(
-                  secreto.numeroAuto,
-                  pilotos.filter((piloto) => !piloto.retirado && piloto.numeroAuto !== null).map((piloto) => piloto.numeroAuto!),
-                  "numero:" + fecha + ":" + secreto.id
-              );
-
-    function elegirNumero(numero: number) {
-        if (respuestaNumero === null) {
-            respuestaNumero = numero;
-            datoNumero.guardar(numero);
-        }
-    }
     const juego = crearJuegoAdivinanza<Piloto, number>({
         partida: crearPartidaDiaria<number>({
             almacenamiento: obtenerAlmacenamiento(),
@@ -105,7 +85,6 @@
     let panelResultado: HTMLElement | undefined = $state();
 
     const estado = $derived(juego.estado);
-    const contador = $derived(describirContador(estado));
     const pistas = $derived(obtenerPistasPiloto(secreto).filter((pista) => pista.texto !== null));
     const textoPista = $derived(pistas.find((pista) => pista.id === pistaActiva)?.texto ?? "");
     const controlesBloqueados = $derived(revelando || estado.terminada);
@@ -220,7 +199,14 @@
                     onclick={() => alternarPista(pista.id)}
                 >
                     <span class="pista__nombre">{pista.nombre}</span>
-                    <span class="pista__detalle">{detallePista(pista.intentos)}</span>
+                    {#if disponible}
+                        <span class="solo-lectores">, disponible</span>
+                    {:else}
+                        <span class="pista__detalle" aria-label={detallePista(pista.intentos)}>
+                            <svg class="icono" aria-hidden="true"><use href="#icono-candado"></use></svg>
+                            <span aria-hidden="true">{pista.intentos - intentosVisibles}</span>
+                        </span>
+                    {/if}
                 </button>
             {/each}
         </div>
@@ -236,7 +222,7 @@
             idLista="sugerencias-pilotos"
             etiquetaCampo="Nombre del piloto"
             consejoVacio="Probá con el apellido."
-            placeholder="Adiviná el piloto de hoy"
+            placeholder="Nombre del piloto"
             deshabilitado={controlesBloqueados}
             elementos={pilotos}
             obtenerEtiqueta={(piloto: Piloto) => piloto.nombre}
@@ -256,9 +242,6 @@
     {/snippet}
     {#snippet pie()}
         <div class="estado-partida">
-            <span class="contador-intentos" class:contador-intentos--ultimo={contador.ultimo} aria-live="polite" hidden={estado.terminada}>
-                {contador.texto}
-            </span>
             <p id="mensaje-piloto" class={"mensaje-juego" + (juego.mensaje.tipo ? " mensaje-juego--" + juego.mensaje.tipo : "")} aria-live="polite">
                 {juego.mensaje.texto}
             </p>
@@ -295,34 +278,6 @@
         </div>
     </div>
 
-    {#if acerto && opcionesNumero.length > 1}
-        <section class="ronda-anio ronda-numero" aria-labelledby="titulo-numero-piloto">
-            <div class="ronda-anio__cabecera">
-                <span class="ronda-anio__etiqueta">Ronda extra</span>
-                <h2 id="titulo-numero-piloto">¿Con qué número corre {secreto.nombre}?</h2>
-            </div>
-            <div class="ronda-anio__opciones" class:ronda-anio__opciones--respondida={respuestaNumero !== null} role="group" aria-label="Números posibles">
-                {#each opcionesNumero as numero (numero)}
-                    {@const esCorrecta = numero === secreto.numeroAuto}
-                    <button
-                        type="button"
-                        class="ronda-anio__opcion"
-                        class:ronda-anio__opcion--correcta={respuestaNumero !== null && esCorrecta}
-                        class:ronda-anio__opcion--error={respuestaNumero === numero && !esCorrecta}
-                        disabled={respuestaNumero !== null}
-                        onclick={() => elegirNumero(numero)}
-                    >
-                        #{numero}
-                    </button>
-                {/each}
-            </div>
-            {#if respuestaNumero !== null}
-                <p class="ronda-numero__resultado" aria-live="polite">
-                    {respuestaNumero === secreto.numeroAuto ? "¡Exacto! Corre con el #" + secreto.numeroAuto + "." : "Corre con el #" + secreto.numeroAuto + " (dijiste #" + respuestaNumero + ")."}
-                </p>
-            {/if}
-        </section>
-    {/if}
 {/if}
 
 {#if tablaVisible}
