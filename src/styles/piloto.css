@@ -121,6 +121,7 @@
     }
 
     td.celda-piloto {
+        position: relative;
         padding: 0;
         border-color: var(--gris-fondo) !important;
         background: var(--gris-fondo) !important;
@@ -301,6 +302,17 @@
         animation: zocalo-entrada 300ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
     }
 
+    /* Sin mensaje, la zona del mensaje no deja un hueco entre el buscador y los intentos. */
+    .estado-partida--vacia {
+        min-height: 0;
+        margin-top: 0;
+    }
+
+    .estado-partida--vacia .mensaje-juego {
+        min-height: 0;
+        margin: 0;
+    }
+
     /* ---------- Guía de pistas ---------- */
 
     .guia-pistas {
@@ -310,9 +322,12 @@
         transition: opacity 150ms ease-out;
     }
 
-    /* Mientras se revela una fila la guía queda en su lugar, más tenue: antes desaparecía y volvía de golpe. */
+    /*
+     * Mientras se revela una fila la guía queda en su lugar, apenas más tenue: antes
+     * desaparecía y volvía de golpe. Con 0,4 el texto quedaba lavado (sobre todo en modo claro).
+     */
     .guia-pistas--atenuada {
-        opacity: 0.4;
+        opacity: 0.75;
         pointer-events: none;
     }
 
@@ -552,7 +567,7 @@
         margin: 0;
         padding: var(--espacio-4) calc(var(--sesgo) + 0.625rem);
         color: #fff;
-        background: var(--rojo);
+        background: var(--fondo-acento);
         font-size: var(--texto-m);
         font-style: italic;
         font-weight: 800;
@@ -669,8 +684,31 @@
             width: 100%;
         }
 
+        /* En el celular, la guía en renglones chicos: antes eran cinco cajas que ocupaban media pantalla. */
         .guia-pistas__grilla {
-            grid-template-columns: repeat(2, minmax(8.125rem, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--espacio-4);
+        }
+
+        .guia-pista {
+            min-height: 0;
+            padding: var(--espacio-6) var(--espacio-8);
+            text-align: left;
+            align-items: flex-start;
+        }
+
+        .guia-pista strong {
+            font-size: var(--texto-s);
+        }
+
+        .guia-pista span {
+            margin-top: 0;
+            font-size: 0.6875rem;
+        }
+
+        .guia-pistas h3 {
+            margin-bottom: var(--espacio-6);
+            font-size: var(--texto-m);
         }
 
         .pista {
@@ -793,6 +831,12 @@
             font-weight: 900;
             line-height: 1.05;
             text-transform: uppercase;
+        }
+
+        /* En la tarjeta del celular, la Copa va al lado del nombre y deja la foto a la vista. */
+        .distintivo-copa--intento {
+            position: static;
+            transform: none;
         }
 
         .celda-etiqueta {

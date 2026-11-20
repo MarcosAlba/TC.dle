@@ -54,7 +54,7 @@
     .no-encontrada__boton {
         padding: var(--espacio-14) calc(var(--sesgo) + 1.5rem);
         color: #fff;
-        background: var(--rojo);
+        background: var(--fondo-acento);
         font-family: var(--fuente-titulos);
         font-size: var(--texto-l);
         font-stretch: var(--ancho-zocalo);

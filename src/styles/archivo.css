@@ -131,7 +131,7 @@
         right: var(--espacio-10);
         padding: 0.125rem calc(var(--sesgo) * 0.5 + 0.375rem);
         color: #fff;
-        background: var(--rojo);
+        background: var(--fondo-acento);
         font-family: var(--fuente-titulos);
         font-size: var(--texto-xs);
         font-stretch: var(--ancho-zocalo);

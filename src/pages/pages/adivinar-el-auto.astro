@@ -27,6 +27,12 @@ import "../../styles/auto.css";
         <p class="intro-juego__texto">
             La foto de un auto de TC arranca borrosa. Decí de quién es en <strong>8 intentos</strong>: cada error la aclara un poco.
         </p>
+
+        <fieldset class="opciones-juego">
+            <legend>Dificultad</legend>
+            <label><input type="radio" name="auto-modo" value="normal" checked /><span>Normal</span></label>
+            <label><input type="radio" name="auto-modo" value="dificil" /><span>Difícil · en blanco y negro</span></label>
+        </fieldset>
     </Fragment>
 
     <section slot="presentacion" class="presentacion-juego" aria-labelledby="titulo-auto">
@@ -39,3 +45,27 @@ import "../../styles/auto.css";
         </Fragment>
     </Auto>
 </PaginaJuego>
+
+<script>
+    import { CLAVE_MODO_AUTO, EVENTO_MODO_AUTO, normalizarModoAuto } from "../../lib/autos";
+
+    // La introducción arranca con el último modo elegido. "Empezar" lo recuerda y se
+    // lo pasa al juego, que ya está montado detrás.
+    const opciones = document.querySelectorAll<HTMLInputElement>('input[name="auto-modo"]');
+    try {
+        const anterior = normalizarModoAuto(localStorage.getItem(CLAVE_MODO_AUTO));
+        opciones.forEach((opcion) => (opcion.checked = opcion.value === anterior));
+    } catch {
+        // Sin localStorage queda el normal.
+    }
+
+    document.querySelector<HTMLButtonElement>("[data-intro-clave]")?.addEventListener("click", () => {
+        const modo = normalizarModoAuto([...opciones].find((opcion) => opcion.checked)?.value);
+        try {
+            localStorage.setItem(CLAVE_MODO_AUTO, modo);
+        } catch {
+            // Sin localStorage vale solo para hoy.
+        }
+        document.dispatchEvent(new CustomEvent(EVENTO_MODO_AUTO, { detail: modo }));
+    });
+</script>

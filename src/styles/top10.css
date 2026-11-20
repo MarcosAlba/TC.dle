@@ -34,7 +34,7 @@
         display: inline-block;
         padding: var(--espacio-4) calc(var(--sesgo) + 0.25rem) var(--espacio-4) var(--espacio-10);
         color: #fff;
-        background: var(--rojo);
+        background: var(--fondo-acento);
         font-size: var(--texto-xs);
         font-style: italic;
         font-weight: 800;
@@ -212,7 +212,7 @@
     .torre__posicion {
         display: grid;
         color: #fff;
-        background: var(--rojo);
+        background: var(--fondo-acento);
         font-size: var(--texto-xl);
         font-stretch: var(--ancho-zocalo);
         font-style: italic;

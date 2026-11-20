@@ -2,12 +2,24 @@
     // Conexiones TC: 16 pilotos en cuatro grupos ocultos de cuatro. Se eligen cuatro
     // y se prueba; con cuatro errores se termina. El tablero es de 4 × 4 en todas
     // las pantallas, así se ven los dieciséis juntos y los botones quedan a mano.
-    import { tick } from "svelte";
+    import { onMount, tick } from "svelte";
     import ResultadoEnLinea from "../../components/ResultadoEnLinea.svelte";
-    import { pilotos } from "../../data/catalogo/pilotos";
+    import { plantelExtra as pilotos } from "../../data/catalogo/plantel-extra";
     import { obtenerAlmacenamiento } from "../../lib/almacenamiento";
     import { leerDiaJuego } from "../../lib/dia-juego";
-    import { generarConexiones, MAXIMO_ERRORES_CONEXIONES, probarConexion, type FichaPiloto } from "../../lib/extra";
+    import {
+        CLAVE_DIFICULTAD_CONEXIONES,
+        ERRORES_CONEXIONES,
+        EVENTO_DIFICULTAD_CONEXIONES,
+        generarConexiones,
+        leerDificultadGuardada,
+        NOMBRES_DIFICULTAD,
+        normalizarDificultad,
+        probarConexion,
+        semillaDelDia,
+        type Dificultad,
+        type FichaPiloto,
+    } from "../../lib/extra";
     import { crearPartidaExtra } from "../../lib/partida-extra";
     import { obtenerApellidoPiloto, obtenerImagenMiniPiloto } from "../../lib/pilotos";
     import { urlImagen, urlSitio } from "../../lib/rutas";
@@ -19,6 +31,8 @@
         /** Cada intento, para el texto que se comparte. */
         intentos: number[][];
         errores: number;
+        /** Elegida en la introducción antes del primer intento; cada dificultad tiene sus propias conexiones. */
+        dificultad?: Dificultad;
     }
 
     // Por el orden del grupo en el día (del más fácil al más difícil).
@@ -27,12 +41,16 @@
 
     const dia = leerDiaJuego(location.search);
     const fecha = dia.fecha;
-    const conexiones = generarConexiones(fichas, "conexiones:" + fecha);
     const partida = crearPartidaExtra<EstadoConexiones>(obtenerAlmacenamiento(), "conexiones", dia);
 
     let estado = $state<EstadoConexiones>(partida.leer() ?? { resueltos: [], intentos: [], errores: 0 });
+    const dificultad = $derived(estado.dificultad ?? "normal");
+    const maximoErrores = $derived(ERRORES_CONEXIONES[dificultad]);
+    const conexiones = $derived(generarConexiones(fichas, semillaDelDia("conexiones", fecha, dificultad), dificultad));
     let seleccion = $state<number[]>([]);
-    let orden = $state<number[]>(conexiones.orden);
+    /** Orden en que se muestran los dieciséis (Mezclar lo cambia); null: el del día. */
+    let ordenMezclado = $state<number[] | null>(null);
+    const orden = $derived(ordenMezclado ?? conexiones.orden);
     let mensaje = $state("");
     let modal: ReturnType<typeof ResultadoEnLinea> | undefined = $state();
     /** Grupos que se acaban de armar en vivo: entran plegándose en su barra de color. */
@@ -44,7 +62,7 @@
     const esperar = (ms: number) => new Promise((listo) => setTimeout(listo, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : ms));
 
     const gano = $derived(estado.resueltos.length === 4);
-    const terminada = $derived(gano || estado.errores >= MAXIMO_ERRORES_CONEXIONES);
+    const terminada = $derived(gano || estado.errores >= maximoErrores);
     const nivelDe = (id: number) => conexiones.grupos.findIndex((item) => item.pilotos.includes(id));
     const nivelDeGrupo = (grupoId: string) => conexiones.grupos.findIndex((item) => item.grupo.id === grupoId);
     // Al terminar sin ganar se muestran todos los grupos: primero los resueltos, después el resto.
@@ -56,13 +74,13 @@
     const sueltos = $derived(orden.filter((id) => !gruposVisibles.some((item) => item.pilotos.includes(id))));
     const piloto = (id: number) => pilotos.find((item) => item.id === id)!;
     /** Apellido corto; si dos de los dieciséis comparten apellido (los Canapino), va con la inicial. */
-    const apellidos = conexiones.orden.map((id) => obtenerApellidoPiloto(piloto(id)));
+    const apellidos = $derived(conexiones.orden.map((id) => obtenerApellidoPiloto(piloto(id))));
     const nombreCorto = (id: number) => {
         const apellido = obtenerApellidoPiloto(piloto(id));
         return apellidos.filter((otro) => otro === apellido).length > 1 ? piloto(id).nombre.charAt(0) + ". " + apellido : apellido;
     };
     // Ganando, el máximo de intentos es cuatro aciertos más tres errores.
-    const marcador = $derived({ puntaje: gano ? estado.intentos.length : null, maximo: 4 + MAXIMO_ERRORES_CONEXIONES - 1, gano });
+    const marcador = $derived({ puntaje: gano ? estado.intentos.length : null, maximo: 4 + maximoErrores - 1, gano });
     // Cada intento es una fila con el color del grupo de cada piloto elegido, sin nombres.
     const armarTexto = (racha: number) => {
         const puntos = "🏁 " + estado.resueltos.length + "/4 · " + estado.errores + (estado.errores === 1 ? " error" : " errores");
@@ -82,6 +100,27 @@
         guardar();
     }
 
+    /** La dificultad vale desde el primer intento: antes se puede cambiar volviendo a la introducción. */
+    function elegirDificultad(nueva: Dificultad) {
+        if (estado.intentos.length > 0 || terminada || estado.dificultad === nueva) {
+            return;
+        }
+        estado.dificultad = nueva;
+        ordenMezclado = null;
+        seleccion = [];
+        guardar();
+    }
+
+    onMount(() => {
+        const alElegir = (evento: Event) => elegirDificultad(normalizarDificultad((evento as CustomEvent).detail));
+        document.addEventListener(EVENTO_DIFICULTAD_CONEXIONES, alElegir);
+        // Si la introducción ya se vio hoy, vale la última dificultad elegida.
+        if (document.documentElement.classList.contains("intro-vista") && !estado.dificultad) {
+            elegirDificultad(leerDificultadGuardada(obtenerAlmacenamiento(), CLAVE_DIFICULTAD_CONEXIONES));
+        }
+        return () => document.removeEventListener(EVENTO_DIFICULTAD_CONEXIONES, alElegir);
+    });
+
     function alternar(id: number) {
         if (terminada) {
             return;
@@ -96,7 +135,7 @@
             const j = Math.floor(Math.random() * (i + 1));
             [copia[i], copia[j]] = [copia[j], copia[i]];
         }
-        orden = copia;
+        ordenMezclado = copia;
     }
 
     async function probar() {
@@ -186,8 +225,8 @@
 
     <!-- Errores como círculos: vacíos los que quedan, llenos los usados (al perder, todos llenos). -->
     {#if !gano}
-        <p class="conexiones__errores" aria-label={"Te quedan " + Math.max(0, MAXIMO_ERRORES_CONEXIONES - estado.errores) + " errores"}>
-            {#each Array.from({ length: MAXIMO_ERRORES_CONEXIONES }) as _, indice (indice)}
+        <p class="conexiones__errores" aria-label={"Te quedan " + Math.max(0, maximoErrores - estado.errores) + " errores"}>
+            {#each Array.from({ length: maximoErrores }) as _, indice (indice)}
                 <i class:usado={indice < estado.errores}></i>
             {/each}
         </p>
@@ -208,7 +247,7 @@
     {fecha}
     {terminada}
     correcto={gano}
-    nombre={gano ? "Cuatro grupos" : estado.resueltos.length + " de 4 grupos"}
+    nombre={(gano ? "Cuatro grupos" : estado.resueltos.length + " de 4 grupos") + (dificultad === "normal" ? "" : " (" + NOMBRES_DIFICULTAD[dificultad].toLowerCase() + ")")}
     detalle={gano
         ? estado.errores === 0
             ? "Sin errores."

@@ -147,7 +147,6 @@ describe("íconos compartidos", () => {
     it("los componentes usan los íconos que existen en el sprite", () => {
         const sprite = lee("src/components/Iconos.astro");
         const usados = [
-            ...lee("src/components/ModalResultado.svelte").matchAll(/href="#(icono-[a-z]+)"/g),
             ...lee("src/components/SiguienteJuego.svelte").matchAll(/href="#(icono-[a-z]+)"/g),
             ...lee("src/components/BotonCompartir.svelte").matchAll(/href="#(icono-[a-z]+)"/g),
         ];

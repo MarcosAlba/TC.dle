@@ -1,0 +1,1814 @@
+[
+  {
+    "id": 1,
+    "marcas": [
+      "Chevrolet"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Pista 2008"
+    ],
+    "copaDeOro": [
+      2009,
+      2010,
+      2012,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2025
+    ],
+    "familia": [
+      14
+    ],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 2,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      2021,
+      2024
+    ],
+    "escuela": [],
+    "copaDeOro": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 3,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Mouras 2018"
+    ],
+    "copaDeOro": [
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 4,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2021,
+      2025
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 5,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2013,
+      2014,
+      2016,
+      2017,
+      2018,
+      2023,
+      2025
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 6,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2015,
+      2019,
+      2020,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 7,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2025
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 8,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 1,
+    "subcampeon": [
+      2013,
+      2022
+    ],
+    "escuela": [],
+    "copaDeOro": [
+      2010,
+      2013,
+      2014,
+      2015,
+      2016,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 9,
+    "marcas": [
+      "Chevrolet",
+      "Ford"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 15,
+    "subcampeon": [
+      2003,
+      2014
+    ],
+    "escuela": [],
+    "copaDeOro": [
+      2008,
+      2009,
+      2010,
+      2012,
+      2013,
+      2014,
+      2015,
+      2017,
+      2019,
+      2020,
+      2021,
+      2023,
+      2025
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 10,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Mouras 2012"
+    ],
+    "copaDeOro": [
+      2024,
+      2025
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 11,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2013,
+      2014,
+      2015,
+      2017,
+      2021,
+      2022
+    ],
+    "familia": [
+      71,
+      78,
+      79
+    ],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 12,
+    "marcas": [
+      "Chevrolet"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2017
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 13,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 14,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [
+      1
+    ],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 15,
+    "marcas": [
+      "Dodge",
+      "Ford"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 7,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2009,
+      2012,
+      2016
+    ],
+    "familia": [
+      35
+    ],
+    "exterior": true,
+    "formula1": true
+  },
+  {
+    "id": 16,
+    "marcas": [
+      "Chevrolet"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2016,
+      2017,
+      2018,
+      2020,
+      2021,
+      2023
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": true
+  },
+  {
+    "id": 17,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Pista 2016"
+    ],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 18,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Mouras 2016"
+    ],
+    "copaDeOro": [
+      2023
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 19,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 1,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2015,
+      2018,
+      2020,
+      2021
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 20,
+    "marcas": [
+      "Chevrolet",
+      "Dodge"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 21,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 22,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2018
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 23,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      2023,
+      2025
+    ],
+    "escuela": [
+      "TC Mouras 2015"
+    ],
+    "copaDeOro": [
+      2018,
+      2020,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 24,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 25,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 26,
+    "marcas": [
+      "Chevrolet",
+      "Dodge",
+      "Ford"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 1,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2008,
+      2012,
+      2016
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 27,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Pista Mouras 2012"
+    ],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 28,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 29,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 30,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Mouras 2025"
+    ],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 31,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      2017
+    ],
+    "escuela": [],
+    "copaDeOro": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2021,
+      2022
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 32,
+    "marcas": [
+      "Dodge"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2024
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 33,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Pista Mouras 2022"
+    ],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 34,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 35,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2014,
+      2018,
+      2020,
+      2023
+    ],
+    "familia": [
+      15
+    ],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 36,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Mouras 2019"
+    ],
+    "copaDeOro": [
+      2021,
+      2023,
+      2024,
+      2025
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 37,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      2020
+    ],
+    "escuela": [
+      "TC Pista 2018"
+    ],
+    "copaDeOro": [
+      2019,
+      2020,
+      2021,
+      2022
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 38,
+    "marcas": [
+      "Dodge"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      2018
+    ],
+    "escuela": [
+      "TC Pista 2005"
+    ],
+    "copaDeOro": [
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "familia": [
+      80
+    ],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 39,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Pista 2023",
+      "TC Pista Mouras 2020"
+    ],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 40,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 41,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 42,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 43,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 44,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Mouras 2009"
+    ],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 45,
+    "marcas": [
+      "Chevrolet"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 46,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Pista 2021"
+    ],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 47,
+    "marcas": [
+      "Chevrolet"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 4,
+    "subcampeon": [
+      2007,
+      2012,
+      2015,
+      2016
+    ],
+    "escuela": [],
+    "copaDeOro": [
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2022,
+      2023,
+      2025
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 48,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Pista 2024"
+    ],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 49,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 50,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 51,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 52,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Pista 2017"
+    ],
+    "copaDeOro": [
+      2019,
+      2020,
+      2023,
+      2024,
+      2025
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 53,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2009,
+      2015
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 54,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Mouras 2023"
+    ],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 55,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Pista Mouras 2021"
+    ],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 56,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 57,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Pista 2025"
+    ],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 58,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 59,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 1,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [
+      73
+    ],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 60,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 61,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 62,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 63,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Mouras 2021"
+    ],
+    "copaDeOro": [
+      2024
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 64,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      2019
+    ],
+    "escuela": [],
+    "copaDeOro": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2022,
+      2023,
+      2024
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 65,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Pista 2022"
+    ],
+    "copaDeOro": [
+      2025
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 66,
+    "marcas": [
+      "Chevrolet",
+      "Ford"
+    ],
+    "victoriasTotales": 7,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": true,
+    "formula1": true
+  },
+  {
+    "id": 67,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": 43,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1939,
+      1949,
+      1956,
+      1957,
+      1958,
+      1960
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [
+      68
+    ],
+    "exterior": true,
+    "formula1": true
+  },
+  {
+    "id": 68,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": 56,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1941,
+      1953,
+      1954,
+      1959
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [
+      67
+    ],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 69,
+    "marcas": [
+      "Ford",
+      "Torino"
+    ],
+    "victoriasTotales": 26,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1968
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 70,
+    "marcas": [
+      "Chevrolet",
+      "Dodge",
+      "Ford"
+    ],
+    "victoriasTotales": 22,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1963
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 71,
+    "marcas": [
+      "Chevrolet",
+      "Dodge",
+      "Ford",
+      "Torino"
+    ],
+    "victoriasTotales": 20,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [
+      11,
+      78,
+      79
+    ],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 72,
+    "marcas": [
+      "Chevrolet",
+      "Dodge",
+      "Torino"
+    ],
+    "victoriasTotales": 50,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1976
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 73,
+    "marcas": [
+      "Dodge",
+      "Ford"
+    ],
+    "victoriasTotales": 16,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1986,
+      1993,
+      1994
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [
+      59
+    ],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 74,
+    "marcas": [
+      "Chevrolet",
+      "Ford",
+      "Torino"
+    ],
+    "victoriasTotales": 46,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1974
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 75,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": 33,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1999,
+      2000,
+      2001,
+      2002
+    ],
+    "escuela": [],
+    "copaDeOro": [
+      2009,
+      2011,
+      2013,
+      2014,
+      2015
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 76,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": 14,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      2004,
+      2008
+    ],
+    "escuela": [],
+    "copaDeOro": [
+      2008,
+      2013,
+      2014,
+      2016,
+      2017,
+      2019
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 77,
+    "marcas": [
+      "Chevrolet",
+      "Dodge",
+      "Ford"
+    ],
+    "victoriasTotales": 10,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 78,
+    "marcas": [
+      "Torino"
+    ],
+    "victoriasTotales": 5,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      2006
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [
+      11,
+      71,
+      79
+    ],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 79,
+    "marcas": [
+      "Chevrolet",
+      "Dodge",
+      "Torino"
+    ],
+    "victoriasTotales": 11,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [
+      11,
+      71,
+      78
+    ],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 80,
+    "marcas": [
+      "Dodge",
+      "Ford"
+    ],
+    "victoriasTotales": 27,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1984,
+      1990,
+      1991
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [
+      38
+    ],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 81,
+    "marcas": [
+      "Chevrolet",
+      "Dodge",
+      "Ford"
+    ],
+    "victoriasTotales": 16,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1979,
+      1980,
+      1982
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [
+      82
+    ],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 82,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": 16,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2008,
+      2009,
+      2010,
+      2012,
+      2013
+    ],
+    "familia": [
+      81
+    ],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 83,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": 6,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1987
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 84,
+    "marcas": [
+      "Chevrolet",
+      "Ford"
+    ],
+    "victoriasTotales": 32,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2008,
+      2009,
+      2011,
+      2012,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 85,
+    "marcas": [
+      "Chevrolet",
+      "Dodge",
+      "Torino"
+    ],
+    "victoriasTotales": 4,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2009,
+      2011,
+      2013
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 86,
+    "marcas": [
+      "Chevrolet",
+      "Dodge",
+      "Torino"
+    ],
+    "victoriasTotales": 8,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2014,
+      2018,
+      2019,
+      2021,
+      2022
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 87,
+    "marcas": [
+      "Chevrolet",
+      "Dodge",
+      "Torino"
+    ],
+    "victoriasTotales": 3,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2010,
+      2011,
+      2014,
+      2015,
+      2016
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 88,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": 1,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2011
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 89,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": 3,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Mouras 2008",
+      "TC Pista 2010"
+    ],
+    "copaDeOro": [
+      2011,
+      2012,
+      2013,
+      2016
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 90,
+    "marcas": [
+      "Chevrolet",
+      "Dodge"
+    ],
+    "victoriasTotales": 3,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [
+      91
+    ],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 91,
+    "marcas": [
+      "Chevrolet",
+      "Torino"
+    ],
+    "victoriasTotales": 1,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [
+      "TC Pista 2019"
+    ],
+    "copaDeOro": [
+      2024
+    ],
+    "familia": [
+      90
+    ],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 92,
+    "marcas": [
+      "Chevrolet"
+    ],
+    "victoriasTotales": 8,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      2009
+    ],
+    "escuela": [],
+    "copaDeOro": [
+      2008,
+      2009,
+      2010,
+      2011,
+      2015,
+      2016
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 93,
+    "marcas": [
+      "Ford"
+    ],
+    "victoriasTotales": 11,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2008,
+      2009,
+      2010,
+      2014,
+      2017
+    ],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 94,
+    "marcas": [
+      "Chevrolet"
+    ],
+    "victoriasTotales": 9,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1995,
+      1996
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": false,
+    "formula1": false
+  },
+  {
+    "id": 95,
+    "marcas": [
+      "Chevrolet",
+      "Dodge",
+      "Ford"
+    ],
+    "victoriasTotales": 18,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 96,
+    "marcas": [
+      "Dodge",
+      "Ford",
+      "Torino"
+    ],
+    "victoriasTotales": 9,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 97,
+    "marcas": [
+      "Dodge",
+      "Ford"
+    ],
+    "victoriasTotales": 15,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2008
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 98,
+    "marcas": [
+      "Chevrolet"
+    ],
+    "victoriasTotales": 27,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      1985,
+      1998
+    ],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 99,
+    "marcas": [
+      "Chevrolet"
+    ],
+    "victoriasTotales": 8,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 100,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [
+      2010
+    ],
+    "escuela": [],
+    "copaDeOro": [
+      2008,
+      2010,
+      2011,
+      2012,
+      2015
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 101,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [
+      2011,
+      2012
+    ],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  },
+  {
+    "id": 102,
+    "marcas": [],
+    "victoriasTotales": null,
+    "victoriasAntes2010": 0,
+    "subcampeon": [],
+    "escuela": [],
+    "copaDeOro": [],
+    "familia": [],
+    "exterior": true,
+    "formula1": false
+  }
+]

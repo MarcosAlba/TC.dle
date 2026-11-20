@@ -3,13 +3,14 @@
   "private": true,
   "description": "TCdle: juego diario de Turismo Carretera",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "node scripts/variantes-autos.mjs && astro dev",
+    "build": "node scripts/variantes-autos.mjs && astro build",
     "preview": "astro preview",
     "test": "vitest run",
     "check": "astro check && svelte-check --tsconfig ./tsconfig.json",
     "imagenes": "node scripts/optimizar-imagenes.mjs",
-    "carreras": "node scripts/bajar-carreras.mjs"
+    "carreras": "node scripts/bajar-carreras.mjs",
+    "variantes": "node scripts/variantes-autos.mjs"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

@@ -1,0 +1,50 @@
+[
+    {
+        "id": 100,
+        "nombre": "Gabriel Ponce de León",
+        "marca": "Ford",
+        "equipo": "Ponce de León Competición",
+        "localidad": "Junín, Buenos Aires",
+        "provincia": "Buenos Aires",
+        "fechaNacimiento": "1979-03-14",
+        "campeonTC": false,
+        "anioDebutTC": 2002,
+        "retirado": true,
+        "foto": "silueta-piloto.webp",
+        "numeroAuto": null,
+        "datoPeculiar": null,
+        "estadisticaDestacada": null
+    },
+    {
+        "id": 101,
+        "nombre": "Néstor Girolami",
+        "marca": "Torino",
+        "equipo": "Maquin Parts",
+        "localidad": "Isla Verde, Córdoba",
+        "provincia": "Córdoba",
+        "fechaNacimiento": "1989-05-22",
+        "campeonTC": false,
+        "anioDebutTC": 2009,
+        "retirado": true,
+        "foto": "silueta-piloto.webp",
+        "numeroAuto": null,
+        "datoPeculiar": null,
+        "estadisticaDestacada": null
+    },
+    {
+        "id": 102,
+        "nombre": "Esteban Guerrieri",
+        "marca": "Chevrolet",
+        "equipo": "Oil Competición",
+        "localidad": "Mataderos, Buenos Aires",
+        "provincia": "Buenos Aires",
+        "fechaNacimiento": "1985-01-19",
+        "campeonTC": false,
+        "anioDebutTC": 2013,
+        "retirado": true,
+        "foto": "silueta-piloto.webp",
+        "numeroAuto": null,
+        "datoPeculiar": null,
+        "estadisticaDestacada": null
+    }
+]

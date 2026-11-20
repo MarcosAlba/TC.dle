@@ -279,7 +279,7 @@
         flex: none;
         padding: var(--espacio-6) calc(var(--sesgo) + 0.5rem);
         color: #fff;
-        background: var(--rojo);
+        background: var(--fondo-acento);
         font-size: var(--texto-m);
         font-stretch: var(--ancho-zocalo);
         font-style: italic;
@@ -337,7 +337,7 @@
     .proxima-carrera__fecha {
         padding: var(--espacio-4) calc(var(--sesgo) + 0.625rem);
         color: #fff;
-        background: var(--rojo);
+        background: var(--fondo-acento);
         font-size: var(--texto-m);
         font-weight: 800;
     }
@@ -383,7 +383,7 @@
 
     .proxima-carrera__tile--segundos {
         color: #fff;
-        background: var(--rojo);
+        background: var(--fondo-acento);
     }
 
     .proxima-carrera__tile--segundos small {
@@ -685,7 +685,7 @@
             margin: 0;
             padding: var(--espacio-4) calc(var(--sesgo) + 0.625rem);
             color: #fff;
-            background: var(--rojo);
+            background: var(--fondo-acento);
             font-size: var(--texto-s);
             font-stretch: var(--ancho-zocalo);
             font-style: italic;

@@ -10,16 +10,22 @@
     import ResultadoEnLinea from "../../components/ResultadoEnLinea.svelte";
     import OpcionPiloto from "../../components/OpcionPiloto.svelte";
     import PanelIntento from "../../components/PanelIntento.svelte";
-    import { pilotos } from "../../data/catalogo/pilotos";
+    import { plantelExtra as pilotos } from "../../data/catalogo/plantel-extra";
     import type { Piloto } from "../../data/tipos";
     import { obtenerAlmacenamiento } from "../../lib/almacenamiento";
     import { construirTextoCompartir } from "../../lib/compartir";
     import { leerDiaJuego } from "../../lib/dia-juego";
     import {
         casillerosPosibles,
+        CLAVE_DIFICULTAD_GRILLA,
         EVENTO_TIEMPO_GRILLA,
+        leerDificultadGuardada,
+        NOMBRES_DIFICULTAD,
+        semillaDelDia,
+        type Dificultad,
         generarGrilla,
         normalizarTiempoGrilla,
+        resolverGrilla,
         respuestasCasillero,
         type Condicion,
         type FichaPiloto,
@@ -30,6 +36,13 @@
     import { urlImagen, urlSitio } from "../../lib/rutas";
 
     let { fichas }: { fichas: FichaPiloto[] } = $props();
+
+    // Insignias de las consignas (src/assets/grilla), en línea para que tomen la
+    // tipografía del sitio y los colores del modo claro. Cada una es un archivo aparte:
+    // se bajan solo las seis de la grilla del día (mientras tanto se ve el símbolo o el logo).
+    const CARGAR_INSIGNIA = import.meta.glob("../../assets/grilla/*.svg", { query: "?raw", import: "default" }) as Record<string, () => Promise<string>>;
+    let insignias = $state<Record<string, string>>({});
+    const insigniaDe = (id: string) => insignias[id];
 
     interface EstadoGrilla {
         /** Piloto puesto en cada casillero (0 a 8, por filas). */
@@ -42,14 +55,28 @@
         inicio?: number;
         /** Se terminó el tiempo. */
         agotado?: boolean;
+        /** Elegida en la introducción; cada dificultad tiene su propia grilla del día. */
+        dificultad?: Dificultad;
     }
 
     const dia = leerDiaJuego(location.search);
     const fecha = dia.fecha;
-    const grilla = generarGrilla(fichas, "grilla:" + fecha);
     const partida = crearPartidaExtra<EstadoGrilla>(obtenerAlmacenamiento(), "grilla", dia);
 
     let estado = $state<EstadoGrilla>(partida.leer() ?? { respuestas: {}, probados: [], rendido: false });
+    const dificultad = $derived(estado.dificultad ?? "normal");
+    const grilla = $derived(generarGrilla(fichas, semillaDelDia("grilla", fecha, dificultad), dificultad));
+    // Baja las insignias de la grilla del día (cambian si se elige otra dificultad).
+    $effect(() => {
+        for (const { insignia } of [...grilla.filas, ...grilla.columnas]) {
+            if (insignias[insignia] !== undefined) {
+                continue;
+            }
+            CARGAR_INSIGNIA["../../assets/grilla/" + insignia + ".svg"]?.().then((svg) => {
+                insignias[insignia] = svg.replace(/href="marcas\//g, 'href="' + urlImagen("marcas/"));
+            });
+        }
+    });
     /** Piloto que encaja en más de un casillero libre, esperando que se elija dónde va. */
     let pendiente = $state<{ id: number; casilleros: number[] } | null>(null);
     let mensaje = $state<{ texto: string; tipo: "" | "error" | "exito" }>({ texto: "", tipo: "" });
@@ -66,6 +93,27 @@
     const opcionesReloj = $derived({ marcas: true, limiteSegundos: estado.limiteSegundos ?? null, inicio: estado.inicio ?? 0 });
     const usados = $derived(new Set(Object.values(estado.respuestas)));
     const libres = $derived([0, 1, 2, 3, 4, 5, 6, 7, 8].filter((indice) => estado.respuestas[indice] === undefined));
+    /**
+     * Al terminar, un piloto que valía en cada casillero vacío: distintos entre sí
+     * y sin repetir los ya puestos. Si no alcanzan, el primero libre de cada uno.
+     */
+    const ejemplos = $derived.by(() => {
+        if (!terminada) {
+            return new Map<number, number>();
+        }
+        const distintos = resolverGrilla(fichas, grilla, libres, usados);
+        if (distintos) {
+            return distintos;
+        }
+        const porCasillero = new Map<number, number>();
+        for (const indice of libres) {
+            const ficha = respuestasCasillero(fichas, grilla.filas[Math.floor(indice / 3)], grilla.columnas[indice % 3]).find((f) => !usados.has(f.id));
+            if (ficha) {
+                porCasillero.set(indice, ficha.id);
+            }
+        }
+        return porCasillero;
+    });
     const fotoDe = (id: number) => urlImagen(obtenerImagenMiniPiloto(pilotos.find((piloto) => piloto.id === id)!));
     const nombreDe = (id: number) => pilotos.find((piloto) => piloto.id === id)!.nombre;
     const apellidoDe = (id: number) => obtenerApellidoPiloto(pilotos.find((piloto) => piloto.id === id)!);
@@ -90,11 +138,12 @@
         guardar();
     }
 
-    /** Arranca la partida con el tiempo elegido. Solo la primera vez: recargar no reinicia el reloj. */
+    /** Arranca la partida con el tiempo y la dificultad elegidos. Solo la primera vez: recargar no reinicia el reloj. */
     function empezar(segundos: TiempoGrilla) {
         if (empezada || terminada) {
             return;
         }
+        estado.dificultad = leerDificultadGuardada(obtenerAlmacenamiento(), CLAVE_DIFICULTAD_GRILLA);
         estado.limiteSegundos = segundos;
         estado.inicio = Date.now();
         guardar();
@@ -197,7 +246,7 @@
         {fecha}
         {terminada}
         correcto={gano}
-        nombre={gano ? "Grilla completa" : estado.agotado ? "Se terminó el tiempo" : aciertos + " de 9"}
+        nombre={(gano ? "Grilla completa" : estado.agotado ? "Se terminó el tiempo" : aciertos + " de 9") + (dificultad === "normal" ? "" : " (" + NOMBRES_DIFICULTAD[dificultad].toLowerCase() + ")")}
         detalle={gano
             ? "La completaste con " + estado.probados.length + " " + (estado.probados.length === 1 ? "piloto probado" : "pilotos probados") + "."
             : "Los casilleros vacíos muestran un piloto que valía."}
@@ -277,7 +326,7 @@
                         <b>Acá</b>
                     </button>
                 {:else if terminada}
-                    {@const ejemplo = respuestasCasillero(fichas, fila, columna).find((ficha) => !usados.has(ficha.id))}
+                    {@const ejemplo = ejemplos.has(indice) ? fichas.find((ficha) => ficha.id === ejemplos.get(indice)) : undefined}
                     <div class="grilla__celda grilla__celda--vacia" role="gridcell">
                         {#if ejemplo}<small>Valía</small><b>{ejemplo.nombre}</b>{/if}
                     </div>
@@ -295,7 +344,9 @@
 
 {#snippet consigna(condicion: Condicion, rol: "columnheader" | "rowheader")}
     <div class="grilla__consigna" role={rol} aria-label={condicion.texto} title={condicion.texto}>
-        {#if condicion.logo}
+        {#if condicion.insignia && insigniaDe(condicion.insignia)}
+            <span class="grilla__insignia" aria-hidden="true">{@html insigniaDe(condicion.insignia)}</span>
+        {:else if condicion.logo}
             <img class="grilla__logo" src={urlImagen(condicion.logo)} alt="" />
         {:else}
             <span class="grilla__simbolo" aria-hidden="true">{condicion.simbolo}</span>

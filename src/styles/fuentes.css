@@ -21,3 +21,16 @@
     font-display: swap;
     src: url("../assets/fonts/archivo-italic.woff2") format("woff2");
 }
+
+/*
+ * Saira Extra Condensed 800, autoalojada (subset latino): las letras de las
+ * insignias de la Grilla, que van como SVG en línea. Licencia SIL OFL en
+ * src/assets/fonts. Solo la usan las insignias, así que no se precarga.
+ */
+@font-face {
+    font-family: "Saira Extra Condensed";
+    font-style: normal;
+    font-weight: 800;
+    font-display: swap;
+    src: url("../assets/fonts/saira-extra-condensed-800.woff2") format("woff2");
+}

@@ -1,6 +1,6 @@
-// Ronda extra del número (piloto) y modo detalle (auto).
+// Ronda extra del número (piloto) y modo difícil (auto).
 import { describe, expect, it } from "vitest";
-import { NIVELES_ZOOM, obtenerEstiloDetalle } from "../src/lib/autos";
+import { normalizarModoAuto, obtenerEstiloDesenfoque, obtenerNivelDesenfoque } from "../src/lib/autos";
 import { generarOpcionesNumero } from "../src/lib/pilotos";
 
 describe("ronda extra del número", () => {
@@ -23,23 +23,21 @@ describe("ronda extra del número", () => {
     });
 });
 
-describe("modo detalle del auto", () => {
-    it("el zoom baja con cada error y al terminar se ve entera", () => {
-        const escalas = NIVELES_ZOOM.map((_, intentos) => Number(obtenerEstiloDetalle(intentos, false, "s").escala));
-
-        expect(escalas).toEqual([...escalas].sort((a, b) => b - a));
-        expect(obtenerEstiloDetalle(3, true, "s").escala).toBe("1");
-        expect(obtenerEstiloDetalle(0, false, "s").desenfoque).toBe("0rem");
+describe("modo difícil del auto", () => {
+    it("es el mismo desenfoque que el normal, solo que en blanco y negro", () => {
+        for (let intentos = 0; intentos < 9; intentos++) {
+            const nivel = obtenerNivelDesenfoque(intentos, false);
+            const normal = obtenerEstiloDesenfoque(nivel);
+            const dificil = obtenerEstiloDesenfoque(nivel, true);
+            expect({ ...dificil, gris: "0" }).toEqual(normal);
+            expect(dificil.gris).toBe("1");
+        }
     });
 
-    it("el punto del zoom es el mismo todo el día y cerca del centro", () => {
-        const { origen } = obtenerEstiloDetalle(0, false, "detalle:2026-11-01:auto.webp");
-        const [x, y] = origen.split(" ").map(parseFloat);
-
-        expect(obtenerEstiloDetalle(5, false, "detalle:2026-11-01:auto.webp").origen).toBe(origen);
-        expect(x).toBeGreaterThanOrEqual(40);
-        expect(x).toBeLessThanOrEqual(60);
-        expect(y).toBeGreaterThanOrEqual(45);
-        expect(y).toBeLessThanOrEqual(65);
+    it("los modos viejos (borroso, detalle) valen como normal", () => {
+        expect(normalizarModoAuto("dificil")).toBe("dificil");
+        expect(normalizarModoAuto("detalle")).toBe("normal");
+        expect(normalizarModoAuto("borroso")).toBe("normal");
+        expect(normalizarModoAuto(null)).toBe("normal");
     });
 });

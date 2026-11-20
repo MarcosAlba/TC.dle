@@ -27,7 +27,7 @@ const { juegoActual } = Astro.props;
             height="196"
         />
         <!-- Solo se ve con el tema de Halloween: cae sobre la T del logo. -->
-        <img class="logo-juego__calabaza" src={calabaza.src} width={calabaza.width} height={calabaza.height} alt="" />
+        <img class="logo-juego__calabaza" src={calabaza.src} width={calabaza.width} height={calabaza.height} alt="" loading="lazy" />
     </a>
     <div class="encabezado-juego__acciones">
         {

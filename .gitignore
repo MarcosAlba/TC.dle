@@ -1,3 +1,6 @@
 node_modules/
 dist/
 .astro/
+
+# Versiones chicas de las fotos de autos: las arma scripts/variantes-autos.mjs antes de cada build.
+public/assets/images/autos-variantes/

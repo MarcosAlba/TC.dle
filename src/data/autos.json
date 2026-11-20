@@ -101,6 +101,11 @@
   },
   {
     "pilotoId": 5,
+    "archivo": "juan_martin_trucco_2012.webp",
+    "anio": 2012
+  },
+  {
+    "pilotoId": 5,
     "archivo": "juan_martin_trucco_2023.webp",
     "anio": 2023
   },
@@ -191,6 +196,11 @@
   },
   {
     "pilotoId": 9,
+    "archivo": "christian_ledesma_1998.webp",
+    "anio": 1998
+  },
+  {
+    "pilotoId": 9,
     "archivo": "christian_ledesma_2007.webp",
     "anio": 2007
   },
@@ -236,6 +246,11 @@
   },
   {
     "pilotoId": 11,
+    "archivo": "luis_jose_di_palma_2012.webp",
+    "anio": 2012
+  },
+  {
+    "pilotoId": 11,
     "archivo": "luis_jose_di_palma_2026.webp",
     "anio": 2026
   },
@@ -256,6 +271,16 @@
   },
   {
     "pilotoId": 15,
+    "archivo": "norberto_fontana_2003.webp",
+    "anio": 2003
+  },
+  {
+    "pilotoId": 15,
+    "archivo": "norberto_fontana_2012.webp",
+    "anio": 2012
+  },
+  {
+    "pilotoId": 15,
     "archivo": "norberto_fontana_2026.webp",
     "anio": 2026
   },
@@ -263,6 +288,11 @@
     "pilotoId": 18,
     "archivo": "juan_tomas_catalan_magni_2026.webp",
     "anio": 2026
+  },
+  {
+    "pilotoId": 19,
+    "archivo": "juan_pablo_gianini_2012.webp",
+    "anio": 2012
   },
   {
     "pilotoId": 19,
@@ -391,6 +421,11 @@
   },
   {
     "pilotoId": 45,
+    "archivo": "diego_de_carlo_2012.webp",
+    "anio": 2012
+  },
+  {
+    "pilotoId": 45,
     "archivo": "diego_de_carlo_2026.webp",
     "anio": 2026
   },
@@ -501,6 +536,11 @@
   },
   {
     "pilotoId": 59,
+    "archivo": "juan_b_de_benedictis_2012.webp",
+    "anio": 2012
+  },
+  {
+    "pilotoId": 59,
     "archivo": "juan_b_de_benedictis_2026.webp",
     "anio": 2026
   },
@@ -543,5 +583,380 @@
     "pilotoId": 65,
     "archivo": "otto_fritzler_2026.webp",
     "anio": 2026
+  },
+  {
+    "pilotoId": 66,
+    "archivo": "juan_manuel_fangio_1940.webp",
+    "anio": 1940
+  },
+  {
+    "pilotoId": 67,
+    "archivo": "oscar_alfredo_galvez_1953.webp",
+    "anio": 1953
+  },
+  {
+    "pilotoId": 68,
+    "archivo": "juan_galvez_1962.webp",
+    "anio": 1962
+  },
+  {
+    "pilotoId": 69,
+    "archivo": "eduardo_copello_1967.webp",
+    "anio": 1967
+  },
+  {
+    "pilotoId": 70,
+    "archivo": "carlos_pairetti_1968.webp",
+    "anio": 1968
+  },
+  {
+    "pilotoId": 70,
+    "archivo": "carlos_pairetti_1968_trueno.webp",
+    "anio": 1968
+  },
+  {
+    "pilotoId": 71,
+    "archivo": "ruben_luis_di_palma_1970.webp",
+    "anio": 1970
+  },
+  {
+    "pilotoId": 71,
+    "archivo": "ruben_luis_di_palma_1995.webp",
+    "anio": 1995
+  },
+  {
+    "pilotoId": 71,
+    "archivo": "ruben_luis_di_palma_1998.webp",
+    "anio": 1998
+  },
+  {
+    "pilotoId": 72,
+    "archivo": "roberto_mouras_1976.webp",
+    "anio": 1976
+  },
+  {
+    "pilotoId": 72,
+    "archivo": "roberto_mouras_1983.webp",
+    "anio": 1983
+  },
+  {
+    "pilotoId": 72,
+    "archivo": "roberto_mouras_1985.webp",
+    "anio": 1985
+  },
+  {
+    "pilotoId": 72,
+    "archivo": "roberto_mouras_1986.webp",
+    "anio": 1986
+  },
+  {
+    "pilotoId": 72,
+    "archivo": "roberto_mouras_1987.webp",
+    "anio": 1987
+  },
+  {
+    "pilotoId": 72,
+    "archivo": "roberto_mouras_1988.webp",
+    "anio": 1988
+  },
+  {
+    "pilotoId": 72,
+    "archivo": "roberto_mouras_1991.webp",
+    "anio": 1991
+  },
+  {
+    "pilotoId": 72,
+    "archivo": "roberto_mouras_1992.webp",
+    "anio": 1992
+  },
+  {
+    "pilotoId": 73,
+    "archivo": "juan_antonio_de_benedictis_1986.webp",
+    "anio": 1986
+  },
+  {
+    "pilotoId": 73,
+    "archivo": "juan_antonio_de_benedictis_1994.webp",
+    "anio": 1994
+  },
+  {
+    "pilotoId": 73,
+    "archivo": "juan_antonio_de_benedictis_1995.webp",
+    "anio": 1995
+  },
+  {
+    "pilotoId": 74,
+    "archivo": "juan_maria_traverso_1977.webp",
+    "anio": 1977
+  },
+  {
+    "pilotoId": 74,
+    "archivo": "juan_maria_traverso_1995.webp",
+    "anio": 1995
+  },
+  {
+    "pilotoId": 74,
+    "archivo": "juan_maria_traverso_1996.webp",
+    "anio": 1996
+  },
+  {
+    "pilotoId": 74,
+    "archivo": "juan_maria_traverso_1997.webp",
+    "anio": 1997
+  },
+  {
+    "pilotoId": 74,
+    "archivo": "juan_maria_traverso_2003.webp",
+    "anio": 2003
+  },
+  {
+    "pilotoId": 74,
+    "archivo": "juan_maria_traverso_2004.webp",
+    "anio": 2004
+  },
+  {
+    "pilotoId": 74,
+    "archivo": "juan_maria_traverso_2005.webp",
+    "anio": 2005
+  },
+  {
+    "pilotoId": 75,
+    "archivo": "omar_martinez_1995.webp",
+    "anio": 1995
+  },
+  {
+    "pilotoId": 75,
+    "archivo": "omar_martinez_2003.webp",
+    "anio": 2003
+  },
+  {
+    "pilotoId": 78,
+    "archivo": "patricio_di_palma_2006.webp",
+    "anio": 2006
+  },
+  {
+    "pilotoId": 79,
+    "archivo": "marcos_di_palma_2001.webp",
+    "anio": 2001
+  },
+  {
+    "pilotoId": 79,
+    "archivo": "marcos_di_palma_2002.webp",
+    "anio": 2002
+  },
+  {
+    "pilotoId": 79,
+    "archivo": "marcos_di_palma_2003.webp",
+    "anio": 2003
+  },
+  {
+    "pilotoId": 79,
+    "archivo": "marcos_di_palma_2006.webp",
+    "anio": 2006
+  },
+  {
+    "pilotoId": 79,
+    "archivo": "marcos_di_palma_2008.webp",
+    "anio": 2008
+  },
+  {
+    "pilotoId": 82,
+    "archivo": "diego_aventin_2013.webp",
+    "anio": 2013
+  },
+  {
+    "pilotoId": 82,
+    "archivo": "diego_aventin_2014.webp",
+    "anio": 2014
+  },
+  {
+    "pilotoId": 83,
+    "archivo": "jorge_oyhanart_1987.webp",
+    "anio": 1987
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_1996.webp",
+    "anio": 1996
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_1997.webp",
+    "anio": 1997
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_1998.webp",
+    "anio": 1998
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_1999.webp",
+    "anio": 1999
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_2001.webp",
+    "anio": 2001
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_2002.webp",
+    "anio": 2002
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_2005.webp",
+    "anio": 2005
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_2008.webp",
+    "anio": 2008
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_2009.webp",
+    "anio": 2009
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_2011.webp",
+    "anio": 2011
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_2012.webp",
+    "anio": 2012
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_2017.webp",
+    "anio": 2017
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_2021.webp",
+    "anio": 2021
+  },
+  {
+    "pilotoId": 84,
+    "archivo": "guillermo_ortelli_2024.webp",
+    "anio": 2024
+  },
+  {
+    "pilotoId": 85,
+    "archivo": "jose_maria_lopez_2008.webp",
+    "anio": 2008
+  },
+  {
+    "pilotoId": 85,
+    "archivo": "jose_maria_lopez_2009.webp",
+    "anio": 2009
+  },
+  {
+    "pilotoId": 85,
+    "archivo": "jose_maria_lopez_2010.webp",
+    "anio": 2010
+  },
+  {
+    "pilotoId": 85,
+    "archivo": "jose_maria_lopez_2013.webp",
+    "anio": 2013
+  },
+  {
+    "pilotoId": 86,
+    "archivo": "leonel_pernia_2012.webp",
+    "anio": 2012
+  },
+  {
+    "pilotoId": 86,
+    "archivo": "leonel_pernia_2016.webp",
+    "anio": 2016
+  },
+  {
+    "pilotoId": 86,
+    "archivo": "leonel_pernia_2019.webp",
+    "anio": 2019
+  },
+  {
+    "pilotoId": 86,
+    "archivo": "leonel_pernia_2023.webp",
+    "anio": 2023
+  },
+  {
+    "pilotoId": 87,
+    "archivo": "juan_marcos_angelini_2010.webp",
+    "anio": 2010
+  },
+  {
+    "pilotoId": 87,
+    "archivo": "juan_marcos_angelini_2018.webp",
+    "anio": 2018
+  },
+  {
+    "pilotoId": 88,
+    "archivo": "guido_falaschi_2011.webp",
+    "anio": 2011
+  },
+  {
+    "pilotoId": 89,
+    "archivo": "mauro_giallombardo_2013.webp",
+    "anio": 2013
+  },
+  {
+    "pilotoId": 90,
+    "archivo": "jose_ciantini_2006.webp",
+    "anio": 2006
+  },
+  {
+    "pilotoId": 91,
+    "archivo": "diego_ciantini_2020.webp",
+    "anio": 2020
+  },
+  {
+    "pilotoId": 91,
+    "archivo": "diego_ciantini_2023.webp",
+    "anio": 2023
+  },
+  {
+    "pilotoId": 91,
+    "archivo": "diego_ciantini_2024.webp",
+    "anio": 2024
+  },
+  {
+    "pilotoId": 91,
+    "archivo": "diego_ciantini_2025.webp",
+    "anio": 2025
+  },
+  {
+    "pilotoId": 92,
+    "archivo": "mariano_altuna_2007.webp",
+    "anio": 2007
+  },
+  {
+    "pilotoId": 92,
+    "archivo": "mariano_altuna_2009.webp",
+    "anio": 2009
+  },
+  {
+    "pilotoId": 94,
+    "archivo": "luis_minervino_1995.webp",
+    "anio": 1995
+  },
+  {
+    "pilotoId": 94,
+    "archivo": "luis_minervino_1996.webp",
+    "anio": 1996
+  },
+  {
+    "pilotoId": 94,
+    "archivo": "luis_minervino_1998.webp",
+    "anio": 1998
+  },
+  {
+    "pilotoId": 94,
+    "archivo": "luis_minervino_2004.webp",
+    "anio": 2004
   }
 ]

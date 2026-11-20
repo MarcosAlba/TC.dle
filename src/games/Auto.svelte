@@ -11,11 +11,14 @@
     import type { Piloto } from "../data/tipos";
     import { obtenerAlmacenamiento } from "../lib/almacenamiento";
     import {
+        CLAVE_MODO_AUTO,
+        EVENTO_MODO_AUTO,
         MAXIMO_INTENTOS_AUTO,
         generarOpcionesAnio,
+        normalizarModoAuto,
         obtenerEstiloDesenfoque,
-        obtenerEstiloDetalle,
         obtenerNivelDesenfoque,
+        type ModoAuto,
     } from "../lib/autos";
     import { crearDatoDiario } from "../lib/dato-diario";
     import { claveDelDia, leerDiaJuego } from "../lib/dia-juego";
@@ -73,18 +76,16 @@
     const rondaAnioPendiente = $derived(hayRondaAnio && respuestaAnio === null);
     // En PC el resultado queda al costado del auto cuando ya no falta nada por jugar (ni la ronda extra).
     const resultadoVisible = $derived(estado.terminada && !(rondaAnioVisible && rondaAnioPendiente));
-    // Modo detalle: la foto arranca con zoom en vez de borrosa. Se elige antes del primer intento y vale todo el día.
-    const datoModo = crearDatoDiario<"borroso" | "detalle">({ almacenamiento, clave: claveDelDia("partidaTCdleAutoModo", dia), fecha });
-    let modo = $state<"borroso" | "detalle">(datoModo.leer() ?? "borroso");
-    const puedeCambiarModo = $derived(estado.intentosUsados === 0 && !estado.terminada);
+    // Normal o difícil (la misma foto en blanco y negro hasta terminar). Se elige en la
+    // introducción, antes del primer intento, y vale todo el día.
+    const datoModo = crearDatoDiario<ModoAuto>({ almacenamiento, clave: claveDelDia("partidaTCdleAutoModo", dia), fecha });
+    let modo = $state<ModoAuto>(normalizarModoAuto(datoModo.leer()));
     const estiloFoto = $derived(
-        modo === "detalle"
-            ? obtenerEstiloDetalle(estado.intentosUsados, estado.terminada, "detalle:" + fecha + ":" + autoDelDia.archivo)
-            : { ...obtenerEstiloDesenfoque(obtenerNivelDesenfoque(estado.intentosUsados, estado.terminada)), origen: "50% 50%" }
+        obtenerEstiloDesenfoque(obtenerNivelDesenfoque(estado.intentosUsados, estado.terminada), modo === "dificil" && !estado.terminada)
     );
 
-    function elegirModo(nuevo: "borroso" | "detalle") {
-        if (puedeCambiarModo) {
+    function elegirModo(nuevo: ModoAuto) {
+        if (estado.intentosUsados === 0 && !estado.terminada) {
             modo = nuevo;
             datoModo.guardar(nuevo);
         }
@@ -108,12 +109,22 @@
             .reverse()
     );
     const urlFoto = urlImagen("autos/" + autoDelDia.archivo);
+    // Versiones de 640 y 1280 px (scripts/variantes-autos.mjs): el celular no baja la de 1920.
+    const variante = (ancho: number) => urlImagen("autos-variantes/" + autoDelDia.archivo.replace(/\.webp$/, "-" + ancho + ".webp"));
+    const srcsetFoto = variante(640) + " 640w, " + variante(1280) + " 1280w";
 
     // Con la partida ya terminada al cargar, el modal no se abre solo.
     onMount(() => {
         if (foto.complete && foto.naturalWidth > 0) {
             prepararFoto();
         }
+        const alElegir = (evento: Event) => elegirModo(normalizarModoAuto((evento as CustomEvent).detail));
+        document.addEventListener(EVENTO_MODO_AUTO, alElegir);
+        // Si la introducción ya se vio hoy y no se eligió modo, vale el último elegido.
+        if (document.documentElement.classList.contains("intro-vista") && datoModo.leer() === null) {
+            elegirModo(normalizarModoAuto(almacenamiento.getItem(CLAVE_MODO_AUTO)));
+        }
+        return () => document.removeEventListener(EVENTO_MODO_AUTO, alElegir);
     });
 
     $effect(() => {
@@ -186,27 +197,22 @@
         });
 </script>
 
-{#if puedeCambiarModo}
-    <div class="modo-auto" role="group" aria-label="Cómo se muestra el auto">
-        <button type="button" aria-pressed={modo === "borroso"} onclick={() => elegirModo("borroso")}>Borroso</button>
-        <button type="button" aria-pressed={modo === "detalle"} onclick={() => elegirModo("detalle")}>Detalle</button>
-    </div>
-{/if}
-
 <section class="tarjeta-desafio tarjeta-desafio--suelta tarjeta-desafio--foto" aria-label="Auto del día">
     <div
         class="marco-auto"
         style:--desenfoque-auto={estiloFoto.desenfoque}
         style:--brillo-auto={estiloFoto.brillo}
         style:--escala-auto={estiloFoto.escala}
-        style:--origen-auto={estiloFoto.origen}
+        style:--gris-auto={estiloFoto.gris}
     >
         <img
             bind:this={foto}
             class="foto-auto"
             class:foto-auto--preparada={fotoPreparada}
             src={urlFoto}
-            alt={modo === "detalle" ? "Detalle de un auto de Turismo Carretera" : "Auto de Turismo Carretera desenfocado"}
+            srcset={srcsetFoto}
+            sizes="(max-width: 47.5rem) 100vw, 47.5rem"
+            alt={modo === "dificil" ? "Auto de Turismo Carretera desenfocado y en blanco y negro" : "Auto de Turismo Carretera desenfocado"}
             onload={prepararFoto}
         />
     </div>

@@ -1,16 +1,14 @@
 ---
-// Adiviná la campaña. Las fichas de los pilotos (temporadas y marcas desde las
-// finales) se arman al construir, así la página no baja carreras.json.
-import Trayectoria from "../../games/extra/Trayectoria.svelte";
+// Adiviná la campaña. Las fichas de los pilotos se bajan aparte
+// (/datos/fichas-*.json, ver CargadorExtra), no van dentro del HTML.
+import CargadorExtra from "../../games/extra/CargadorExtra.svelte";
 import CargandoJuego from "../../components/CargandoJuego.astro";
 import PaginaJuego from "../../layouts/PaginaJuego.astro";
-import { carreras, pilotos } from "../../data";
-import { construirFichas, MAXIMO_INTENTOS_TRAYECTORIA } from "../../lib/extra";
+import { MAXIMO_INTENTOS_TRAYECTORIA } from "../../lib/extra";
 import { urlImagen } from "../../lib/rutas";
 import "../../styles/desafio.css";
 import "../../styles/extra.css";
 
-const fichas = construirFichas(pilotos, carreras);
 // Muestra de la introducción: tres temporadas a la vista y una tapada.
 const muestra = [
     { anio: 2010, logo: "marcas/ford-clasico.png", numero: 14 },
@@ -49,9 +47,9 @@ const muestra = [
         <h1 id="titulo-trayectoria">¿De quién es esta campaña?</h1>
     </section>
 
-    <Trayectoria client:only="svelte" fichas={fichas}>
+    <CargadorExtra client:only="svelte" juego="trayectoria" archivo="fichas-pilotos.json">
         <Fragment slot="fallback">
             <CargandoJuego forma="foto" />
         </Fragment>
-    </Trayectoria>
+    </CargadorExtra>
 </PaginaJuego>

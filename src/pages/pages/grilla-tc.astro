@@ -1,23 +1,27 @@
 ---
-// Grilla TC. Las fichas de los pilotos (marcas, victorias y temporadas desde las
-// finales) se arman al construir, así la página no baja carreras.json.
-import Grilla from "../../games/extra/Grilla.svelte";
+// Grilla TC. Las fichas de los pilotos se bajan aparte
+// (/datos/fichas-*.json, ver CargadorExtra), no van dentro del HTML.
+import CargadorExtra from "../../games/extra/CargadorExtra.svelte";
 import CargandoJuego from "../../components/CargandoJuego.astro";
 import PaginaJuego from "../../layouts/PaginaJuego.astro";
-import { carreras, pilotos } from "../../data";
-import { construirFichas } from "../../lib/extra";
 import { urlImagen } from "../../lib/rutas";
 import "../../styles/desafio.css";
 import "../../styles/extra.css";
 
-const fichas = construirFichas(pilotos, carreras);
-// Muestra de la introducción: la grilla de 4 × 4 con sus consignas y tres casilleros completos.
+// Muestra de la introducción: la grilla de 4 × 4 con sus consignas (las mismas insignias
+// del juego) y tres casilleros completos.
+const insignias = import.meta.glob("../../assets/grilla/*.svg", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
+const insignia = (id: string) => insignias["../../assets/grilla/" + id + ".svg"].replace(/href="marcas\//g, 'href="' + urlImagen("marcas/"));
 const consignasArriba = [
-    { simbolo: "SF", rotulo: "De Santa Fe" },
-    { simbolo: "CBA", rotulo: "De Córdoba" },
-    { simbolo: "5+", rotulo: "5 finales" },
+    { insignia: insignia("santa-fe"), rotulo: "De Santa Fe" },
+    { insignia: insignia("cordoba"), rotulo: "De Córdoba" },
+    { insignia: insignia("gano-5"), rotulo: "5 finales" },
 ];
-const consignasCostado = [{ logo: "marcas/torino-logo.jpg", rotulo: "Torino" }, { simbolo: "-2010", rotulo: "Debut" }, { simbolo: "2015+", rotulo: "Debut" }];
+const consignasCostado = [
+    { insignia: insignia("marca-torino"), rotulo: "Torino" },
+    { insignia: insignia("debut-2010"), rotulo: "Debut" },
+    { insignia: insignia("debut-2015"), rotulo: "Debut" },
+];
 const fotos = ["julian_santero", null, null, null, "agustin_canapino", null, null, null, "mariano_werner"];
 ---
 
@@ -29,11 +33,11 @@ const fotos = ["julian_santero", null, null, null, "agustin_canapino", null, nul
 >
     <div slot="intro-imagen" class="intro-juego__imagen intro-extra intro-extra--grilla" aria-hidden="true">
         <span class="intro-grilla__esquina">3<small>/9</small></span>
-        {consignasArriba.map((c) => <span class="intro-grilla__consigna"><b>{c.simbolo}</b><small>{c.rotulo}</small></span>)}
+        {consignasArriba.map((c) => <span class="intro-grilla__consigna"><span class="grilla__insignia intro-grilla__insignia" set:html={c.insignia} /><small>{c.rotulo}</small></span>)}
         {consignasCostado.map((c, fila) => (
             <>
                 <span class="intro-grilla__consigna">
-                    {c.logo ? <img src={urlImagen(c.logo)} alt="" /> : <b>{c.simbolo}</b>}
+                    <span class="grilla__insignia intro-grilla__insignia" set:html={c.insignia} />
                     <small>{c.rotulo}</small>
                 </span>
                 {fotos.slice(fila * 3, fila * 3 + 3).map((foto) =>
@@ -50,6 +54,13 @@ const fotos = ["julian_santero", null, null, null, "agustin_canapino", null, nul
         </p>
 
         <fieldset class="opciones-juego">
+            <legend>Dificultad</legend>
+            <label><input type="radio" name="grilla-dificultad" value="facil" /><span>Fácil</span></label>
+            <label><input type="radio" name="grilla-dificultad" value="normal" checked /><span>Normal</span></label>
+            <label><input type="radio" name="grilla-dificultad" value="dificil" /><span>Difícil</span></label>
+        </fieldset>
+
+        <fieldset class="opciones-juego">
             <legend>Tiempo</legend>
             <label><input type="radio" name="grilla-tiempo" value="" checked /><span>Libre</span></label>
             <label><input type="radio" name="grilla-tiempo" value="30" /><span>30 s</span></label>
@@ -62,22 +73,25 @@ const fotos = ["julian_santero", null, null, null, "agustin_canapino", null, nul
         <h1 id="titulo-grilla">Grilla TC</h1>
     </section>
 
-    <Grilla client:only="svelte" fichas={fichas}>
+    <CargadorExtra client:only="svelte" juego="grilla" archivo="fichas-plantel.json">
         <Fragment slot="fallback">
             <CargandoJuego forma="foto" />
         </Fragment>
-    </Grilla>
+    </CargadorExtra>
 </PaginaJuego>
 
 <script>
-    import { CLAVE_TIEMPO_GRILLA, EVENTO_TIEMPO_GRILLA, normalizarTiempoGrilla } from "../../lib/extra";
+    import { CLAVE_DIFICULTAD_GRILLA, CLAVE_TIEMPO_GRILLA, EVENTO_TIEMPO_GRILLA, normalizarDificultad, normalizarTiempoGrilla } from "../../lib/extra";
 
     // La introducción arranca con el último tiempo elegido. "Empezar" lo recuerda y se
     // lo pasa al juego, que ya está montado detrás y larga el reloj.
     const opciones = document.querySelectorAll<HTMLInputElement>('input[name="grilla-tiempo"]');
+    const dificultades = document.querySelectorAll<HTMLInputElement>('input[name="grilla-dificultad"]');
     try {
         const anterior = String(normalizarTiempoGrilla(Number(localStorage.getItem(CLAVE_TIEMPO_GRILLA))) ?? "");
         opciones.forEach((opcion) => (opcion.checked = opcion.value === anterior));
+        const dificultad = normalizarDificultad(localStorage.getItem(CLAVE_DIFICULTAD_GRILLA));
+        dificultades.forEach((opcion) => (opcion.checked = opcion.value === dificultad));
     } catch {
         // Sin localStorage queda "Sin tiempo".
     }
@@ -85,7 +99,10 @@ const fotos = ["julian_santero", null, null, null, "agustin_canapino", null, nul
     document.querySelector<HTMLButtonElement>("[data-intro-clave]")?.addEventListener("click", () => {
         const elegido = [...opciones].find((opcion) => opcion.checked)?.value ?? "";
         const segundos = normalizarTiempoGrilla(elegido === "" ? null : Number(elegido));
+        const dificultad = normalizarDificultad([...dificultades].find((opcion) => opcion.checked)?.value);
         try {
+            // La grilla lee la dificultad de acá al recibir el evento.
+            localStorage.setItem(CLAVE_DIFICULTAD_GRILLA, dificultad);
             if (segundos === null) {
                 localStorage.removeItem(CLAVE_TIEMPO_GRILLA);
             } else {

@@ -241,7 +241,8 @@
         </Buscador>
     {/snippet}
     {#snippet pie()}
-        <div class="estado-partida">
+        <!-- Sin mensaje no ocupa lugar: así los intentos quedan pegados al buscador. -->
+        <div class="estado-partida" class:estado-partida--vacia={!juego.mensaje.texto}>
             <p id="mensaje-piloto" class={"mensaje-juego" + (juego.mensaje.tipo ? " mensaje-juego--" + juego.mensaje.tipo : "")} aria-live="polite">
                 {juego.mensaje.texto}
             </p>

@@ -17,6 +17,11 @@
     --tinta: #111216;
     --rojo: #f20d22;
     --rojo-oscuro: #b7071c;
+    /*
+     * Fondo de botones y etiquetas con texto blanco chico: el tono oscuro del tema,
+     * para que el contraste pase 4,5:1 en todos los temas (el --rojo claro no llega).
+     */
+    --fondo-acento: var(--rojo-oscuro);
     --slime: #8cff3a;
     --sesgo: 0.875rem;
     /* La mitad del corte: para las piezas bajas (filas de la torre, pestañas) cuya diagonal tiene que ser paralela a la de los zócalos. */

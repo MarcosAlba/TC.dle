@@ -1,16 +1,14 @@
 ---
-// Conexiones TC. Las fichas de los pilotos (marcas, victorias y temporadas desde
-// las finales) se arman al construir, así la página no baja carreras.json.
-import Conexiones from "../../games/extra/Conexiones.svelte";
+// Conexiones TC. Las fichas de los pilotos se bajan aparte
+// (/datos/fichas-*.json, ver CargadorExtra), no van dentro del HTML.
+import CargadorExtra from "../../games/extra/CargadorExtra.svelte";
 import CargandoJuego from "../../components/CargandoJuego.astro";
 import PaginaJuego from "../../layouts/PaginaJuego.astro";
-import { carreras, pilotos } from "../../data";
-import { construirFichas, MAXIMO_ERRORES_CONEXIONES } from "../../lib/extra";
+import { ERRORES_CONEXIONES } from "../../lib/extra";
 import { urlImagen } from "../../lib/rutas";
 import "../../styles/desafio.css";
 import "../../styles/extra.css";
 
-const fichas = construirFichas(pilotos, carreras);
 const fotos = ["matias_rossi", "guillermo_ortelli", "facundo_ardusso", "christian_ledesma", "jose_manuel_urcera", "juan_martin_trucco", "diego_de_carlo", "german_todino"];
 ---
 
@@ -26,18 +24,48 @@ const fotos = ["matias_rossi", "guillermo_ortelli", "facundo_ardusso", "christia
 
     <Fragment slot="intro">
         <p class="intro-juego__texto">
-            Dieciséis pilotos, cuatro grupos ocultos de cuatro con algo en común. Elegí cuatro y tocá <strong>Probar</strong>. Tenés
-            <strong>{MAXIMO_ERRORES_CONEXIONES} errores</strong>.
+            Dieciséis pilotos, cuatro grupos ocultos de cuatro con algo en común. Elegí cuatro y tocá <strong>Probar</strong>.
         </p>
+
+        <fieldset class="opciones-juego">
+            <legend>Dificultad</legend>
+            <label><input type="radio" name="conexiones-dificultad" value="facil" /><span>Fácil · {ERRORES_CONEXIONES.facil} errores</span></label>
+            <label><input type="radio" name="conexiones-dificultad" value="normal" checked /><span>Normal · {ERRORES_CONEXIONES.normal} errores</span></label>
+            <label><input type="radio" name="conexiones-dificultad" value="dificil" /><span>Difícil · {ERRORES_CONEXIONES.dificil} errores</span></label>
+        </fieldset>
     </Fragment>
 
     <section slot="presentacion" class="presentacion-juego" aria-labelledby="titulo-conexiones">
         <h1 id="titulo-conexiones">Conexiones TC</h1>
     </section>
 
-    <Conexiones client:only="svelte" fichas={fichas}>
+    <CargadorExtra client:only="svelte" juego="conexiones" archivo="fichas-plantel.json">
         <Fragment slot="fallback">
             <CargandoJuego forma="foto" />
         </Fragment>
-    </Conexiones>
+    </CargadorExtra>
 </PaginaJuego>
+
+<script>
+    import { CLAVE_DIFICULTAD_CONEXIONES, EVENTO_DIFICULTAD_CONEXIONES, normalizarDificultad } from "../../lib/extra";
+
+    // La introducción arranca con la última dificultad elegida. "Empezar" la recuerda y se
+    // la pasa al juego, que ya está montado detrás.
+    const opciones = document.querySelectorAll<HTMLInputElement>('input[name="conexiones-dificultad"]');
+    try {
+        const anterior = normalizarDificultad(localStorage.getItem(CLAVE_DIFICULTAD_CONEXIONES));
+        opciones.forEach((opcion) => (opcion.checked = opcion.value === anterior));
+    } catch {
+        // Sin localStorage queda la normal.
+    }
+
+    document.querySelector<HTMLButtonElement>("[data-intro-clave]")?.addEventListener("click", () => {
+        const dificultad = normalizarDificultad([...opciones].find((opcion) => opcion.checked)?.value);
+        try {
+            localStorage.setItem(CLAVE_DIFICULTAD_CONEXIONES, dificultad);
+        } catch {
+            // Sin localStorage vale solo para hoy.
+        }
+        document.dispatchEvent(new CustomEvent(EVENTO_DIFICULTAD_CONEXIONES, { detail: dificultad }));
+    });
+</script>

@@ -89,8 +89,9 @@ describe("auto: desenfoque y ronda del año", () => {
         expect(obtenerNivelDesenfoque(3, false)).toBe(12);
         expect(obtenerNivelDesenfoque(20, false)).toBe(0);
         expect(obtenerNivelDesenfoque(2, true)).toBe(0);
-        expect(obtenerEstiloDesenfoque(24)).toEqual({ desenfoque: "1.5rem", brillo: "0.72", escala: "1.08" });
-        expect(obtenerEstiloDesenfoque(0)).toEqual({ desenfoque: "0rem", brillo: "1", escala: "1" });
+        expect(obtenerEstiloDesenfoque(24)).toEqual({ desenfoque: "1.5rem", brillo: "0.72", escala: "1.08", gris: "0" });
+        expect(obtenerEstiloDesenfoque(24, true).gris).toBe("1");
+        expect(obtenerEstiloDesenfoque(0)).toEqual({ desenfoque: "0rem", brillo: "1", escala: "1", gris: "0" });
     });
 
     it("las opciones de año son 5, ordenadas, incluyen el real y no pasan del año tope", () => {

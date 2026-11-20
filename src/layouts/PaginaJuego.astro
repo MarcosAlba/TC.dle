@@ -9,6 +9,7 @@ import "../styles/juego.css";
 import Pagina from "./Pagina.astro";
 import { ruta, urlJuego } from "../lib/rutas";
 import { existsSync } from "node:fs";
+import path from "node:path";
 
 interface Props {
     juego: JuegoId;
@@ -21,7 +22,8 @@ interface Props {
 const { juego: id, titulo, descripcion, tituloIntro } = Astro.props;
 const juego = obtenerJuego(id);
 // Los juegos sin tarjeta propia para redes (public/assets/images/og) usan la de la portada.
-const imagenOg = existsSync(new URL(`../../public/assets/images/og/${id}.jpg`, import.meta.url)) ? id : "portada";
+// La ruta sale de la raíz del proyecto: durante el build, import.meta.url apunta a dist/ y no la encuentra.
+const imagenOg = existsSync(path.join(process.cwd(), "public/assets/images/og", id + ".jpg")) ? id : "portada";
 ---
 
 <Pagina titulo={titulo} descripcion={descripcion} claveIntro={juego.claveIntro} {imagenOg} pieCompacto>

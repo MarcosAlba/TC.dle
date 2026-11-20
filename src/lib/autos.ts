@@ -6,16 +6,32 @@ export const NIVELES_DESENFOQUE = [24, 20, 16, 12, 9, 6, 3, 1, 0];
 export const PRIMER_ANIO_TC = 1937;
 export const CANTIDAD_OPCIONES_ANIO = 5;
 
+/**
+ * Modo difícil: la misma foto y el mismo desenfoque, pero en blanco y negro hasta
+ * terminar, así los colores de la decoración no lo regalan. Se elige en la introducción.
+ */
+export const MODOS_AUTO = ["normal", "dificil"] as const;
+export type ModoAuto = (typeof MODOS_AUTO)[number];
+export const CLAVE_MODO_AUTO = "tcdleAutoModo";
+/** Lo dispara la introducción al tocar "Empezar", con el modo en `detail`. */
+export const EVENTO_MODO_AUTO = "tcdle:auto-modo";
+
+/** Lo que llega del almacenamiento o de la introducción; lo de antes ("borroso", "detalle") vale como normal. */
+export function normalizarModoAuto(valor: unknown): ModoAuto {
+    return valor === "dificil" ? "dificil" : "normal";
+}
+
 export function obtenerNivelDesenfoque(intentosUsados: number, terminada: boolean): number {
     return terminada ? 0 : NIVELES_DESENFOQUE[Math.min(intentosUsados, NIVELES_DESENFOQUE.length - 1)];
 }
 
-/** Variables CSS del marco de la foto para un nivel de desenfoque. */
-export function obtenerEstiloDesenfoque(nivel: number): { desenfoque: string; brillo: string; escala: string } {
+/** Variables CSS del marco de la foto para un nivel de desenfoque (y si va en blanco y negro). */
+export function obtenerEstiloDesenfoque(nivel: number, gris = false): { desenfoque: string; brillo: string; escala: string; gris: string } {
     return {
         desenfoque: nivel / 16 + "rem",
         brillo: nivel > 12 ? "0.72" : "1",
         escala: nivel > 0 ? "1.08" : "1",
+        gris: gris ? "1" : "0",
     };
 }
 
@@ -49,20 +65,3 @@ export function generarOpcionesAnio(
     return opciones.sort((a, b) => a - b);
 }
 
-/** Modo detalle: zoom sobre un punto de la foto que se aleja con cada error. */
-export const NIVELES_ZOOM = [2.6, 2.25, 1.95, 1.7, 1.5, 1.32, 1.18, 1.06, 1];
-
-/** Variables CSS del marco en modo detalle; el punto del zoom sale de la semilla del día. */
-export function obtenerEstiloDetalle(
-    intentosUsados: number,
-    terminada: boolean,
-    semilla: string
-): { desenfoque: string; brillo: string; escala: string; origen: string } {
-    const aleatorio = crearGenerador(crearSemilla(semilla));
-    // Cerca del centro: en las fotos el auto casi siempre está ahí (los bordes suelen ser tribuna o pista).
-    const x = Math.round(40 + aleatorio() * 20);
-    const y = Math.round(45 + aleatorio() * 20);
-    const escala = terminada ? 1 : NIVELES_ZOOM[Math.min(intentosUsados, NIVELES_ZOOM.length - 1)];
-
-    return { desenfoque: "0rem", brillo: "1", escala: String(escala), origen: x + "% " + y + "%" };
-}

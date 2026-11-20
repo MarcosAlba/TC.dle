@@ -45,7 +45,7 @@
         <img class="foto-piloto" src={urlImagen(obtenerImagenMiniPiloto(piloto))} alt={"Foto de " + piloto.nombre} title={piloto.nombre} />
         <span class="celda-piloto__nombre" aria-hidden="true">{piloto.nombre}</span>
         {#if juegaCopaDeOro(piloto.id)}
-            <span class="distintivo-copa distintivo-copa--foto" title={"Juega la Copa de Oro " + copaDeOro.temporada}>Copa</span>
+            <span class="distintivo-copa distintivo-copa--intento" title={"Juega la Copa de Oro " + copaDeOro.temporada}>Copa</span>
         {/if}
     </td>
     <td class={"celda-marca " + clase(0, estadoBooleano(comparacion.marca))}>

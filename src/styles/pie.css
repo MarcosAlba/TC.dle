@@ -83,7 +83,4 @@
     }
 
     /* En el celular el resultado deja una barra fija abajo: el pie no queda tapado. */
-    body:has(.resultado-barra) .pie-sitio {
-        padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
-    }
 }

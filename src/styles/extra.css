@@ -7,23 +7,11 @@
         margin-inline: auto;
     }
 
-    .extra__ayuda {
-        margin: var(--espacio-10) 0 0;
-        color: var(--color-texto-suave);
-        font-size: var(--texto-s);
-        text-align: center;
-    }
-
-    .extra__ayuda b {
-        color: var(--blanco);
-        font-weight: 700;
-    }
-
     .extra-boton {
         padding: var(--espacio-10) calc(var(--sesgo) + 1.25rem);
         border: 0;
         color: #fff;
-        background: var(--rojo);
+        background: var(--fondo-acento);
         font-size: var(--texto-m);
         font-style: italic;
         font-weight: 900;
@@ -84,33 +72,6 @@
     /* ---------- Resultado (dentro del panel compartido) ---------- */
 
     /* Bloque propio: dentro del resultado (display: contents) quedaba en línea con el nombre. */
-    .resultado-extra-modal__foto {
-        display: block;
-        width: 7.5rem;
-        height: 7.5rem;
-        margin-inline: auto;
-        object-fit: cover;
-        object-position: top;
-        background: var(--fondo-retrato);
-    }
-
-    .resultado-extra-modal__marcador {
-        margin: 0;
-        color: var(--color-texto-suave);
-        font-family: var(--fuente-titulos);
-        font-size: var(--texto-2xl);
-        font-stretch: var(--ancho-zocalo);
-        font-style: italic;
-        font-weight: 900;
-        text-align: center;
-        text-transform: uppercase;
-    }
-
-    .resultado-extra-modal__marcador strong {
-        color: var(--blanco);
-        font-size: 3rem;
-        font-stretch: var(--ancho-display);
-    }
 
     /* ---------- Introducción: muestras chicas de cada juego ---------- */
 
@@ -220,6 +181,11 @@
         font-weight: 900;
     }
 
+    .grilla__insignia.intro-grilla__insignia {
+        width: 78%;
+        height: 78%;
+    }
+
     .intro-grilla__consigna img {
         width: 60%;
         height: 60%;
@@ -234,7 +200,7 @@
         left: 0;
         padding: 0.0625rem;
         color: #fff;
-        background: var(--rojo);
+        background: var(--fondo-acento);
         font-family: var(--fuente-titulos);
         font-size: 0.5rem;
         font-stretch: var(--ancho-zocalo);
@@ -404,6 +370,17 @@
         width: min(32rem, calc(100% - 2rem));
     }
 
+    /*
+     * En PC el ancho también depende del alto de la pantalla: así los 16 casilleros entran
+     * enteros en una de 1280 × 800 sin bajar (antes la última fila quedaba afuera).
+     */
+    @media (min-width: 48rem) {
+        .juego--grilla {
+            width: min(32rem, calc(100% - 2rem), calc(100svh - 22rem));
+            min-width: 22rem;
+        }
+    }
+
     .grilla-extra {
         display: grid;
         gap: var(--espacio-12);
@@ -477,6 +454,7 @@
     .grilla__consigna {
         position: relative;
         display: grid;
+        container-type: inline-size;
         overflow: hidden;
         padding-bottom: 1.5rem;
         border: 0.0625rem solid var(--linea);
@@ -489,6 +467,53 @@
         height: 62%;
         object-fit: contain;
         border-radius: 0.25rem;
+    }
+
+    /*
+     * Insignias: dibujadas en blanco y amarillo sobre #16161a. Esos tres colores
+     * se reemplazan por los del tema, así en el modo claro se leen igual.
+     */
+    .grilla__insignia {
+        --insignia-letra: #fff;
+        --insignia-acento: #d49b00;
+        display: block;
+        width: 84%;
+        height: 84%;
+    }
+
+    :root[data-modo="claro"] .grilla__insignia {
+        --insignia-letra: var(--blanco);
+        --insignia-acento: var(--dorado);
+    }
+
+    :root[data-modo="claro"] .grilla__insignia image {
+        filter: invert(1);
+    }
+
+    .grilla__insignia svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .grilla__insignia [fill="#ffffff"] {
+        fill: var(--insignia-letra);
+    }
+
+    .grilla__insignia [fill="#d49b00"] {
+        fill: var(--insignia-acento);
+    }
+
+    .grilla__insignia [stroke="#ffffff"] {
+        stroke: var(--insignia-letra);
+    }
+
+    .grilla__insignia [stroke="#d49b00"] {
+        stroke: var(--insignia-acento);
+    }
+
+    .grilla__insignia [fill="#16161a"] {
+        fill: var(--gris-1);
     }
 
     .grilla__simbolo {
@@ -526,7 +551,16 @@
     /* El rótulo de la consigna en el color del tema, para separarla de los casilleros a completar. */
     .grilla__consigna small {
         color: #fff;
-        background: var(--rojo);
+        background: var(--fondo-acento);
+        /*
+         * Un solo renglón. En casilleros angostos (celular) la letra se achica con el
+         * casillero para que entren los rótulos cortos; si igual no entra, se corta
+         * con "…" (el texto completo está en el title de la consigna).
+         */
+        font-size: min(var(--texto-xs), 13cqi);
+        text-overflow: ellipsis;
+        text-wrap: nowrap;
+        white-space: nowrap;
     }
 
     .grilla__celda {
@@ -658,6 +692,14 @@
         width: min(32rem, 100%);
         margin: 0 auto;
         gap: var(--espacio-8);
+    }
+
+    /* En PC el tablero se achica según el alto de la pantalla: Mezclar y Probar quedan a la vista. */
+    @media (min-width: 48rem) {
+        .conexiones {
+            width: min(32rem, 100%, calc(100svh - 21rem));
+            min-width: 22rem;
+        }
     }
 
     .conexiones:focus {

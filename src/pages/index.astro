@@ -16,7 +16,8 @@ Astro.csp?.insertScriptHash(huellaScript(scriptLogo));
 <Pagina titulo="TCdle" descripcion="Elegí uno de los ocho desafíos diarios de TCdle." claseBody="portada">
     <header class="encabezado-inicio">
         <img class="logo-inicio logo-inicio--normal" src={urlImagen("tcdle-logo-frenada.svg")} alt="TCdle" width="1570" height="384" />
-        <img class="logo-inicio logo-inicio--halloween" src={urlImagen("tcdle-logo-frenada-halloween.svg")} alt="TCdle" width="1570" height="549" />
+        <!-- Lazy: oculto fuera de Halloween, así no se descarga el resto del año. -->
+        <img class="logo-inicio logo-inicio--halloween" src={urlImagen("tcdle-logo-frenada-halloween.svg")} alt="TCdle" width="1570" height="549" loading="lazy" />
         <MenuApariencia />
     </header>
     <!-- Corre antes del primer pintado: desde la segunda vez en la sesión el logo ya aparece terminado. -->

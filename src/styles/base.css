@@ -75,8 +75,7 @@
     .modo-juego,
     .contador-intentos,
     .cuenta-regresiva,
-    .titulo-seccion,
-    .resultado-modal {
+    .titulo-seccion {
         font-family: var(--fuente-titulos);
         font-stretch: var(--ancho-zocalo);
     }
