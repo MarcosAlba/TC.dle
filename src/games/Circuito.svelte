@@ -20,6 +20,7 @@
     import { mensajesDeBusqueda } from "../lib/mensajes";
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
     import { construirTextoCompartir, filaIntentos } from "../lib/compartir";
+    import { rutaOculta } from "../lib/nombre-oculto.js";
     import { urlImagen, urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import { crearJuegoAdivinanza } from "./compartido/juego-adivinanza.svelte";
@@ -64,7 +65,8 @@
             .filter((circuito) => circuito !== undefined)
             .reverse()
     );
-    const urlSilueta = urlImagen("circuitos/" + secreto.imagen);
+    // Copia con nombre oculto (lib/nombre-oculto.js): "balcarce.svg" regalaba la respuesta.
+    const urlSilueta = urlImagen(rutaOculta("circuitos/" + secreto.imagen));
 
     const marcador = $derived({ puntaje: estado.acerto ? estado.intentosUsados : null, maximo: MAXIMO_INTENTOS, gano: estado.acerto });
 
@@ -151,6 +153,7 @@
             <img
                 class="foto-circuito"
                 src={urlSilueta}
+                draggable="false"
                 alt={estado.terminada ? "Silueta de " + etiqueta(secreto) : "Silueta del circuito del día"}
             />
             {#if vuelta}

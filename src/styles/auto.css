@@ -46,6 +46,12 @@
         transform: scale(var(--escala-auto));
         transition: filter 500ms ease, transform 500ms ease, opacity 220ms ease;
         will-change: filter, transform;
+        /* El desenfoque es solo CSS: arrastrar la foto, "Abrir imagen" o mantenerla
+           apretada en el celular mostraban el archivo nítido. Los clics pasan al marco. */
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-drag: none;
+        -webkit-touch-callout: none;
     }
 
     .foto-auto--preparada {

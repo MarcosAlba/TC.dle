@@ -27,6 +27,7 @@
     import { crearPartidaDiaria, migrarPartida } from "../lib/partida";
     import { obtenerApellidoPiloto, obtenerImagenMiniPiloto } from "../lib/pilotos";
     import { construirTextoCompartir, filaIntentos } from "../lib/compartir";
+    import { rutaOculta } from "../lib/nombre-oculto.js";
     import { urlImagen, urlSitio } from "../lib/rutas";
     import { obtenerSeleccionDiaria } from "../lib/seleccion-diaria";
     import { crearJuegoAdivinanza } from "./compartido/juego-adivinanza.svelte";
@@ -108,9 +109,10 @@
             .filter((piloto) => piloto !== undefined)
             .reverse()
     );
-    const urlFoto = urlImagen("autos/" + autoDelDia.archivo);
+    // Copias con nombre oculto (lib/nombre-oculto.js): "piloto_año.webp" regalaba la respuesta.
+    const urlFoto = urlImagen(rutaOculta("autos/" + autoDelDia.archivo));
     // Versiones de 640 y 1280 px (scripts/variantes-autos.mjs): el celular no baja la de 1920.
-    const variante = (ancho: number) => urlImagen("autos-variantes/" + autoDelDia.archivo.replace(/\.webp$/, "-" + ancho + ".webp"));
+    const variante = (ancho: number) => urlImagen(rutaOculta("autos/" + autoDelDia.archivo, "-" + ancho));
     const srcsetFoto = variante(640) + " 640w, " + variante(1280) + " 1280w";
 
     // Con la partida ya terminada al cargar, el modal no se abre solo.
@@ -212,6 +214,7 @@
             src={urlFoto}
             srcset={srcsetFoto}
             sizes="(max-width: 47.5rem) 100vw, 47.5rem"
+            draggable="false"
             alt={modo === "dificil" ? "Auto de Turismo Carretera desenfocado y en blanco y negro" : "Auto de Turismo Carretera desenfocado"}
             onload={prepararFoto}
         />
@@ -225,8 +228,11 @@
             tabindex="-1"
             hidden={!estado.terminada}
         >
-            <span>{estado.acerto ? "¡Correcto!" : "Incorrecto"}</span>
-            <strong>{secreto.nombre}</strong>
+            <!-- La respuesta entra a la página recién al terminar: antes se podía leer con "Inspeccionar". -->
+            {#if estado.terminada}
+                <span>{estado.acerto ? "¡Correcto!" : "Incorrecto"}</span>
+                <strong>{secreto.nombre}</strong>
+            {/if}
         </div>
     </div>
 </section>

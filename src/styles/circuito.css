@@ -70,6 +70,11 @@
         filter: var(--filtro-silueta);
         object-fit: contain;
         transition: filter 300ms ease;
+        /* Que no se pueda arrastrar ni abrir aparte: el archivo se ve sin el filtro. */
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-drag: none;
+        -webkit-touch-callout: none;
     }
 
     .intro-juego__imagen--circuito {

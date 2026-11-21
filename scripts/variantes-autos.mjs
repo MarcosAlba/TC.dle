@@ -1,38 +1,65 @@
-// Versiones chicas de las fotos de autos para el celular: 640 y 1280 px de ancho,
-// en public/assets/images/autos-variantes (no se commitean: se arman antes de cada
-// build y de `npm run dev`). El modo Auto las ofrece con srcset y cada pantalla baja
-// la que necesita en vez de la de 1920 px.
+// Copias de las imágenes de los juegos con un nombre que no delata la respuesta,
+// en public/assets/images/ocultas (no se commitean: se arman antes de cada build y
+// de `npm run dev`). Ver src/lib/nombre-oculto.js.
+//
+//   - autos/: la foto tal cual y dos versiones chicas para el celular, de 640 y
+//     1280 px de ancho. El modo Auto las ofrece con srcset y cada pantalla baja la
+//     que necesita en vez de la de 1920 px.
+//   - circuitos/: la silueta tal cual.
 //
 //   node scripts/variantes-autos.mjs
 //
-// Es idempotente: solo arma las que faltan o las que quedaron más viejas que la foto.
-import { mkdir, readdir, stat } from "node:fs/promises";
+// Es idempotente: solo arma las que faltan o las que quedaron más viejas que la original.
+import { copyFile, mkdir, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
+import { CARPETA_OCULTAS, rutaOculta } from "../src/lib/nombre-oculto.js";
 
 const RAIZ = path.resolve(import.meta.dirname, "../public/assets/images");
-const ORIGEN = path.join(RAIZ, "autos");
-const DESTINO = path.join(RAIZ, "autos-variantes");
 export const ANCHOS_AUTOS = [640, 1280];
 // Calidad pensada para una foto que casi siempre se ve borrosa: alcanza y pesa poco.
 const CALIDAD = { 640: 78, 1280: 82 };
 
 sharp.concurrency(2);
-await mkdir(DESTINO, { recursive: true });
+await mkdir(path.join(RAIZ, CARPETA_OCULTAS), { recursive: true });
 
-const fotos = (await readdir(ORIGEN)).filter((archivo) => archivo.endsWith(".webp"));
-let hechas = 0;
-for (const archivo of fotos) {
-    const origen = path.join(ORIGEN, archivo);
+/** true si `destino` falta o es más viejo que `origen`. */
+async function hayQueArmar(origen, destino) {
     const fechaOrigen = (await stat(origen)).mtimeMs;
+    const existente = await stat(destino).catch(() => null);
+    return !existente || existente.mtimeMs < fechaOrigen;
+}
+
+let hechas = 0;
+
+const fotos = (await readdir(path.join(RAIZ, "autos"))).filter((archivo) => archivo.endsWith(".webp"));
+for (const archivo of fotos) {
+    const relativa = "autos/" + archivo;
+    const origen = path.join(RAIZ, relativa);
+    const copia = path.join(RAIZ, rutaOculta(relativa));
+    if (await hayQueArmar(origen, copia)) {
+        await copyFile(origen, copia);
+        hechas++;
+    }
     for (const ancho of ANCHOS_AUTOS) {
-        const destino = path.join(DESTINO, archivo.replace(/\.webp$/, "-" + ancho + ".webp"));
-        const existente = await stat(destino).catch(() => null);
-        if (existente && existente.mtimeMs >= fechaOrigen) {
-            continue;
+        const destino = path.join(RAIZ, rutaOculta(relativa, "-" + ancho));
+        if (await hayQueArmar(origen, destino)) {
+            await sharp(origen).resize({ width: ancho, withoutEnlargement: true }).webp({ quality: CALIDAD[ancho], effort: 5 }).toFile(destino);
+            hechas++;
         }
-        await sharp(origen).resize({ width: ancho, withoutEnlargement: true }).webp({ quality: CALIDAD[ancho], effort: 5 }).toFile(destino);
+    }
+}
+
+const siluetas = (await readdir(path.join(RAIZ, "circuitos"))).filter((archivo) => archivo.endsWith(".svg"));
+for (const archivo of siluetas) {
+    const relativa = "circuitos/" + archivo;
+    const destino = path.join(RAIZ, rutaOculta(relativa));
+    if (await hayQueArmar(path.join(RAIZ, relativa), destino)) {
+        await copyFile(path.join(RAIZ, relativa), destino);
         hechas++;
     }
 }
-console.log(`Variantes de autos: ${hechas} nuevas (${fotos.length} fotos, anchos ${ANCHOS_AUTOS.join(" y ")} px).`);
+
+console.log(
+    `Imágenes ocultas: ${hechas} nuevas (${fotos.length} autos, anchos ${ANCHOS_AUTOS.join(" y ")} px; ${siluetas.length} circuitos).`
+);
